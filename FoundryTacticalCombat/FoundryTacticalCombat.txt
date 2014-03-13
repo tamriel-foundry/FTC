@@ -8,6 +8,9 @@ core/Functions.lua
 core/UI.lua
 core/Events.lua
 
+character/Functions.lua
+character/Controls.lua
+
 buffs/Functions.lua
 buffs/Controls.lua
 

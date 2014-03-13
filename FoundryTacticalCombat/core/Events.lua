@@ -29,9 +29,8 @@ function FTC:RegisterEvents()
 	
 	-- Attribute Changes
 	EVENT_MANAGER:RegisterForEvent( "FTC" 	, EVENT_POWER_UPDATE 			, FTC.OnPowerUpdate )
+	EVENT_MANAGER:RegisterForEvent( "FTC" 	, EVENT_STATS_UPDATED 			, FTC.OnStatsUpdated )
 	
-	-- Update the starting target after everything is loaded
-	CALLBACK_MANAGER:RegisterCallback( "FTC_Ready" , FTC:UpdateTarget() )
 end
 
 
@@ -141,8 +140,21 @@ end
 function FTC.OnPowerUpdate( ... )
 
 	-- Pass updated attributes to unit frames
-	if ( FTC.init.Frames ) then 
+	if ( FTC.Frames.init ) then 
 		FTC.Frames:UpdateFrame( ... )
+	end
+
+end
+
+--[[ 
+ * Runs on the EVENT_STATS_UPDATED listener.
+ * This handler fires every time the player has a change to a derived stat
+ ]]--
+function FTC.OnStatsUpdated( ... )
+
+	-- Pass updated attributes to unit frames
+	if ( FTC.Character.init ) then 
+		FTC.Character:Update( ... )
 	end
 
 end

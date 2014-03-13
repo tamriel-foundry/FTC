@@ -9,19 +9,19 @@
 function FTC.Buffs:Controls()
 
  	-- Player buffs
-	local PB = FTC.UI.TopLevelWindow( "FTC_PlayerBuffs" , FTC.init.HUD and FTC_PlayerFrame or ZO_PlayerAttributeHealth , {240,80} , FTC.init.HUD and {TOPLEFT,BOTTOMLEFT,0,5} or {BOTTOMLEFT,TOPLEFT,0,-30} , false )
+	local PB = FTC.UI.TopLevelWindow( "FTC_PlayerBuffs" , FTC.Frames.init and FTC_PlayerFrame or ZO_PlayerAttributeHealth , {240,80} , FTC.Frames.init and {TOPLEFT,BOTTOMLEFT,0,5} or {BOTTOMLEFT,TOPLEFT,0,-30} , false )
 	
 	-- Player debuffs
-	local PD = FTC.UI.TopLevelWindow( "FTC_PlayerDebuffs" , FTC.init.HUD and FTC_PlayerFrame or ZO_PlayerAttributeHealth , {240,80} , FTC.init.HUD and {BOTTOMLEFT,TOPLEFT,0,-15} or {BOTTOMLEFT,TOPLEFT,0,-110} , false )	
+	local PD = FTC.UI.TopLevelWindow( "FTC_PlayerDebuffs" , FTC.Frames.init and FTC_PlayerFrame or ZO_PlayerAttributeHealth , {240,80} , FTC.Frames.init and {BOTTOMLEFT,TOPLEFT,0,-15} or {BOTTOMLEFT,TOPLEFT,0,-110} , false )	
 	
 	-- Long buffs
 	local LB = FTC.UI.TopLevelWindow( "FTC_LongBuffs" , GuiRoot , {40,400} , {BOTTOMRIGHT,BOTTOMRIGHT,-5,-5} , false )	
 	
 	-- Target buffs
-	local TB = FTC.UI.TopLevelWindow( "FTC_TargetBuffs" , FTC.init.HUD and FTC_TargetFrame or ZO_TargetUnitFramereticleover , {240,80} , FTC.init.HUD and {TOPLEFT,BOTTOMLEFT,0,5} or {TOP,BOTTOM,0,50} , false )
+	local TB = FTC.UI.TopLevelWindow( "FTC_TargetBuffs" , FTC.Frames.init and FTC_TargetFrame or ZO_TargetUnitFramereticleover , {240,80} , FTC.Frames.init and {TOPLEFT,BOTTOMLEFT,0,5} or {TOP,BOTTOM,0,50} , false )
 	
 	-- Target debuffs
-	local TD = FTC.UI.TopLevelWindow( "FTC_TargetDebuffs" , FTC.init.HUD and FTC_TargetFrame or ZO_TargetUnitFramereticleover , {240,80} , FTC.init.HUD and {BOTTOMLEFT,TOPLEFT,0,-15} or {TOP,BOTTOM,0,130} , false )	
+	local TD = FTC.UI.TopLevelWindow( "FTC_TargetDebuffs" , FTC.Frames.init and FTC_TargetFrame or ZO_TargetUnitFramereticleover , {240,80} , FTC.Frames.init and {BOTTOMLEFT,TOPLEFT,0,-15} or {TOP,BOTTOM,0,130} , false )	
 
 	-- Create the buff icon containers for each buff type
 	local types = { 

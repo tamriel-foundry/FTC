@@ -8,7 +8,7 @@
 	for k,v in pairs(bars) do
 	
 		-- Adjust the bars if the user is running the HUD frames
-		local parent = FTC.init.HUD and _G["FTC_"..k.."Frame"] or _G[v]
+		local parent = FTC.Frames.init and _G["FTC_"..k.."Frame"] or _G[v]
 		
 		-- Create the castbar
 		local CB 	= FTC.UI.TopLevelWindow( "FTC_"..k.."Castbar" , parent , {parent:GetWidth(),24} , {BOTTOMLEFT,TOPLEFT,0,-25} , false )	
@@ -18,7 +18,7 @@
 	end
 	
 	-- Modify the bar position if HUD isnt enabled
-	if ( not FTC.init.HUD ) then FTC_TargetCastbar:SetAnchor( BOTTOMLEFT, ZO_TargetUnitFramereticleover , TOPLEFT , 0 , -15 ) end
+	if ( not FTC.Frames.init ) then FTC_TargetCastbar:SetAnchor( BOTTOMLEFT, ZO_TargetUnitFramereticleover , TOPLEFT , 0 , -15 ) end
 end
 
 
@@ -43,7 +43,7 @@ function FTC.UpdateCastBar( context )
 	end
 	
 	-- Retrieve the castbar elements
-	local parent 	= FTC.init.HUD and _G["FTC_"..context.."Frame"] or _G[default]
+	local parent 	= FTC.Frames.init and _G["FTC_"..context.."Frame"] or _G[default]
 	local container	= _G["FTC_"..context.."Castbar"]
 	local label		= _G["FTC_"..context.."CastbarLabel"]
 	local castbar	= _G["FTC_"..context.."CastbarBar"]

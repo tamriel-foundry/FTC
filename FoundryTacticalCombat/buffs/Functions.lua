@@ -110,7 +110,7 @@ function FTC.Buffs.UpdateBuffs( context )
 	local parentDebuffs	= _G["FTC_" .. context .. "Debuffs"]
 		
 	-- Hide target buffs if the target frame isn't shown
-	if ( context == "Target" and FTC.init.HUD and FTC_TargetFrame:IsHidden() ) then 
+	if ( context == "Target" and FTC.Frames.init and FTC_TargetFrame:IsHidden() ) then 
 		parentBuffs:SetHidden(true) 
 		parentDebuffs:SetHidden(true) 
 		return

@@ -25,7 +25,7 @@ function FTC.InitializeSettings()
 			},
 		['HUD'] = {
 			["name"]		= "Heads Up Display",
-			["status"]		= FTC.vars.EnableHUD
+			["status"]		= FTC.vars.EnableFrames
 		}
 	}
 	
@@ -111,8 +111,8 @@ function FTC.InitializeSettings()
 	--[[----------------------------------------------------------
 		Unit Frames Section
 	]]-----------------------------------------------------------
-	SW.frames = FTC.UI.Control( "FTC_Settings_Frames" , SW , {SW:GetWidth() - 100 , FTC.init.HUD and 100 or 0} , {TOPLEFT,BOTTOMLEFT,0,10,SW.SCT} , false )
-	if ( FTC.init.HUD ) then
+	SW.frames = FTC.UI.Control( "FTC_Settings_Frames" , SW , {SW:GetWidth() - 100 , FTC.Frames.init and 100 or 0} , {TOPLEFT,BOTTOMLEFT,0,10,SW.SCT} , false )
+	if ( FTC.Frames.init ) then
 		SW.frames.header 		= FTC.UI.Label( "FTC_Settings_FramesHeader" , SW.frames , {SW.frames:GetWidth() , 30} , {TOP,TOP,0,0} , "ZoFontHeader2" , nil , {0,0} , false )
 		SW.frames.header:SetText("Unit Frames Settings")
 		

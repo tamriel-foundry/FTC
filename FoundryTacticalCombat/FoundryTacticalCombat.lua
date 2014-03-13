@@ -10,9 +10,9 @@
 	* (3) Enemy Cast-Bar
 	* (4) Scrolling Combat Text and Damage Meter
 	* 
-	* Version 0.14
+	* Version 0.15
 	* atropos@tamrielfoundry.com
-	* 3-5-2014
+	* 3-13-2014
   ]]--
 
 --[[----------------------------------------------------------
@@ -21,14 +21,14 @@
 FTC 					= {}
 FTC.name				= "FoundryTacticalCombat"
 FTC.command				= "/ftc"
-FTC.version				= 0.14
+FTC.version				= 0.15
 
 -- Default Saved Variables
 FTC.defaults			= {
 	["EnableBuffs"] 	= false,
 	["EnableCastbar"] 	= false,
 	["EnableSCT"] 		= false,
-	["EnableHUD"] 		= false,
+	["EnableFrames"] 	= false,
 	["SCTSpeed"]		= 3,
 	["SCTNames"]		= true,
 	["NumBuffs"]		= 12,
@@ -61,14 +61,10 @@ function FTC.Initialize( eventCode, addOnName )
 	FTC.vars = ZO_SavedVars:New( "FTCvars" , math.floor( FTC.version * 100 ) , nil , FTC.defaults , nil )
 	
 	-- Setup Character Information
-	FTC.InitializeCharacter()
-	FTC.InitializeCharSheet()
+	FTC.Character:Initialize()
 	
-	-- Heads Up Display Component
-	FTC.InitializeHUD()
-	if ( FTC.vars.EnableHUD ) then
-		FTC.init.HUD = true
-	end
+	-- Unit Frames Component
+	FTC.Frames:Initialize()
 	
 	-- Enemy CastBar Component
 	if ( FTC.vars.EnableCastbar ) then

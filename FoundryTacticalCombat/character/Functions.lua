@@ -1,10 +1,16 @@
---[[----------------------------------------------------------
-	CHARACTER INFO COMPONENT
- ]]-----------------------------------------------------------
-function FTC.InitializeCharacter()
-	
-	-- Gather character information
-	FTC.character		= {
+ 
+ --[[----------------------------------------------------------
+	CHARACTER FUNCTIONS
+	-----------------------------------------------------------
+	* Relevant functions for the player character components of FTC
+	* Runs during FTC:Initialize()
+  ]]--
+ 
+FTC.Character = {}
+function FTC.Character:Initialize()
+
+	-- Setup initial character information
+	local character		= {
 		["name"] 		= GetUnitName( 'player' ),
 		["race"]		= GetUnitRace( 'player' ),
 		["class"]		= GetUnitClass( 'player' ),
@@ -19,16 +25,6 @@ function FTC.InitializeCharacter()
 		["stamina"]		= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 }
 	}
 	
-	-- Setup placeholders for target information
-	FTC.target 				= {
-		["name"] 			= "-999",
-		["level"]			= 0,
-		["vlevel"]			= 0,
-		["health"]			= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
-		["magicka"]			= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
-		["stamina"]			= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
-	}
-	
 	-- Load starting attributes
 	local stats = {
 		{ ["name"] = "health" , ["id"] = POWERTYPE_HEALTH },
@@ -37,57 +33,65 @@ function FTC.InitializeCharacter()
 	}
 	for i = 1 , #stats , 1 do
 		local current, maximum, effMax = GetUnitPower( "player" , stats[i].id )
-		FTC.character[stats[i].name] = { ["current"] = current , ["max"] = effMax , ["pct"] = math.floor( ( current / effMax ) * 100 ) }
-	end
-end
-
-function FTC.InitializeCharSheet()
-
-	-- Setup mini character sheet
-	local CS 	= FTC.UI.TopLevelWindow( "FTC_CharSheet" , GuiRoot , {600,170} , {TOPLEFT,TOPLEFT,5,5} , true )
-	CS.backdrop = FTC.UI.Backdrop( "FTC_CharSheetBackdrop" , CS , "inherit" , {CENTER,CENTER,0,0} , nil , nil , false )
-		
-	-- Loop through character sheet sections, setting them up iteratively
-	local comps 	= { "Attributes" , "Offense" , "Defense" , "Resists" };
-	local anchor	= CS
-	for i = 1 , #comps , 1 do
-	
-		-- Set up the character sheet section
-		local section 	= FTC.UI.Control( "FTC_CharSheet_"..comps[i] , CS , {CS:GetWidth()/4,CS:GetHeight()} , {TOPLEFT,TOPRIGHT,0,0,anchor} , false )		
-		local title		= FTC.UI.Label( "FTC_CharSheet_"..comps[i].."Title" , section , {section:GetWidth(),16} , {TOP,TOP,0,5} , "ZoFontAnnounceSmall" , nil , {1,0} , false )
-		local names 	= FTC.UI.Label( "FTC_CharSheet_"..comps[i].."Names" , section , {.75*section:GetWidth(),section:GetHeight()-20} , {TOPLEFT,BOTTOMLEFT,10,5,title} , "ZoFontBoss" , nil , {0,0} , false )	
-		local values 	= FTC.UI.Label( "FTC_CharSheet_"..comps[i].."Values" , section , {.25*section:GetWidth(),section:GetHeight()-20} , {TOPRIGHT,BOTTOMRIGHT,-10,5,title} , "ZoFontBoss" , nil , {2,0} , false )
-		title:SetText("--- "..comps[i].." ---")	
-		
-		-- Adjust the position of the first section
-		if i == 1 then section:SetAnchor(TOPLEFT,anchor,TOPLEFT,0,0) end
-		
-		-- Hook the next section to the previous parent
-		anchor = section
+		character[stats[i].name] = { ["current"] = current , ["max"] = effMax , ["pct"] = math.floor( ( current / effMax ) * 100 ) }
 	end
 	
-	-- Experience Bar
-	if ( FTC.character.vlevel < 10 ) then 		
-		CS.exp 		= FTC.UI.Backdrop( "FTC_CharSheet_Exp" , CS , { CS:GetWidth() - 20 , 20 } , {BOTTOM,BOTTOM,0,-5} , {0,0.2,0.4,1} , {0,0,0,1} , false )
-		CS.bar 		= FTC.UI.Statusbar( "FTC_CharSheet_ExpBar" , CS , { CS.exp:GetWidth() - 4 , 14 } , {LEFT,LEFT,2,0,CS.exp} , {0.4,0.6,0.8,1} , false )	
-		CS.exp.label = FTC.UI.Label( "FTC_CharSheet_ExpLabel" , CS.exp , "inherit" , {CENTER,CENTER,0,-1,CS.exp} , "ZoFontAnnounceSmall" , nil , {1,1} , false )
-	end
+	-- Populate the character object
+	for attr , value in pairs( character ) do FTC.Character[attr] = value end
+	
+	-- Create character sheet controls
+	FTC.Character:Controls()
 	
 	-- Populate the character sheet
-	FTC.UpdateCharSheet(nil,'player')
-	
-	-- Register Event Listeners
-	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_STATS_UPDATED , FTC.UpdateCharSheet )
+	FTC.UpdateCharSheet( nil , 'player' )
 	
 	-- Register Keybinding
 	ZO_CreateStringId("SI_BINDING_NAME_DISPLAY_CHARACTER_SHEET", "Display Character Sheet")
+	
+	-- Register init status
+	FTC.Character.init = true
+	
 end
 
+FTC.Target = {}
+function FTC.Target:Initialize()
 
-function FTC.UpdateCharSheet( eventCode , unitTag )
+	-- Setup initial target information
+	local target 			= {
+		["name"] 			= "-999",
+		["level"]			= 0,
+		["vlevel"]			= 0,
+		["health"]			= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
+		["magicka"]			= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
+		["stamina"]			= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
+	}	
+	
+	-- Populate the target object
+	for attr , value in pairs( target ) do FTC.Target[attr] = value end	
+	
+	-- Register post-initialization callbacks
+	CALLBACK_MANAGER:RegisterCallback( "FTC_Ready" , FTC:UpdateTarget() )
+	
+	-- Register init status
+	FTC.Target.init = true
+end
+
+--[[----------------------------------------------------------
+	EVENT HANDLERS
+ ]]-----------------------------------------------------------
+ 
+ 
+  --[[ 
+ * Updates the character sheet and character attributes
+ * Called by OnStatsUpdated()
+ ]]--
+FTC.Character:Update( eventCode , unitTag )
 
 	-- Make sure we're targetting the player
 	if ( "player" ~= unitTag ) then return end
+	
+	-- No need to update unless the character sheet is displayed
+	if ( FTC_CharSheet:IsHidden() ) then return end
 	
 	-- Loop through the relevant stats
 	local stats	= {
@@ -151,13 +155,22 @@ function FTC.UpdateCharSheet( eventCode , unitTag )
 		FTC_CharSheet_ExpLabel:SetText(xpLabel)
 		FTC_CharSheet_ExpBar:SetWidth( ( pct / 100 ) * FTC_CharSheet_Exp:GetWidth() )
 	end
+	
 end
 
-
+  --[[ 
+ * Toggles the display of the character sheet
+ * Called by hotkey activation
+ ]]--
 function FTC.DisplayCharSheet()
 
+	-- Get the current visibility
+	local isHidden = FTC_CharSheet:IsHidden()
+
+	-- Maybe update the sheet
+	if isHidden then FTC.Character:Update( nil , 'player' ) end
+	
 	-- Switch the visible elements
 	FTC_DamageMeter:SetHidden( true )
-	FTC_CharSheet:SetHidden( not FTC_CharSheet:IsHidden() )
+	FTC_CharSheet:SetHidden( not isHidden )
 end
-

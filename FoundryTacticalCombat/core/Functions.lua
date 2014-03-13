@@ -74,7 +74,7 @@ function FTC:ToggleVisibility( eventCode , isHidden )
 	-- Otherwise, hide FTC windows
 	FTC_CharSheet:SetHidden( ( FTC_CharSheet:IsHidden() == true ) and true or isHidden )
 	
-	if( FTC.init.HUD ) then
+	if( FTC.Frames.init ) then
 		FTC_PlayerFrame:SetHidden( isHidden )
 	end
 	
@@ -106,7 +106,7 @@ function FTC:UpdateTarget()
 	if FTC:IsCritter( target ) then ignore = true end
 	
 	-- Conditionally display the target frame
-	if( FTC.init.HUD ) then 
+	if( FTC.Frames.init ) then 
 		FTC_TargetFrame:SetHidden( ignore )
 	end
 	if( FTC.init.Buffs ) then

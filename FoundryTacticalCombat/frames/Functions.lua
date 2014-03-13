@@ -6,6 +6,7 @@
 	* Runs during FTC:Initialize()
   ]]--
  
+FTC.Frames = {}
 function FTC.Frames:Initialize()
 
 	-- Create UI elements
@@ -17,13 +18,14 @@ function FTC.Frames:Initialize()
 	FTC_TargetFrame:SetHidden(true)
 	
 	-- Populate the unit frames
-	FTC.Frames:UpdateFrame( nil , 'player', nil, POWERTYPE_HEALTH, FTC.character.health.current, FTC.character.health.max, FTC.character.health.max )
-	FTC.Frames:UpdateFrame( nil , 'player', nil, POWERTYPE_MAGICKA, FTC.character.magicka.current, FTC.character.magicka.max, FTC.character.magicka.max )
-	FTC.Frames:UpdateFrame( nil , 'player', nil, POWERTYPE_STAMINA, FTC.character.stamina.current, FTC.character.stamina.max, FTC.character.stamina.max )
-	FTC.Frames:UpdateFrame( nil , 'player', nil, POWERTYPE_ULTIMATE, 0, 0, 0 )
+	FTC.Frames:UpdateFrame( nil , 'player', nil, POWERTYPE_HEALTH	, FTC.character.health.current	, FTC.character.health.max	, FTC.character.health.max )
+	FTC.Frames:UpdateFrame( nil , 'player', nil, POWERTYPE_MAGICKA	, FTC.character.magicka.current	, FTC.character.magicka.max	, FTC.character.magicka.max )
+	FTC.Frames:UpdateFrame( nil , 'player', nil, POWERTYPE_STAMINA	, FTC.character.stamina.current	, FTC.character.stamina.max	, FTC.character.stamina.max )
+	FTC.Frames:UpdateFrame( nil , 'player', nil, POWERTYPE_ULTIMATE	, 0								, 0							, 0 )
 	
 	-- Register init status
-	FTC.init.Frames = true
+	if ( FTC.vars.EnableFrames ) then FTC.Frames.init = true end
+	
 end
 
 
@@ -134,7 +136,7 @@ end
 		end
 		
 		-- Ensure the default unit frames remain hidden
-		if ( FTC.vars.EnableHUD ) then
+		if ( FTC.vars.EnableFrames ) then
 			ZO_PlayerAttribute:SetHidden(true)
 		else
 			frame:SetHidden(true)
