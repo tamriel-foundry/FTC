@@ -1,0 +1,28 @@
+## Title: Foundry Tactical Combat
+## APIVersion: 100000
+## SavedVariables: FTCvars
+
+FoundryTacticalCombat.lua
+
+core/Functions.lua
+core/UI.lua
+core/Events.lua
+
+buffs/Functions.lua
+buffs/Controls.lua
+
+sct/Functions.lua
+sct/Controls.lua
+
+
+components/Castbar.lua
+components/Character.lua
+components/HUD.lua
+components/Settings.lua
+
+
+menu/Functions.lua
+menu/Controls.lua
+
+FoundryTacticalCombat.xml
+bindings.xml

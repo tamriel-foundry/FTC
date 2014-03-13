@@ -1,0 +1,17 @@
+<!----------------------------------------------------------
+	* Foundry Tactical Combat 
+	* Version 0.12
+	* atropos@tamrielfoundry.com
+	* 2-7-2014
+----------------------------------------------------------->
+<GuiXml>
+    <Controls>
+        <TopLevelControl name="FoundryTacticalCombat" mouseEnabled="false">
+			<Dimensions x="960" y="540" />
+			<Anchor point="CENTER" />
+            <OnUpdate>
+				FTC.Update()
+            </OnUpdate>
+        </TopLevelControl>
+	</Controls>
+</GuiXml>

@@ -1,0 +1,12 @@
+<Bindings>
+  <Layer name="General">
+    <Category name="Foundry Tactical Combat">
+      <Action name="DISPLAY_CHARACTER_SHEET">
+        <Down>FTC.DisplayCharSheet()</Down>
+      </Action>
+      <Action name="DISPLAY_DAMAGE_METER">
+        <Down>FTC.DisplayMeter()</Down>
+      </Action>
+    </Category>
+  </Layer>
+</Bindings>
