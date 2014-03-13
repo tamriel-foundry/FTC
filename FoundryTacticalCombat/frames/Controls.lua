@@ -3,7 +3,7 @@
 	UNIT FRAMES CONTROLS
 	-----------------------------------------------------------
 	* Creates UI controls for the unit frames component.
-	* Runs during FTC.Frames.Initialize()
+	* Runs during FTC.Frames:Initialize()
   ]]--
   
 function FTC.Frames:Controls()

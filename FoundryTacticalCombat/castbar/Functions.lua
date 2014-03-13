@@ -1,24 +1,20 @@
---[[----------------------------------------------------------
-	CASTBAR DISPLAY COMPONENT
- ]]-----------------------------------------------------------
- function FTC.InitializeCastbar()
+ 
+ --[[----------------------------------------------------------
+	CASTBAR FUNCTIONS
+	-----------------------------------------------------------
+	* Relevant functions for the castbar component of FTC
+	* Runs during FTC:Initialize()
+  ]]--
+ 
+FTC.Castbar = {}
+function FTC.Castbar:Initialize()
+
+	-- Create UI elements
+	FTC.Castbar:Controls()
 	
-	-- Create player and target bars
-	local bars = { ["Player"] = "ZO_PlayerAttributeHealth" , ["Target"] = "ZO_TargetUnitFramereticleover" }
-	for k,v in pairs(bars) do
+	-- Register init status
+	FTC.Castbar.init = true
 	
-		-- Adjust the bars if the user is running the HUD frames
-		local parent = FTC.Frames.init and _G["FTC_"..k.."Frame"] or _G[v]
-		
-		-- Create the castbar
-		local CB 	= FTC.UI.TopLevelWindow( "FTC_"..k.."Castbar" , parent , {parent:GetWidth(),24} , {BOTTOMLEFT,TOPLEFT,0,-25} , false )	
-		CB.backdrop = FTC.UI.Backdrop( "FTC_"..k.."CastbarBackdrop" , CB , "inherit" , {CENTER,CENTER,0,0} , nil , nil , false )		
-		CB.bar 		= FTC.UI.Statusbar( "FTC_"..k.."CastbarBar" , CB , { CB:GetWidth() - 8 , 16 } , {LEFT,LEFT,4,0} , nil , false )		
-		CB.label 	= FTC.UI.Label( "FTC_"..k.."CastbarLabel" , CB , "inherit" , {CENTER,CENTER,0,0} , "ZoFontAnnounceSmall" , nil , {1,1} , false )
-	end
-	
-	-- Modify the bar position if HUD isnt enabled
-	if ( not FTC.Frames.init ) then FTC_TargetCastbar:SetAnchor( BOTTOMLEFT, ZO_TargetUnitFramereticleover , TOPLEFT , 0 , -15 ) end
 end
 
 
@@ -26,12 +22,11 @@ end
 	ON UPDATE FUNCTIONS
  ]]-----------------------------------------------------------
  
- --[[ 
- * Generates a cast bar for enemies in combat.
- * The cast-bar hints what is the appropriate reaction to enemy spells.
- * Runs every frame OnUpdate.
+--[[ 
+ * Checks for active spellcasting and displays a status bar
+ * Runs OnUpdate()
  ]]--
-function FTC.UpdateCastBar( context )
+function FTC.Castbar:Update( context )
 
 	-- Get the context
 	if ( context == "Target" ) then 

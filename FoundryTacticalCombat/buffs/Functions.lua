@@ -22,7 +22,7 @@ function FTC.Buffs.Initialize()
 	FTC.Buffs:GetBuffs( 'player' )
 	
 	-- Register init status
-	FTC.init.Buffs = true
+	FTC.Buffs.init = true
 end
 
 

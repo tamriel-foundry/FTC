@@ -73,7 +73,7 @@ function FTC.OnEffectChanged( ... )
 	local unitTag 	= params[5]
 
 	-- Retrieve current buffs if the buffs component is active
-	if ( FTC.init.Buffs ) then 
+	if ( FTC.Buffs.init ) then 
 		FTC.Buffs:GetBuffs( unitTag ) 
 	end
 	

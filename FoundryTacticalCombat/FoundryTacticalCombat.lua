@@ -66,11 +66,8 @@ function FTC.Initialize( eventCode, addOnName )
 	-- Unit Frames Component
 	FTC.Frames:Initialize()
 	
-	-- Enemy CastBar Component
-	if ( FTC.vars.EnableCastbar ) then
-		FTC.InitializeCastbar()
-		FTC.init.Castbar = true
-	end
+	-- Castbar Component
+	if ( FTC.vars.EnableCastbar ) then FTC.Castbar:Initialize()	end
 	
 	-- Active Buffs Component
 	if ( FTC.vars.EnableBuffs ) then FTC.Buffs:Initialize() end
@@ -110,15 +107,15 @@ EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ADD_ON_LOADED , FTC.Initialize )
 function FTC.Update()
 
 	-- Active Buffs Component
-	if ( FTC.init.Buffs ) then
-		FTC.Buffs.UpdateBuffs('Player')
-		FTC.Buffs.UpdateBuffs('Target')
+	if ( FTC.Buffs.init ) then
+		FTC.Buffs:UpdateBuffs('Player')
+		FTC.Buffs:UpdateBuffs('Target')
 	end
 	
 	-- Castbar Component
-	if ( FTC.init.Castbar ) then
-		FTC.UpdateCastBar('Player')
-		FTC.UpdateCastBar('Target')
+	if ( FTC.Castbar.init ) then
+		FTC.Castbar:Update('Player')
+		FTC.Castbar:Update('Target')
 	end
 	
 	-- Scrolling Combat Text Component

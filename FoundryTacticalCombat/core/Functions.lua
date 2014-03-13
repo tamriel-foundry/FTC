@@ -83,7 +83,7 @@ function FTC:ToggleVisibility( eventCode , isHidden )
 		FTC_CombatTextIn:SetHidden( isHidden )
 	end
 	
-	if( FTC.init.Buffs) then
+	if( FTC.Buffs.init ) then
 		FTC_PlayerBuffs:SetHidden( isHidden )
 		FTC_TargetBuffs:SetHidden( isHidden )
 	end
@@ -109,7 +109,7 @@ function FTC:UpdateTarget()
 	if( FTC.Frames.init ) then 
 		FTC_TargetFrame:SetHidden( ignore )
 	end
-	if( FTC.init.Buffs ) then
+	if( FTC.Buffs.init ) then
 		FTC_TargetBuffs:SetHidden( ignore )
 		FTC_TargetDebuffs:SetHidden( ignore )
 	end

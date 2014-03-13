@@ -8,11 +8,14 @@ core/Functions.lua
 core/UI.lua
 core/Events.lua
 
-character/Functions.lua
-character/Controls.lua
-
 buffs/Functions.lua
 buffs/Controls.lua
+
+castbar/Functions.lua
+castbar/Controls.lua
+
+character/Functions.lua
+character/Controls.lua
 
 sct/Functions.lua
 sct/Controls.lua
