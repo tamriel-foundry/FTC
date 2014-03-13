@@ -63,7 +63,7 @@ end
  * Toggles the visibility of add-on elements
  * Called by OnReticleHidden()
  ]]-- 
-function FTC:ToggleVisibility()
+function FTC:ToggleVisibility( eventCode , isHidden )
 
 	-- If we are in "movemode" don't hide windows so the player can drag them
 	if( FTC.movemode ) then
@@ -92,7 +92,6 @@ end
 
 --[[ 
  * Updates the player's target, and initializes several component specific actions.
- * Called by Initialize()
  * Called by OnTargetChanged()
  ]]--
 function FTC:UpdateTarget()
@@ -123,7 +122,7 @@ function FTC:UpdateTarget()
 	FTC.target.vlevel	= GetUnitVeteranRank('reticleover')	
 	
 	-- Setup the new target frame
-	FTC.SetupTargetFrame()
+	FTC.Frames.SetupTarget()
 	
 	-- Get new target buffs
 	if ( FTC.vars.EnableBuffs ) then

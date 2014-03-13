@@ -89,11 +89,11 @@ function FTC.Initialize( eventCode, addOnName )
 	-- Register event listeners
 	FTC:RegisterEvents()
 	
-	-- Update the starting target
-	FTC:UpdateTarget()
-	
 	-- Register the slash command handler
 	SLASH_COMMANDS[FTC.command] = FTC.Slash
+	
+	-- Fire a callback after setup
+	CALLBACK_MANAGER:FireCallbacks("FTC_Ready")
 	
 	-- We don't need the event listener anymore
 	EVENT_MANAGER:UnregisterForEvent(EVENT_ADD_ON_LOADED)

@@ -14,10 +14,12 @@ buffs/Controls.lua
 sct/Functions.lua
 sct/Controls.lua
 
+frames/Functions.lua
+frames/Controls.lua
+
 
 components/Castbar.lua
 components/Character.lua
-components/HUD.lua
 components/Settings.lua
 
 

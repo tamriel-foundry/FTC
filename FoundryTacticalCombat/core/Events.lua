@@ -27,7 +27,14 @@ function FTC:RegisterEvents()
 	EVENT_MANAGER:RegisterForEvent( "FTC" 	, EVENT_VETERAN_POINTS_UPDATE 	, FTC.OnVPUpdate )
 	EVENT_MANAGER:RegisterForEvent( "FTC" 	, EVENT_ALLIANCE_POINT_UPDATE  	, FTC.OnAPUpdate )
 	
+	-- Attribute Changes
+	EVENT_MANAGER:RegisterForEvent( "FTC" 	, EVENT_POWER_UPDATE 			, FTC.OnPowerUpdate )
+	
+	-- Update the starting target after everything is loaded
+	CALLBACK_MANAGER:RegisterCallback( "FTC_Ready" , FTC:UpdateTarget() )
 end
+
+
 
 
 --[[----------------------------------------------------------
@@ -49,10 +56,10 @@ end
  * Runs on the EVENT_RETICLE_HIDDEN_UPDATE listener.
  * This handler fires every time the interface mode is changed from reticle to cursor
  ]]--
-function FTC.OnReticleHidden( eventCode , isHidden )
+function FTC.OnReticleHidden( ... )
 
 	-- Toggle element visibility
-	FTC:ToggleVisibility()
+	FTC:ToggleVisibility( ... )
 	
 end
 
@@ -60,7 +67,11 @@ end
  * Runs on the EVENT_EFFECT_CHANGED listener.
  * This handler fires every time a buff effect on a valid unitTag is changed
  ]]--
-function FTC.OnEffectChanged( eventCode, changeType, effectSlot, effectName, unitTag, beginTime, endTime, stackCount, iconName, buffType, effectType, abilityType, statusEffectType )
+function FTC.OnEffectChanged( ... )
+	
+	-- Grab relevant arguments
+	local params 	= { ... }
+	local unitTag 	= params[5]
 
 	-- Retrieve current buffs if the buffs component is active
 	if ( FTC.init.Buffs ) then 
@@ -117,7 +128,21 @@ function FTC.OnAPUpdate( ... )
 
 	-- Pass alliance points to scrolling combat text component
 	if ( FTC.init.SCT ) then 
-		FTC:NewAP( ... )
+		FTC.SCT:NewAP( ... )
+	end
+
+end
+
+
+--[[ 
+ * Runs on the EVENT_POWER_UPDATE listener.
+ * This handler fires every time a player's attribute changes
+ ]]--
+function FTC.OnPowerUpdate( ... )
+
+	-- Pass updated attributes to unit frames
+	if ( FTC.init.Frames ) then 
+		FTC.Frames:UpdateFrame( ... )
 	end
 
 end

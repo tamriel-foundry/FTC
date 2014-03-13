@@ -3,7 +3,7 @@
 	SCROLLING COMBAT TEXT FUNCTIONS
 	-----------------------------------------------------------
 	* Relevant functions for the scrolling combat text component
-	* Runs during FTC.SCT.Initialize()
+	* Runs during FTC:Initialize()
   ]]--
 
 FTC.SCT = {}
