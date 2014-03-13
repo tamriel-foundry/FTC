@@ -66,6 +66,9 @@ function FTC.Initialize( eventCode, addOnName )
 	-- Unit Frames Component
 	FTC.Frames:Initialize()
 	
+	-- Damage Tracking Component
+	FTC.Damage:Initialize()
+	
 	-- Castbar Component
 	if ( FTC.vars.EnableCastbar ) then FTC.Castbar:Initialize()	end
 	
@@ -119,10 +122,10 @@ function FTC.Update()
 	end
 	
 	-- Scrolling Combat Text Component
-	if ( FTC.init.SCT ) then
-		FTC.UpdateSCT('In')
-		FTC.UpdateSCT('Out')
-		FTC.UpdateSCT('Stat')
+	if ( FTC.SCT.init ) then
+		FTC.SCT:Update('In')
+		FTC.SCT:Update('Out')
+		FTC.SCT:Update('Stat')
 	end
 end
 

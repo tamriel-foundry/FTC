@@ -73,8 +73,8 @@ function FTC.InitializeSettings()
 	--[[----------------------------------------------------------
 		Scrolling Combat Text Section
 	]]-----------------------------------------------------------
-	SW.SCT = FTC.UI.Control( "FTC_Settings_SCT" , SW , {SW:GetWidth() - 100 , FTC.init.SCT and 100 or 0} , {TOPLEFT,BOTTOMLEFT,0,10,SW.components} , false )
-	if ( FTC.init.SCT ) then
+	SW.SCT = FTC.UI.Control( "FTC_Settings_SCT" , SW , {SW:GetWidth() - 100 , FTC.SCT.init and 100 or 0} , {TOPLEFT,BOTTOMLEFT,0,10,SW.components} , false )
+	if ( FTC.SCT.init ) then
 		SW.SCT.header 	= FTC.UI.Label( "FTC_Settings_SCTHeader" , SW.SCT , {SW.SCT:GetWidth() , 30} , {TOP,TOP,0,0} , "ZoFontHeader2" , nil , {0,0} , false )
 		SW.SCT.header:SetText("Scrolling Combat Text Settings")
 		

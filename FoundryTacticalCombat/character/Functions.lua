@@ -162,7 +162,7 @@ end
  * Toggles the display of the character sheet
  * Called by hotkey activation
  ]]--
-function FTC.DisplayCharSheet()
+function FTC.Character:DisplaySheet()
 
 	-- Get the current visibility
 	local isHidden = FTC_CharSheet:IsHidden()

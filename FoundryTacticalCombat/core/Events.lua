@@ -83,14 +83,36 @@ end
  * Runs on the EVENT_COMBAT_EVENT listener.
  * This handler fires every time a combat effect is registered on a valid unitTag
  ]]--
-function FTC.OnCombatEvent( ... )
+function FTC.OnCombatEvent( eventCode , result , isError , abilityName, abilityGraphic, abilityActionSlotType, sourceName, sourceType, targetName, targetType, hitValue, powerType, damageType, log )
 
-	-- Pass damage to scrolling combat text component
-	if ( FTC.init.SCT ) then 
-		FTC.SCT:NewCombat( ... )
-	end
+	-- Verify it's a valid result type
+	if ( not FTC.Damage:Filter( result , abilityName , sourceType , sourceName , targetName , hitValue ) ) then return end
 	
-	-- TODO: Pass damage to damage meter tracking	
+	-- Determine the context
+	local context 	= ( sourceType == 0 ) and "In" or "Out"
+
+	-- Modify the name
+	abilityName = string.gsub ( abilityName , ' %(.*%)' , "" )
+	
+	-- Setup a new damage object
+	local damage = {
+		["name"]	= abilityName,
+		["dam"]		= hitValue,
+		["power"]	= powerType,
+		["type"]	= damageType,
+		["ms"]		= GetGameTimeMilliseconds(),
+		["crit"]	= ( result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_DOT_TICK_CRITICAL ) and true or false,
+		["heal"]	= ( result == ACTION_RESULT_HEAL or result == ACTION_RESULT_HOT_TICK ) and true or false,
+		["blocked"]	= ( result == ACTION_RESULT_BLOCKED_DAMAGE ) and true or false,
+		["immune"]	= ( result == ACTION_RESULT_IMMUNE ) and true or false,
+		["multi"]	= 1
+	}
+	
+	-- Pass the damage object to SCT if it is enabled
+	if ( FTC.SCT.init ) then FTC.SCT:NewCombat( damage , context ) end
+	
+	-- Pass damage to damage meter tracking
+	if ( FTC.Damage.init ) then	FTC.Damage:UpdateMeter( damage , context ) end
 end
 
 --[[ 
@@ -100,7 +122,7 @@ end
 function FTC.OnXPUpdate( ... )
 
 	-- Pass experience to scrolling combat text component
-	if ( FTC.init.SCT ) then 
+	if ( FTC.SCT.init ) then 
 		FTC.SCT:NewExp( ... )
 	end
 
@@ -113,7 +135,7 @@ end
 function FTC.OnVPUpdate( ... )
 
 	-- Pass experience to scrolling combat text component
-	if ( FTC.init.SCT ) then 
+	if ( FTC.SCT.init ) then 
 		FTC.SCT:NewExp( ... )
 	end
 
@@ -126,7 +148,7 @@ end
 function FTC.OnAPUpdate( ... )
 
 	-- Pass alliance points to scrolling combat text component
-	if ( FTC.init.SCT ) then 
+	if ( FTC.SCT.init ) then 
 		FTC.SCT:NewAP( ... )
 	end
 

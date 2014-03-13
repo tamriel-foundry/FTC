@@ -23,14 +23,9 @@ sct/Controls.lua
 frames/Functions.lua
 frames/Controls.lua
 
-
-components/Castbar.lua
-components/Character.lua
-components/Settings.lua
-
-
 menu/Functions.lua
 menu/Controls.lua
+menu/Settings.lua
 
 FoundryTacticalCombat.xml
 bindings.xml

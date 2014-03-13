@@ -66,7 +66,7 @@ end
 		
 		-- Maybe trigger an alert
 		local prior = ( context == "Player" ) and FTC.character[string.lower(attr.name)].pct or FTC.target[string.lower(attr.name)].pct
-		if ( FTC.init.SCT and prior > 25 and pct < 25 ) then
+		if ( FTC.SCT.init and prior > 25 and pct < 25 ) then
 			
 			-- Get the alert name and type
 			local ignore = false
