@@ -40,7 +40,7 @@ function FTC.Buffs:Controls()
 		for i = 1, FTC.vars.NumBuffs do
 			local buff 		= FTC.UI.Control( "FTC_"..k.."_"..i , v , {40,40} , { anchorPoint , anchorTo , 0, 0, anchor } , false )	
 			buff.backdrop	= FTC.UI.Backdrop( "FTC_"..k.."_"..i.."_Backdrop" , buff , {36,36} , {CENTER,CENTER,0,0} , {0,0,0,1} , { 0,0,0,1 } , false )
-			buff.label 		= FTC.UI.Label( "FTC_"..k.."_"..i.."_Label" , buff , {40,20} , {BOTTOM,BOTTOM,0,0} , "ZoFontWindowSubtitle" , nil , {1,1} , false )
+			buff.label 		= FTC.UI.Label( "FTC_"..k.."_"..i.."_Label" , buff , {40,20} , {BOTTOM,BOTTOM,0,0} , "ZoFontWindowSubtitle" , nil , {1,1} , nil , false )
 			buff.icon		= FTC.UI.Texture( "FTC_"..k.."_"..i.."_Icon" , buff , {34,34} , {CENTER,CENTER,0,0} , '/esoui/art/icons/icon_missing.dds' , false )
 			buff.cooldown	= FTC.UI.Cooldown( "FTC_"..k.."_"..i.."_CD" , buff , {38,38} , {CENTER,CENTER,0,0} , ( v == PD or v == TD ) and {1,0,0,0.5} or {0,1,0,0.5} , false )
 

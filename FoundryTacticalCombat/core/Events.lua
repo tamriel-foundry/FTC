@@ -11,26 +11,67 @@
 function FTC:RegisterEvents()
 
 	-- Target Events
-	EVENT_MANAGER:RegisterForEvent( "FTC" 	, EVENT_RETICLE_TARGET_CHANGED  , FTC.OnTargetChanged )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_RETICLE_TARGET_CHANGED  		, FTC.OnTargetChanged )
 	
 	-- Interface Events
-	EVENT_MANAGER:RegisterForEvent( "FTC" 	, EVENT_RETICLE_HIDDEN_UPDATE  	, FTC.OnReticleHidden )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_RETICLE_HIDDEN_UPDATE  		, FTC.OnReticleHidden )
 	
 	-- Buff Events
-	EVENT_MANAGER:RegisterForEvent( "FTC" 	, EVENT_EFFECT_CHANGED 			, FTC.OnEffectChanged )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_EFFECT_CHANGED 				, FTC.OnEffectChanged )
 	
 	-- Combat Events
-	EVENT_MANAGER:RegisterForEvent( "FTC"	, EVENT_COMBAT_EVENT 			, FTC.OnCombatEvent )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_COMBAT_EVENT 					, FTC.OnCombatEvent )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_DEATH_STATE_CHANGED		, FTC.OnDeath )
 	
 	-- Experience Events
-	EVENT_MANAGER:RegisterForEvent( "FTC" 	, EVENT_EXPERIENCE_UPDATE 		, FTC.OnXPUpdate )
-	EVENT_MANAGER:RegisterForEvent( "FTC" 	, EVENT_VETERAN_POINTS_UPDATE 	, FTC.OnVPUpdate )
-	EVENT_MANAGER:RegisterForEvent( "FTC" 	, EVENT_ALLIANCE_POINT_UPDATE  	, FTC.OnAPUpdate )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_EXPERIENCE_UPDATE 			, FTC.OnXPUpdate )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_VETERAN_POINTS_UPDATE 		, FTC.OnVPUpdate )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ALLIANCE_POINT_UPDATE  		, FTC.OnAPUpdate )
 	
 	-- Attribute Changes
-	EVENT_MANAGER:RegisterForEvent( "FTC" 	, EVENT_POWER_UPDATE 			, FTC.OnPowerUpdate )
-	EVENT_MANAGER:RegisterForEvent( "FTC" 	, EVENT_STATS_UPDATED 			, FTC.OnStatsUpdated )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_POWER_UPDATE 					, FTC.OnPowerUpdate )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_STATS_UPDATED 				, FTC.OnStatsUpdated )
 	
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED 	, function( d('shield added' ) ) ) 
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_REMOVED , function( d('shield removed' ) ) )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_UPDATED , function( d('shield updated' ) ) )
+	
+	-- Mount Events
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_MOUNTED_STATE_CHANGED			, FTC.OnMount )
+	
+end
+
+--[[ 
+ * Unregisters event listeners that are no longer needed due to FTC overrides
+ * Runs during FTC:Initialize()
+ ]]--
+function FTC:UnregisterEvents()
+
+	-- We no longer need to initialize
+	EVENT_MANAGER:UnregisterForEvent( "FTC" , EVENT_ADD_ON_LOADED )
+
+	--[[ Unhook events for default player frames
+	if ( FTC.Frames.init ) then 
+		ZO_PlayerAttributeMagicka:UnregisterForEvent(EVENT_POWER_UPDATE)
+		ZO_PlayerAttributeMagicka:UnregisterForEvent(EVENT_INTERFACE_SETTING_CHANGED)
+		ZO_PlayerAttributeMagicka:UnregisterForEvent(EVENT_PLAYER_ACTIVATED)
+		EVENT_MANAGER:UnregisterForUpdate("ZO_PlayerAttributeMagickaFadeUpdate")
+		ZO_PlayerAttributeMagicka:SetHidden(true)
+		
+		ZO_PlayerAttributeStamina:UnregisterForEvent(EVENT_POWER_UPDATE)
+		ZO_PlayerAttributeStamina:UnregisterForEvent(EVENT_INTERFACE_SETTING_CHANGED)
+		ZO_PlayerAttributeStamina:UnregisterForEvent(EVENT_PLAYER_ACTIVATED)
+		EVENT_MANAGER:UnregisterForUpdate("ZO_PlayerAttributeStaminaFadeUpdate")
+		ZO_PlayerAttributeStamina:SetHidden(true)
+		
+		ZO_PlayerAttributeHealth:UnregisterForEvent(EVENT_POWER_UPDATE)
+		ZO_PlayerAttributeHealth:UnregisterForEvent(EVENT_INTERFACE_SETTING_CHANGED)
+		ZO_PlayerAttributeHealth:UnregisterForEvent(EVENT_PLAYER_ACTIVATED)
+		EVENT_MANAGER:UnregisterForUpdate("ZO_PlayerAttributeHealthFadeUpdate")
+		ZO_PlayerAttributeHealth:SetHidden(true)
+	end
+	]]--
+
 end
 
 
@@ -115,6 +156,24 @@ function FTC.OnCombatEvent( eventCode , result , isError , abilityName, abilityG
 	if ( FTC.Damage.init ) then	FTC.Damage:UpdateMeter( damage , context ) end
 end
 
+
+--[[ 
+ * Runs on the EVENT_UNIT_DEATH_STATE_CHANGED listener.
+ * This handler fires every time a valid unitTag dies or is resurrected
+ ]]--
+function FTC.OnDeath( ... )
+	
+	-- Do stuff to the player frame
+	
+	-- Do stuff to the target frame
+	
+	-- Display killspam alerts
+	
+	d( 'something died!' )
+	
+end
+
+
 --[[ 
  * Runs on the EVENT_EXPERIENCE_UPDATE listener.
  * This handler fires every time the player earns experience
@@ -177,6 +236,19 @@ function FTC.OnStatsUpdated( ... )
 	-- Pass updated attributes to unit frames
 	if ( FTC.Character.init ) then 
 		FTC.Character:Update( ... )
+	end
+
+end
+
+--[[ 
+ * Runs on the EVENT_MOUNTED_STATE_CHANGED listener.
+ * This handler fires every time the player has a change to a derived stat
+ ]]--
+function FTC.OnMount( ... )
+
+	-- Display the custom horse stamina bar
+	if ( FTC.Frames.init ) then 
+		FTC.Frames:DisplayMount()
 	end
 
 end

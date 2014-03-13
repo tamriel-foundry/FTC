@@ -37,7 +37,7 @@ function FTC.SCT:Controls()
 			align = ( context == "Stat" ) and 1 or align
 			
 			-- Create the SCT label
-			local sctLabel = FTC.UI.Label( "FTC_SCT"..types[t]..i , parent , { parent:GetWidth() , 30 } , {BOTTOM,BOTTOM,0,offsety} , "ZoFontHeader2", nil , {align,1} , false )					
+			local sctLabel = FTC.UI.Label( "FTC_SCT"..types[t]..i , parent , { parent:GetWidth() , 30 } , {BOTTOM,BOTTOM,0,offsety} , "ZoFontHeader2", nil , {align,1} , nil , false )					
 		end	
 	end
 	

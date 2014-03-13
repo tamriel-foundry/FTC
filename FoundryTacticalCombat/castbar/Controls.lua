@@ -19,7 +19,7 @@ function FTC.Castbar:Controls()
 		local CB 	= FTC.UI.TopLevelWindow( "FTC_"..k.."Castbar" , parent , {parent:GetWidth(),24} , {BOTTOMLEFT,TOPLEFT,0,-25} , false )	
 		CB.backdrop = FTC.UI.Backdrop( "FTC_"..k.."CastbarBackdrop" , CB , "inherit" , {CENTER,CENTER,0,0} , nil , nil , false )		
 		CB.bar 		= FTC.UI.Statusbar( "FTC_"..k.."CastbarBar" , CB , { CB:GetWidth() - 8 , 16 } , {LEFT,LEFT,4,0} , nil , false )		
-		CB.label 	= FTC.UI.Label( "FTC_"..k.."CastbarLabel" , CB , "inherit" , {CENTER,CENTER,0,0} , "ZoFontAnnounceSmall" , nil , {1,1} , false )
+		CB.label 	= FTC.UI.Label( "FTC_"..k.."CastbarLabel" , CB , "inherit" , {CENTER,CENTER,0,0} , "ZoFontAnnounceSmall" , nil , {1,1} , nil , false )
 	end
 	
 	-- Modify the bar position if HUD isnt enabled

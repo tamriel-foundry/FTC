@@ -32,22 +32,19 @@ function FTC.InitializeSettings()
 	-- Create settings container
 	local SW 	= FTC.UI.TopLevelWindow( "FTC_Settings" 	, GuiRoot , {500,540} , {CENTER,CENTER,0,0} , true )	
 	SW.backdrop = FTC.UI.Backdrop( "FTC_SettingsBackdrop" 	, SW , "inherit" , {CENTER,CENTER,0,0} , nil , nil , false )
-	SW.title 	= FTC.UI.Label( "FTC_SettingsTitle" 		, SW , {SW:GetWidth() - 100 , 25} , {TOP,TOP,0,10} , "ZoFontWindowTitle" , nil , {1,0} , false )
-	SW.title:SetText("FTC Version " .. string.format( "%.2f" , FTC.version ) )
+	SW.title 	= FTC.UI.Label( "FTC_SettingsTitle" 		, SW , {SW:GetWidth() - 100 , 25} , {TOP,TOP,0,10} , "ZoFontWindowTitle" , nil , {1,0} , "FTC Version " .. string.format( "%.2f" , FTC.version ) , false )
 	
 	--[[----------------------------------------------------------
 		Mod Components Section
 	]]------------------------------------------------------------
 	SW.components 			= FTC.UI.Control( "FTC_Settings_Components" , SW , {SW:GetWidth() - 100 , 160} , {TOPLEFT,BOTTOMLEFT,0,20,SW.title} , false )
-	SW.components.header 	= FTC.UI.Label( "FTC_Settings_ComponentsHeader" , SW.components , {SW.components:GetWidth() , 30} , {TOP,TOP,0,0} , "ZoFontHeader2" , nil , {0,1} , false )
-	SW.components.header:SetText("Enable/Disable Components")
+	SW.components.header 	= FTC.UI.Label( "FTC_Settings_ComponentsHeader" , SW.components , {SW.components:GetWidth() , 30} , {TOP,TOP,0,0} , "ZoFontHeader2" , nil , {0,1} , "Enable/Disable Components" , false )
 	
 	-- Component labels
 	SW.components.labels = {}
 	local anchor = SW.components.header
 	for k,v in pairs(FTC.settings) do
-		SW.components.labels[k]	= FTC.UI.Label( "FTC_Settings_Component"..k	, SW.components , {SW.components:GetWidth() * 0.6 , 30 } , {TOPLEFT,BOTTOMLEFT,0,0,anchor} , "ZoFontGame" , nil , {0,1} , false )
-		SW.components.labels[k]:SetText(v['name'])
+		SW.components.labels[k]	= FTC.UI.Label( "FTC_Settings_Component"..k	, SW.components , {SW.components:GetWidth() * 0.6 , 30 } , {TOPLEFT,BOTTOMLEFT,0,0,anchor} , "ZoFontGame" , nil , {0,1} , v['name'] , false )
 		anchor = SW.components.labels[k]
 	end
 	
@@ -75,8 +72,7 @@ function FTC.InitializeSettings()
 	]]-----------------------------------------------------------
 	SW.SCT = FTC.UI.Control( "FTC_Settings_SCT" , SW , {SW:GetWidth() - 100 , FTC.SCT.init and 100 or 0} , {TOPLEFT,BOTTOMLEFT,0,10,SW.components} , false )
 	if ( FTC.SCT.init ) then
-		SW.SCT.header 	= FTC.UI.Label( "FTC_Settings_SCTHeader" , SW.SCT , {SW.SCT:GetWidth() , 30} , {TOP,TOP,0,0} , "ZoFontHeader2" , nil , {0,0} , false )
-		SW.SCT.header:SetText("Scrolling Combat Text Settings")
+		SW.SCT.header 	= FTC.UI.Label( "FTC_Settings_SCTHeader" , SW.SCT , {SW.SCT:GetWidth() , 30} , {TOP,TOP,0,0} , "ZoFontHeader2" , nil , {0,0} , "Scrolling Combat Text Settings" , false )
 		
 		-- Scroll Speed
 		local tex = "/esoui/art/miscellaneous/scrollbox_elevator.dds"
@@ -94,13 +90,11 @@ function FTC.InitializeSettings()
 			end)
 		.__END
 		SW.SCT.speed.bg 		= FTC.UI.Backdrop( "FTC_Settings_SCT_SpeedBG" , SW.SCT.speed , "inherit" , {CENTER,CENTER,0,0} , nil , nil , false )
-		SW.SCT.speed.label		= FTC.UI.Label( "FTC_Settings_SCT_SpeedLabel" , SW.SCT.speed , {SW.SCT:GetWidth()*0.6,30} , {TOPLEFT,BOTTOMLEFT,0,0,SW.SCT.header} , "ZoFontGame" , nil , {0,1} , false )
-		SW.SCT.speed.label:SetText("Scroll Speed ["..FTC.vars.SCTSpeed.."]")
+		SW.SCT.speed.label		= FTC.UI.Label( "FTC_Settings_SCT_SpeedLabel" , SW.SCT.speed , {SW.SCT:GetWidth()*0.6,30} , {TOPLEFT,BOTTOMLEFT,0,0,SW.SCT.header} , "ZoFontGame" , nil , {0,1} , "Scroll Speed ["..FTC.vars.SCTSpeed.."]" , false )
 		
 		-- Ability Names
 		SW.SCT.names = {}
-		SW.SCT.names.label 		= FTC.UI.Label( "FTC_Settings_SCT_NamesLabel" , SW.SCT , {SW.SCT:GetWidth()*0.6,30} , {TOPLEFT,BOTTOMLEFT,0,0,SW.SCT.speed.label} , "ZoFontGame" , nil , {0,1} , false )
-		SW.SCT.names.label:SetText("Display Ability Names")
+		SW.SCT.names.label 		= FTC.UI.Label( "FTC_Settings_SCT_NamesLabel" , SW.SCT , {SW.SCT:GetWidth()*0.6,30} , {TOPLEFT,BOTTOMLEFT,0,0,SW.SCT.speed.label} , "ZoFontGame" , nil , {0,1} , "Display Ability Names" , false )
 		
 		SW.SCT.names.toggle 	= FTC.UI.Button( "FTC_Settings_SCT_NamesToggle" , SW.SCT , {SW.SCT:GetWidth()*0.4,30} , {TOPRIGHT,BOTTOMRIGHT,0,0,SW.SCT.speed} ,  BSTATE_NORMAL , "ZoFontGame" , {2,1} , {0.6,0,0,1} , {0,0.6,0,1} , {0.8,0.4,0,1} , false )
 		SW.SCT.names.toggle:SetHandler( "OnClicked" , function(self) FTC.ToggleComponent( self,'SCT','SCTNames' ) end )
@@ -113,13 +107,11 @@ function FTC.InitializeSettings()
 	]]-----------------------------------------------------------
 	SW.frames = FTC.UI.Control( "FTC_Settings_Frames" , SW , {SW:GetWidth() - 100 , FTC.Frames.init and 100 or 0} , {TOPLEFT,BOTTOMLEFT,0,10,SW.SCT} , false )
 	if ( FTC.Frames.init ) then
-		SW.frames.header 		= FTC.UI.Label( "FTC_Settings_FramesHeader" , SW.frames , {SW.frames:GetWidth() , 30} , {TOP,TOP,0,0} , "ZoFontHeader2" , nil , {0,0} , false )
-		SW.frames.header:SetText("Unit Frames Settings")
+		SW.frames.header 		= FTC.UI.Label( "FTC_Settings_FramesHeader" , SW.frames , {SW.frames:GetWidth() , 30} , {TOP,TOP,0,0} , "ZoFontHeader2" , nil , {0,0} , "Unit Frames Settings" , false )
 		
 		-- Move Frames
 		SW.frames.move = {}
-		SW.frames.move.label 	= FTC.UI.Label( "FTC_Settings_Frames_MoveLabel" , SW.frames , {SW.frames:GetWidth()*0.6,30} , {TOPLEFT,BOTTOMLEFT,0,0,SW.frames.header} , "ZoFontGame" , nil , {0,1} , false )
-		SW.frames.move.label:SetText("Adjust Frame Position")
+		SW.frames.move.label 	= FTC.UI.Label( "FTC_Settings_Frames_MoveLabel" , SW.frames , {SW.frames:GetWidth()*0.6,30} , {TOPLEFT,BOTTOMLEFT,0,0,SW.frames.header} , "ZoFontGame" , nil , {0,1} , "Adjust Frame Position" , false )
 		SW.frames.move.toggle 	= FTC.UI.Button( "FTC_Settings_Frames_MoveToggle" , SW.frames , {SW.frames:GetWidth()*0.4,30} , {TOPRIGHT,BOTTOMRIGHT,0,0,SW.frames.header} ,  BSTATE_PRESSED , "ZoFontGame" , {2,1} , {0.6,0,0,1} , {0,0.6,0,1} , {0.8,0.4,0,1} , false )
 		SW.frames.move.toggle:SetHandler( "OnClicked" , function(self) FTC.MoveFrames(self) end )
 		SW.frames.move.toggle:SetText( "Unlock Positions" )

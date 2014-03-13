@@ -79,17 +79,17 @@ end
 --[[ 
  * Label
  ]]-- 
-function FTC.UI.Label( name , parent , dims , anchor , font , color , align , hidden )
+function FTC.UI.Label( name , parent , dims , anchor , font , color , align , text , hidden )
 	
 	-- Validate arguments
 	if ( name == nil or name == "" ) then return end
 	parent = ( parent == nil ) and GuiRoot or parent
 	if ( dims == "inherit" or #dims ~= 2 ) then dims = { parent:GetWidth() , parent:GetHeight() } end
 	if ( #anchor ~= 4 and #anchor ~= 5 ) then return end
-	font = ( font == nil ) and "ZoFontGame" or font
-	color = ( color ~= nil and #color == 4 ) and color or { 1 , 1 , 1 , 1 }
-	align = ( align ~= nil and #align == 2 ) and align or { 1 , 1 }
-	hidden = ( hidden == nil ) and false or hidden
+	font 	= ( font == nil ) and "ZoFontGame" or font
+	color 	= ( color ~= nil and #color == 4 ) and color or { 1 , 1 , 1 , 1 }
+	align 	= ( align ~= nil and #align == 2 ) and align or { 1 , 1 }
+	hidden 	= ( hidden == nil ) and false or hidden
 	
 	-- Create the label
 	local label = FTC.Chain( WINDOW_MANAGER:CreateControl( name , parent , CT_LABEL ) )
@@ -99,6 +99,7 @@ function FTC.UI.Label( name , parent , dims , anchor , font , color , align , hi
 		:SetColor( color[1] , color[2] , color[3] , color[4] )
 		:SetHorizontalAlignment( align[1] )
 		:SetVerticalAlignment( align[2] )
+		:SetText( text )
 	.__END
 	return label
 end

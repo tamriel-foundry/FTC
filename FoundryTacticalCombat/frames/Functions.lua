@@ -160,6 +160,10 @@ end
 		
 		-- Create a tooltip
 		FTC_UltimateTracker:SetText( powerValue .. "\r\n" .. pct .. "%")	
+	
+	-- Mount stamina
+	elseif ( powerType == POWERTYPE_MOUNT_STAMINA ) then
+		d( 'mount stamina changed!' )
 	end
  end
  
@@ -201,6 +205,17 @@ end
 	end
 	FTC_TargetFrameName:SetText(name)
 	FTC_TargetFrameLevel:SetText(FTC.target.vlevel > 0 and FTC.target.class .. "  v" .. FTC.target.vlevel or FTC.target.class .. "  " .. FTC.target.level)
+end
+
+
+--[[ 
+ * Toggles display of the mount stamina bar
+ * Called by OnMount()
+ ]]--
+function FTC.Frames:DisplayMount( eventCode , isMounted )
+
+	-- Toggle display of the mount bar
+
 end
 
 

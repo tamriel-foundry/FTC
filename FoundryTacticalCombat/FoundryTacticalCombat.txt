@@ -17,6 +17,9 @@ castbar/Controls.lua
 character/Functions.lua
 character/Controls.lua
 
+damage/Functions.lua
+damage/Controls.lua
+
 sct/Functions.lua
 sct/Controls.lua
 
