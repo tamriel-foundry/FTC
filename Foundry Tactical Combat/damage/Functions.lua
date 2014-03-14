@@ -44,12 +44,15 @@ end
  * Process new combat events passed from the combat event handler
  * Called by OnCombatEvent()
  ]]--
-function FTC.Damage:UpdateMeter( damage , context )
+function FTC.Damage:UpdateMeter( newDamage , context )
 
 	-- Retrieve the data
 	local meter 	= FTC.Damage.Meter
-	local damage	= damage.dam
-	local name		= damage.name
+	local damage	= newDamage.dam
+	local name		= newDamage.name
+	local gametime 	= newDamage.ms
+	local heal		= newDamage.heal
+	local target	= newDamage.target
 	
 	-- If the meter has been inactive for over 5 seconds, restart the timer
 	if ( meter == nil ) then
@@ -98,7 +101,7 @@ function FTC.Damage:UpdateMeter( damage , context )
 	end
 	
 	-- Stamp the time
-	meter.endTime = damage.ms
+	meter.endTime = gametime
 	
 	-- Send data back to the FTC object
 	FTC.Damage.Meter = meter	
@@ -206,10 +209,10 @@ function FTC.Damage:Filter( result , abilityName , sourceType , sourceName , tar
 	if ( hitValue == 0 ) then return false
 	
 	-- Only count damage related to the player
-	elseif ( string.match( targetName , FTC.character.nicename ) == nil and string.match( sourceName , FTC.character.nicename ) == nil ) then return false
+	elseif ( string.match( targetName , FTC.Character.nicename ) == nil and string.match( sourceName , FTC.Character.nicename ) == nil ) then return false
 		
 	-- Ignore Self-Harm
-	elseif ( sourceType == 1 ) and ( string.match( targetName , FTC.character.nicename ) ~= nil ) and ( result ~= ACTION_RESULT_HEAL and result ~= ACTION_RESULT_HOT_TICK ) then return false
+	elseif ( sourceType == 1 ) and ( string.match( targetName , FTC.Character.nicename ) ~= nil ) and ( result ~= ACTION_RESULT_HEAL and result ~= ACTION_RESULT_HOT_TICK ) then return false
 
 	-- Direct Damage
 	elseif ( result == ACTION_RESULT_DAMAGE or result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_BLOCKED_DAMAGE or result == ACTION_RESULT_FALL_DAMAGE ) then return true

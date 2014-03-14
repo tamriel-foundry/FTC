@@ -116,10 +116,10 @@ function FTC:UpdateTarget()
 	if ( ignore ) then return end
 	
 	-- Update the saved target
-	FTC.target.name		= target
-	FTC.target.class	= GetUnitClass('reticleover')
-	FTC.target.level	= GetUnitLevel('reticleover')
-	FTC.target.vlevel	= GetUnitVeteranRank('reticleover')	
+	FTC.Target.name		= target
+	FTC.Target.class	= GetUnitClass('reticleover')
+	FTC.Target.level	= GetUnitLevel('reticleover')
+	FTC.Target.vlevel	= GetUnitVeteranRank('reticleover')	
 	
 	-- Setup the new target frame
 	FTC.Frames.SetupTarget()
@@ -162,6 +162,7 @@ function FTC:IsCritter( targetName )
 		"Fleshflies",
 		"Centipede",
 		"Chicken",
+		"Torchbug",
 	}
 	
 	-- Is the target a critter?

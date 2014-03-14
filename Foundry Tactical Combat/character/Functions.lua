@@ -43,7 +43,7 @@ function FTC.Character:Initialize()
 	FTC.Character:Controls()
 	
 	-- Populate the character sheet
-	FTC.UpdateCharSheet( nil , 'player' )
+	FTC.Character:Update( nil , 'player' )
 	
 	-- Register Keybinding
 	ZO_CreateStringId("SI_BINDING_NAME_DISPLAY_CHARACTER_SHEET", "Display Character Sheet")
@@ -85,7 +85,7 @@ end
  * Updates the character sheet and character attributes
  * Called by OnStatsUpdated()
  ]]--
-FTC.Character:Update( eventCode , unitTag )
+function FTC.Character:Update( eventCode , unitTag )
 
 	-- Make sure we're targetting the player
 	if ( "player" ~= unitTag ) then return end
@@ -147,15 +147,14 @@ FTC.Character:Update( eventCode , unitTag )
 	end
 	
 	-- Experience
-	if ( FTC.character.vlevel < 10 ) then 
-		local maxExp	= ( FTC.character.level == 50 ) and GetUnitVeteranPointsMax('player') or GetUnitXPMax('player')
-		local currExp	= ( FTC.character.level == 50 ) and FTC.character.vet or FTC.character.exp
+	if ( FTC.Character.vlevel < 10 ) then 
+		local maxExp	= ( FTC.Character.level == 50 ) and GetUnitVeteranPointsMax('player') or GetUnitXPMax('player')
+		local currExp	= ( FTC.Character.level == 50 ) and FTC.Character.vet or FTC.Character.exp
 		local pct		= math.floor( 100 * ( currExp / maxExp ) )
 		local xpLabel 	= currExp .. "/" .. maxExp .. " (" .. pct .. "%)"
 		FTC_CharSheet_ExpLabel:SetText(xpLabel)
 		FTC_CharSheet_ExpBar:SetWidth( ( pct / 100 ) * FTC_CharSheet_Exp:GetWidth() )
 	end
-	
 end
 
   --[[ 
@@ -166,11 +165,11 @@ function FTC.Character:DisplaySheet()
 
 	-- Get the current visibility
 	local isHidden = FTC_CharSheet:IsHidden()
-
-	-- Maybe update the sheet
-	if isHidden then FTC.Character:Update( nil , 'player' ) end
 	
 	-- Switch the visible elements
 	FTC_DamageMeter:SetHidden( true )
 	FTC_CharSheet:SetHidden( not isHidden )
+	
+	-- Maybe update the sheet
+	if isHidden then FTC.Character:Update( nil , 'player' ) end
 end

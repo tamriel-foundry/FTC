@@ -25,10 +25,10 @@ FTC.version				= 0.15
 
 -- Default Saved Variables
 FTC.defaults			= {
-	["EnableBuffs"] 	= false,
-	["EnableCastbar"] 	= false,
-	["EnableSCT"] 		= false,
-	["EnableFrames"] 	= false,
+	["EnableBuffs"] 	= true,
+	["EnableCastbar"] 	= true,
+	["EnableSCT"] 		= true,
+	["EnableFrames"] 	= true,
 	["SCTSpeed"]		= 3,
 	["SCTNames"]		= true,
 	["NumBuffs"]		= 12,
@@ -58,11 +58,13 @@ function FTC.Initialize( eventCode, addOnName )
 	if ( addOnName ~= FTC.name ) then return end
 	
 	-- Load saved variables
-	FTC.vars = ZO_SavedVars:New( "FTCvars" , math.floor( FTC.version * 100 ) , nil , FTC.defaults , nil )
+	--FTC.vars = ZO_SavedVars:New( "FTCvars" , math.floor( FTC.version * 100 ) , nil , FTC.defaults , nil )
+	FTC.vars = FTC.defaults
 	
 	-- Setup Character Information
 	FTC.Character:Initialize()
-	
+	FTC.Target:Initialize()
+
 	-- Unit Frames Component
 	FTC.Frames:Initialize()
 	
@@ -74,7 +76,7 @@ function FTC.Initialize( eventCode, addOnName )
 	
 	-- Active Buffs Component
 	if ( FTC.vars.EnableBuffs ) then FTC.Buffs:Initialize() end
-	
+
 	-- Scrolling Combat Text Component
 	if ( FTC.vars.EnableSCT ) then FTC.SCT:Initialize()	end
 	
@@ -108,12 +110,12 @@ EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ADD_ON_LOADED , FTC.Initialize )
  * Updatating function
  * Runs every frame, delegates updating responsibilities to various active components
  ]]-- 
-function FTC.Update()
+function FTC:Update()
 
 	-- Active Buffs Component
 	if ( FTC.Buffs.init ) then
-		FTC.Buffs:UpdateBuffs('Player')
-		FTC.Buffs:UpdateBuffs('Target')
+		FTC.Buffs:UpdateBuffs( 'Player' )
+		FTC.Buffs:UpdateBuffs( 'Target' )
 	end
 	
 	-- Castbar Component
@@ -128,6 +130,7 @@ function FTC.Update()
 		FTC.SCT:Update('Out')
 		FTC.SCT:Update('Stat')
 	end
+
 end
 
 --[[----------------------------------------------------------

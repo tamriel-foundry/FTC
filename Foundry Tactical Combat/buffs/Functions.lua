@@ -103,7 +103,7 @@ end
  * Argument "context" takes {Player,Target}
  * Runs every frame OnUpdate
  ]]--
-function FTC.Buffs.UpdateBuffs( context )
+function FTC.Buffs:UpdateBuffs( context )
 
 	-- Get the buff container
 	local parentBuffs 	= _G["FTC_" .. context .. "Buffs"]

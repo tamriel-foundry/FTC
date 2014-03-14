@@ -10,7 +10,7 @@
 			<Dimensions x="960" y="540" />
 			<Anchor point="CENTER" />
             <OnUpdate>
-				FTC.Update()
+				FTC:Update()
             </OnUpdate>
         </TopLevelControl>
 	</Controls>

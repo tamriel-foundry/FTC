@@ -54,10 +54,22 @@ function FTC.Frames:Controls()
 	
 	-- Create the mount stamina bar
 	local player		= _G["FTC_PlayerFrame"]
-	local mount			= FTC.UI.Control( "FTC_MountFrame" , player , { player:GetWidth() , 20 } , {TOP,BOTTOM,0,0} , false )
-	mount.bar			= FTC.UI.Statusbar( "FTC_MountFrame_Bar" , mount , 'inherit' , {CENTER,CENTER,0,0} , {1,1,1,1} , false )
-	mount.label			= FTC.UI.Label( "FTC_MountFrame_Label" , mount , 'inherit' , {CENTER,CENTER,0,0} , "ZoFontAnnounceSmall" , nil , {1,1} , "mount" , false )
+	local mount			= FTC.UI.Control( "FTC_MountFrame" , player , { player:GetWidth() , 20 } , {TOP,BOTTOM,0,0} , true )
+	mount.icon 			= FTC.UI.Texture( "FTC_MountFrame_Icon" , mount , {24,24} , {LEFT,LEFT,4,2} , "/esoui/art/mounts/tabicon_mounts_down.dds" , false )
+	mount.backdrop		= FTC.UI.Backdrop( "FTC_MountFrame_Backdrop" , mount , { mount:GetWidth() - 30 , 10 } , {RIGHT,RIGHT,0,0} , nil , nil , false )	
+	mount.bar			= FTC.UI.Statusbar( "FTC_MountFrame_Bar" , mount.backdrop , { mount.backdrop:GetWidth() - 4 , mount.backdrop:GetHeight() - 4 } , {LEFT,LEFT,2,0} , {1,1,1,1} , false )
 	local r1,g1,b1 		= ZO_POWER_BAR_GRADIENT_COLORS[POWERTYPE_STAMINA][1]:UnpackRGBA()
 	local r2,g2,b2 		= ZO_POWER_BAR_GRADIENT_COLORS[POWERTYPE_STAMINA][2]:UnpackRGBA()
 	mount.bar:SetGradientColors(r1, g1, b1, 1, r2, g2, b2, 1)
+	
+	-- Create target of target
+	local target		= _G["FTC_TargetFrame"]
+	local tartar		= FTC.UI.Control( "FTC_TarTarFrame" , target , { target:GetWidth() , 20 } , {TOP,BOTTOM,0,0} , false )
+	tartar.backdrop		= FTC.UI.Backdrop( "FTC_TarTarFrame_Backdrop" , tartar , { tartar:GetWidth() , 10 } , {RIGHT,RIGHT,0,0} , nil , nil , false )	
+	tartar.bar			= FTC.UI.Statusbar( "FTC_TarTarFrame_Bar" , tartar.backdrop , { tartar.backdrop:GetWidth() - 4 , tartar.backdrop:GetHeight() - 4 } , {LEFT,LEFT,2,0} , {1,1,1,1} , false )
+	local r1,g1,b1 		= ZO_POWER_BAR_GRADIENT_COLORS[POWERTYPE_HEALTH][1]:UnpackRGBA()
+	local r2,g2,b2 		= ZO_POWER_BAR_GRADIENT_COLORS[POWERTYPE_HEALTH][2]:UnpackRGBA()
+	tartar.bar:SetGradientColors(r1, g1, b1, 1, r2, g2, b2, 1)
+	tartar.name			= FTC.UI.Label( "FTC_TarTarFrame_Name" , tartar , { tartar:GetWidth() - 20 , 20 } , {CENTER,CENTER,0,0} , "ZoFontBoss" , nil , {0,1} , "Name" , false )
+	tartar.pct			= FTC.UI.Label( "FTC_TarTarFrame_Pct" , tartar , { tartar:GetWidth() - 20 , 20 } , {CENTER,CENTER,0,0} , "ZoFontBoss" , nil , {2,1} , "Pct" , false )
 end

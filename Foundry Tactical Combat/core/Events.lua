@@ -32,13 +32,12 @@ function FTC:RegisterEvents()
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_POWER_UPDATE 					, FTC.OnPowerUpdate )
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_STATS_UPDATED 				, FTC.OnStatsUpdated )
 	
-	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED 	, function( d('shield added' ) ) ) 
-	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_REMOVED , function( d('shield removed' ) ) )
-	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_UPDATED , function( d('shield updated' ) ) )
+	--EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED  	, function() d( 'shield added' ) end ) 
+	--EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_REMOVED , function() d( 'shield removed' ) end )
+	--EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_UPDATED , function() d( 'shield updated' ) end )
 	
 	-- Mount Events
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_MOUNTED_STATE_CHANGED			, FTC.OnMount )
-	
 end
 
 --[[ 
@@ -49,28 +48,6 @@ function FTC:UnregisterEvents()
 
 	-- We no longer need to initialize
 	EVENT_MANAGER:UnregisterForEvent( "FTC" , EVENT_ADD_ON_LOADED )
-
-	--[[ Unhook events for default player frames
-	if ( FTC.Frames.init ) then 
-		ZO_PlayerAttributeMagicka:UnregisterForEvent(EVENT_POWER_UPDATE)
-		ZO_PlayerAttributeMagicka:UnregisterForEvent(EVENT_INTERFACE_SETTING_CHANGED)
-		ZO_PlayerAttributeMagicka:UnregisterForEvent(EVENT_PLAYER_ACTIVATED)
-		EVENT_MANAGER:UnregisterForUpdate("ZO_PlayerAttributeMagickaFadeUpdate")
-		ZO_PlayerAttributeMagicka:SetHidden(true)
-		
-		ZO_PlayerAttributeStamina:UnregisterForEvent(EVENT_POWER_UPDATE)
-		ZO_PlayerAttributeStamina:UnregisterForEvent(EVENT_INTERFACE_SETTING_CHANGED)
-		ZO_PlayerAttributeStamina:UnregisterForEvent(EVENT_PLAYER_ACTIVATED)
-		EVENT_MANAGER:UnregisterForUpdate("ZO_PlayerAttributeStaminaFadeUpdate")
-		ZO_PlayerAttributeStamina:SetHidden(true)
-		
-		ZO_PlayerAttributeHealth:UnregisterForEvent(EVENT_POWER_UPDATE)
-		ZO_PlayerAttributeHealth:UnregisterForEvent(EVENT_INTERFACE_SETTING_CHANGED)
-		ZO_PlayerAttributeHealth:UnregisterForEvent(EVENT_PLAYER_ACTIVATED)
-		EVENT_MANAGER:UnregisterForUpdate("ZO_PlayerAttributeHealthFadeUpdate")
-		ZO_PlayerAttributeHealth:SetHidden(true)
-	end
-	]]--
 
 end
 
@@ -137,6 +114,7 @@ function FTC.OnCombatEvent( eventCode , result , isError , abilityName, abilityG
 	
 	-- Setup a new damage object
 	local damage = {
+		["target"]	= targetName,
 		["name"]	= abilityName,
 		["dam"]		= hitValue,
 		["power"]	= powerType,
@@ -218,11 +196,23 @@ end
  * Runs on the EVENT_POWER_UPDATE listener.
  * This handler fires every time a player's attribute changes
  ]]--
-function FTC.OnPowerUpdate( ... )
+function FTC.OnPowerUpdate( eventCode , unitTag, powerIndex, powerType, powerValue, powerMax, powerEffectiveMax )
+	
+	-- Update Health/Stamina/Magicka
+	if ( ( unitTag == 'player' or unitTag == 'reticleover' ) and powerType == POWERTYPE_HEALTH or powerType == POWERTYPE_MAGICKA or powerType == POWERTYPE_STAMINA ) then 
+		FTC.Frames:UpdateFrame( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
+	
+	-- Update Ultimate	
+	elseif ( unitTag == 'player' and powerType == POWERTYPE_ULTIMATE ) then
+		FTC.Frames:UpdateUltimate( powerValue , powerMax , powerEffectiveMax )
+	
+	-- Update Mount Stamina
+	elseif ( FTC.Frames.init and unitTag == 'player' and powerType == POWERTYPE_MOUNT_STAMINA ) then
+		FTC.Frames:UpdateMount( powerValue , powerMax , powerEffectiveMax )
 
-	-- Pass updated attributes to unit frames
-	if ( FTC.Frames.init ) then 
-		FTC.Frames:UpdateFrame( ... )
+	-- Update Target-of-Target Health
+	elseif ( FTC.Frames.init and unitTag == "reticleovertarget" and powerType == POWERTYPE_HEALTH ) then
+		FTC.Frames:UpdateTarTar( powerValue , powerMax , powerEffectiveMax )
 	end
 
 end
@@ -248,7 +238,7 @@ function FTC.OnMount( ... )
 
 	-- Display the custom horse stamina bar
 	if ( FTC.Frames.init ) then 
-		FTC.Frames:DisplayMount()
+		FTC.Frames:DisplayMount( ... )
 	end
 
 end
