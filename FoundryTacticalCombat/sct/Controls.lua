@@ -17,12 +17,13 @@ function FTC.SCT:Controls()
 	local CTS 	= FTC.UI.TopLevelWindow( "FTC_CombatTextStat" 	, GuiRoot , {parent:GetWidth() + 100,500} , {TOP,BOTTOM,0,-250,parent} , false )		
 	
 	-- Iterate over SCT types creating containers
-	local types	= { "In" , "Out" , "Stat" }
+	local types	= FTC.SCTContexts
+	local  maxLabels = FTC.vars.SCTMaxLabels or FTC.defaults.SCTMaxLabels
 	for t = 1, #types do
 		
 		-- Create 10 combat text containers	
 		local parent = _G[ "FTC_CombatText"..types[t] ]
-		for i = 1 , 10 do
+		for i = 1 , maxLabels do
 		
 			-- Alternate offsets and alignments
 			local align = 0

@@ -24,18 +24,22 @@ FTC.command				= "/ftc"
 FTC.version				= 0.15
 
 -- Default Saved Variables
-FTC.defaults			= {
-	["EnableBuffs"] 	= true,
-	["EnableCastbar"] 	= true,
-	["EnableSCT"] 		= true,
-	["EnableFrames"] 	= true,
-	["SCTSpeed"]		= 3,
-	["SCTNames"]		= true,
-	["NumBuffs"]		= 12,
-	["PlayerFrameX"]	= 0,
-	["PlayerFrameY"]	= 0,
-	["TargetFrameX"]	= 0,
-	["TargetFrameY"]	= 0,
+FTC.defaults				= {
+	["EnableBuffs"] 		= true,
+	["EnableCastbar"] 		= true,
+	["EnableSCT"] 			= true,
+	["EnableFrames"] 		= true,
+	["SCTSpeed"]			= 3,
+	["SCTNames"]			= true,
+	["SCTAnimation"]		= "Original",
+	["SCTContextsEnabled"] 	= {"In", "Out", "Stat"},
+	["SCTMaxLabels"]		= 10,
+	["SCTMaxLifespan"]		= 3,
+	["NumBuffs"]			= 12,
+	["PlayerFrameX"]		= 0,
+	["PlayerFrameY"]		= 0,
+	["TargetFrameX"]		= 0,
+	["TargetFrameY"]		= 0,
 	}
 
 -- Component Management
@@ -125,9 +129,7 @@ function FTC:Update()
 	
 	-- Scrolling Combat Text Component
 	if ( FTC.SCT.init ) then
-		FTC.SCT:Update('In')
-		FTC.SCT:Update('Out')
-		FTC.SCT:Update('Stat')
+		FTC.SCT:Update()
 	end
 
 end
