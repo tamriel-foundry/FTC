@@ -3,10 +3,10 @@
 	CHARACTER SHEET CONTROLS
 	-----------------------------------------------------------
 	* Creates UI controls for the character tracking component.
-	* Runs during FTC.Character:Initialize()
+	* Runs during FTC.Player:Initialize()
   ]]--
   
-function FTC.Character:Controls()
+function FTC.Player:Controls()
 
 	-- Setup mini character sheet
 	local CS 	= FTC.UI.TopLevelWindow( "FTC_CharSheet" , GuiRoot , {600,170} , {TOPLEFT,TOPLEFT,5,5} , true )
@@ -31,7 +31,7 @@ function FTC.Character:Controls()
 	end
 	
 	-- Experience Bar
-	if ( FTC.Character.vlevel < 10 ) then 		
+	if ( FTC.Player.vlevel < 10 ) then 		
 		CS.exp 		= FTC.UI.Backdrop( "FTC_CharSheet_Exp" , CS , { CS:GetWidth() - 20 , 20 } , {BOTTOM,BOTTOM,0,-5} , {0,0.2,0.4,1} , {0,0,0,1} , false )
 		CS.bar 		= FTC.UI.Statusbar( "FTC_CharSheet_ExpBar" , CS , { CS.exp:GetWidth() - 4 , 14 } , {LEFT,LEFT,2,0,CS.exp} , {0.4,0.6,0.8,1} , false )	
 		CS.exp.label = FTC.UI.Label( "FTC_CharSheet_ExpLabel" , CS.exp , "inherit" , {CENTER,CENTER,0,-1,CS.exp} , "ZoFontAnnounceSmall" , nil , {1,1} , nil , false )

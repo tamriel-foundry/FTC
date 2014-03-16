@@ -32,9 +32,9 @@ function FTC:RegisterEvents()
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_POWER_UPDATE 					, FTC.OnPowerUpdate )
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_STATS_UPDATED 				, FTC.OnStatsUpdated )
 	
-	--EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED  	, function() d( 'shield added' ) end ) 
-	--EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_REMOVED , function() d( 'shield removed' ) end )
-	--EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_UPDATED , function() d( 'shield updated' ) end )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED  	, FTC.OnVisualAdded ) 
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_REMOVED , FTC.OnVisualRemoved )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_UPDATED , FTC.OnVisualUpdate )
 	
 	-- Mount Events
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_MOUNTED_STATE_CHANGED			, FTC.OnMount )
@@ -147,7 +147,7 @@ function FTC.OnDeath( ... )
 	
 	-- Display killspam alerts
 	
-	d( 'something died!' )
+	--d( 'something died!' )
 	
 end
 
@@ -199,7 +199,7 @@ end
 function FTC.OnPowerUpdate( eventCode , unitTag, powerIndex, powerType, powerValue, powerMax, powerEffectiveMax )
 	
 	-- Update Health/Stamina/Magicka
-	if ( ( unitTag == 'player' or unitTag == 'reticleover' ) and powerType == POWERTYPE_HEALTH or powerType == POWERTYPE_MAGICKA or powerType == POWERTYPE_STAMINA ) then 
+	if ( ( unitTag == 'player' or unitTag == 'reticleover' ) and ( powerType == POWERTYPE_HEALTH or powerType == POWERTYPE_MAGICKA or powerType == POWERTYPE_STAMINA ) ) then 
 		FTC.Frames:UpdateFrame( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
 	
 	-- Update Ultimate	
@@ -224,8 +224,8 @@ end
 function FTC.OnStatsUpdated( ... )
 
 	-- Pass updated attributes to unit frames
-	if ( FTC.Character.init ) then 
-		FTC.Character:Update( ... )
+	if ( FTC.Player.init ) then 
+		FTC.Player:Update( ... )
 	end
 
 end
@@ -241,4 +241,52 @@ function FTC.OnMount( ... )
 		FTC.Frames:DisplayMount( ... )
 	end
 
+end
+
+
+--[[ 
+ * Runs on the EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED listener.
+ * This handler fires every time a damage shield, buff, or other "visual" effect occurs
+ ]]--
+function FTC.OnVisualAdded( eventCode , unitTag, unitAttributeVisual, statType, attributeType, powerType, value, maxValue )
+
+	-- We only care about player and reticletarget
+	if ( unitTag ~= "player" and unitTag ~= "reticleover" ) then return end
+
+	-- Damage Shields
+	if ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH ) then
+		FTC.Frames:UpdateShield( unitTag , value , maxValue )
+	end
+end
+
+
+--[[ 
+ * Runs on the EVENT_UNIT_ATTRIBUTE_VISUAL_UPDATED listener.
+ * This handler fires every time a damage shield, buff, or other "visual" effect occurs
+ ]]--				
+function FTC.OnVisualUpdate( eventCode , unitTag, unitAttributeVisual, statType, attributeType, powerType, oldValue, newValue, oldMaxValue, newMaxValue )
+
+	-- We only care about player and reticletarget
+	if ( unitTag ~= "player" and unitTag ~= "reticleover" ) then return end
+	
+	-- Damage Shields
+	if ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH ) then
+		FTC.Frames:UpdateShield( unitTag , newValue , newMaxValue )
+	end
+end
+
+
+--[[ 
+ * Runs on the EVENT_UNIT_ATTRIBUTE_VISUAL_UPDATED listener.
+ * This handler fires every time a damage shield, buff, or other "visual" effect occurs
+ ]]--				
+function FTC.OnVisualRemoved( eventCode , unitTag, unitAttributeVisual, statType, attributeType, powerType, value, maxValue )
+
+	-- We only care about player and reticletarget
+	if ( unitTag ~= "player" and unitTag ~= "reticleover" ) then return end
+	
+	-- Damage Shields
+	if ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH ) then
+		FTC.Frames:UpdateShield( unitTag , 0 , maxValue )
+	end
 end

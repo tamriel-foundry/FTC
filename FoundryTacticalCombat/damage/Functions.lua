@@ -209,10 +209,10 @@ function FTC.Damage:Filter( result , abilityName , sourceType , sourceName , tar
 	if ( hitValue == 0 ) then return false
 	
 	-- Only count damage related to the player
-	elseif ( string.match( targetName , FTC.Character.nicename ) == nil and string.match( sourceName , FTC.Character.nicename ) == nil ) then return false
+	elseif ( string.match( targetName , FTC.Player.nicename ) == nil and string.match( sourceName , FTC.Player.nicename ) == nil ) then return false
 		
 	-- Ignore Self-Harm
-	elseif ( sourceType == 1 ) and ( string.match( targetName , FTC.Character.nicename ) ~= nil ) and ( result ~= ACTION_RESULT_HEAL and result ~= ACTION_RESULT_HOT_TICK ) then return false
+	elseif ( sourceType == 1 ) and ( string.match( targetName , FTC.Player.nicename ) ~= nil ) and ( result ~= ACTION_RESULT_HEAL and result ~= ACTION_RESULT_HOT_TICK ) then return false
 
 	-- Direct Damage
 	elseif ( result == ACTION_RESULT_DAMAGE or result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_BLOCKED_DAMAGE or result == ACTION_RESULT_FALL_DAMAGE ) then return true

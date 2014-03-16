@@ -2,7 +2,7 @@
   <Layer name="General">
     <Category name="Foundry Tactical Combat">
       <Action name="DISPLAY_CHARACTER_SHEET">
-        <Down>FTC.Character:DisplaySheet()</Down>
+        <Down>FTC.Player:DisplaySheet()</Down>
       </Action>
       <Action name="DISPLAY_DAMAGE_METER">
         <Down>FTC.Damage:DisplayMeter()</Down>

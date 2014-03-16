@@ -37,7 +37,11 @@ function FTC.Frames:Controls()
 			-- Adjust the positioning of the first bar
 			if ( i == 1 ) then stat:SetAnchor(TOP,parent,TOP,0,4) end	
 			parent = stat
-		end	
+		end
+		
+		-- Create damage shield bar
+		local health		= _G["FTC_" .. frames[f] .. "FrameHealth"]
+		local shield		= FTC.UI.Statusbar( "FTC_" .. frames[f] .. "Frame_Shield" , health , { 0 , 4 } , {BOTTOMLEFT,BOTTOMLEFT,1,-3} , {1,0.4,0,1} , false )
 	end
 	
 	-- Create labels for the default frame

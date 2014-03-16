@@ -13,14 +13,14 @@ function FTC.Frames:Initialize()
 	FTC.Frames:Controls()
 
 	-- Populate some information to the player frame
-	FTC_PlayerFrameName:SetText(FTC.Character.name)
-	FTC_PlayerFrameLevel:SetText(FTC.Character.level < 50 and FTC.Character.class .. "  " .. FTC.Character.level or FTC.Character.class .. "  v" .. FTC.Character.vlevel)
+	FTC_PlayerFrameName:SetText(FTC.Player.name)
+	FTC_PlayerFrameLevel:SetText(FTC.Player.level < 50 and FTC.Player.class .. "  " .. FTC.Player.level or FTC.Player.class .. "  v" .. FTC.Player.vlevel)
 	FTC_TargetFrame:SetHidden(true)
 	
 	-- Populate the unit frames
-	FTC.Frames:UpdateFrame( 'player', POWERTYPE_HEALTH	, FTC.Character.health.current	, FTC.Character.health.max	, FTC.Character.health.max )
-	FTC.Frames:UpdateFrame( 'player', POWERTYPE_MAGICKA	, FTC.Character.magicka.current	, FTC.Character.magicka.max	, FTC.Character.magicka.max )
-	FTC.Frames:UpdateFrame( 'player', POWERTYPE_STAMINA	, FTC.Character.stamina.current	, FTC.Character.stamina.max	, FTC.Character.stamina.max )
+	FTC.Frames:UpdateFrame( 'player', POWERTYPE_HEALTH	, FTC.Player.health.current		, FTC.Player.health.max		, FTC.Player.health.max )
+	FTC.Frames:UpdateFrame( 'player', POWERTYPE_MAGICKA	, FTC.Player.magicka.current	, FTC.Player.magicka.max	, FTC.Player.magicka.max )
+	FTC.Frames:UpdateFrame( 'player', POWERTYPE_STAMINA	, FTC.Player.stamina.current	, FTC.Player.stamina.max	, FTC.Player.stamina.max )
 	FTC.Frames:UpdateUltimate( POWERTYPE_ULTIMATE , 0 , 0 , 0 )
 	
 	-- Register init status
@@ -43,7 +43,7 @@ end
 	local context = ( unitTag == 'player' ) and "Player" or "Target"
 
 	-- Bail if it's target magicka or target stamina
-	if ( context == "Target" and ( powerType == POWERTYPE_MAGICKA or powerType == POWERTYPE_STAMINA ) ) then return end
+	if ( not FTC.Frames.init and context == "Target" and ( powerType == POWERTYPE_MAGICKA or powerType == POWERTYPE_STAMINA ) ) then return end
 
 	-- Get the unit frame container
 	local frame = _G["FTC_" .. context .. "Frame"]
@@ -60,7 +60,7 @@ end
 	local pct = math.floor( ( powerValue / powerEffectiveMax ) * 100 )
 	
 	-- Maybe trigger an alert
-	local prior = ( context == "Player" ) and FTC.Character[string.lower(attr.name)].pct or FTC.Target[string.lower(attr.name)].pct
+	local prior = FTC[context][string.lower(attr.name)].pct
 	if ( FTC.vars.EnableSCT and prior > 25 and pct < 25 ) then
 		
 		-- Get the alert name and type
@@ -99,7 +99,6 @@ end
 	local parent	= _G["FTC_" .. context .. "Frame" .. attr.name]
 	local bar		= _G["FTC_" .. context .. "Frame" .. attr.name .. "Bar"]
 	local minLabel 	= _G["FTC_" .. context .. "Frame" .. attr.name .. "Min"]
-	local maxLabel 	= _G["FTC_" .. context .. "Frame" .. attr.name .. "Max"]
 	local pctLabel 	= _G["FTC_" .. context .. "Frame" .. attr.name .. "Pct"]
 	
 	-- Get the default attribute bar
@@ -113,12 +112,12 @@ end
 	bar:SetCenterColor( red , green , blue , 0.5 )
 	
 	-- Update labels
-	minLabel:SetText( ( powerValue > 10000 ) and math.floor( ( powerValue + 500 ) / 1000 ) .. "k" or powerValue  )
+	minLabel:SetText( ( powerValue > 10000 ) and math.floor( ( powerValue + 500 ) / 1000 ) .. "k" or powerValue )
 	pctLabel:SetText(pct .. "%")
 	default:SetText( powerValue .. " / " .. powerEffectiveMax .. " (" .. pct .. "%)")
 	
 	-- Toggle opacity
-	local isFull = (( powerType == POWERTYPE_HEALTH and pct == 100 )  or ( FTC.Character.health.pct == 100 )) and not IsUnitInCombat('player')
+	local isFull = (( powerType == POWERTYPE_HEALTH and pct == 100 )  or ( FTC.Player.health.pct == 100 )) and not IsUnitInCombat('player')
 	if ( isFull ) then 
 		frame:SetAlpha(0.5)
 	else 
@@ -129,8 +128,8 @@ end
 	ZO_PlayerAttribute:SetHidden( FTC.vars.EnableFrames )
 	frame:SetHidden( not FTC.vars.EnableFrames )
 	
-	-- Update character data
-	FTC.Character[string.lower(attr.name)] = { ["current"] = powerValue , ["max"] = powerEffectiveMax , ["pct"] = pct }
+	-- Update data
+	FTC[context][string.lower(attr.name)] = { ["current"] = powerValue , ["max"] = powerEffectiveMax , ["pct"] = pct }
 	
  end
  
@@ -147,8 +146,11 @@ function FTC.Frames:UpdateUltimate( unitTag , powerValue , powerMax , powerEffec
 	-- Get the currently slotted ultimate cost
 	cost, mechType = GetSlotAbilityCost(8)
 	
+	-- Get the current available ultimate (don't trust the values returned by the event)
+	powerValue, powerMax, powerEffectiveMax = GetUnitPower( 'reticleovertarget' , POWERTYPE_ULTIMATE )
+	
 	-- Calculate the percentage to activation
-	local pct = ( cost > 0 ) and math.floor( ( powerValue / cost ) * 100 ) or 0
+	local pct = ( cost > 0 ) and math.min( math.floor( ( powerValue / cost ) * 100 ) , 100 ) or 0
 	
 	-- Create a tooltip
 	FTC_UltimateTracker:SetText( powerValue .. "\r\n" .. pct .. "%")	
@@ -200,6 +202,34 @@ function FTC.Frames:UpdateTarTar( powerValue , powerMax , powerEffectiveMax )
 end
 
 
+ --[[ 
+ * Update the reticle target-of-target
+ * Called by OnVisualAdded
+ * Called by OnVisualUpdate
+ * Called by OnVisualRemoved
+ ]]--
+function FTC.Frames:UpdateShield( unitTag , value , maxValue )
+
+	-- Get the context
+	local context 	= ( unitTag == 'player' ) and "Player" or "Target"
+	
+	-- Get the unit's maximum health
+	local maxHealth = ( unitTag == 'player' ) and FTC.Player.health.max or FTC.Target.health.max
+	
+	-- Update the FTC object
+	FTC[context].shield = { ["current"] = value , ["max"] = maxValue , ["pct"] = math.floor( ( value / maxValue ) * 100 ) }
+	
+	-- Get the shield bar
+	local health	= _G["FTC_" .. context .. "FrameHealth"]
+	local bar 		= _G["FTC_" .. context .. "Frame_Shield"]
+	
+	-- Change the bar width
+	bar:SetWidth( math.min( ( value / maxHealth ) , 1 ) * ( health:GetWidth() - 4 ) )
+end
+ 
+ 
+ 
+
 --[[----------------------------------------------------------
 	HELPER FUNCTIONS
  ]]-----------------------------------------------------------
@@ -249,6 +279,16 @@ end
 	if tartar then 
 		FTC.Frames:UpdateTarTar( GetUnitPower( 'reticleovertarget' , POWERTYPE_HEALTH ) )
 		FTC_TarTarFrame_Name:SetText( GetUnitName('reticleovertarget') )
+	end
+	
+	-- Does the target have a shield?
+	local unitAttributeVisual, statType, attributeType, powerType, value, maxValue = GetAllUnitAttributeVisualizerEffectInfo("reticleover")
+	if ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH ) then
+		FTC.Frames:UpdateShield( 'reticleover' , value , FTC.Target.health.max )	
+		FTC.Target.shield = { ["current"] = value , ["max"] = maxValue , ["pct"] = math.floor( ( value / maxValue ) * 100 ) }
+	else
+		FTC.Frames:UpdateShield( 'reticleover' , 0 , 999 )
+		FTC.Target.shield = { ["current"] = 0 , ["max"] = 0 , ["pct"] = 0 }
 	end
 end
 

@@ -58,11 +58,10 @@ function FTC.Initialize( eventCode, addOnName )
 	if ( addOnName ~= FTC.name ) then return end
 	
 	-- Load saved variables
-	--FTC.vars = ZO_SavedVars:New( "FTCvars" , math.floor( FTC.version * 100 ) , nil , FTC.defaults , nil )
-	FTC.vars = FTC.defaults
+	FTC.vars = ZO_SavedVars:New( "FTCvars" , math.floor( FTC.version * 100 ) , nil , FTC.defaults , nil )
 	
 	-- Setup Character Information
-	FTC.Character:Initialize()
+	FTC.Player:Initialize()
 	FTC.Target:Initialize()
 
 	-- Unit Frames Component

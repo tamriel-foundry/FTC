@@ -163,6 +163,7 @@ function FTC:IsCritter( targetName )
 		"Centipede",
 		"Chicken",
 		"Torchbug",
+		"Spider",
 	}
 	
 	-- Is the target a critter?

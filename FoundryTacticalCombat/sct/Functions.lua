@@ -63,7 +63,7 @@ function FTC.SCT:NewExp( eventCode, unitTag, currentExp, maxExp, reason )
 	if ( unitTag ~= "player" ) then return end
 	
 	-- Don't display experience for level 50 characters
-	if ( eventCode == EVENT_EXPERIENCE_UPDATE and FTC.Character.level == 50 ) then return end
+	if ( eventCode == EVENT_EXPERIENCE_UPDATE and FTC.Player.level == 50 ) then return end
 	
 	-- Check whether it's VP or EXP
 	local isveteran = ( eventCode == EVENT_VETERAN_POINTS_UPDATE ) and true or false
@@ -72,7 +72,7 @@ function FTC.SCT:NewExp( eventCode, unitTag, currentExp, maxExp, reason )
 	if ( reason == XP_REASON_FINESSE ) then return end
 	
 	-- Get the base experience
-	local base 	= isveteran and FTC.Character.vet or FTC.Character.exp
+	local base 	= isveteran and FTC.Player.vet or FTC.Player.exp
 	
 	-- Calculate the difference
 	local diff 	= currentExp - base
@@ -88,13 +88,13 @@ function FTC.SCT:NewExp( eventCode, unitTag, currentExp, maxExp, reason )
 	
 	-- Update the base experience
 	if ( isveteran ) then
-		FTC.Character.vet = currentExp
+		FTC.Player.vet = currentExp
 	else
-		FTC.Character.exp = currentExp
+		FTC.Player.exp = currentExp
 	end
 	
 	-- Update the character sheet exp bar
-	FTC.Character:Update( nil , 'player' )
+	FTC.Player:Update( nil , 'player' )
 	
 	-- Setup a new SCT object
 	local newSCT = {

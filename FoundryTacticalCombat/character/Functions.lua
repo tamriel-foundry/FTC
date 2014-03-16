@@ -6,8 +6,8 @@
 	* Runs during FTC:Initialize()
   ]]--
  
-FTC.Character = {}
-function FTC.Character:Initialize()
+FTC.Player = {}
+function FTC.Player:Initialize()
 
 	-- Setup initial character information
 	local character		= {
@@ -22,7 +22,8 @@ function FTC.Character:Initialize()
 		["vet"]			= GetUnitVeteranPoints('player'),
 		["health"]		= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
 		["magicka"]		= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
-		["stamina"]		= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 }
+		["stamina"]		= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
+		["shield"]		= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
 	}
 	
 	-- Load starting attributes
@@ -37,19 +38,19 @@ function FTC.Character:Initialize()
 	end
 	
 	-- Populate the character object
-	for attr , value in pairs( character ) do FTC.Character[attr] = value end
+	for attr , value in pairs( character ) do FTC.Player[attr] = value end
 	
 	-- Create character sheet controls
-	FTC.Character:Controls()
+	FTC.Player:Controls()
 	
 	-- Populate the character sheet
-	FTC.Character:Update( nil , 'player' )
+	FTC.Player:Update( nil , 'player' )
 	
 	-- Register Keybinding
 	ZO_CreateStringId("SI_BINDING_NAME_DISPLAY_CHARACTER_SHEET", "Display Character Sheet")
 	
 	-- Register init status
-	FTC.Character.init = true
+	FTC.Player.init = true
 	
 end
 
@@ -64,6 +65,7 @@ function FTC.Target:Initialize()
 		["health"]			= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
 		["magicka"]			= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
 		["stamina"]			= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
+		["shield"]			= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
 	}	
 	
 	-- Populate the target object
@@ -85,7 +87,7 @@ end
  * Updates the character sheet and character attributes
  * Called by OnStatsUpdated()
  ]]--
-function FTC.Character:Update( eventCode , unitTag )
+function FTC.Player:Update( eventCode , unitTag )
 
 	-- Make sure we're targetting the player
 	if ( "player" ~= unitTag ) then return end
@@ -147,9 +149,9 @@ function FTC.Character:Update( eventCode , unitTag )
 	end
 	
 	-- Experience
-	if ( FTC.Character.vlevel < 10 ) then 
-		local maxExp	= ( FTC.Character.level == 50 ) and GetUnitVeteranPointsMax('player') or GetUnitXPMax('player')
-		local currExp	= ( FTC.Character.level == 50 ) and FTC.Character.vet or FTC.Character.exp
+	if ( FTC.Player.vlevel < 10 ) then 
+		local maxExp	= ( FTC.Player.level == 50 ) and GetUnitVeteranPointsMax('player') or GetUnitXPMax('player')
+		local currExp	= ( FTC.Player.level == 50 ) and FTC.Player.vet or FTC.Player.exp
 		local pct		= math.floor( 100 * ( currExp / maxExp ) )
 		local xpLabel 	= currExp .. "/" .. maxExp .. " (" .. pct .. "%)"
 		FTC_CharSheet_ExpLabel:SetText(xpLabel)
@@ -161,7 +163,7 @@ end
  * Toggles the display of the character sheet
  * Called by hotkey activation
  ]]--
-function FTC.Character:DisplaySheet()
+function FTC.Player:DisplaySheet()
 
 	-- Get the current visibility
 	local isHidden = FTC_CharSheet:IsHidden()
@@ -171,5 +173,5 @@ function FTC.Character:DisplaySheet()
 	FTC_CharSheet:SetHidden( not isHidden )
 	
 	-- Maybe update the sheet
-	if isHidden then FTC.Character:Update( nil , 'player' ) end
+	if isHidden then FTC.Player:Update( nil , 'player' ) end
 end
