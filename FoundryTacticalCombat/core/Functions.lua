@@ -64,18 +64,24 @@ end
  * Called by OnReticleHidden()
  ]]-- 
 function FTC:ToggleVisibility( eventCode , isHidden )
-
-	-- If we are in "movemode" don't hide windows so the player can drag them
-	if( FTC.movemode ) then
-		FTC_TargetFrame:SetHidden( false )
-		if ( isHidden ) then return end
-	end
 	
 	-- Otherwise, hide FTC windows
 	FTC_CharSheet:SetHidden( ( FTC_CharSheet:IsHidden() == true ) and true or isHidden )
 	
+	-- Toggle unit frames
 	if( FTC.Frames.init ) then
-		FTC_PlayerFrame:SetHidden( isHidden )
+		
+		-- Always show frames if we are in move mode
+		if( FTC.Frames.move ) then
+			FTC_PlayerFrame:SetHidden( false )
+			FTC_TargetFrame:SetHidden( false )
+		
+		-- Otherwise toggle visibility
+		else
+			FTC_PlayerFrame:SetHidden( isHidden )
+			FTC_TargetFrame:SetHidden( isHidden )
+		end
+		
 	end
 	
 	if( FTC.SCT.init) then
@@ -105,10 +111,13 @@ function FTC:UpdateTarget()
 	-- We also want to ignore critters
 	if FTC:IsCritter( target ) then ignore = true end
 	
-	-- Conditionally display the target frame
+	-- Only display the target frame for valid targets OR move mode
 	if( FTC.Frames.init ) then 
+		if ( FTC.Frames.move ) then ignore = false end
 		FTC_TargetFrame:SetHidden( ignore )
 	end
+	
+	-- Toggle display of buffs
 	if( FTC.Buffs.init ) then
 		FTC_TargetBuffs:SetHidden( ignore )
 		FTC_TargetDebuffs:SetHidden( ignore )
@@ -164,6 +173,8 @@ function FTC:IsCritter( targetName )
 		"Chicken",
 		"Torchbug",
 		"Spider",
+		"Scorpion",
+		"Goat",
 	}
 	
 	-- Is the target a critter?

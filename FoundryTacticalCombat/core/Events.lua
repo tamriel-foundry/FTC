@@ -87,8 +87,7 @@ end
 function FTC.OnEffectChanged( ... )
 	
 	-- Grab relevant arguments
-	local params 	= { ... }
-	local unitTag 	= params[5]
+	local unitTag 	= select( 5 , ... )
 
 	-- Retrieve current buffs if the buffs component is active
 	if ( FTC.Buffs.init ) then 

@@ -11,21 +11,25 @@ function FTC.Frames:Initialize()
 
 	-- Create UI elements
 	FTC.Frames:Controls()
-
+	
+	-- Register init status
+	if ( FTC.vars.EnableFrames ) then FTC.Frames.init = true end
+	
 	-- Populate some information to the player frame
 	FTC_PlayerFrameName:SetText(FTC.Player.name)
 	FTC_PlayerFrameLevel:SetText(FTC.Player.level < 50 and FTC.Player.class .. "  " .. FTC.Player.level or FTC.Player.class .. "  v" .. FTC.Player.vlevel)
-	FTC_TargetFrame:SetHidden(true)
-	
+
 	-- Populate the unit frames
 	FTC.Frames:UpdateFrame( 'player', POWERTYPE_HEALTH	, FTC.Player.health.current		, FTC.Player.health.max		, FTC.Player.health.max )
 	FTC.Frames:UpdateFrame( 'player', POWERTYPE_MAGICKA	, FTC.Player.magicka.current	, FTC.Player.magicka.max	, FTC.Player.magicka.max )
 	FTC.Frames:UpdateFrame( 'player', POWERTYPE_STAMINA	, FTC.Player.stamina.current	, FTC.Player.stamina.max	, FTC.Player.stamina.max )
 	FTC.Frames:UpdateUltimate( POWERTYPE_ULTIMATE , 0 , 0 , 0 )
 	
-	-- Register init status
-	if ( FTC.vars.EnableFrames ) then FTC.Frames.init = true end
+	-- Hide the target frame
+	FTC_TargetFrame:SetHidden(true)
 	
+	-- Allow the frames to be moved?
+	FTC.Frames.move = false
 end
 
 
@@ -125,8 +129,8 @@ end
 	end
 	
 	-- Ensure the default unit frames remain hidden
-	ZO_PlayerAttribute:SetHidden( FTC.vars.EnableFrames )
-	frame:SetHidden( not FTC.vars.EnableFrames )
+	ZO_PlayerAttribute:SetHidden( FTC.Frames.init )
+	frame:SetHidden( not FTC.Frames.init )
 	
 	-- Update data
 	FTC[context][string.lower(attr.name)] = { ["current"] = powerValue , ["max"] = powerEffectiveMax , ["pct"] = pct }

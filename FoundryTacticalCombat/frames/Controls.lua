@@ -12,13 +12,12 @@ function FTC.Frames:Controls()
 	local frames = { "Player" , "Target" }
 	for f = 1 , #frames , 1 do
 	
-		-- Get the saved frame positions
-		local offsetx 	= ( frames[f] == "Player" ) and -400 or 400
-		offsetx			= ( FTC.vars[frames[f].."FrameX"] ~= 0 ) and FTC.vars[frames[f].."FrameX"] or offsetx
-		local offsety 	= ( FTC.vars[frames[f].."FrameY"] ~= 0 ) and FTC.vars[frames[f].."FrameY"] or 300
-		
+		-- Retrieve offsets from saved vars
+		local offsetx = FTC.vars["FTC_" .. frames[f].."Frame_X"]
+		local offsety = FTC.vars["FTC_" .. frames[f].."Frame_Y"]
+			
 		-- Create the unit frame container	
-		local frame 	= FTC.UI.TopLevelWindow( "FTC_" .. frames[f] .. "Frame" , GuiRoot , {250,75} , {TOP,CENTER,offsetx,offsety} , false )	
+		local frame 	= FTC.UI.TopLevelWindow( "FTC_" .. frames[f] .. "Frame" , GuiRoot , {250,75} , {CENTER,CENTER,offsetx,offsety} , false )	
 		frame.backdrop	= FTC.UI.Backdrop( "FTC_" .. frames[f] .. "FrameBackdrop" , frame , "inherit" , {CENTER,CENTER,0,0} , nil , nil , false )	
 		frame.name 		= FTC.UI.Label( "FTC_" .. frames[f] .. "FrameName" , frame , { frame:GetWidth() * 0.5 , 20 } , {BOTTOMLEFT,TOPLEFT,0,0} , "ZoFontAnnounceSmall" , nil , {0,1} , nil , false )		
 		frame.level 	= FTC.UI.Label( "FTC_" .. frames[f] .. "FrameLevel" , frame , { frame:GetWidth() * 0.5 , 20 } , {BOTTOMRIGHT,TOPRIGHT,0,0} , "ZoFontAnnounceSmall" , nil , {2,1} , nil , false )
@@ -42,6 +41,9 @@ function FTC.Frames:Controls()
 		-- Create damage shield bar
 		local health		= _G["FTC_" .. frames[f] .. "FrameHealth"]
 		local shield		= FTC.UI.Statusbar( "FTC_" .. frames[f] .. "Frame_Shield" , health , { 0 , 4 } , {BOTTOMLEFT,BOTTOMLEFT,1,-3} , {1,0.4,0,1} , false )
+		
+		-- Add a position handler for the frame
+		frame:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end)
 	end
 	
 	-- Create labels for the default frame

@@ -71,9 +71,6 @@ function FTC.Target:Initialize()
 	-- Populate the target object
 	for attr , value in pairs( target ) do FTC.Target[attr] = value end	
 	
-	-- Register post-initialization callbacks
-	CALLBACK_MANAGER:RegisterCallback( "FTC_Ready" , FTC:UpdateTarget() )
-	
 	-- Register init status
 	FTC.Target.init = true
 end

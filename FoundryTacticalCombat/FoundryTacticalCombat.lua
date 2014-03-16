@@ -21,26 +21,25 @@
 FTC 					= {}
 FTC.name				= "FoundryTacticalCombat"
 FTC.command				= "/ftc"
-FTC.version				= 0.15
+FTC.version				= 0.16
 
 -- Default Saved Variables
 FTC.defaults			= {
-	["EnableBuffs"] 	= true,
-	["EnableCastbar"] 	= true,
-	["EnableSCT"] 		= true,
-	["EnableFrames"] 	= true,
-	["SCTSpeed"]		= 3,
-	["SCTNames"]		= true,
-	["NumBuffs"]		= 12,
-	["PlayerFrameX"]	= 0,
-	["PlayerFrameY"]	= 0,
-	["TargetFrameX"]	= 0,
-	["TargetFrameY"]	= 0,
+	["EnableBuffs"] 		= true,
+	["EnableCastbar"] 		= true,
+	["EnableSCT"] 			= true,
+	["EnableFrames"] 		= true,
+	["SCTSpeed"]			= 3,
+	["SCTNames"]			= true,
+	["NumBuffs"]			= 12,
+	["FTC_PlayerFrame_X"]	= -400,
+	["FTC_PlayerFrame_Y"]	= 300,
+	["FTC_TargetFrame_X"]	= 400,
+	["FTC_TargetFrame_Y"]	= 300,
 	}
 
 -- Component Management
 FTC.init 				= {}
-FTC.movemode			= false;
 FTC.debug				= {
 	["buffs"]			= false,
 	["castbar"]			= false,
@@ -58,7 +57,7 @@ function FTC.Initialize( eventCode, addOnName )
 	if ( addOnName ~= FTC.name ) then return end
 	
 	-- Load saved variables
-	FTC.vars = ZO_SavedVars:New( "FTCvars" , math.floor( FTC.version * 100 ) , nil , FTC.defaults , nil )
+	FTC.vars = ZO_SavedVars:New( 'FTC_VARS' , math.floor( FTC.version * 100 ) , nil , FTC.defaults )
 	
 	-- Setup Character Information
 	FTC.Player:Initialize()
@@ -80,7 +79,7 @@ function FTC.Initialize( eventCode, addOnName )
 	if ( FTC.vars.EnableSCT ) then FTC.SCT:Initialize()	end
 	
 	-- Setup settings component
-	FTC.InitializeSettings()
+	--FTC.InitializeSettings()
 	FTC.Menu.Initialize()
 	
 	-- Register event listeners
@@ -93,8 +92,10 @@ function FTC.Initialize( eventCode, addOnName )
 	SLASH_COMMANDS[FTC.command] = FTC.Slash
 	
 	-- Fire a callback after setup
-	CALLBACK_MANAGER:FireCallbacks("FTC_Ready")
+	--CALLBACK_MANAGER:FireCallbacks("FTC_Ready")
 	
+	-- Load the current target
+	FTC:UpdateTarget()
 end
 
 -- Hook initialization onto the EVENT_ADD_ON_LOADED listener
@@ -140,21 +141,9 @@ end
  ]]-- 
 function FTC.Slash( text )
 
-	-- Bail if there is no text
-	if ( text == "" ) then 
-		FTC.DisplaySettings()
-		return
-	end
-	
-	-- Enter "movemode"
-	if ( text == "move" ) then
-		FTC.movemode = not FTC.movemode
-		return
-	end
-	
-	-- Otherwise, check what parameters were passed
-	local param , data = SplitString( " " , text )
-	d( 'Requesting FTC parameter ' .. param )	
+	-- Display the current version
+	d( "You are using Foundry Tactical Combat version " .. FTC.version .. "." )
+	d( "FTC configuration settings have moved to the normal game settings interface!" )
 end
 
 --[[----------------------------------------------------------
