@@ -9,14 +9,31 @@
 FTC.SCT = {}
 function FTC.SCT:Initialize()
 
+	--Setup Contexts
+	FTC.SCTContexts = { "In" , "Out" , "Stat" }
+
+	-- Setup Animation list
+	FTC.SCTAnimations	= {	
+		"Original",
+		"Sideways Out",
+		"Arc"
+	}
+
+	-- is this the right place to do this?
+	FTC.vars.SCTContextsEnabled = FTC.vars.SCTContextsEnabled or FTC.defaults.SCTContextsEnabled
+	FTC.vars.SCTMaxLifespan = FTC.vars.SCTMaxLifespan or FTC.defautls.SCTMaxLifespan
+	FTC.vars.SCTMaxLabels = FTC.vars.SCTMaxLabels or FTC.defautls.SCTMaxLabels
+	FTC.vars.SCTAnimation = FTC.vars.SCTAnimation or FTC.defautls.SCTAnimation
+
 	-- Setup tables
-	FTC.SCTIn	= {}
-	FTC.SCTOut	= {}
-	FTC.SCTStat	= {}
+	-- should probably change this to be a list of list, instead of flat
+	for i = 1, #FTC.SCTContexts do
+		FTC["SCT"..FTC.SCTContexts[i]] = {}
+	end
 	
 	-- Create controls
 	FTC.SCT:Controls()
-	
+
 	-- Register init status
 	FTC.SCT.init = true
 end
@@ -154,10 +171,45 @@ end
  * Updates Scrolling Combat Text for both incoming and outgoing damage
  * Runs every frame OnUpdate
  ]]--
-function FTC.SCT:Update(context)
 
+function FTC.SCT:Update()
+	for i = 1, #FTC.SCTContexts do
+		local doContextUpdate = false
+		for j = 1, #FTC.vars.SCTContextsEnabled do
+			if(FTC.vars.SCTContextsEnabled[j] == FTC.SCTContexts[i] ) then
+				doContextUpdate = true
+			end
+		end
+		if(doContextUpdate) then
+			FTC.SCT:UpdateContext(FTC.SCTContexts[i])
+		end
+	end
+end
+
+function FTC.SCT:UpdateContext(context)
 	-- Get SCT arguments
 	local speed		= ( FTC.vars.SCTSpeed >= 1 and FTC.vars.SCTSpeed <= 10 ) and FTC.vars.SCTSpeed or FTC.defaults.SCTSpeed
+	--no need to track lifepsan with real animations, just want max time alive
+	local maxLifespan = FTC.vars.SCTMaxLifespan or FTC.defaults.SCTMaxLifespan
+	maxLifespan = maxLifespan * 1000
+	local maxLabels = FTC.vars.SCTMaxLabels or FTC.defaults.SCTMaxLabels
+	local animTypes = FTC.SCTAnimations
+	local animNum = nil
+ 	local defaultAnimNum = 1
+	for k,v in pairs(animTypes) do
+		if( v == FTC.vars.SCTAnimation ) then
+			animNum = k
+		end
+		if( v == FTC.defaults.SCTAnimation ) then
+			defaultAnimNum = k
+		end
+	end
+	animNum = animNum or defaultAnimNum
+
+	--im lazy and wanted quick switching, delete the following line for production
+	--animNum = 3
+
+	--end belac edits
 
 	-- Get the SCT UI element
 	local 	Parent = _G["FTC_CombatText"..context]
@@ -192,21 +244,28 @@ function FTC.SCT:Update(context)
 	-- Now loop through damage values, displaying
 	for i = 1 , #Damage , 1 do
 	
-		-- Get the damage container, start recycling at 10
-		local container = _G["FTC_SCT"..context..i]
-		if ( i > 10 ) then
-			local cnum 		= ( i % 10 ) + 1
-			container = _G["FTC_SCT"..context..cnum]
-		end
-		
-		-- Hide damage more than 3 seconds old
-		local lifespan	= gameTime - Damage[i].ms
-		if ( lifespan > 3000 ) then
-			container:SetHidden(true)
-		
-		-- Otherwise show it, and scroll it
-		else
-		
+		-- Check to see if we alreay set this damge label/ anim up
+		if ( not Damage[i].displayed ) then
+			
+			-- Get the damage container, start recycling at maxLabels
+			local container = _G["FTC_SCT"..context..i]
+			if ( i > maxLabels ) then
+				local cnum 		= ( i % maxLabels ) + 1
+				container = _G["FTC_SCT"..context..cnum]
+			end
+			
+			--[[ belac: the label will be hidden once the animation is done
+			-- so don't need this
+			-- Hide damage more than 3 seconds old
+			local lifespan	= gameTime - Damage[i].ms
+			if ( lifespan > 3000 ) then
+				container:SetHidden(true)
+			
+
+			-- Otherwise show it, and scroll it
+			else
+			]]--
+
 			-- Setup defaults
 			local damage 	= Damage[i].dam
 			local name		= Damage[i].name
@@ -272,6 +331,8 @@ function FTC.SCT:Update(context)
 			container:SetHidden(false)
 			container:SetText( damage )	
 			
+			-- belac: we don't need this anymore 
+			--[[
 			-- Scroll the position
 			local offsety = 25
 			if ( i % 2 == 0 ) then
@@ -283,8 +344,97 @@ function FTC.SCT:Update(context)
 
 			-- Adjust the position
 			container:SetAnchor(BOTTOM,Parent,BOTTOM,0,offsety)
+			]]--
+
+			-- Alternate offsets and alignments
+			local align = 0
+			local offsety = 25
+			if ( i % 2 == 0 ) then
+				align = 2
+				offsety = 0
+			end
+			if ( i % 3 ) then
+				offsety = -25
+			end
+			align = ( context == "Stat" ) and 1 or align
+
+			local containerDims =  { Parent:GetWidth() , 30 }
+			local containerAnchors = {BOTTOM,BOTTOM,0,offsety}
+			local containerAlignments = {align,1}
+
+			container:SetDimensions( containerDims[1] , containerDims[2] )
+			container:SetAnchor( containerAnchors[1] , Parent , containerAnchors[2] , containerAnchors[3] , containerAnchors[4] )
+			container:SetHorizontalAlignment( containerAlignments[1] )
+			container:SetVerticalAlignment( containerAlignments[2] )
+
+			-- belac: start animation
+			FTC.SCTRunAnim(container, context, i, speed, maxLifespan, animNum)
+			-- indicate we are done
+			Damage[i].displayed = true
+		
 		end
 	end
+end
+
+--[[
+	Added By Belac
+	* Runs the STCAnim 
+]]--
+
+local AnimationMgr = ANIMATION_MANAGER
+
+function FTC.SCTRunAnim(container, context, containerNum, speed, maxLifespan, animNum)
+	local timeline = AnimationMgr:CreateTimeline()
+	local duration = maxLifespan
+	--original
+	if(animNum == 1) then
+		local anim = timeline:InsertAnimation( ANIMATION_TRANSLATE, container )	
+		anim:SetDuration(duration)
+		anim:SetStartOffsetY(0)
+		anim:SetEndOffsetY(-200)
+	end
+	--sideways out
+	if(animNum == 2) then
+		local anim = timeline:InsertAnimation( ANIMATION_TRANSLATE, container )
+		anim:SetDuration(duration)
+		anim:SetStartOffsetX(0)
+		anim:SetStartOffsetY(0)
+		if(context == "In") then
+			anim:SetEndOffsetX(200)
+		elseif(context == "Out") then
+			anim:SetEndOffsetX(-200)
+		else
+			anim:SetEndOffsetY(200)
+		end
+		
+	end
+	--arc
+	if(animNum == 3) then
+		local animUp = timeline:InsertAnimation( ANIMATION_TRANSLATE, container )
+		local animDown = timeline:InsertAnimation( ANIMATION_TRANSLATE, container, 2 )
+		animUp:SetDuration(duration/2)
+		animDown:SetDuration(duration/2)
+		animUp:SetStartOffsetY(0)
+		animUp:SetStartOffsetX(0)
+		animDown:SetStartOffsetY(0)
+		animDown:SetStartOffsetX(0)
+		if( containerNum%2 == 0) then
+			animUp:SetEndOffsetX(-200)
+			animDown:SetEndOffsetX(-200)
+		else
+			animUp:SetEndOffsetX(200)
+			animDown:SetEndOffsetX(200)
+		end
+		animUp:SetEndOffsetY(-200)
+		animDown:SetEndOffsetY(200)
+	end
+
+	timeline:SetHandler("OnStop",function()
+		container:SetHidden(true)
+	end)
+
+	--container:SetText(container:GetText().."  "..animUp:GetEasingFunction() )
+	timeline:PlayFromStart()
 end
 
 --[[ 
