@@ -29,7 +29,8 @@ FTC.defaults			= {
 	["EnableCastbar"] 		= true,
 	["EnableSCT"] 			= true,
 	["EnableFrames"] 		= true,
-	["SCTSpeed"]			= 3,
+	["SCTCount"]			= 20,
+	["SCTSpeed"]			= 5,
 	["SCTNames"]			= true,
 	["NumBuffs"]			= 12,
 	["FTC_PlayerFrame_X"]	= -400,
@@ -125,10 +126,10 @@ function FTC:Update()
 	end
 	
 	-- Scrolling Combat Text Component
-	if ( FTC.SCT.init ) then
+	if ( FTC.init.SCT ) then
 		FTC.SCT:Update('In')
 		FTC.SCT:Update('Out')
-		FTC.SCT:Update('Stat')
+		--FTC.SCT:Update('Stat')
 	end
 
 end

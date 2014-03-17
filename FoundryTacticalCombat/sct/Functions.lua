@@ -10,15 +10,15 @@ FTC.SCT = {}
 function FTC.SCT:Initialize()
 
 	-- Setup tables
-	FTC.SCTIn	= {}
-	FTC.SCTOut	= {}
-	FTC.SCTStat	= {}
+	FTC.SCT.In		= {}
+	FTC.SCT.Out		= {}
+	FTC.SCT.Stat	= {}
 	
 	-- Create controls
 	FTC.SCT:Controls()
 	
 	-- Register init status
-	FTC.SCT.init = true
+	FTC.init.SCT = true
 end
 
 
@@ -32,24 +32,53 @@ end
  ]]--
 function FTC.SCT:NewCombat( newSCT , context )
 	
-	-- Check if the damage entry already exists
-	local isNew 	= true
-	for i = 1, #FTC["SCT"..context] do
-		if ( ( FTC["SCT"..context][i].name == newSCT.name ) and ( math.abs( FTC["SCT"..context][i].ms - newSCT.ms ) < 500 ) ) then
+	-- Get the existing entries
+	local damages	= FTC.SCT[context]
+	if ( #damages == 0 ) then table.insert( FTC.SCT[context] , newSCT) end
+	
+	-- Loop through each existing combat entry
+	local oldest 	= 1
+	local isNew		= true
+	for i = 1, #damages do
+	
+		-- If an identical entry already exists, do a multiplier instead of a new entry
+		if ( ( damages[i].name == newSCT.name ) and ( damages[i].heal == newSCT.heal ) and ( math.abs( damages[i].ms - newSCT.ms ) < 500 ) ) then
 			
 			-- If the damage is higher, replace it
-			if ( newSCT.dam > FTC["SCT"..context][i].dam ) then 
-				FTC["SCT"..context][i] = newSCT
+			if ( newSCT.dam > damages[i].dam ) then 
+				FTC.SCT[context][i] = newSCT
 			end
 			
-			-- Tag a multiplier
-			FTC["SCT"..context][i].multi = FTC["SCT"..context][i].multi + 1
+			-- Increment the multiplier, and bail
+			FTC.SCT[context][i].multi = FTC.SCT[context][i].multi + 1
 			isNew = false
-		end
+			break
+		
+		-- Otherwise flag the oldest entry for recycling
+		else oldest = FTC.SCT[context][i].ms < FTC.SCT[context][oldest].ms and i or oldest	end
 	end
-
-	-- Add the SCT object to the relevant damage table
-	if ( isNew ) then table.insert( FTC["SCT"..context] , newSCT) end
+	
+	-- Process new damage entries
+	if ( isNew ) then
+	
+		-- If there are fewer than the maximum number of events recorded, insert it directly
+		if ( #damages < FTC.vars.SCTCount ) then table.insert( FTC.SCT[context] , newSCT)
+		
+		-- Otherwise, recycle the oldest entry
+		else FTC.SCT[context][oldest] = newSCT end
+	end
+	
+	-- Next, allocate combat entries to controls
+	for i = 1, FTC.vars.SCTCount do
+		
+		-- Add the damage to controls
+		local container = _G["FTC_SCT"..context..i]
+		if ( FTC.SCT[context][i] ~= nil ) then
+			container.damage = FTC.SCT[context][i]
+		
+		-- Purge unused controls
+		else container.damage = {}	end
+	end	
 end
 
 
@@ -156,194 +185,130 @@ end
  ]]--
 function FTC.SCT:Update(context)
 
-	-- Get SCT arguments
-	local speed		= ( FTC.vars.SCTSpeed >= 1 and FTC.vars.SCTSpeed <= 10 ) and FTC.vars.SCTSpeed or FTC.defaults.SCTSpeed
+	-- Get saved variables
+	local speed		= FTC.vars.SCTSpeed
+	local num		= FTC.vars.SCTCount
 
 	-- Get the SCT UI element
-	local 	Parent = _G["FTC_CombatText"..context]
-	
+	local parent = _G["FTC_CombatText"..context]
+
 	-- Get the damage table based on context
-	local 	Damage = {}
-	if ( context == "Out" ) then 
-		Damage = FTC.SCTOut
-	elseif ( context == "In" ) then
-		Damage = FTC.SCTIn
-	elseif (context == "Stat" ) then
-		Damage = FTC.SCTStat
-	end
-	
+	local damages = FTC.SCT[context]
+
 	-- Bail if no damage is present
-	if ( #Damage == 0 ) then return	end
+	if ( #damages == 0 ) then return end
 	
 	-- Get the game time
 	local gameTime = GetGameTimeMilliseconds()
 	
-	-- If we have been out of combat for 5 seconds, clear everything
-	if ( IsUnitInCombat('player') == false ) and (( gameTime - Damage[#Damage].ms ) > 5000 ) then
-		if ( context == "Out" ) then
-			FTC.SCTOut 	= {}
-		elseif ( context == "In" ) then
-			FTC.SCTIn 	= {}
-		elseif (context == "Stat" ) then
-			FTC.SCTStat	= {}
-		end
-	end
+	-- Loop through damage controls, modifying the display
+	for i = 1 , FTC.vars.SCTCount do
 	
-	-- Now loop through damage values, displaying
-	for i = 1 , #Damage , 1 do
-	
-		-- Get the damage container, start recycling at 10
+		-- Get the control and it's damage value
 		local container = _G["FTC_SCT"..context..i]
-		if ( i > 10 ) then
-			local cnum 		= ( i % 10 ) + 1
-			container = _G["FTC_SCT"..context..cnum]
-		end
+		local damage 	= container.damage
 		
-		-- Hide damage more than 3 seconds old
-		local lifespan	= gameTime - Damage[i].ms
-		if ( lifespan > 3000 ) then
-			container:SetHidden(true)
+		-- If there's damage, proceed
+		if ( damage.name ~= nil ) then 	
 		
-		-- Otherwise show it, and scroll it
-		else
-		
-			-- Setup defaults
-			local damage 	= Damage[i].dam
-			local name		= Damage[i].name
-			local alpha  	= 1
-			container:SetFont("ZoFontHeader2")
+			-- Get the animation duration ( speed = 10 -> 0.5 second, speed = 1 -> 5 seconds )
+			local lifespan	= ( gameTime - damage.ms ) / 1000
+			local duration	= ( 11 - speed ) / 2
 			
-			-- Flag critical hits
-			if ( Damage[i].crit == true ) then
-				damage 	= "*" .. damage .. "*"
-				container:SetFont("ZoFontHeader3")
-			end
+			-- If the animation has finished, hide the container
+			if ( lifespan > duration ) then 
+				container:SetHidden( true )
 			
-			-- Flag blocked damage
-			if ( Damage[i].blocked == true ) then
-				damage	= "(" .. damage .. ")"
-			end
-			
-			-- Flag damage immunity
-			if ( Damage[i].immune == true ) then
-				damage	= "(Immune)"
-			end
-			
-			-- Resource Alerts (Health = 998 , Stamina = 1006 , Magicka = 1000, Execute = 1001 )
-			if ( Damage[i].type == 998 or Damage[i].type == 999 ) then
-				container:SetColor(0.8,0,0,1)
-				container:SetFont("ZoFontBookTablet")
-			elseif ( Damage[i].type == 1006 or Damage[i].type == 1007 ) then
-				container:SetColor(0.4,0.8,0.4,1)
-				container:SetFont("ZoFontBookTablet")
-			elseif ( Damage[i].type == 1000 or Damage[i].type == 1001 ) then
-				container:SetColor(0.2,0.6,0.8,1)
-				container:SetFont("ZoFontBookTablet")
-		
-			-- Experience
-			elseif ( Damage[i].type == 2000 or Damage[i].type == 2001 ) then
-				damage	= "|c99FFFF+" .. damage .. "|"				
-			
-			-- Flag heals
-			elseif( Damage[i].heal == true ) then
-				damage = "|c99DD93" .. damage .. "|"
-				if string.match( Damage[i].name , "Potion" ) then Damage[i].name = "Health Potion" end
-			
-			-- Magic damage
-			elseif ( Damage[i].type ~= DAMAGE_TYPE_PHYSICAL	) then
-				damage = ( context == "Out" ) and "|c336699" .. damage .. "|" or "|c990000" .. damage .. "|"
-			
-			-- Standard hits
+			-- Otherwise, we're good to go!
 			else
-				damage = ( context == "Out" ) and "|cAA9F83" .. damage .. "|" or "|c990000" .. damage .. "|"
-			end
 			
-			-- Maybe add the ability name
-			if ( FTC.vars.SCTNames ) then
-				damage = damage .. "   " .. name
-			end
-			
-			-- Add the multiplier
-			if ( Damage[i].multi and Damage[i].multi > 1 ) then
-				damage = damage .. " (x" .. Damage[i].multi .. ")"
-			end
-			
-			-- Update the damage
-			container:SetHidden(false)
-			container:SetText( damage )	
-			
-			-- Scroll the position
-			local offsety = 25
-			if ( i % 2 == 0 ) then
-				offsety = 0
-			elseif ( i % 3 == 0 ) then
-				offsety = -25
-			end
-			offsety	= offsety -( lifespan / ( 11 - speed ) )
+				-- Get some values
+				local dam	= damage.dam
+				local name	= damage.name
 
-			-- Adjust the position
-			container:SetAnchor(BOTTOM,Parent,BOTTOM,0,offsety)
-		end
-	end
-end
+				-- Set default appearance
+				local font	= 'FoundryTacticalCombat/lib/Metamorphous.otf|20|soft-shadow-thick'
+				local alpha = 0.8
 
---[[ 
- * Adds the new SCT damage to the combat meter for processing
- ]]--
-function FTC:UpdateMeter( context , target , name , damage , gametime , heal )
-	
-	-- Retrieve the data
-	local meter = FTC.Damage.Meter
-	
-	-- If the meter has been inactive for over 5 seconds, restart the timer
-	if ( meter == nil ) then
-		meter.endTime 	= 0
-		meter.startTime = 0
-	end
-	
-	-- If the meter has been inactive for over 5 seconds, reset the data
-	if( ( ( gametime - meter.endTime ) / 1000 ) >= 5 ) then
-		meter.startTime = gametime
-		meter.damage	= 0
-		meter.maxDamage	= 0
-		meter.healing	= 0
-		meter.maxHeal	= 0
-		meter.incoming	= 0
-		meter.maxInc	= 0
-		meter.targets	= {}
-	end
-	
-	-- Track the target (only enemies)
-	if ( context == "Out" and heal == false ) then
-		meter.targets[target] = ( meter.targets[target] ~= nil ) and meter.targets[target] + damage or damage
-	end
-	
-	-- Incoming Damage
-	if ( context == 'In' and heal == false ) then
-		meter.incoming 			= meter.incoming + damage
-		if ( damage > meter.maxInc ) then
-			meter.maxInc		= damage
-			meter.maxIncName	= name
+				-- Flag critical hits
+				if ( damage.crit == true ) then
+					dam 	= "*" .. dam .. "*"
+					font	= 'FoundryTacticalCombat/lib/Metamorphous.otf|24|soft-shadow-thick'
+					alpha	= 1
+				end
+				
+				-- Flag blocked damage
+				if ( damage.blocked == true ) then
+					dam		= "(" .. dam .. ")"
+				end
+				
+				-- Flag damage immunity
+				if ( damage.immune == true ) then
+					dam		= "(Immune)"
+				end
+				
+				-- Resource Alerts (Health = 998 , Stamina = 1006 , Magicka = 1000, Execute = 1001 )
+				if ( damage.type == 998 or damage.type == 999 ) then
+					container:SetColor(0.8,0,0,1)
+					font = "ZoFontBookTablet"
+				elseif ( damage.type == 1006 or damage.type == 1007 ) then
+					container:SetColor(0.4,0.8,0.4,1)
+					font = "ZoFontBookTablet"
+				elseif ( damage.type == 1000 or damage.type == 1001 ) then
+					container:SetColor(0.2,0.6,0.8,1)
+					font = "ZoFontBookTablet"
+			
+				-- Experience
+				elseif ( damage.type == 2000 or damage.type == 2001 ) then
+					dam	= "|c99FFFF+" .. dam .. "|"				
+				
+				-- Flag heals
+				elseif( damage.heal == true ) then
+					dam = "|c99DD93" .. dam .. "|"
+					if string.match( damage.name , "Potion" ) then damage.name = "Health Potion" end
+				
+				-- Magic damage
+				elseif ( damage.type ~= DAMAGE_TYPE_PHYSICAL	) then
+					dam = ( context == "Out" ) and "|c336699" .. dam .. "|" or "|c990000" .. dam .. "|"
+				
+				-- Standard hits
+				else
+					dam = ( context == "Out" ) and "|cAA9F83" .. dam .. "|" or "|c990000" .. dam .. "|"
+				end
+				
+				-- Maybe add the ability name
+				if ( FTC.vars.SCTNames ) then
+					dam = dam .. "   " .. name
+				end
+				
+				-- Add the multiplier
+				if ( damage.multi and damage.multi > 1 ) then
+					dam = dam .. " (x" .. damage.multi .. ")"
+				end
+				
+				-- Update the damage
+				container:SetHidden(false)
+				container:SetFont( font )
+				container:SetAlpha( alpha )
+				container:SetText( dam )
+
+				-- Get the starting offsets
+				local offsetX 	= container.offsetX
+				local offsetY 	= container.offsetY
+				local height	= parent:GetHeight()
+				local width		= parent:GetWidth()
+				
+				-- Scroll the vertical position
+				offsetY			= offsetY - height * ( lifespan / duration )
+				
+				-- Ease the horizontal ( f(x) = 4x^2 - 4x + 1 )
+				local ease		= lifespan / duration
+				offsetX			= 100 * ( ( 4 * ease * ease ) - ( 4 * ease ) + 1 )
+				offsetX			= ( context == "Out" ) and offsetX or -1 * offsetX
+
+				-- Adjust the position
+				container:SetAnchor(BOTTOM,parent,BOTTOM,offsetX,offsetY)
+			end
 		end
-	
-	-- Outgoing Healing
-	elseif ( context == 'Out' and heal == true ) then 
-		meter.healing 			= meter.healing + damage
-		if ( damage > meter.maxHeal ) then
-			meter.maxHeal 		= damage
-			meter.maxHealName 	= name
-		end
-	elseif ( context == 'Out' ) then
-		meter.damage = meter.damage + damage
-		if ( damage > meter.maxDamage ) then
-			meter.maxDamage 	= damage
-			meter.maxDamageName = name
-		end
 	end
-	
-	-- Stamp the time
-	meter.endTime = gametime
-	
-	-- Send data back to the FTC object
-	FTC.Damage.Meter = meter
 end

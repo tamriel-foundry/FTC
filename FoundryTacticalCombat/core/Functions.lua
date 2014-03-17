@@ -84,7 +84,7 @@ function FTC:ToggleVisibility( eventCode , isHidden )
 		
 	end
 	
-	if( FTC.SCT.init) then
+	if( FTC.init.SCT) then
 		FTC_CombatTextOut:SetHidden( isHidden )
 		FTC_CombatTextIn:SetHidden( isHidden )
 	end

@@ -127,7 +127,7 @@ function FTC.OnCombatEvent( eventCode , result , isError , abilityName, abilityG
 	}
 	
 	-- Pass the damage object to SCT if it is enabled
-	if ( FTC.SCT.init ) then FTC.SCT:NewCombat( damage , context ) end
+	if ( FTC.init.SCT ) then FTC.SCT:NewCombat( damage , context ) end
 	
 	-- Pass damage to damage meter tracking
 	if ( FTC.Damage.init ) then	FTC.Damage:UpdateMeter( damage , context ) end
@@ -158,7 +158,7 @@ end
 function FTC.OnXPUpdate( ... )
 
 	-- Pass experience to scrolling combat text component
-	if ( FTC.SCT.init ) then 
+	if ( FTC.init.SCT ) then 
 		FTC.SCT:NewExp( ... )
 	end
 
@@ -171,7 +171,7 @@ end
 function FTC.OnVPUpdate( ... )
 
 	-- Pass experience to scrolling combat text component
-	if ( FTC.SCT.init ) then 
+	if ( FTC.init.SCT ) then 
 		FTC.SCT:NewExp( ... )
 	end
 
@@ -184,7 +184,7 @@ end
 function FTC.OnAPUpdate( ... )
 
 	-- Pass alliance points to scrolling combat text component
-	if ( FTC.SCT.init ) then 
+	if ( FTC.init.SCT ) then 
 		FTC.SCT:NewAP( ... )
 	end
 

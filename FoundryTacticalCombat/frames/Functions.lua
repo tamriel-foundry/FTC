@@ -78,8 +78,8 @@ end
 		end
 		
 		-- Check if there's already an active alert
-		for i = 1 , #FTC.SCTStat , 1 do
-			if ( FTC.SCTStat[i].type == aType ) then ignore = true end
+		for i = 1 , #FTC.SCT.Stat , 1 do
+			if ( FTC.SCT.Stat[i].type == aType ) then ignore = true end
 		end
 		
 		-- Setup a new SCT object
@@ -95,7 +95,7 @@ end
 				["blocked"]	= false,
 				["immune"]	= false
 			}
-			table.insert( FTC.SCTStat, newSCT )	
+			table.insert( FTC.SCT.Stat, newSCT )	
 		end
 	end
 
