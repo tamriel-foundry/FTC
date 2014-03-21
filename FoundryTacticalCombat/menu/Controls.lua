@@ -46,9 +46,11 @@ function FTC.Menu:Controls()
 	if ( FTC.vars.EnableSCT ) then 
 		LAM:AddHeader( FTC.Menu.id , "FTC_Settings_SCTHeader", "Scrolling Combat Text Settings")
 		
-		LAM:AddSlider( FTC.Menu.id , "FTC_Settings_SCTSpeed", "Combat Text Scroll Speed", "Adjust combat text scroll speed.", 1, 10, 1, function() return FTC.vars.SCTSpeed end, function( value ) FTC.Menu:Slider( "SCTSpeed" , value ) end )
+		LAM:AddSlider( FTC.Menu.id , "FTC_Settings_SCTSpeed", "Combat Text Scroll Speed", "Adjust combat text scroll speed.", 1, 10, 1, function() return FTC.vars.SCTSpeed end, function( value ) FTC.Menu:Update( "SCTSpeed" , value ) end )
 		
 		LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_SCTNames", "Display Ability Names", "Display ability names in combat text?", function() return FTC.vars.SCTNames end , function() FTC.Menu:Toggle( 'SCTNames' ) end , true , "Reloads UI" )
+		
+		LAM:AddDropdown( FTC.Menu.id , "FTC_Settings_SCTPath", "Scroll Path Animation", "Choose scroll animation.", { "Arc", "Line" }, function() return FTC.vars.SCTPath end, function( value )  FTC.Menu:Update( "SCTPath" , value ) end )
 	end
 	
 	-- Restore defaults

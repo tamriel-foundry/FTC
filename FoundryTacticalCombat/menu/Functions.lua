@@ -41,7 +41,7 @@ end
  * Toggles current setting for a variable
  * Called by elements created in FTC.Menu:Controls()
  ]]-- 
-function FTC.Menu:Slider( setting , value )
+function FTC.Menu:Update( setting , value )
 	FTC.vars[setting] = value
 end
 

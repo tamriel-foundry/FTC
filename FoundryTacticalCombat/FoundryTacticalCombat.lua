@@ -10,9 +10,9 @@
 	* (3) Enemy Cast-Bar
 	* (4) Scrolling Combat Text and Damage Meter
 	* 
-	* Version 0.15
+	* Version 0.17
 	* atropos@tamrielfoundry.com
-	* 3-13-2014
+	* 3-17-2014
   ]]--
 
 --[[----------------------------------------------------------
@@ -21,7 +21,7 @@
 FTC 					= {}
 FTC.name				= "FoundryTacticalCombat"
 FTC.command				= "/ftc"
-FTC.version				= 0.16
+FTC.version				= 0.17
 
 -- Default Saved Variables
 FTC.defaults			= {
@@ -32,6 +32,7 @@ FTC.defaults			= {
 	["SCTCount"]			= 20,
 	["SCTSpeed"]			= 5,
 	["SCTNames"]			= true,
+	["SCTPath"]				= 'Arc',
 	["NumBuffs"]			= 12,
 	["FTC_PlayerFrame_X"]	= -400,
 	["FTC_PlayerFrame_Y"]	= 300,

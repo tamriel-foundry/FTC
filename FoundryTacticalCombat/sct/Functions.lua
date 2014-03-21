@@ -227,13 +227,13 @@ function FTC.SCT:Update(context)
 				local name	= damage.name
 
 				-- Set default appearance
-				local font	= 'FoundryTacticalCombat/lib/Metamorphous.otf|20|soft-shadow-thick'
+				local font	= 'FoundryTacticalCombat/lib/Metamorphous.otf|16|soft-shadow-thick'
 				local alpha = 0.8
 
 				-- Flag critical hits
 				if ( damage.crit == true ) then
 					dam 	= "*" .. dam .. "*"
-					font	= 'FoundryTacticalCombat/lib/Metamorphous.otf|24|soft-shadow-thick'
+					font	= 'FoundryTacticalCombat/lib/Metamorphous.otf|20|soft-shadow-thick'
 					alpha	= 1
 				end
 				
@@ -301,10 +301,12 @@ function FTC.SCT:Update(context)
 				-- Scroll the vertical position
 				offsetY			= offsetY - height * ( lifespan / duration )
 				
-				-- Ease the horizontal ( f(x) = 4x^2 - 4x + 1 )
-				local ease		= lifespan / duration
-				offsetX			= 100 * ( ( 4 * ease * ease ) - ( 4 * ease ) + 1 )
-				offsetX			= ( context == "Out" ) and offsetX or -1 * offsetX
+				-- Horizontal arcing
+				if ( FTC.vars.SCTPath == 'Arc' ) then
+					local ease		= lifespan / duration
+					offsetX			= 100 * ( ( 4 * ease * ease ) - ( 4 * ease ) + 1 )
+					offsetX			= ( context == "Out" ) and offsetX or -1 * offsetX
+				end
 
 				-- Adjust the position
 				container:SetAnchor(BOTTOM,parent,BOTTOM,offsetX,offsetY)
