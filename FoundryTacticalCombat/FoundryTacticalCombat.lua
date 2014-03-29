@@ -7,12 +7,11 @@
 	* several components:
 	* (1) Enhanced Heads-Up-Display
 	* (2) Active Buff Tracking
-	* (3) Enemy Cast-Bar
 	* (4) Scrolling Combat Text and Damage Meter
 	* 
-	* Version 0.17
+	* Version 0.23
 	* atropos@tamrielfoundry.com
-	* 3-17-2014
+	* 3-30-2014
   ]]--
 
 --[[----------------------------------------------------------
@@ -21,33 +20,47 @@
 FTC 					= {}
 FTC.name				= "FoundryTacticalCombat"
 FTC.command				= "/ftc"
-FTC.version				= 0.17
+FTC.version				= 0.23
 
 -- Default Saved Variables
 FTC.defaults			= {
-	["EnableBuffs"] 		= true,
-	["EnableCastbar"] 		= true,
-	["EnableSCT"] 			= true,
-	["EnableFrames"] 		= true,
-	["SCTCount"]			= 20,
-	["SCTSpeed"]			= 5,
-	["SCTNames"]			= true,
-	["SCTPath"]				= 'Arc',
-	["NumBuffs"]			= 12,
-	["FTC_PlayerFrame_X"]	= -400,
-	["FTC_PlayerFrame_Y"]	= 300,
-	["FTC_TargetFrame_X"]	= 400,
-	["FTC_TargetFrame_Y"]	= 300,
+
+	-- Components
+	["EnableBuffs"] 			= true,
+	["EnableSCT"] 				= true,
+	["EnableFrames"] 			= true,
+	
+	-- Scrolling Combat Text
+	["SCTCount"]				= 20,
+	["SCTSpeed"]				= 3,
+	["SCTNames"]				= true,
+	["SCTPath"]					= 'Arc',
+	["FTC_CombatTextOut"]		= {TOP,TOP,-400,80},
+	["FTC_CombatTextIn"]		= {TOP,TOP,400,80},
+	["FTC_CombatTextStatus"]	= {TOP,TOP,0,80},
+	
+	-- Buffs
+	["NumBuffs"]				= 12,
+	["EnableLongBuffs"]			= true,
+	["FTC_LongBuffs"]			= {BOTTOMRIGHT,BOTTOMRIGHT,-5,-5},
+	
+	-- Frames
+	["EnableXPBar"]				= true,
+	["EnableNameplate"]			= true,
+	["FTC_PlayerFrame"]			= {CENTER,CENTER,-400,300},
+	["FTC_TargetFrame"]			= {CENTER,CENTER,400,275},
 	}
 
 -- Component Management
 FTC.init 				= {}
 FTC.debug				= {
 	["buffs"]			= false,
-	["castbar"]			= false,
 	["sct"]				= false,
 	["hud"]				= false
 	}
+
+-- Allow the frames to be moved?
+FTC.move = false
 	
 --[[ 
  * Initialization function
@@ -71,9 +84,6 @@ function FTC.Initialize( eventCode, addOnName )
 	-- Damage Tracking Component
 	FTC.Damage:Initialize()
 	
-	-- Castbar Component
-	if ( FTC.vars.EnableCastbar ) then FTC.Castbar:Initialize()	end
-	
 	-- Active Buffs Component
 	if ( FTC.vars.EnableBuffs ) then FTC.Buffs:Initialize() end
 
@@ -81,7 +91,6 @@ function FTC.Initialize( eventCode, addOnName )
 	if ( FTC.vars.EnableSCT ) then FTC.SCT:Initialize()	end
 	
 	-- Setup settings component
-	--FTC.InitializeSettings()
 	FTC.Menu.Initialize()
 	
 	-- Register event listeners
@@ -94,10 +103,7 @@ function FTC.Initialize( eventCode, addOnName )
 	SLASH_COMMANDS[FTC.command] = FTC.Slash
 	
 	-- Fire a callback after setup
-	--CALLBACK_MANAGER:FireCallbacks("FTC_Ready")
-	
-	-- Load the current target
-	FTC:UpdateTarget()
+	CALLBACK_MANAGER:FireCallbacks("FTC_Ready")
 end
 
 -- Hook initialization onto the EVENT_ADD_ON_LOADED listener
@@ -115,24 +121,27 @@ EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ADD_ON_LOADED , FTC.Initialize )
 function FTC:Update()
 
 	-- Active Buffs Component
-	if ( FTC.Buffs.init ) then
-		FTC.Buffs:UpdateBuffs( 'Player' )
-		FTC.Buffs:UpdateBuffs( 'Target' )
-	end
+	if ( FTC.init.Buffs ) then
 	
-	-- Castbar Component
-	if ( FTC.Castbar.init ) then
-		FTC.Castbar:Update('Player')
-		FTC.Castbar:Update('Target')
+		-- Update buff timers
+		if ( FTC.BufferScript( 'FTCBuffs' , 10 ) ) then
+			FTC.Buffs:Update( 'Player' )
+			FTC.Buffs:Update( 'Target' )
+		end
+		
+		-- Check for ability casts
+		if ( FTC.BufferScript( 'FTCCast' , 100 ) ) then
+			FTC.Buffs:CheckCast()
+		end
+
 	end
 	
 	-- Scrolling Combat Text Component
 	if ( FTC.init.SCT ) then
 		FTC.SCT:Update('In')
 		FTC.SCT:Update('Out')
-		--FTC.SCT:Update('Stat')
+		FTC.SCT:UpdateAlerts()
 	end
-
 end
 
 --[[----------------------------------------------------------

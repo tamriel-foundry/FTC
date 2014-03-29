@@ -49,9 +49,9 @@ function FTC.BufferScript( bufferKey , bufferTime )
 	local currentTime = GetFrameTimeMilliseconds()
 	
 	-- Check the buffer table to make sure the function is eligible
-	if not FTC.buffers[bufferKey] then FTC.buffers[bufferKey] = ct end
-	if ( ct - FTC.buffers[bufferKey] >= bufferTime ) then
-		FTC.buffers[bufferKey] = ct
+	if not FTC.buffers[bufferKey] then FTC.buffers[bufferKey] = currentTime end
+	if ( currentTime - FTC.buffers[bufferKey] >= bufferTime ) then
+		FTC.buffers[bufferKey] = currentTime
 		return true
 	else
 		return false
@@ -64,36 +64,30 @@ end
  * Called by OnReticleHidden()
  ]]-- 
 function FTC:ToggleVisibility( eventCode , isHidden )
+
+	-- Are we in move mode?
+	if( FTC.move ) then isHidden = false end
 	
-	-- Otherwise, hide FTC windows
-	FTC_CharSheet:SetHidden( ( FTC_CharSheet:IsHidden() == true ) and true or isHidden )
-	
-	-- Toggle unit frames
-	if( FTC.Frames.init ) then
-		
-		-- Always show frames if we are in move mode
-		if( FTC.Frames.move ) then
-			FTC_PlayerFrame:SetHidden( false )
-			FTC_TargetFrame:SetHidden( false )
-		
-		-- Otherwise toggle visibility
-		else
-			FTC_PlayerFrame:SetHidden( isHidden )
-			FTC_TargetFrame:SetHidden( isHidden )
-		end
-		
+	-- Hide unit frames
+	if( FTC.init.Frames ) then		
+		FTC_PlayerFrame:SetHidden( isHidden )
+		FTC_TargetFrame:SetHidden( isHidden )
 	end
 	
+	-- Hide SCT elements
 	if( FTC.init.SCT) then
 		FTC_CombatTextOut:SetHidden( isHidden )
 		FTC_CombatTextIn:SetHidden( isHidden )
 	end
 	
-	if( FTC.Buffs.init ) then
+	-- Hide buff elements
+	if( FTC.init.Buffs ) then
 		FTC_PlayerBuffs:SetHidden( isHidden )
+		FTC_PlayerDebuffs:SetHidden( isHidden )
 		FTC_TargetBuffs:SetHidden( isHidden )
+		FTC_TargetDebuffs:SetHidden( isHidden )
+		if ( FTC.vars.EnableLongBuffs ) then FTC_LongBuffs:SetHidden( isHidden ) end
 	end
-
 end
 
 --[[ 
@@ -112,16 +106,22 @@ function FTC:UpdateTarget()
 	if FTC:IsCritter( target ) then ignore = true end
 	
 	-- Only display the target frame for valid targets OR move mode
-	if( FTC.Frames.init ) then 
-		if ( FTC.Frames.move ) then ignore = false end
+	if( FTC.init.Frames ) then 
+		if ( FTC.move ) then ignore = false end
 		FTC_TargetFrame:SetHidden( ignore )
 	end
 	
-	-- Toggle display of buffs
-	if( FTC.Buffs.init ) then
+	-- Update display of target buffs
+	if( FTC.init.Buffs ) then 		
+	
+		-- Update target buffs
+		FTC.Buffs:GetBuffs( 'reticleover' )
+		
+		-- Toggle visibility of target buffs
 		FTC_TargetBuffs:SetHidden( ignore )
-		FTC_TargetDebuffs:SetHidden( ignore )
 	end
+	
+	-- Only update saved data for valid targets
 	if ( ignore ) then return end
 	
 	-- Update the saved target
@@ -132,13 +132,6 @@ function FTC:UpdateTarget()
 	
 	-- Setup the new target frame
 	FTC.Frames.SetupTarget()
-	
-	-- Get new target buffs
-	if ( FTC.vars.EnableBuffs ) then
-		FTC.TargetBuffs	= {}
-		FTC.ClearBuffIcons(	'Target', 1 , 1 , 1 )
-		FTC.Buffs:GetBuffs( 'reticleover' )
-	end
 end
 
 
@@ -175,6 +168,8 @@ function FTC:IsCritter( targetName )
 		"Spider",
 		"Scorpion",
 		"Goat",
+		"Scrib",
+		"Scuttler",
 	}
 	
 	-- Is the target a critter?

@@ -6,52 +6,41 @@
 	* Runs during FTC:Initialize()
   ]]--
  
-FTC.Player = {}
+FTC.Player = {}		
 function FTC.Player:Initialize()
 
 	-- Setup initial character information
-	local character		= {
-		["name"] 		= GetUnitName( 'player' ),
-		["race"]		= GetUnitRace( 'player' ),
-		["class"]		= GetUnitClass( 'player' ),
-		["nicename"]	= string.gsub( GetUnitName( 'player' ) , "%-", "%%%-"),
-		["level"]		= GetUnitLevel('player'),
-		["vlevel"]		= GetUnitVeteranRank('player'),
-		["alevel"]		= GetUnitAvARank('player'),
-		["exp"]			= GetUnitXP('player'),
-		["vet"]			= GetUnitVeteranPoints('player'),
-		["health"]		= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
-		["magicka"]		= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
-		["stamina"]		= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
-		["shield"]		= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
-	}
+	FTC.Player.name		= GetUnitName( 'player' )
+	FTC.Player.race		= GetUnitRace( 'player' )
+	FTC.Player.class	= GetUnitClass( 'player' )
+	FTC.Player.nicename	= string.gsub( GetUnitName( 'player' ) , "%-", "%%%-")
+
+	-- Get experience level
+	FTC.Player:GetLevel()
 	
 	-- Load starting attributes
 	local stats = {
-		{ ["name"] = "health" , ["id"] = POWERTYPE_HEALTH },
-		{ ["name"] = "magicka" , ["id"] = POWERTYPE_MAGICKA },
-		{ ["name"] = "stamina" , ["id"] = POWERTYPE_STAMINA }
+		{ ["name"] = "health" 	, ["id"] = POWERTYPE_HEALTH },
+		{ ["name"] = "magicka" 	, ["id"] = POWERTYPE_MAGICKA },
+		{ ["name"] = "stamina" 	, ["id"] = POWERTYPE_STAMINA },
+		{ ["name"] = "ultimate" , ["id"] = POWERTYPE_ULTIMATE }
 	}
 	for i = 1 , #stats , 1 do
 		local current, maximum, effMax = GetUnitPower( "player" , stats[i].id )
-		character[stats[i].name] = { ["current"] = current , ["max"] = effMax , ["pct"] = math.floor( ( current / effMax ) * 100 ) }
+		FTC.Player[stats[i].name] = { ["current"] = current , ["max"] = effMax , ["pct"] = math.floor( ( current / effMax ) * 100 ) }
 	end
-	
-	-- Populate the character object
-	for attr , value in pairs( character ) do FTC.Player[attr] = value end
-	
+
 	-- Create character sheet controls
 	FTC.Player:Controls()
 	
 	-- Populate the character sheet
-	FTC.Player:Update( nil , 'player' )
+	FTC.Player:UpdateSheet()
 	
 	-- Register Keybinding
 	ZO_CreateStringId("SI_BINDING_NAME_DISPLAY_CHARACTER_SHEET", "Display Character Sheet")
 	
 	-- Register init status
 	FTC.Player.init = true
-	
 end
 
 FTC.Target = {}
@@ -79,15 +68,11 @@ end
 	EVENT HANDLERS
  ]]-----------------------------------------------------------
  
- 
   --[[ 
  * Updates the character sheet and character attributes
  * Called by OnStatsUpdated()
  ]]--
-function FTC.Player:Update( eventCode , unitTag )
-
-	-- Make sure we're targetting the player
-	if ( "player" ~= unitTag ) then return end
+function FTC.Player:UpdateSheet()
 	
 	-- No need to update unless the character sheet is displayed
 	if ( FTC_CharSheet:IsHidden() ) then return end
@@ -156,6 +141,25 @@ function FTC.Player:Update( eventCode , unitTag )
 	end
 end
 
+
+--[[----------------------------------------------------------
+	HELPER FUNCTIONS
+ ]]-----------------------------------------------------------
+ 
+  --[[ 
+ * Populates the character level
+ * Called by Initialize()
+ * Called by OnXPUpdate()
+ * Called by OnVPUpdate()
+ ]]-- 
+function FTC.Player:GetLevel()
+	FTC.Player.level	= GetUnitLevel('player')
+	FTC.Player.vlevel	= GetUnitVeteranRank('player')
+	FTC.Player.alevel	= GetUnitAvARank('player')
+	FTC.Player.exp		= GetUnitXP('player')
+	FTC.Player.vet		= GetUnitVeteranPoints('player')
+end
+
   --[[ 
  * Toggles the display of the character sheet
  * Called by hotkey activation
@@ -170,5 +174,5 @@ function FTC.Player:DisplaySheet()
 	FTC_CharSheet:SetHidden( not isHidden )
 	
 	-- Maybe update the sheet
-	if isHidden then FTC.Player:Update( nil , 'player' ) end
+	if isHidden then FTC.Player:UpdateSheet() end
 end

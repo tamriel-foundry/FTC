@@ -20,38 +20,34 @@ function FTC.Menu:Controls()
 	
 	-- Toggle components
 	LAM:AddHeader( FTC.Menu.id , "FTC_Settings_ComponentsHeader", "Configure Components")
-
 	LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_ComponentsFrames", "Enable Frames", "Enable custom unit frames component?", function() return FTC.vars.EnableFrames end , function() FTC.Menu:Toggle( 'EnableFrames' , true ) end , true , "Reloads UI" )
-
-	LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_ComponentsBuffs", "Enable Buffs", "Enable active buff tracking component?", function() return FTC.vars.EnableBuffs end , function() FTC.Menu:Toggle( 'EnableBuffs' , true ) end , true , "Reloads UI" )
-	
-	LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_ComponentsCastbar", "Enable Castbar", "Enable castbars component?", function() return FTC.vars.EnableCastbar end , function() FTC.Menu:Toggle( 'EnableCastbar' , true ) end , true , "Reloads UI" )
-	
+	LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_ComponentsBuffs", "Enable Buffs", "Enable active buff tracking component?", function() return FTC.vars.EnableBuffs end , function() FTC.Menu:Toggle( 'EnableBuffs' , true ) end , true , "Reloads UI" )	
 	LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_ComponentsSCT", "Enable Combat Text", "Enable scrolling combat text component?", function() return FTC.vars.EnableSCT end , function() FTC.Menu:Toggle( 'EnableSCT' , true ) end , true , "Reloads UI" )
 
 	-- Unit frames settings
 	if ( FTC.vars.EnableFrames ) then 
-		LAM:AddHeader( FTC.Menu.id , "FTC_Settings_FramesHeader", "Unit Frames Settings")
-		
-		LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_FramesUnlock", "Lock Positions", "Modify unit frame positions?" , function() return not FTC.Frames.move end , function() FTC.Menu:MoveFrames() end )
+		LAM:AddHeader( FTC.Menu.id , "FTC_Settings_FramesHeader", "Unit Frames Settings")	
+		LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_EnableNameplate", "Show Player Nameplate", "Show your own character's nameplate?", function() return FTC.vars.EnableNameplate end , function() FTC.Menu:Toggle( 'EnableNameplate' ) end )	
+		LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_EnableXPBar", "Enable Mini Experience Bar", "Show a small experience bar on the player frame?", function() return FTC.vars.EnableXPBar end , function() FTC.Menu:Toggle( 'EnableXPBar' ) end )	
 	end
 
-	--[[ Buffs settings
+	-- Buffs settings
 	if ( FTC.vars.EnableBuffs ) then 
-		LAM:AddHeader( FTC.Menu.id , "FTC_Settings_BuffsHeader", "Buff Tracker Settings")
+		LAM:AddHeader( FTC.Menu.id , "FTC_Settings_BuffsHeader", "Buff Tracker Settings")		
+		LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_EnableLongBuffs", "Display Long Buffs", "Track long duration player buffs?", function() return FTC.vars.EnableLongBuffs end , function() FTC.Menu:Toggle( 'EnableLongBuffs' ) end )
 	end
-	]]--
 	
 	-- Scrolling combat text settings
 	if ( FTC.vars.EnableSCT ) then 
-		LAM:AddHeader( FTC.Menu.id , "FTC_Settings_SCTHeader", "Scrolling Combat Text Settings")
-		
-		LAM:AddSlider( FTC.Menu.id , "FTC_Settings_SCTSpeed", "Combat Text Scroll Speed", "Adjust combat text scroll speed.", 1, 10, 1, function() return FTC.vars.SCTSpeed end, function( value ) FTC.Menu:Update( "SCTSpeed" , value ) end )
-		
-		LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_SCTNames", "Display Ability Names", "Display ability names in combat text?", function() return FTC.vars.SCTNames end , function() FTC.Menu:Toggle( 'SCTNames' ) end , true , "Reloads UI" )
-		
+		LAM:AddHeader( FTC.Menu.id , "FTC_Settings_SCTHeader", "Scrolling Combat Text Settings")		
+		LAM:AddSlider( FTC.Menu.id , "FTC_Settings_SCTSpeed", "Combat Text Scroll Speed", "Adjust combat text scroll speed.", 1, 5, 1, function() return FTC.vars.SCTSpeed end, function( value ) FTC.Menu:Update( "SCTSpeed" , value ) end )		
+		LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_SCTNames", "Display Ability Names", "Display ability names in combat text?", function() return FTC.vars.SCTNames end , function() FTC.Menu:Toggle( 'SCTNames' ) end , true , "Reloads UI" )		
 		LAM:AddDropdown( FTC.Menu.id , "FTC_Settings_SCTPath", "Scroll Path Animation", "Choose scroll animation.", { "Arc", "Line" }, function() return FTC.vars.SCTPath end, function( value )  FTC.Menu:Update( "SCTPath" , value ) end )
 	end
+	
+	-- Reposition elements
+	LAM:AddHeader( FTC.Menu.id , "FTC_Settings_PositionHeader", "Reposition FTC Elements")
+	LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_FramesUnlock", "Lock Positions", "Modify FTC frame positions?" , function() return not FTC.move end , function() FTC.Menu:MoveFrames() end )
 	
 	-- Restore defaults
 	LAM:AddHeader( FTC.Menu.id , "FTC_Settings_ResetHeader", "Reset Settings")

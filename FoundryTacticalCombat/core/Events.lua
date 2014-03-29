@@ -17,6 +17,9 @@ function FTC:RegisterEvents()
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_RETICLE_HIDDEN_UPDATE  		, FTC.OnReticleHidden )
 	
 	-- Buff Events
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_SLOTS_FULL_UPDATE		, FTC.OnSlotUpdate )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_SLOT_ABILITY_SLOTTED	, FTC.OnSlotUpdate )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_UPDATE_COOLDOWNS		, FTC.OnUpdateCooldowns )
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_EFFECT_CHANGED 				, FTC.OnEffectChanged )
 	
 	-- Combat Events
@@ -24,14 +27,13 @@ function FTC:RegisterEvents()
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_DEATH_STATE_CHANGED		, FTC.OnDeath )
 	
 	-- Experience Events
-	--EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_EXPERIENCE_UPDATE 			, FTC.OnXPUpdate )
-	--EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_VETERAN_POINTS_UPDATE 		, FTC.OnVPUpdate )
-	--EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ALLIANCE_POINT_UPDATE  		, FTC.OnAPUpdate )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_EXPERIENCE_UPDATE 			, FTC.OnXPUpdate )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_VETERAN_POINTS_UPDATE 		, FTC.OnXPUpdate )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ALLIANCE_POINT_UPDATE  		, FTC.OnAPUpdate )
 	
 	-- Attribute Changes
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_POWER_UPDATE 					, FTC.OnPowerUpdate )
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_STATS_UPDATED 				, FTC.OnStatsUpdated )
-	
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED  	, FTC.OnVisualAdded ) 
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_REMOVED , FTC.OnVisualRemoved )
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_UPDATED , FTC.OnVisualUpdate )
@@ -45,17 +47,11 @@ end
  * Runs during FTC:Initialize()
  ]]--
 function FTC:UnregisterEvents()
-
-	-- We no longer need to initialize
 	EVENT_MANAGER:UnregisterForEvent( "FTC" , EVENT_ADD_ON_LOADED )
-
 end
 
-
-
-
 --[[----------------------------------------------------------
-	EVENT HANDLERS
+	TARGET EVENTS
   ]]----------------------------------------------------------
  
 --[[ 
@@ -69,6 +65,10 @@ function FTC.OnTargetChanged()
 	
 end
 
+--[[----------------------------------------------------------
+	INTERFACE EVENTS
+  ]]----------------------------------------------------------
+
 --[[ 
  * Runs on the EVENT_RETICLE_HIDDEN_UPDATE listener.
  * This handler fires every time the interface mode is changed from reticle to cursor
@@ -80,21 +80,68 @@ function FTC.OnReticleHidden( ... )
 	
 end
 
+--[[----------------------------------------------------------
+	BUFF EVENTS
+  ]]----------------------------------------------------------
+
+--[[ 
+ * Runs on the EVENT_ACTION_SLOTS_FULL_UPDATE listener.
+ * Runs on the EVENT_ACTION_SLOT_ABILITY_SLOTTED listener.
+ * Runs on the EVENT_STATS_UPDATED listener.
+ * This handler fires every time the player changes the contents of their action bar
+ ]]--
+function FTC.OnSlotUpdate( eventCode , ... )
+	
+	-- Hotbars swappped
+	if ( eventCode == EVENT_ACTION_SLOTS_FULL_UPDATE ) then
+		FTC.Buffs:GetHotbar()
+	
+	-- Hotbar ability changed
+	elseif ( eventCode == EVENT_ACTION_SLOT_ABILITY_SLOTTED ) then
+		local isNew = select( 1 , ... )
+		if ( isNew ) then FTC.Buffs:GetHotbar() end
+	end		
+end
+
+--[[ 
+ * Runs on the EVENT_ACTION_UPDATE_COOLDOWNS listener.
+ * This handler fires every time the player uses an active ability
+ ]]--
+function FTC.OnUpdateCooldowns( ... )
+	
+	-- Maybe process a ground-target spell
+	if ( FTC.init.Buffs ) then
+		if ( FTC.Buffs.ground ~= nil ) then
+			FTC.Buffs:NewEffects( FTC.Buffs.ground )
+			FTC.Buffs.ground = nil
+		end
+	end
+end
+
 --[[ 
  * Runs on the EVENT_EFFECT_CHANGED listener.
  * This handler fires every time a buff effect on a valid unitTag is changed
  ]]--
 function FTC.OnEffectChanged( ... )
 	
-	-- Grab relevant arguments
-	local unitTag 	= select( 5 , ... )
-
-	-- Retrieve current buffs if the buffs component is active
-	if ( FTC.Buffs.init ) then 
-		FTC.Buffs:GetBuffs( unitTag ) 
-	end
+	-- Otherwise retrieve current buffs if the buffs component is active
+	if ( FTC.init.Buffs ) then 
 	
+		-- Grab relevant arguments
+		local changeType 	= select( 2 , ... )
+		local unitTag 		= select( 5 , ... )	
+
+		-- Remove expired buffs
+		if ( changeType == 2 ) then FTC.Buffs:Remove( ... )
+		
+		-- Otherwise get new buffs
+		else FTC.Buffs:GetBuffs( unitTag ) end
+	end
 end
+
+--[[----------------------------------------------------------
+	COMBAT EVENTS
+  ]]----------------------------------------------------------
 
 --[[ 
  * Runs on the EVENT_COMBAT_EVENT listener.
@@ -127,10 +174,13 @@ function FTC.OnCombatEvent( eventCode , result , isError , abilityName, abilityG
 	}
 	
 	-- Pass the damage object to SCT if it is enabled
-	if ( FTC.init.SCT ) then FTC.SCT:NewCombat( damage , context ) end
+	if ( FTC.init.SCT ) then FTC.SCT:NewSCT( damage , context ) end
 	
 	-- Pass damage to damage meter tracking
 	if ( FTC.Damage.init ) then	FTC.Damage:UpdateMeter( damage , context ) end
+	
+	-- Pass damage to a callback for extensions to use
+	CALLBACK_MANAGER:FireCallbacks( "FTC_NewDamage" , damage )
 end
 
 
@@ -139,20 +189,29 @@ end
  * This handler fires every time a valid unitTag dies or is resurrected
  ]]--
 function FTC.OnDeath( ... )
+
+	-- Get the unitTag
+	local unitTag = select( 2 , ... )
 	
-	-- Do stuff to the player frame
-	
-	-- Do stuff to the target frame
+	-- Wipe target buffs and debuffs
+	if ( FTC.init.Buffs and unitTag == 'reticleover' ) then 
+		FTC.Buffs:WipeBuffs( unitTag ) 
+	end
 	
 	-- Display killspam alerts
-	
-	--d( 'something died!' )
-	
+	if ( FTC.init.SCT ) then
+		FTC.SCT:Deathspam( ... )
+	end
 end
 
 
+--[[----------------------------------------------------------
+	EXPERIENCE EVENTS
+  ]]----------------------------------------------------------
+
 --[[ 
  * Runs on the EVENT_EXPERIENCE_UPDATE listener.
+ * Runs on the EVENT_VETERAN_POINTS_UPDATE listener.
  * This handler fires every time the player earns experience
  ]]--
 function FTC.OnXPUpdate( ... )
@@ -161,20 +220,17 @@ function FTC.OnXPUpdate( ... )
 	if ( FTC.init.SCT ) then 
 		FTC.SCT:NewExp( ... )
 	end
-
-end
-
---[[ 
- * Runs on the EVENT_VETERAN_POINTS_UPDATE listener.
- * This handler fires every time the player earns veteran points
- ]]--
-function FTC.OnVPUpdate( ... )
-
-	-- Pass experience to scrolling combat text component
-	if ( FTC.init.SCT ) then 
-		FTC.SCT:NewExp( ... )
+	
+	-- Update the player level
+	FTC.Player:GetLevel()
+	
+	-- Update the player frame
+	if ( FTC.init.Frames ) then
+		FTC.Frames:SetupPlayer( ... )
 	end
-
+	
+	-- Maybe the character sheet exp bar
+	FTC.Player:UpdateSheet()
 end
 
 --[[ 
@@ -187,9 +243,11 @@ function FTC.OnAPUpdate( ... )
 	if ( FTC.init.SCT ) then 
 		FTC.SCT:NewAP( ... )
 	end
-
 end
 
+--[[----------------------------------------------------------
+	ATTRIBUTE CHANGES
+  ]]----------------------------------------------------------
 
 --[[ 
  * Runs on the EVENT_POWER_UPDATE listener.
@@ -197,23 +255,38 @@ end
  ]]--
 function FTC.OnPowerUpdate( eventCode , unitTag, powerIndex, powerType, powerValue, powerMax, powerEffectiveMax )
 	
-	-- Update Health/Stamina/Magicka
-	if ( ( unitTag == 'player' or unitTag == 'reticleover' ) and ( powerType == POWERTYPE_HEALTH or powerType == POWERTYPE_MAGICKA or powerType == POWERTYPE_STAMINA ) ) then 
-		FTC.Frames:UpdateFrame( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
+	-- Update Player Health/Stamina/Magicka
+	if ( unitTag == 'player' and ( powerType == POWERTYPE_HEALTH or powerType == POWERTYPE_MAGICKA or powerType == POWERTYPE_STAMINA ) ) then 
 	
+		-- Bail if we're in mouse mode
+		if ( IsReticleHidden() ) then return end
+	
+		-- Maybe trigger a resource alert
+		if ( FTC.init.SCT ) then FTC.SCT:ResourceAlert( unitTag , powerType , powerValue , powerMax ) end
+		
+		-- Update the player frame
+		FTC.Frames:UpdateFrame( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
+		
+	-- Update Target Health
+	elseif ( unitTag == 'reticleover' and powerType == POWERTYPE_HEALTH ) then
+	
+		-- Bail if we're in mouse mode
+		if ( IsReticleHidden() ) then return end
+	
+		-- Maybe trigger a resource alert
+		if ( FTC.init.SCT ) then FTC.SCT:ResourceAlert( unitTag , powerType , powerValue , powerMax ) end
+		
+		-- Update the target frame
+		FTC.Frames:UpdateFrame( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
+		
 	-- Update Ultimate	
 	elseif ( unitTag == 'player' and powerType == POWERTYPE_ULTIMATE ) then
 		FTC.Frames:UpdateUltimate( powerValue , powerMax , powerEffectiveMax )
 	
 	-- Update Mount Stamina
-	elseif ( FTC.Frames.init and unitTag == 'player' and powerType == POWERTYPE_MOUNT_STAMINA ) then
+	elseif ( FTC.init.Frames and unitTag == 'player' and powerType == POWERTYPE_MOUNT_STAMINA ) then
 		FTC.Frames:UpdateMount( powerValue , powerMax , powerEffectiveMax )
-
-	-- Update Target-of-Target Health
-	elseif ( FTC.Frames.init and unitTag == "reticleovertarget" and powerType == POWERTYPE_HEALTH ) then
-		FTC.Frames:UpdateTarTar( powerValue , powerMax , powerEffectiveMax )
-	end
-
+	end	
 end
 
 --[[ 
@@ -222,11 +295,15 @@ end
  ]]--
 function FTC.OnStatsUpdated( ... )
 
-	-- Pass updated attributes to unit frames
-	if ( FTC.Player.init ) then 
-		FTC.Player:Update( ... )
+	-- Update the hotbar to account for spell cost reduction
+	if ( FTC.init.Buffs ) then
+		FTC.Buffs:GetHotbar()
 	end
 
+	-- Pass updated attributes to unit frames
+	if ( FTC.Player.init ) then 
+		FTC.Player:UpdateSheet()
+	end
 end
 
 --[[ 
@@ -236,12 +313,10 @@ end
 function FTC.OnMount( ... )
 
 	-- Display the custom horse stamina bar
-	if ( FTC.Frames.init ) then 
+	if ( FTC.init.Frames ) then 
 		FTC.Frames:DisplayMount( ... )
 	end
-
 end
-
 
 --[[ 
  * Runs on the EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED listener.
@@ -257,7 +332,6 @@ function FTC.OnVisualAdded( eventCode , unitTag, unitAttributeVisual, statType, 
 		FTC.Frames:UpdateShield( unitTag , value , maxValue )
 	end
 end
-
 
 --[[ 
  * Runs on the EVENT_UNIT_ATTRIBUTE_VISUAL_UPDATED listener.
@@ -288,4 +362,7 @@ function FTC.OnVisualRemoved( eventCode , unitTag, unitAttributeVisual, statType
 	if ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH ) then
 		FTC.Frames:UpdateShield( unitTag , 0 , maxValue )
 	end
+	
+	-- Purge any buffs related to damage shielding
+	if ( FTC.init.Buffs ) then FTC.Buffs:RemoveVisuals( unitTag , unitAttributeVisual , powerType ) end
 end

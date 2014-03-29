@@ -6,8 +6,16 @@
 	* Additional advanced properties must be set manually after creation.
   ]]--
 
+--[[ 
+ * Configure custom fonts
+ ]]-- 
+FTC.Fonts = {}
+function FTC.Fonts.meta( size )
+	local size = size or 14
+	return 'FoundryTacticalCombat/lib/Metamorphous.otf|'..size..'|soft-shadow-thick'
+end
+
 FTC.UI = {}
- 
 --[[ 
  * Top Level Window
  ]]-- 
@@ -100,6 +108,7 @@ function FTC.UI.Label( name , parent , dims , anchor , font , color , align , te
 		:SetHorizontalAlignment( align[1] )
 		:SetVerticalAlignment( align[2] )
 		:SetText( text )
+		:SetHidden( hidden )
 	.__END
 	return label
 end
@@ -137,7 +146,7 @@ function FTC.UI.Texture( name , parent , dims , anchor , tex , hidden )
 	parent = ( parent == nil ) and GuiRoot or parent
 	if ( dims == "inherit" or #dims ~= 2 ) then dims = { parent:GetWidth() , parent:GetHeight() } end
 	if ( #anchor ~= 4 and #anchor ~= 5 ) then return end
-	if ( tex == nil or tex == "" ) then return end
+	if ( tex == nil ) then tex = '/esoui/art/icons/icon_missing.dds' end
 	hidden = ( hidden == nil ) and false or hidden
 	
 	-- Create the backdrop

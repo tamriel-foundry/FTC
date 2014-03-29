@@ -12,7 +12,10 @@ function FTC.SCT:Initialize()
 	-- Setup tables
 	FTC.SCT.In		= {}
 	FTC.SCT.Out		= {}
-	FTC.SCT.Stat	= {}
+	FTC.SCT.Status	= {}
+	
+	-- Save tiny AP gains
+	FTC.SCT.backAP	= 0
 	
 	-- Create controls
 	FTC.SCT:Controls()
@@ -30,7 +33,7 @@ end
  * Process new combat events passed from the combat event handler
  * Called by FTC.Damage:New() if the damage is approved
  ]]--
-function FTC.SCT:NewCombat( newSCT , context )
+function FTC.SCT:NewSCT( newSCT , context )
 	
 	-- Get the existing entries
 	local damages	= FTC.SCT[context]
@@ -79,99 +82,6 @@ function FTC.SCT:NewCombat( newSCT , context )
 		-- Purge unused controls
 		else container.damage = {}	end
 	end	
-end
-
-
- --[[ 
-  * Handles experience events and adds them to the combat damage table.
-  * Runs on the EVENT_EXPERIENCE_UPDATE and EVENT_VETERAN_POINTS_UPDATE listeners.
- ]]--
-function FTC.SCT:NewExp( eventCode, unitTag, currentExp, maxExp, reason )
-	
-	-- Bail if it's not earned by the player
-	if ( unitTag ~= "player" ) then return end
-	
-	-- Don't display experience for level 50 characters
-	if ( eventCode == EVENT_EXPERIENCE_UPDATE and FTC.Player.level == 50 ) then return end
-	
-	-- Check whether it's VP or EXP
-	local isveteran = ( eventCode == EVENT_VETERAN_POINTS_UPDATE ) and true or false
-	
-	-- Ignore finesse bonuses, they will get rolled into the next reward
-	if ( reason == XP_REASON_FINESSE ) then return end
-	
-	-- Get the base experience
-	local base 	= isveteran and FTC.Player.vet or FTC.Player.exp
-	
-	-- Calculate the difference
-	local diff 	= currentExp - base
-	
-	-- Calculate percentage to level
-	local pct	= math.floor( 100 * ( currentExp / maxExp ) )
-	
-	-- Setup the name
-	local name = isveteran and "Veteran Points (" .. pct .. "%)" or "Experience (" .. pct .. "%)"
-	
-	-- Ignore zero experience rewards
-	if ( diff == 0 ) then return end
-	
-	-- Update the base experience
-	if ( isveteran ) then
-		FTC.Player.vet = currentExp
-	else
-		FTC.Player.exp = currentExp
-	end
-	
-	-- Update the character sheet exp bar
-	FTC.Player:Update( nil , 'player' )
-	
-	-- Setup a new SCT object
-	local newSCT = {
-		["name"]	= name,
-		["name"]	= name,
-		["dam"]		= diff,
-		["power"]	= 0,
-		["type"]	= 2000,
-		["ms"]		= GetGameTimeMilliseconds(),
-		["crit"]	= false,
-		["heal"]	= false,
-		["blocked"]	= false,
-		["immune"]	= false
-	}
-	table.insert( FTC.SCTStat, newSCT )
-end
-
- --[[ 
-  * Handles alliance point gains.
-  * Runs on the EVENT_ALLIANCE_POINT_UPDATE listener.
- ]]--
-function FTC.SCT:NewAP( eventCode, alliancePoints, playSound, difference )
-
-	-- Ignore tiny AP rewards
-	if ( difference  < 5 ) then return end
-	
-	-- Get AvA progress
-	local subStart, nextSub, rankStart, nextRank = GetAvARankProgress(alliancePoints)
-	
-	-- Calculate percentage to level
-	local pct	= math.floor( 100 * ( difference / ( nextSub - subStart ) ) )
-	
-	-- Setup the name
-	local name = "Alliance Points (" .. pct .. "%)"
-	
-	-- Setup a new SCT object
-	local newSCT = {
-		["name"]	= name,
-		["dam"]		= difference,
-		["power"]	= 0,
-		["type"]	= 2001,
-		["ms"]		= GetGameTimeMilliseconds(),
-		["crit"]	= false,
-		["heal"]	= false,
-		["blocked"]	= false,
-		["immune"]	= false
-	}
-	table.insert( FTC.SCTStat, newSCT )	
 end
 
 
@@ -227,40 +137,23 @@ function FTC.SCT:Update(context)
 				local name	= damage.name
 
 				-- Set default appearance
-				local font	= 'FoundryTacticalCombat/lib/Metamorphous.otf|16|soft-shadow-thick'
+				local font	= FTC.Fonts.meta(16)
 				local alpha = 0.8
 
 				-- Flag critical hits
 				if ( damage.crit == true ) then
 					dam 	= "*" .. dam .. "*"
-					font	= 'FoundryTacticalCombat/lib/Metamorphous.otf|20|soft-shadow-thick'
+					font	= FTC.Fonts.meta(20)
 					alpha	= 1
 				end
 				
 				-- Flag blocked damage
 				if ( damage.blocked == true ) then
-					dam		= "(" .. dam .. ")"
-				end
+					dam		= "|c990000(" .. dam .. ")|"
 				
 				-- Flag damage immunity
-				if ( damage.immune == true ) then
-					dam		= "(Immune)"
-				end
-				
-				-- Resource Alerts (Health = 998 , Stamina = 1006 , Magicka = 1000, Execute = 1001 )
-				if ( damage.type == 998 or damage.type == 999 ) then
-					container:SetColor(0.8,0,0,1)
-					font = "ZoFontBookTablet"
-				elseif ( damage.type == 1006 or damage.type == 1007 ) then
-					container:SetColor(0.4,0.8,0.4,1)
-					font = "ZoFontBookTablet"
-				elseif ( damage.type == 1000 or damage.type == 1001 ) then
-					container:SetColor(0.2,0.6,0.8,1)
-					font = "ZoFontBookTablet"
-			
-				-- Experience
-				elseif ( damage.type == 2000 or damage.type == 2001 ) then
-					dam	= "|c99FFFF+" .. dam .. "|"				
+				elseif ( damage.immune == true ) then
+					dam		= "|c990000(Immune)|"
 				
 				-- Flag heals
 				elseif( damage.heal == true ) then

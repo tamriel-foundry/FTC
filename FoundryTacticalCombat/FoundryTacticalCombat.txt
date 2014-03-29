@@ -1,5 +1,5 @@
 ## Title: Foundry Tactical Combat
-## APIVersion: 100000
+## APIVersion: 100003
 ## SavedVariables: FTC_VARS
 
 FoundryTacticalCombat.lua
@@ -12,10 +12,8 @@ core/UI.lua
 core/Events.lua
 
 buffs/Functions.lua
+buffs/Effects.lua
 buffs/Controls.lua
-
-castbar/Functions.lua
-castbar/Controls.lua
 
 character/Functions.lua
 character/Controls.lua
@@ -24,6 +22,7 @@ damage/Functions.lua
 damage/Controls.lua
 
 sct/Functions.lua
+sct/Alerts.lua
 sct/Controls.lua
 
 frames/Functions.lua
@@ -31,6 +30,9 @@ frames/Controls.lua
 
 menu/Functions.lua
 menu/Controls.lua
+
+extensions/Sorcerer.lua
+extensions/Weapons.lua
 
 FoundryTacticalCombat.xml
 bindings.xml

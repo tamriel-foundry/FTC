@@ -1,9 +1,10 @@
 <!----------------------------------------------------------
-	* Foundry Tactical Combat 
-	* Version 0.12
+	FOUNDRY TACTICAL COMBAT XML
+  ----------------------------------------------------------
+	* Version 0.18
 	* atropos@tamrielfoundry.com
-	* 2-7-2014
------------------------------------------------------------>
+	* 3-21-2014
+  -->
 <GuiXml>
     <Controls>
         <TopLevelControl name="FoundryTacticalCombat" mouseEnabled="false">

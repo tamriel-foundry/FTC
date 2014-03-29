@@ -7,9 +7,9 @@
   ]]--
 
 FTC.Menu = {
-			["name"] 	= "FTC_SettingsPanel",
-			["title"] 	= "FTC Settings",
-			}
+	["name"] 	= "FTC_SettingsPanel",
+	["title"] 	= "FTC Settings",
+}
 
 LAM = LibStub("LibAddonMenu-1.0")		
 function FTC.Menu.Initialize()
@@ -19,7 +19,6 @@ function FTC.Menu.Initialize()
 	
 	-- Setup menu controls
 	FTC.Menu:Controls()
-	
 end
 
 
@@ -32,6 +31,9 @@ function FTC.Menu:Toggle( setting , reload )
 	-- Update the database
 	FTC.vars[setting] = not FTC.vars[setting]
 	
+	-- Re-configure some things
+	FTC.Frames:SetupPlayer()
+	
 	-- Maybe reload
 	if reload then ReloadUI() end
 end
@@ -41,8 +43,11 @@ end
  * Toggles current setting for a variable
  * Called by elements created in FTC.Menu:Controls()
  ]]-- 
-function FTC.Menu:Update( setting , value )
+function FTC.Menu:Update( setting , value , reload )
 	FTC.vars[setting] = value
+	
+	-- Maybe reload
+	if reload then ReloadUI() end
 end
 
 --[[ 
@@ -52,23 +57,76 @@ end
 function FTC.Menu:MoveFrames()
 
 	-- Get the current move status
-	local move = not FTC.Frames.move
+	local move = not FTC.move
 	
-	-- Display everything
-	FTC_PlayerFrame:SetHidden( false )
-	FTC_TargetFrame:SetHidden( false )
+	-- Display frames
+	if ( FTC.init.Frames ) then
+		FTC_PlayerFrame:SetHidden( false )
+		FTC_PlayerFrame:SetMouseEnabled( move )
+		FTC_PlayerFrame:SetMovable( move )
+		
+		FTC_TargetFrame:SetHidden( not move )
+		FTC_TargetFrame:SetMouseEnabled( move )
+		FTC_TargetFrame:SetMovable( move )
+	end
 	
-	-- Toggle mousing
-	FTC_PlayerFrame:SetMouseEnabled( move )
-	FTC_PlayerFrame:SetMovable( move )
-	FTC_TargetFrame:SetMouseEnabled( move )
-	FTC_TargetFrame:SetMovable( move )
+	-- Display buffs
+	if ( FTC.init.Buffs ) then
+		FTC_PlayerBuffsBackdrop:SetHidden( not move )
+		FTC_PlayerBuffsLabel:SetHidden( not move )
+		
+		FTC_PlayerDebuffsBackdrop:SetHidden( not move )
+		FTC_PlayerDebuffsLabel:SetHidden( not move )
+		
+		FTC_TargetBuffsBackdrop:SetHidden( not move )
+		FTC_TargetBuffsLabel:SetHidden( not move )
+		
+		FTC_TargetDebuffsBackdrop:SetHidden( not move )
+		FTC_TargetDebuffsLabel:SetHidden( not move )
+	
+		FTC_LongBuffs:SetHidden( false )
+		FTC_LongBuffs:SetMouseEnabled( move )
+		FTC_LongBuffs:SetMovable( move )
+	end
+	
+	-- Display SCT
+	if ( FTC.init.SCT ) then
+		FTC_CombatTextOut:SetHidden(false)
+		FTC_CombatTextOut:SetMouseEnabled( move )
+		FTC_CombatTextOut:SetMovable( move )
+		FTC_CombatTextOut_Backdrop:SetHidden( not move )
+		FTC_CombatTextOut_Label:SetHidden( not move )
+
+		FTC_CombatTextIn:SetHidden(false)
+		FTC_CombatTextIn:SetMouseEnabled( move )
+		FTC_CombatTextIn:SetMovable( move )		
+		FTC_CombatTextIn_Backdrop:SetHidden( not move )
+		FTC_CombatTextIn_Label:SetHidden( not move )	
+
+		FTC_CombatTextStatus:SetHidden(false)		
+		FTC_CombatTextStatus:SetMouseEnabled( move )
+		FTC_CombatTextStatus:SetMovable( move )
+		FTC_CombatTextStatus_Backdrop:SetHidden( not move )
+		FTC_CombatTextStatus_Label:SetHidden( not move )	
+	end
 
 	-- Toggle the move status
-	FTC.Frames.move = move
+	FTC.move = move
 	
 	-- Display a message
-	local message = move and "Unit frames are now movable, drag them to re-position!" or "Unit frames are now locked!"
+	local message = move and "FTC frames are now movable, drag them to re-position!" or "FTC frames are now locked!"
+end
+
+--[[ 
+ * Toggles movability of unit frames
+ * Called by elements created in FTC.Menu:Controls()
+ ]]--
+function FTC.Menu:MoveBuffs()
+
+
+
+	-- Display a message
+	local message = move and "Long buffs are now movable, drag them to re-position!" or "Long buffs position is now locked!"
 end
 
 
@@ -79,14 +137,12 @@ end
 function FTC.Menu:SaveAnchor( control )
 	
 	-- Get the new position
-	local controlX , controlY = control:GetCenter()
-	local rootX , rootY = GuiRoot:GetCenter()
-	local offsetX = controlX - rootX
-	local offsetY = controlY - rootY
+	local isValidAnchor, point, relativeTo, relativePoint, offsetX, offsetY = control:GetAnchor()
 	
 	-- Save the anchors
-	FTC.vars[control:GetName() .. "_X"] = offsetX
-	FTC.vars[control:GetName() .. "_Y"] = offsetY
+	if ( isValidAnchor ) then
+		FTC.vars[control:GetName()] = {point,relativePoint,offsetX,offsetY}
+	end
 end
 
 
