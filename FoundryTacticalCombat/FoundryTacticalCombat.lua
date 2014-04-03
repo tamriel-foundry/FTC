@@ -130,7 +130,7 @@ function FTC:Update()
 		end
 		
 		-- Check for ability casts
-		if ( FTC.BufferScript( 'FTCCast' , 100 ) ) then
+		if ( FTC.BufferScript( 'FTCCast' , 50 ) ) then
 			FTC.Buffs:CheckCast()
 		end
 

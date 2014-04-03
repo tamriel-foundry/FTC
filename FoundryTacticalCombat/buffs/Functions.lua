@@ -194,7 +194,12 @@ function FTC.Buffs:GetHotbar()
 			}
 			FTC.Hotbar[i] 		= slot
 		else
-			FTC.Hotbar[i] 		= {}
+			FTC.Hotbar[i] 		= {
+				["slot"]		= i,
+				["name"]		= 'unused',
+				["type"]		= -999,
+				["cost"]		= -999,
+			}
 		end
 	end
 end
