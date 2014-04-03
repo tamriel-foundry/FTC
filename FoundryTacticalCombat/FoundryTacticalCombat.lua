@@ -9,9 +9,9 @@
 	* (2) Active Buff Tracking
 	* (4) Scrolling Combat Text and Damage Meter
 	* 
-	* Version 0.23
+	* Version 0.24
 	* atropos@tamrielfoundry.com
-	* 3-30-2014
+	* 4-3-2014
   ]]--
 
 --[[----------------------------------------------------------
