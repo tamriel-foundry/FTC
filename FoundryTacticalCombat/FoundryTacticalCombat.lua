@@ -20,7 +20,7 @@
 FTC 					= {}
 FTC.name				= "FoundryTacticalCombat"
 FTC.command				= "/ftc"
-FTC.version				= 0.23
+FTC.version				= 0.24
 
 -- Default Saved Variables
 FTC.defaults			= {
