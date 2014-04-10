@@ -6,7 +6,7 @@
 	* Uses ZeniMax own virtual controls to create elements
 	* Modifies addon saved variables
   ]]--
-
+local LAM = LibStub("LibAddonMenu-1.0")		
 function FTC.Menu:Controls()
 	
 	-- Addon heading

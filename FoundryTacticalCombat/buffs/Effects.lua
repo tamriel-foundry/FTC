@@ -376,6 +376,8 @@ FTC.Buffs.Effects = {
 	
 	-- Fighters Guild
 	["Expert Hunter"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 15 , false , nil } },
+	["Evil Hunter"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 13 , false , nil } },
+	["Camouflaged Hunter"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 15 , false , nil } },
 	
 	-- Mages Guild
 	["Entropy"]					= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 15.6 , true , nil } },
@@ -403,6 +405,16 @@ FTC.Buffs.Effects = {
 	["Bat Swarm"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , false , nil } },
 	["Devouring Swarm"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , false , nil } },
 	["Clouding Swarm"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , false , nil } },
+	
+	-- Soul Magic
+	["Soul Trap"] 				= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , true , nil } },
+	["Consuming Trap"] 			= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , true , nil } },
+	["Soul Splitting Trap"] 	= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , true , nil } },
+	
+	["Soul Strike"] 			= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 3.7 , true , nil } },
+	["Shatter Soul"] 			= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , true , nil } },
+	["Soul Assault"] 			= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , true , nil } },
+
 	
 	--[[---------------------------------
 		AVA

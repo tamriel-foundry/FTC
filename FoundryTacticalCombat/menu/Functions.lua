@@ -11,7 +11,7 @@ FTC.Menu = {
 	["title"] 	= "FTC Settings",
 }
 
-LAM = LibStub("LibAddonMenu-1.0")		
+local LAM = LibStub("LibAddonMenu-1.0")		
 function FTC.Menu.Initialize()
 
 	-- Register the options panel

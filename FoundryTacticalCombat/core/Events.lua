@@ -255,38 +255,41 @@ end
  ]]--
 function FTC.OnPowerUpdate( eventCode , unitTag, powerIndex, powerType, powerValue, powerMax, powerEffectiveMax )
 	
-	-- Update Player Health/Stamina/Magicka
-	if ( unitTag == 'player' and ( powerType == POWERTYPE_HEALTH or powerType == POWERTYPE_MAGICKA or powerType == POWERTYPE_STAMINA ) ) then 
+	-- Player Updates
+	if ( unitTag == 'player' ) then
 	
-		-- Bail if we're in mouse mode
-		if ( IsReticleHidden() ) then return end
-	
-		-- Maybe trigger a resource alert
-		if ( FTC.init.SCT ) then FTC.SCT:ResourceAlert( unitTag , powerType , powerValue , powerMax ) end
+		-- Combat resources
+		if ( powerType == POWERTYPE_HEALTH or powerType == POWERTYPE_MAGICKA or powerType == POWERTYPE_STAMINA ) then
 		
-		-- Update the player frame
-		FTC.Frames:UpdateFrame( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
-		
-	-- Update Target Health
-	elseif ( unitTag == 'reticleover' and powerType == POWERTYPE_HEALTH ) then
+			-- Maybe trigger a resource alert
+			if ( FTC.init.SCT ) then FTC.SCT:ResourceAlert( unitTag , powerType , powerValue , powerMax ) end
+			
+			-- Update the player frame
+			FTC.Frames:UpdateFrame( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
+			
+		-- Ultimate
+		elseif ( powerType == POWERTYPE_ULTIMATE ) then
+			FTC.Frames:UpdateUltimate( powerValue , powerMax , powerEffectiveMax )
+			
+		-- Mount Stamina
+		elseif ( powerType == POWERTYPE_MOUNT_STAMINA ) then
+			if ( FTC.init.Frames ) then	FTC.Frames:UpdateMount( powerValue , powerMax , powerEffectiveMax )	end	
+		end
 	
-		-- Bail if we're in mouse mode
-		if ( IsReticleHidden() ) then return end
 	
-		-- Maybe trigger a resource alert
-		if ( FTC.init.SCT ) then FTC.SCT:ResourceAlert( unitTag , powerType , powerValue , powerMax ) end
-		
-		-- Update the target frame
-		FTC.Frames:UpdateFrame( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
-		
-	-- Update Ultimate	
-	elseif ( unitTag == 'player' and powerType == POWERTYPE_ULTIMATE ) then
-		FTC.Frames:UpdateUltimate( powerValue , powerMax , powerEffectiveMax )
+	-- Target updates
+	elseif ( unitTag == 'reticleover' ) then
 	
-	-- Update Mount Stamina
-	elseif ( FTC.init.Frames and unitTag == 'player' and powerType == POWERTYPE_MOUNT_STAMINA ) then
-		FTC.Frames:UpdateMount( powerValue , powerMax , powerEffectiveMax )
-	end	
+		-- Target health
+		if ( powerType == POWERTYPE_HEALTH ) then
+		
+			-- Maybe trigger a resource alert
+			if ( FTC.init.SCT ) then FTC.SCT:ResourceAlert( unitTag , powerType , powerValue , powerMax ) end
+			
+			-- Update the target frame
+			FTC.Frames:UpdateFrame( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )		
+		end
+	end
 end
 
 --[[ 

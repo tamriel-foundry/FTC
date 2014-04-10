@@ -13,16 +13,32 @@ function FTC.SCT:NewStatus( newStatus )
 	
 	-- Get the existing statuses
 	local statuses	= FTC.SCT.Status
-	if ( #statuses == 0 ) then table.insert( FTC.SCT.Status , newSCT) end
+	local isNew		= true
+	local oldest 	= 1
 	
 	-- Loop through each existing status, flag the oldest status for recycling
-	local oldest 	= 1
-	for i = 1, #statuses do		
-		oldest = FTC.SCT.Status[i].ms < FTC.SCT.Status[oldest].ms and i or oldest
+	if ( #statuses > 0 ) then 
+		for i = 1, #statuses do
+		
+			-- If an identical entry already exists, bail
+			if ( ( statuses[i].name == newStatus.name ) and ( newStatus.ms - statuses[i].ms ) < 1000 ) then
+				isNew = false
+				break
+			
+			-- Otherwise flag the oldest entry for recycling
+			else oldest = FTC.SCT.Status[i].ms < FTC.SCT.Status[oldest].ms and i or oldest end
+		end
 	end
-
-	-- Otherwise, recycle the oldest entry
-	FTC.SCT.Status[oldest] = newStatus
+	
+	-- Process new statuses
+	if ( isNew ) then
+	
+		-- If there are fewer than the maximum number of events recorded, insert it directly
+		if ( #statuses < FTC.vars.SCTCount ) then table.insert( FTC.SCT.Status , newStatus )
+		
+		-- Otherwise, recycle the oldest entry
+		else FTC.SCT.Status[oldest] = newStatus end
+	end
 
 	-- Allocate status entries to controls
 	for i = 1, FTC.vars.SCTCount do
@@ -45,39 +61,42 @@ end
   * Runs OnXPUpdate()
  ]]--
 function FTC.SCT:NewExp( eventCode, unitTag, currentExp, maxExp, reason )
-	
+
 	-- Bail if it's not earned by the player
 	if ( unitTag ~= "player" ) then return end
 	
-	-- Don't display experience for level 50 characters
-	if ( eventCode == EVENT_EXPERIENCE_UPDATE and FTC.Player.level == 50 ) then return end
-	
-	-- Check whether it's VP or EXP
-	local isveteran = ( eventCode == EVENT_VETERAN_POINTS_UPDATE ) and true or false
-	
 	-- Ignore finesse bonuses, they will get rolled into the next reward
-	if ( reason == XP_REASON_FINESSE ) then return end
+	--if ( reason == XP_REASON_FINESSE ) then return end
 	
-	-- Get the base experience
-	local base 	= isveteran and FTC.Player.vet or FTC.Player.exp
+	-- Experience gains for non-veteran players
+	local base = FTC.Player.exp	
 	
-	-- Calculate the difference
-	local diff 	= currentExp - base
+	-- Experience gains for veteran players
+	if ( eventCode == EVENT_EXPERIENCE_UPDATE and FTC.Player.level == 50 ) then
+		base 		= FTC.Player.vet
+		currentExp 	= GetUnitVeteranPoints('player')
+		maxExp		= GetUnitVeteranPointsMax('player')
 	
-	-- Calculate percentage to level
-	local pct	= math.floor( 100 * ( currentExp / maxExp ) )
+	-- Veteran point rewards for quest turn-ins
+	elseif ( eventCode == EVENT_VETERAN_POINTS_UPDATE ) then	
+		base 		= FTC.Player.vet
+	end
 	
-	-- Setup the name
-	local name = isveteran and "Veteran Points (" .. pct .. "%)" or "Experience (" .. pct .. "%)"
-	
-	-- Ignore zero experience rewards
+	-- Calculate the difference, and ignore zeroes
+	local diff 		= currentExp - base
 	if ( diff == 0 ) then return end
 	
+	-- Calculate percentage to level
+	local pct		= math.floor( 100 * ( currentExp / maxExp ) )
+	
+	-- Setup the name
+	local name 		= ( FTC.Player.level == 50 ) and "Veteran Points (" .. pct .. "%)" or "Experience (" .. pct .. "%)"
+
 	-- Setup a new Alert object
 	local newAlert = {
 		["type"]	= 'exp',
 		["name"]	= name,
-		["value"]	= diff,
+		["value"]	= "+" .. diff,
 		["ms"]		= GetGameTimeMilliseconds(),
 		["color"]	= 'c99FFFF',
 	}
@@ -152,33 +171,32 @@ function FTC.SCT:ResourceAlert( unitTag , powerType , powerValue , powerMax )
 	-- Get the prior attribute level
 	local prior 	= FTC[context][string.lower(attr)].pct
 	
-	-- If we have moved below the threshold, it's an alert!
-	if ( prior > 25 and pct <= 25 ) then
+	-- Bail if we're above the threshold or were already below
+	if ( pct > 25 or prior <= 25 ) then return end
 	
-		-- Get the game time
-		local ms		= GetGameTimeMilliseconds()
-		
-		-- Make sure there hasn't been a recent alert for this resource already
-		for i = 1 , #FTC.SCT.Status do
-			if ( FTC.SCT.Status[i].type == unitTag .. attr and FTC.SCT.Status[i].ms > ms - 5000 ) then return end		
-		end
-		
-		-- Set up the alert name
-		local name = ( context == "Player" ) and "Low " .. attr or "Target Low " .. attr
-		
-		-- Otherwise submit an object
-		local newAlert = {
-			["type"]	= unitTag .. attr,
-			["name"]	= name,
-			["value"]	= '',
-			["ms"]		= ms,
-			["color"]	= color,
-			["size"]	= 20
-		}
-		
-		-- Submit the new status
-		FTC.SCT:NewStatus( newAlert )
+	-- Get the game time
+	local ms		= GetGameTimeMilliseconds()
+	
+	-- Make sure there hasn't been a recent alert for this resource already
+	for i = 1 , #FTC.SCT.Status do
+		if ( FTC.SCT.Status[i].type == unitTag .. attr and FTC.SCT.Status[i].ms > ms - 5000 ) then return end		
 	end
+	
+	-- Set up the alert name
+	local name = ( context == "Player" ) and "Low " .. attr or "Target Low " .. attr
+	
+	-- Otherwise submit an object
+	local newAlert = {
+		["type"]	= unitTag .. attr,
+		["name"]	= name,
+		["value"]	= '('..pct..'%)',
+		["ms"]		= ms,
+		["color"]	= color,
+		["size"]	= 20
+	}
+	
+	-- Submit the new status
+	FTC.SCT:NewStatus( newAlert )
 end
 
 
