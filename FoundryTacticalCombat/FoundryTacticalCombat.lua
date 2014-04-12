@@ -49,7 +49,7 @@ FTC.defaults			= {
 	["EnableNameplate"]			= true,
 	["EnableDefaultCurrentMax"] = true,
 	["EnableDefaultPercentage"] = true,
-	["DefaultAttributeTextOpacity"] = 1,
+	["DefaultAttributeTextOpacity"] = 100,
 	["FTC_PlayerFrame"]			= {CENTER,CENTER,-400,300},
 	["FTC_TargetFrame"]			= {CENTER,CENTER,400,275},
 	}
