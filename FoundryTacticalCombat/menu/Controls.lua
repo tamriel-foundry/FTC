@@ -29,6 +29,11 @@ function FTC.Menu:Controls()
 		LAM:AddHeader( FTC.Menu.id , "FTC_Settings_FramesHeader", "Unit Frames Settings")	
 		LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_EnableNameplate", "Show Player Nameplate", "Show your own character's nameplate?", function() return FTC.vars.EnableNameplate end , function() FTC.Menu:Toggle( 'EnableNameplate' ) end )	
 		LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_EnableXPBar", "Enable Mini Experience Bar", "Show a small experience bar on the player frame?", function() return FTC.vars.EnableXPBar end , function() FTC.Menu:Toggle( 'EnableXPBar' ) end )	
+	else 
+		LAM:AddHeader( FTC.Menu.id , "FTC_Settings_FramesHeader", "Default Frames Settings")
+		LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_EnableDefaultCurrentMax", "Show (Current / Max)", "Show the current / maximum attribute amount on the default attribute frames?", function() return FTC.vars.EnableDefaultCurrentMax end , function() FTC.Menu:Toggle( 'EnableDefaultCurrentMax' ) end )
+		LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_EnableDefaultPercentage", "Show Percentage", "Show the attribute amount as a percentage on the default attribute frames?", function() return FTC.vars.EnableDefaultPercentage end , function() FTC.Menu:Toggle( 'EnableDefaultPercentage' ) end )
+		LAM:AddSlider( FTC.Menu.id , "FTC_Settings_DefaultAttributeTextOpacity", "Text Opacity", "Adjust opacity of the default attribute text.", 0, 100, 1, function() return FTC.vars.DefaultAttributeTextOpacity end, function( value ) FTC.Menu:Update( "DefaultAttributeTextOpacity" , value, true) end, true , "Reloads UI" )
 	end
 
 	-- Buffs settings

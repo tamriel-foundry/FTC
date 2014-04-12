@@ -47,6 +47,9 @@ FTC.defaults			= {
 	-- Frames
 	["EnableXPBar"]				= true,
 	["EnableNameplate"]			= true,
+	["EnableDefaultCurrentMax"] = true,
+	["EnableDefaultPercentage"] = true,
+	["DefaultAttributeTextOpacity"] = 100,
 	["FTC_PlayerFrame"]			= {CENTER,CENTER,-400,300},
 	["FTC_TargetFrame"]			= {CENTER,CENTER,400,275},
 	}

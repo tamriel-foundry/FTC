@@ -78,12 +78,13 @@ function FTC.Frames:Controls()
 
 	-- ADD LABELS TO DEFAULT FRAMES
 	local stats		= { "Health" , "Stamina" , "Magicka" }
+	local opacity = FTC.vars["DefaultAttributeTextOpacity"] / 100
 	for  i = 1 , #stats , 1 do
 		local parent	= _G["ZO_PlayerAttribute"..stats[i]]
-		local label		= FTC.UI.Label( "FTC_DefaultPlayer"..stats[i] , parent , { parent:GetWidth() , 20 } , {CENTER,CENTER,0,-1} , "ZoFontAnnounceSmall" , nil , {1,1} , nil , false )
+		local label		= FTC.UI.Label( "FTC_DefaultPlayer"..stats[i] , parent , { parent:GetWidth() , 20 } , {CENTER,CENTER,0,-1} , "ZoFontAnnounceSmall" , {1,1,1,opacity} , {1,1} , nil , false )
 	end
 	local parent		= _G["ZO_TargetUnitFramereticleover"]
-	local label			= FTC.UI.Label( "FTC_DefaultTargetHealth" , parent , { parent:GetWidth() , 20 } , {CENTER,CENTER,0,-1} , "ZoFontAnnounceSmall" , nil , {1,1} , nil , false )
+	local label			= FTC.UI.Label( "FTC_DefaultTargetHealth" , parent , { parent:GetWidth() , 20 } , {CENTER,CENTER,0,-1} , "ZoFontAnnounceSmall" , {1,1,1,opacity} , {1,1} , nil , false )
 
 	-- Create ultimate tracker
 	local ultival 		= FTC.UI.Label( "FTC_UltimateLevel" , ActionButton8 , {50,20} , {BOTTOM,TOP,0,-3} , 'ZoFontAnnounceSmall' , nil , {1,2} , nil , false )
