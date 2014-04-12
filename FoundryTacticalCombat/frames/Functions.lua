@@ -79,7 +79,14 @@ end
 	
 	-- Update the default attribute bar
 	local default 	= ( context == "Player" ) and _G["FTC_DefaultPlayer"..attr.name] or _G["FTC_DefaultTargetHealth"]	
-	default:SetText( powerValue .. " / " .. powerEffectiveMax .. " (" .. pct .. "%)")
+  local defaultText = ""
+  local showPercentage = true
+  if ( FTC.vars.EnableDefaultCurrentMax ) then defaultText = powerValue .. " / " .. powerEffectiveMax end
+  if ( FTC.vars.EnableDefaultPercentage ) then 
+    if ( FTC.vars.EnableDefaultCurrentMax ) then defaultText = defaultText .. " (" .. pct .. "%)"
+    else defaultText = defaultText .. pct .. "%" end
+  end
+	default:SetText( defaultText )
 	
 	-- Toggle opacity
 	local alpha = ((( powerType == POWERTYPE_HEALTH and pct == 100 )  or ( FTC.Player.health.pct == 100 )) and not IsUnitInCombat('player')) and 0.5 or 1
