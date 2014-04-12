@@ -78,7 +78,7 @@ function FTC.Frames:Controls()
 
 	-- ADD LABELS TO DEFAULT FRAMES
 	local stats		= { "Health" , "Stamina" , "Magicka" }
-  local opacity = FTC.vars["DefaultAttributeTextOpacity"] / 100
+	local opacity = FTC.vars["DefaultAttributeTextOpacity"] / 100
 	for  i = 1 , #stats , 1 do
 		local parent	= _G["ZO_PlayerAttribute"..stats[i]]
 		local label		= FTC.UI.Label( "FTC_DefaultPlayer"..stats[i] , parent , { parent:GetWidth() , 20 } , {CENTER,CENTER,0,-1} , "ZoFontAnnounceSmall" , {1,1,1,opacity} , {1,1} , nil , false )
