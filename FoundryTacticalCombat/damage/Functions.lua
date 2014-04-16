@@ -118,12 +118,9 @@ function FTC.Damage:DisplayMeter()
 	-- Get the damage meter container
 	local parent 	= _G["FTC_DamageMeter"]
 	local title 	= _G["FTC_DamageMeterTitle"]
-
-	-- Retrieve the data and bail if it's empty
-	local meter = FTC.Damage.Meter
-	if ( meter == nil ) then return end
 	
 	-- Make sure it's not empty
+	local meter 	= FTC.Damage.Meter
 	local header 	= "FTC Damage Meter"
 	if ( ( meter.damage + meter.healing + meter.incoming ) == 0 ) then
 		header = header ..  " - No Combat Recorded"
@@ -184,15 +181,35 @@ function FTC.Damage:DisplayMeter()
 	
 	-- If the new display is the same as the old one, just hide the meter
 	if ( header == title:GetText() ) then
-		FTC_CharSheet:SetHidden(true)
+		FTC_MiniMeter:SetHidden( parent:IsHidden() )
 		parent:SetHidden( not parent:IsHidden() )
 	
 	-- Otherwise , set the display to the element
 	else
 		title:SetText(header)
-		FTC_CharSheet:SetHidden(true)
 		parent:SetHidden(false)
+		FTC_MiniMeter:SetHidden( true )
 	end 
+end
+
+
+function FTC.Damage:UpdateMini() 
+
+	-- Retrieve the data
+	local meter = FTC.Damage.Meter
+
+	-- Compute the fight time
+	local fight_time = math.max( ( meter.endTime - meter.startTime ) / 1000 , 1 )
+
+	-- Compute simple statistics
+	local dps = string.format( "%.1f" , meter.damage/fight_time  	)
+	local hps = string.format( "%.1f" , meter.healing/fight_time  	)
+	local ips = string.format( "%.1f" , meter.incoming/fight_time 	)
+	
+	-- Update the labels
+	FTC_MiniMeter_DamageLabel:SetText( dps )
+	FTC_MiniMeter_HealLabel:SetText( hps )
+	FTC_MiniMeter_IncLabel:SetText( ips )
 end
 
 

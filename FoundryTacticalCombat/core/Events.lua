@@ -228,9 +228,6 @@ function FTC.OnXPUpdate( ... )
 	if ( FTC.init.Frames ) then
 		FTC.Frames:SetupPlayer( ... )
 	end
-	
-	-- Maybe the character sheet exp bar
-	FTC.Player:UpdateSheet()
 end
 
 --[[ 
@@ -301,11 +298,6 @@ function FTC.OnStatsUpdated( ... )
 	-- Update the hotbar to account for spell cost reduction
 	if ( FTC.init.Buffs ) then
 		FTC.Buffs:GetHotbar()
-	end
-
-	-- Pass updated attributes to unit frames
-	if ( FTC.Player.init ) then 
-		FTC.Player:UpdateSheet()
 	end
 end
 

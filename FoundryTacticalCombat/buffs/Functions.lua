@@ -27,8 +27,9 @@ function FTC.Buffs.Initialize()
 	-- Get the hotbar loadout
 	FTC.Buffs:GetHotbar()
 	
-	-- Placeholder for last cast spell
+	-- Placeholder for last cast spell and potion
 	FTC.Buffs.lastCast = 0
+	FTC.Buffs.lastPotion = 0
 	
 	-- Register init status
 	FTC.init.Buffs = true
@@ -386,6 +387,62 @@ function FTC.Buffs:CheckCast()
 		end
 	end
 end
+
+
+--[[ 
+ * Check for whether a potion has been used
+ * Runs OnUpdate - 50 ms buffer
+ ]]--
+function FTC.Buffs:CheckPotion()
+
+	-- Get the current potion
+	local current = GetCurrentQuickslot()
+
+	-- Bail if there is no active potion
+	if ( GetSlotName( current ) == "" ) then return end
+	
+	-- Get the cooldown
+	local cd = GetSlotCooldownInfo(current)
+	
+	-- Bail if the potion isn't freshly used
+	if ( cd < 25000 ) then return end
+
+	-- If our cooldown has just increased, it implies a potion usage
+	if ( cd > FTC.Buffs.lastPotion ) then
+	
+		-- Make sure it's a potion
+		local name 		= string.lower( GetSlotName(current) )
+		local keys		= { "health" , "stamina" , "magicka" , "weapon power" , "weapon critical" , "spell critical" , "spell power" }
+		local isPotion 	= false
+		for i = 1 , #keys do
+			if ( string.find( name , keys[i] ) ) then 
+				isPotion = true 
+				break
+			end
+		end
+		if ( not isPotion ) then return end
+	
+		-- Get the current potion
+		local potion		= {
+			["slot"]		= current,
+			["name"]		= name,
+			["type"]		= 'potion',
+			["cost"]		= 0,
+			["tex"]			= GetSlotTexture( current ),
+			["effects"]		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 10 , false , nil } },
+		}
+		
+		-- Submit the effect
+		FTC.Buffs:NewEffects( potion )
+	end
+
+	-- Fire a callback when we know a spell was cast
+	CALLBACK_MANAGER:FireCallbacks( "FTC_PotionUsed" , potion )
+	
+	-- Save the potion CD
+	FTC.Buffs.lastPotion = cd
+end
+
 
 --[[----------------------------------------------------------
 	HELPER FUNCTIONS

@@ -9,9 +9,9 @@
 	* (2) Active Buff Tracking
 	* (4) Scrolling Combat Text and Damage Meter
 	* 
-	* Version 0.24
+	* Version 0.26
 	* atropos@tamrielfoundry.com
-	* 4-3-2014
+	* 4-13-2014
   ]]--
 
 --[[----------------------------------------------------------
@@ -20,7 +20,7 @@
 FTC 					= {}
 FTC.name				= "FoundryTacticalCombat"
 FTC.command				= "/ftc"
-FTC.version				= 0.24
+FTC.version				= 0.26
 
 -- Default Saved Variables
 FTC.defaults			= {
@@ -133,7 +133,11 @@ function FTC:Update()
 		if ( FTC.BufferScript( 'FTCCast' , 50 ) ) then
 			FTC.Buffs:CheckCast()
 		end
-
+		
+		-- Check for potion usage
+		if ( FTC.BufferScript( 'FTCPotion' , 250 ) ) then
+			FTC.Buffs:CheckPotion()
+		end
 	end
 	
 	-- Scrolling Combat Text Component
@@ -142,6 +146,10 @@ function FTC:Update()
 		FTC.SCT:Update('Out')
 		FTC.SCT:UpdateAlerts()
 	end
+	
+	-- Damage meter
+	if ( FTC.BufferScript( 'FTCMeter' , 1000 ) ) then FTC.Damage:UpdateMini() end
+	
 end
 
 --[[----------------------------------------------------------

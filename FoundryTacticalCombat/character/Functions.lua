@@ -29,18 +29,6 @@ function FTC.Player:Initialize()
 		local current, maximum, effMax = GetUnitPower( "player" , stats[i].id )
 		FTC.Player[stats[i].name] = { ["current"] = current , ["max"] = effMax , ["pct"] = math.floor( ( current / effMax ) * 100 ) }
 	end
-
-	-- Create character sheet controls
-	FTC.Player:Controls()
-	
-	-- Populate the character sheet
-	FTC.Player:UpdateSheet()
-	
-	-- Register Keybinding
-	ZO_CreateStringId("SI_BINDING_NAME_DISPLAY_CHARACTER_SHEET", "Display Character Sheet")
-	
-	-- Register init status
-	FTC.Player.init = true
 end
 
 FTC.Target = {}
@@ -67,79 +55,6 @@ end
 --[[----------------------------------------------------------
 	EVENT HANDLERS
  ]]-----------------------------------------------------------
- 
-  --[[ 
- * Updates the character sheet and character attributes
- * Called by OnStatsUpdated()
- ]]--
-function FTC.Player:UpdateSheet()
-	
-	-- No need to update unless the character sheet is displayed
-	if ( FTC_CharSheet:IsHidden() ) then return end
-	
-	-- Loop through the relevant stats
-	local stats	= {
-		["Attributes"]	= {
-			{ ["name"] = "Maximum Health",			["id"] = STAT_HEALTH_MAX 			, ["fmt"] = "value" },
-			{ ["name"] = "Healing Recieved",		["id"] = STAT_HEALING_TAKEN 		, ["fmt"] = "value" },
-			{ ["name"] = "Health Regen",			["id"] = STAT_HEALTH_REGEN_COMBAT	, ["fmt"] = "value" },
-			{ ["name"] = "Maximum Stamina",			["id"] = STAT_STAMINA_MAX 			, ["fmt"] = "value" },
-			{ ["name"] = "Stamina Regen",			["id"] = STAT_STAMINA_REGEN_COMBAT	, ["fmt"] = "value" },
-			{ ["name"] = "Maximum Magicka",			["id"] = STAT_MAGICKA_MAX 			, ["fmt"] = "value" },
-			{ ["name"] = "Magicka Regen",			["id"] = STAT_MAGICKA_REGEN_COMBAT	, ["fmt"] = "value" },
-		},
-		["Offense"] = {
-			{ ["name"] = "Weapon Damage", 			["id"] = STAT_POWER					, ["fmt"] = "value" },
-			{ ["name"] = "Weapon Critical", 		["id"] = STAT_CRITICAL_STRIKE 		, ["fmt"] = "pct" 	},
-			{ ["name"] = "Physical Penetration", 	["id"] = STAT_PHYSICAL_PENETRATION	, ["fmt"] = "value" },
-			{ ["name"] = "Spell Damage", 			["id"] = STAT_SPELL_POWER 			, ["fmt"] = "value" },
-			{ ["name"] = "Spell Critical", 			["id"] = STAT_SPELL_CRITICAL 		, ["fmt"] = "pct" 	},
-			{ ["name"] = "Magic Penetration", 		["id"] = STAT_SPELL_PENETRATION		, ["fmt"] = "value" }
-		},
-		["Defense"]	= {
-			{ ["name"] = "Armor Rating",			["id"] = STAT_ARMOR_RATING			, ["fmt"] = "value" },
-			{ ["name"] = "Percent Block", 			["id"] = STAT_BLOCK 				, ["fmt"] = "pct" 	},
-			{ ["name"] = "Percent Dodge",			["id"] = STAT_DODGE					, ["fmt"] = "pct" 	},
-			{ ["name"] = "Miss Chance",				["id"] = STAT_MISS 					, ["fmt"] = "pct" 	},
-			{ ["name"] = "Physical Mitigation",		["id"] = STAT_MITIGATION 			, ["fmt"] = "value" },
-			{ ["name"] = "Spell Mitigation",		["id"] = STAT_SPELL_MITIGATION 		, ["fmt"] = "value" },
-			{ ["name"] = "Parry Chance",			["id"] = STAT_PARRY 				, ["fmt"] = "pct" 	}
-		},
-		["Resists"]	= {
-			{ ["name"] = "Physical Resist",			["id"] = STAT_PHYSICAL_RESIST 		, ["fmt"] = "value" },
-			{ ["name"] = "Magic Resist",			["id"] = STAT_SPELL_RESIST 			, ["fmt"] = "value" },
-			{ ["name"] = "Cold Resist",				["id"] = STAT_DAMAGE_RESIST_COLD 	, ["fmt"] = "value" },
-			{ ["name"] = "Fire Resist",				["id"] = STAT_DAMAGE_RESIST_FIRE 	, ["fmt"] = "value" },
-			{ ["name"] = "Shock Resist",			["id"] = STAT_DAMAGE_RESIST_SHOCK 	, ["fmt"] = "value" },
-			{ ["name"] = "Disease Resist",			["id"] = STAT_DAMAGE_RESIST_DISEASE , ["fmt"] = "value" },
-			{ ["name"] = "Poison Resist",			["id"] = STAT_DAMAGE_RESIST_POISON 	, ["fmt"] = "value" }
-		}
-	}
-
-	-- Loop through each category, populating the form
-	local types = { "Attributes" , "Offense" , "Defense" , "Resists" }
-	for i = 1 , #types , 1 do
-		local names 	= ""
-		local values	= ""
-		for j = 1 , #stats[types[i]] , 1 do
-			stat	= ( stats[types[i]][j].fmt == "pct" ) and string.format( "%.1f" , GetPlayerStat( stats[types[i]][j].id ) / 10 ) or GetPlayerStat( stats[types[i]][j].id )
-			names 	= names .. stats[types[i]][j].name .. "\r\n"
-			values 	= values .. stat .. "\r\n"
-		end
-		_G["FTC_CharSheet_" .. types[i] .. "Names"]:SetText(names)
-		_G["FTC_CharSheet_" .. types[i] .. "Values"]:SetText(values)
-	end
-	
-	-- Experience
-	if ( FTC.Player.vlevel < 10 ) then 
-		local maxExp	= ( FTC.Player.level == 50 ) and GetUnitVeteranPointsMax('player') or GetUnitXPMax('player')
-		local currExp	= ( FTC.Player.level == 50 ) and FTC.Player.vet or FTC.Player.exp
-		local pct		= math.floor( 100 * ( currExp / maxExp ) )
-		local xpLabel 	= currExp .. "/" .. maxExp .. " (" .. pct .. "%)"
-		FTC_CharSheet_ExpLabel:SetText(xpLabel)
-		FTC_CharSheet_ExpBar:SetWidth( ( pct / 100 ) * FTC_CharSheet_Exp:GetWidth() )
-	end
-end
 
 
 --[[----------------------------------------------------------
@@ -158,21 +73,4 @@ function FTC.Player:GetLevel()
 	FTC.Player.alevel	= GetUnitAvARank('player')
 	FTC.Player.exp		= GetUnitXP('player')
 	FTC.Player.vet		= GetUnitVeteranPoints('player')
-end
-
-  --[[ 
- * Toggles the display of the character sheet
- * Called by hotkey activation
- ]]--
-function FTC.Player:DisplaySheet()
-
-	-- Get the current visibility
-	local isHidden = FTC_CharSheet:IsHidden()
-	
-	-- Switch the visible elements
-	FTC_DamageMeter:SetHidden( true )
-	FTC_CharSheet:SetHidden( not isHidden )
-	
-	-- Maybe update the sheet
-	if isHidden then FTC.Player:UpdateSheet() end
 end
