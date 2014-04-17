@@ -53,6 +53,9 @@ FTC.defaults			= {
 	["EnableNameplate"]			= true,
 	["FTC_PlayerFrame"]			= {CENTER,CENTER,-400,300},
 	["FTC_TargetFrame"]			= {CENTER,CENTER,400,275},
+	
+	-- Damage
+	["MeterTimeout"]			= 5,
 	}
 
 -- Component Management
@@ -68,7 +71,7 @@ FTC.move = false
 function FTC.Initialize( eventCode, addOnName )
 
 	-- Only set up for FTC
-	if ( addOnName ~= FTC.name ) then return end
+	if ( addOnName ~= FTC.name ) 	then return end
 	
 	-- Load saved variables
 	FTC.vars = ZO_SavedVars:New( 'FTC_VARS' , math.floor( FTC.version * 100 ) , nil , FTC.defaults )
@@ -78,16 +81,16 @@ function FTC.Initialize( eventCode, addOnName )
 	FTC.Target:Initialize()
 
 	-- Unit Frames Component
-	if ( FTC.vars.EnableFrames ) then FTC.Frames:Initialize() end
+	if ( FTC.vars.EnableFrames ) 	then FTC.Frames:Initialize() end
 	
 	-- Damage Tracking Component
-	if ( FTC.vars.EnableDamage ) then FTC.Damage:Initialize() end
+	if ( FTC.vars.EnableDamage ) 	then FTC.Damage:Initialize() end
 	
 	-- Active Buffs Component
-	if ( FTC.vars.EnableBuffs ) then FTC.Buffs:Initialize() end
+	if ( FTC.vars.EnableBuffs ) 	then FTC.Buffs:Initialize() end
 
 	-- Scrolling Combat Text Component
-	if ( FTC.vars.EnableSCT ) then FTC.SCT:Initialize()	end
+	if ( FTC.vars.EnableSCT ) 		then FTC.SCT:Initialize()	end
 	
 	-- Setup settings component
 	FTC.Menu.Initialize()

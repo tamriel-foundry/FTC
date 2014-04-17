@@ -9,21 +9,8 @@
 FTC.Damage = {}
 function FTC.Damage:Initialize()
 
-	-- Setup default meter values
-	FTC.Damage.Meter = {
-		['startTime']		= 0,
-		['endTime']			= 0,
-		['damage']			= 0,
-		['maxDamage']		= 0,
-		['maxDamageName']	= '',
-		['healing']			= 0,
-		['maxHeal']			= 0,
-		['maxHealName']		= '',
-		['incoming']		= 0,
-		['maxInc']			= 0,
-		['maxIncName']		= '',
-		['targets']			= {}
-	}
+	-- Reset the meter
+	FTC.Damage:Reset()
 	
 	-- Create controls
 	FTC.Damage:Controls()
@@ -47,65 +34,86 @@ end
 function FTC.Damage:UpdateMeter( newDamage , context )
 
 	-- Retrieve the data
-	local meter 	= FTC.Damage.Meter
+	local meter		= FTC.Damage.Meter
 	local damage	= newDamage.dam
 	local name		= newDamage.name
-	local gametime 	= newDamage.ms
-	local heal		= newDamage.heal
 	local target	= newDamage.target
 	
-	-- If the meter has been inactive for over 5 seconds, restart the timer
-	if ( meter == nil ) then
-		meter.endTime 	= 0
-		meter.startTime = 0
+	-- If the meter has been inactive for over X seconds, restart tracking
+	if( ( ( gametime - meter.endTime ) / 1000 ) >= FTC.vars.MeterTimeout ) then
+		FTC.Damage:Reset()
 	end
 	
-	-- If the meter has been inactive for over 5 seconds, reset the data
-	if( ( ( gametime - meter.endTime ) / 1000 ) >= 5 ) then
-		meter.startTime = gametime
-		meter.damage	= 0
-		meter.maxDamage	= 0
-		meter.healing	= 0
-		meter.maxHeal	= 0
-		meter.incoming	= 0
-		meter.maxInc	= 0
-		meter.targets	= {}
-	end
+	-- Process outgoing events
+	if ( context == "Out" ) then
 	
-	-- Track the target (only enemies)
-	if ( context == "Out" and heal == false ) then
-		meter.targets[target] = ( meter.targets[target] ~= nil ) and meter.targets[target] + damage or damage
-	end
+		-- Outgoing healing
+		if ( newDamage.heal ) then
+		
+			-- Update meter
+			meter.healing			= meter.healing + damage
+			if ( damage > meter.maxHeal ) then
+				meter.maxHeal		= damage
+				meter.maxHealName 	= name			
+			end
+			
+			-- Track ability
+			if ( FTC.Damage.Heals[name] ~= nil ) then
+				FTC.Damage.Heals[name].total 	= FTC.Damage.Heals[name].total + damage
+				FTC.Damage.Heals[name].count 	= FTC.Damage.Heals[name].total + 1
+				FTC.Damage.Heals[name].crit		= newDamage.crit and FTC.Damage.Heals[name].crit + 1 or FTC.Damage.Heals[name].crit
+			else
+				FTC.Damage.Heals[name] 	= {
+					["total"]			= damage,
+					["count"]			= 1,
+					["crit"]			= newDamage.crit and 1 or 0,
+					["tex"]				= newDamage.tex,				
+				}
+			end
+		
+		-- Outgoing damage
+		else 
+		
+			-- Update meter
+			meter.damage			= meter.damage + damage
+			if ( damage > meter.maxDam ) then
+				meter.maxDam		= damage
+				meter.maxDamName 	= name			
+			end
+			
+			-- Track ability
+			if ( FTC.Damage.Damages[name] ~= nil ) then
+				FTC.Damage.Damages[name].total 	= FTC.Damage.Damages[name].total + damage
+				FTC.Damage.Damages[name].count 	= FTC.Damage.Damages[name].total + 1
+				FTC.Damage.Damages[name].crit	= newDamage.crit and FTC.Damage.Damages[name].crit + 1 or FTC.Damage.Damages[name].crit
+			else
+				FTC.Damage.Damages[name] 	= {
+					["total"]			= damage,
+					["count"]			= 1,
+					["crit"]			= newDamage.crit and 1 or 0,
+					["tex"]				= newDamage.tex,				
+				}
+			end
+			
+			-- Track target
+			FTC.Damage.Targets[target] = ( FTC.Damage.Targets[target] ~= nil ) and FTC.Damage.Targets[target] + damage or damage
+		end
+		
+	-- Incoming events
+	elseif ( context == "In" and not newDamage.heal ) then
 	
-	-- Incoming Damage
-	if ( context == 'In' and heal == false ) then
-		meter.incoming 			= meter.incoming + damage
+		-- Update meter
+		meter.incoming			= meter.incoming + damage
 		if ( damage > meter.maxInc ) then
-			meter.maxInc		= damage
-			meter.maxIncName	= name
-		end
-	
-	-- Outgoing Healing
-	elseif ( context == 'Out' and heal == true ) then 
-		meter.healing 			= meter.healing + damage
-		if ( damage > meter.maxHeal ) then
-			meter.maxHeal 		= damage
-			meter.maxHealName 	= name
-		end
-	elseif ( context == 'Out' ) then
-		meter.damage = meter.damage + damage
-		if ( damage > meter.maxDamage ) then
-			meter.maxDamage 	= damage
-			meter.maxDamageName = name
-		end
+			meter.maxInc		= damage		
+		end	
 	end
 	
 	-- Stamp the time
-	meter.endTime = gametime
+	meter.endTime = newDamage.ms
 	
-	-- Send data back to the FTC object
+	-- Return data back to the meter
 	FTC.Damage.Meter = meter	
-
 end
 
 
@@ -119,77 +127,132 @@ function FTC.Damage:DisplayMeter()
 	local parent 	= _G["FTC_Meter"]
 	local title 	= _G["FTC_MeterTitle"]
 	
-	-- Make sure it's not empty
+	-- Grab elements
 	local meter 	= FTC.Damage.Meter
 	local header 	= "FTC Damage Meter"
+	
+	-- Handle cases of no data
 	if ( ( meter.damage + meter.healing + meter.incoming ) == 0 ) then
 		header = header ..  " - No Combat Recorded"
-	
-	-- Otherwise, generate an in-depth tooltip
-	else
-	
-		-- Start by computing the most damaged target
-		local most_damaged_target = ""
-		local most_damage = 0
-		for k,v in pairs( meter.targets ) do
-			if ( v > most_damage ) then
-				most_damage = v
-				most_damaged_target = k
-			end
-		end
 		
-		-- Compute the fight time
-		local fight_time = math.max( ( meter.endTime - meter.startTime ) / 1000 , 1 )
-		
-		-- Generate a meter header
-		header = header .. " - " .. most_damaged_target .. " (" .. string.format( "%.1f" , fight_time ) .. " seconds)"
-		title:SetText(header)
-		
-		-- Compute the statistics
-		local dps = string.format( "%.2f" , meter.damage/fight_time  	)
-		local hps = string.format( "%.2f" , meter.healing/fight_time  	)
-		local ips = string.format( "%.2f" , meter.incoming/fight_time 	)
-		local items = {
-			{ ["type"] = "Damage",	["tag"] = "Total Damage: ", 	["amt"] = ( meter.damage 	> 0 ) 	and meter.damage	or "" , ["val"] = ( meter.damage > 0 ) and dps .. " DPS" or "" },
-			{ ["type"] = "Damage",	["tag"] = "Largest Hit: ",	 	["amt"] = ( meter.maxDamage > 0 ) 	and meter.maxDamageName .. " for " .. meter.maxDamage 	or "" , ["val"] = "" },
-			{ ["type"] = "Healing",	["tag"] = "Total Healing: ", 	["amt"] = ( meter.healing 	> 0 ) 	and meter.healing   or "" , ["val"] = (meter.healing > 0 ) and hps .. " HPS" or "" },
-			{ ["type"] = "Healing",	["tag"] = "Largest Heal: ", 	["amt"] = ( meter.maxHeal 	> 0 ) 	and meter.maxHealName .. " for " .. meter.maxHeal 		or "" , ["val"] = "" },
-			{ ["type"] = "Incoming",["tag"] = "Incoming Damage: ",	["amt"] = ( meter.incoming 	> 0 )	and meter.incoming	or "" , ["val"] = ( meter.incoming > 0 )and ips .. " DPS" or "" },
-			{ ["type"] = "Incoming",["tag"] = "Hardest Hit: ", 		["amt"] = ( meter.maxInc 	> 0 )	and meter.maxIncName .. " for " .. meter.maxInc 		or "" , ["val"] = "" }
-		}
-		
-		-- Generate the label
-		local types = { "Damage" , "Healing" , "Incoming" }
-		for i = 1 , #types , 1 do
-			local names 	= ""
-			local values 	= ""
-			for j = 1 , #items , 1 do
-				if ( items[j].type == types[i] ) then
-					names 	= names .. items[j].tag .. items[j].amt .. "\r\n"
-					values 	= values .. items[j].val
-				end
-			end
-			
-			-- Add the label
-			--local lab = _G['FTC_Meter_' .. types[i] .. 'Label']
-			--local val = _G['FTC_Meter_' .. types[i] .. 'Value']
-			--lab:SetText(names)
-			--val:SetText(values)
-		end
-
-	end
-	
-	-- If the new display is the same as the old one, just hide the meter
+	-- Bail if nothing has changed
 	if ( header == title:GetText() ) then
 		FTC_MiniMeter:SetHidden( parent:IsHidden() )
 		parent:SetHidden( not parent:IsHidden() )
+		return
+	end
 	
-	-- Otherwise , set the display to the element
-	else
-		title:SetText(header)
-		parent:SetHidden(false)
-		FTC_MiniMeter:SetHidden( true )
-	end 
+	-- Compute the most damaged target
+	local most_damaged_target = ""
+	local most_damage = 0
+	for k,v in pairs( meter.targets ) do
+		if ( v > most_damage ) then
+			most_damage = v
+			most_damaged_target = k
+		end
+	end
+	
+	-- Compute the fight time
+	local fight_time = math.max( ( meter.endTime - meter.startTime ) / 1000 , 1 )
+	
+	-- Generate a title
+	header = header .. " - " .. most_damaged_target .. " (" .. string.format( "%.1f" , fight_time ) .. " seconds)"
+	
+	--[[----------------------------------
+		OUTGOING DAMAGE
+	  ]]----------------------------------
+	local dps = string.format( "%.2f" , meter.damage/fight_time )
+	
+	-- Set Header
+	local head	= ( meter.damage > 0 ) and "Outgoing Damage - " .. CommaValue( meter.damage ) .. " (" .. dps .. ") DPS" or "No Outgoing Damage"
+	FTC_MeterDamage_Title:SetText( head )
+	
+	-- Sort damaging abilities
+	local damages = {}
+	for k,v in pairs( FTC.Damage.Damages ) do
+		v.name = k
+		table.insert( damages , v ) 
+	end
+	table.sort( damages , function(x,y) return x.total > y.total end )		
+	for i = 1 , #damages do
+		
+		-- Get elements
+		local icon 	= _G["FTC_MeterDamage_"..i.."Icon"]
+		local left	= _G["FTC_MeterDamage_"..i.."Left"]
+		local right	= _G["FTC_MeterDamage_"..i.."Right"]
+		
+		-- Get data
+		local total	= CommaValue( damages[i].total )
+		local crit	= math.floor( ( damages[i].crit / damages[i].count ) * 100 )
+		local adps	= string.format( "%.2f" , damages[i].total/fight_time )
+		local pdps	= math.floor( ( adps / dps ) * 100 )
+		
+		-- Add data
+		icon:SetTexture( damages[i].tex )
+		left:SetText( damages[i].name .. " - " .. total .. " (" .. crit .. "% crit)")
+		right:SetText( "(" .. pdps .. ") " .. adps .. " DPS" )
+	end
+	
+	-- Change the element height
+	FTC_MeterDamage:SetHeight( 40 + ( #damages * 24 ) )
+	
+	
+	--[[----------------------------------
+		OUTGOING HEALING
+	  ]]----------------------------------		
+	local hps = string.format( "%.2f" , meter.healing/fight_time )
+	
+	-- Set Header
+	local head	= ( meter.healing > 0 ) and "Outgoing Healing - " .. CommaValue( meter.healing ) .. " (" .. hps .. ") HPS" or "No Outgoing Healing"
+	FTC_MeterHealing_Title:SetText( head )
+	
+	-- Sort damaging abilities
+	local heals = {}
+	for k,v in pairs( FTC.Damage.Heals ) do
+		v.name = k
+		table.insert( heals , v ) 
+	end
+	table.sort( heals , function(x,y) return x.total > y.total end )		
+	for i = 1 , #heals do
+		
+		-- Get elements
+		local icon 	= _G["FTC_MeterHealing_"..i.."Icon"]
+		local left	= _G["FTC_MeterHealing_"..i.."Left"]
+		local right	= _G["FTC_MeterHealing_"..i.."Right"]
+		
+		-- Get data
+		local total	= CommaValue( heals[i].total )
+		local crit	= math.floor( ( heals[i].crit / heals[i].count ) * 100 )
+		local ahps	= string.format( "%.2f" , heals[i].total/fight_time )
+		local phps	= math.floor( ( adps / dps ) * 100 )
+		
+		-- Add data
+		icon:SetTexture( heals[i].tex )
+		left:SetText( heals[i].name .. " - " .. total .. " (" .. crit .. "% crit)")
+		right:SetText( "(" .. phps .. ") " .. ahps .. " HPS" )
+	end
+	
+	-- Change the element height
+	FTC_MeterHealing:SetHeight( 40 + ( #heals * 24 ) )		
+	
+	
+	--[[----------------------------------
+		INCOMING DAMAGE
+	  ]]----------------------------------			
+	local ips = string.format( "%.2f" , meter.incoming/fight_time )
+	
+	-- Set Header
+	local head	= ( meter.incoming > 0 ) and "Incoming Damage - " .. CommaValue( meter.incoming ) .. " (" .. ips .. ") IPS" or "No Incoming Damage"
+	FTC_MeterIncoming_Title:SetText( head )
+	
+	
+	--[[----------------------------------
+		ADJUST DISPLAY
+	  ]]----------------------------------		 
+	parent:SetHeight( 60 + FTC_MeterDamage:GetHeight() + FTC_MeterHealing:GetHeight() + 60 )
+	title:SetText(header)
+	parent:SetHidden(false)
+	FTC_MiniMeter:SetHidden( true )
 end
 
 
@@ -245,4 +308,45 @@ function FTC.Damage:Filter( result , abilityName , sourceType , sourceName , tar
 
 	-- Otherwise, ignore it
 	else return false end	
+end
+
+
+--[[ 
+ * Reset the damage meter
+ ]]--
+function FTC.Damage:Reset()
+
+	d( 'resetting meter' )
+
+	-- Setup damage totals
+	FTC.Damage.Meter 	= {
+		['damage']		= 0,
+		['maxDam']		= 0,
+		['maxDamName']	= "",
+		['healing']		= 0,
+		['maxHeal']		= 0,
+		['maxHealName']	= "",
+		['incoming']	= 0,
+		['maxInc']		= 0,
+		['startTime']	= GetGameTimeMilliseconds(),
+		['endTime']		= 0
+	}
+	
+	-- Setup damage target tracking
+	FTC.Damage.Targets 	= {}
+	
+	-- Setup damage ability tracking
+	FTC.Damage.Damages	= {}
+	
+	-- Setup healing ability tracking
+	FTC.Damage.Heals	= {}
+
+end
+
+--[[ 
+ * Returns a formatted number with commas
+ ]]--
+function CommaValue(number)
+	local left,num,right = string.match(number,'^([^%d]*%d)(%d*)(.-)$')
+	return left..(num:reverse():gsub('(%d%d%d)','%1,'):reverse())..right
 end
