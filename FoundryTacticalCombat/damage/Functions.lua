@@ -222,8 +222,11 @@ end
  ]]--
 function FTC.Damage:Filter( result , abilityName , sourceType , sourceName , targetName , hitValue )
 
+	-- Damage Immunity and Dodges
+	if ( result == ACTION_RESULT_IMMUNE or result == ACTION_RESULT_DODGED or result == ACTION_RESULT_BLOCKED_DAMAGE ) then return true
+
 	-- Ignore zero damage
-	if ( hitValue == 0 ) then return false
+	elseif ( hitValue == 0 ) then return false
 	
 	-- Only count damage related to the player
 	elseif ( string.match( targetName , FTC.Player.nicename ) == nil and string.match( sourceName , FTC.Player.nicename ) == nil ) then return false
@@ -232,16 +235,13 @@ function FTC.Damage:Filter( result , abilityName , sourceType , sourceName , tar
 	elseif ( sourceType == 1 ) and ( string.match( targetName , FTC.Player.nicename ) ~= nil ) and ( result ~= ACTION_RESULT_HEAL and result ~= ACTION_RESULT_HOT_TICK ) then return false
 
 	-- Direct Damage
-	elseif ( result == ACTION_RESULT_DAMAGE or result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_BLOCKED_DAMAGE or result == ACTION_RESULT_FALL_DAMAGE ) then return true
+	elseif ( result == ACTION_RESULT_DAMAGE or result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_FALL_DAMAGE ) then return true
 	
 	-- Damage Over Time
 	elseif ( result == ACTION_RESULT_DOT_TICK or result == ACTION_RESULT_DOT_TICK_CRITICAL ) then return true
 	
 	-- Heals
 	elseif ( result == ACTION_RESULT_HEAL or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_HOT_TICK ) then return true
-		
-	-- Damage Immunity
-	elseif ( result == ACTION_RESULT_IMMUNE ) then return true
 
 	-- Otherwise, ignore it
 	else return false end	

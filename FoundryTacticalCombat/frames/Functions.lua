@@ -26,7 +26,13 @@ function FTC.Frames:Initialize()
 	ZO_PlayerAttributeHealth:UnregisterForEvent(EVENT_INTERFACE_SETTING_CHANGED)
 	ZO_PlayerAttributeHealth:UnregisterForEvent(EVENT_PLAYER_ACTIVATED)
 	EVENT_MANAGER:UnregisterForUpdate("ZO_PlayerAttributeHealthFadeUpdate")
-	ZO_PlayerAttributeHealth:SetHidden(true)	
+	ZO_PlayerAttributeHealth:SetHidden(true)
+	
+	ZO_PlayerAttributeMountStamina:UnregisterForEvent(EVENT_POWER_UPDATE)
+	ZO_PlayerAttributeMountStamina:UnregisterForEvent(EVENT_INTERFACE_SETTING_CHANGED)
+	ZO_PlayerAttributeMountStamina:UnregisterForEvent(EVENT_PLAYER_ACTIVATED)
+	EVENT_MANAGER:UnregisterForUpdate("ZO_PlayerAttributeMountStamina")
+	ZO_PlayerAttributeMountStamina:SetHidden(true)	
 
 	-- Create UI elements
 	FTC.Frames:Controls()

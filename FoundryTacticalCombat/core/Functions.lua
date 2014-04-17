@@ -108,6 +108,7 @@ function FTC:UpdateTarget()
 	-- Only display the target frame for valid targets OR move mode
 	if( FTC.init.Frames ) then 
 		if ( FTC.move ) then ignore = false end
+		FTC.Frames.SetupTarget()
 		FTC_TargetFrame:SetHidden( ignore )
 	end
 	
@@ -129,9 +130,6 @@ function FTC:UpdateTarget()
 	FTC.Target.class	= GetUnitClass('reticleover')
 	FTC.Target.level	= GetUnitLevel('reticleover')
 	FTC.Target.vlevel	= GetUnitVeteranRank('reticleover')	
-	
-	-- Setup the new target frame
-	FTC.Frames.SetupTarget()
 end
 
 

@@ -148,12 +148,16 @@ function FTC.SCT:Update(context)
 				end
 				
 				-- Flag blocked damage
-				if ( damage.blocked == true ) then
+				if ( damage.result == ACTION_RESULT_BLOCKED_DAMAGE ) then
 					dam		= "|c990000(" .. dam .. ")|"
 				
 				-- Flag damage immunity
-				elseif ( damage.immune == true ) then
+				elseif ( damage.result == ACTION_RESULT_IMMUNE ) then
 					dam		= "|c990000(Immune)|"
+					
+				-- Dodges
+				elseif ( damage.result == ACTION_RESULT_DODGED ) then
+					dam		= "|c990000(Dodge)|"
 				
 				-- Flag heals
 				elseif( damage.heal == true ) then

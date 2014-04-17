@@ -32,7 +32,7 @@ function FTC.Menu:Toggle( setting , reload )
 	FTC.vars[setting] = not FTC.vars[setting]
 	
 	-- Re-configure some things
-	FTC.Frames:SetupPlayer()
+	if ( FTC.vars.EnableFrames ) then FTC.Frames:SetupPlayer() end
 	
 	-- Maybe reload
 	if reload then ReloadUI() end

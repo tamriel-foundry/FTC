@@ -162,14 +162,13 @@ function FTC.OnCombatEvent( eventCode , result , isError , abilityName, abilityG
 	local damage = {
 		["target"]	= targetName,
 		["name"]	= abilityName,
+		["result"]	= result,
 		["dam"]		= hitValue,
 		["power"]	= powerType,
 		["type"]	= damageType,
 		["ms"]		= GetGameTimeMilliseconds(),
 		["crit"]	= ( result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_DOT_TICK_CRITICAL ) and true or false,
 		["heal"]	= ( result == ACTION_RESULT_HEAL or result == ACTION_RESULT_HOT_TICK ) and true or false,
-		["blocked"]	= ( result == ACTION_RESULT_BLOCKED_DAMAGE ) and true or false,
-		["immune"]	= ( result == ACTION_RESULT_IMMUNE ) and true or false,
 		["multi"]	= 1,
 		["tex"]		= abilityGraphic,
 	}
