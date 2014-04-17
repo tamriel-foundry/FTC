@@ -8,22 +8,9 @@
   
 function FTC.Damage:Controls()
 	
-	-- Setup DPS meter container
-	local FM 	= FTC.UI.TopLevelWindow( "FTC_DamageMeter" 		, GuiRoot , {600,220} , {TOPLEFT,TOPLEFT,10,10} , true )
-	FM.backdrop = FTC.UI.Backdrop( "FTC_DamageMeterBackdrop" 	, FM , "inherit" , {CENTER,CENTER,0,0} , nil , nil , false )
-	FM.title 	= FTC.UI.Label( "FTC_DamageMeterTitle" 			, FM , {FM:GetWidth() - 20 , 25} , {TOPLEFT,TOPLEFT,20,10} , "ZoFontWindowSubtitle" , nil , {0,1} , "FTC Damage Meter" , false )
-
-	-- Iterate through damage meter components
-	local comps = { "Damage" , "Healing" , "Incoming" }
-	local anchor = FM.title
-	for i = 1 , #comps , 1 do
-		local section 	= FTC.UI.Control( "FTC_DamageMeter_" .. comps[i] , FM , {FM:GetWidth() , 50} , {TOPLEFT,BOTTOMLEFT,0,5,anchor} , false )
-		local names 	= FTC.UI.Label( "FTC_DamageMeter_" .. comps[i] .. "Label" , section , { 0.7 * section:GetWidth() , section:GetHeight() } , {TOPLEFT,TOPLEFT,0,0} , "ZoFontGame" , nil , {0,1} , nil , false )
-		local values 	= FTC.UI.Label( "FTC_DamageMeter_" .. comps[i] .. "Value" , section , { 0.3 * section:GetWidth() , section:GetHeight() } , {TOPRIGHT,TOPRIGHT,0,0} , "ZoFontWindowSubtitle" , nil , {1,1} , nil , false )
-		anchor = section
-	end
-	
-	-- Set up the mini meter
+	--[[----------------------------------------------------------
+		MINI DAMAGE METER
+	  ]]----------------------------------------------------------
 	local DM 		= FTC.UI.TopLevelWindow( "FTC_MiniMeter" 		, GuiRoot , {210,30} , {TOPLEFT,TOPLEFT,10,10} , false )
 	DM.backdrop 	= FTC.UI.Backdrop( "FTC_MiniMeterBackdrop"		, DM , "inherit" , {CENTER,CENTER,0,0} , { 0,0,0,0.2 } , { 0,0,0,0.1 } , false )
 	
@@ -42,4 +29,41 @@ function FTC.Damage:Controls()
 	DM.inc.icon		= FTC.UI.Texture( "FTC_MiniMeter_IncIcon" 		, DM.inc , {20,20} , {LEFT,LEFT,1,0} , nil , false )
 	DM.inc.icon:SetTexture( "/esoui/art/lfg/lfg_tank_up.dds" )
 	
+	--[[----------------------------------------------------------
+		EXPANDED DAMAGE ANALYTICS
+	  ]]----------------------------------------------------------
+	local FM 		= FTC.UI.TopLevelWindow( "FTC_Meter" 			, FoundryTacticalCombat , {600,600} , {CENTER,CENTER,0,0} , false )
+	FM.backdrop 	= FTC.UI.Backdrop( "FTC_MeterBackdrop" 			, FM , "inherit" , {CENTER,CENTER,0,0} , nil , nil , false )
+	FM.title 		= FTC.UI.Label( "FTC_MeterTitle"				, FM , {FM:GetWidth() , 50} , {TOP,TOP,0,0} , "ZoFontWindowTitle" , nil , {1,1} , "Damage Meter Breakdown" , false )
+
+	-- Outgoing damage component
+	FM.dam			= FTC.UI.Control( "FTC_MeterDamage" 			, FM , {FM:GetWidth() - 40 , 230} , {TOP,BOTTOM,0,50} , false )
+	FM.dam.title 	= FTC.UI.Label( "FTC_MeterDamage_Title"			, FM.dam , {FM.dam:GetWidth() , 30} , {TOP,TOP,0,0} , "ZoFontWindowSubtitle" , nil , {0,1} , "Outgoing Damage" , false )
+	local anchor	= FM.dam.title
+	for i = 1 , 10 do
+		FM.dam[i]			= FTC.UI.Control( "FTC_MeterDamage_"..i			, FM.dam , {FM.dam:GetWidth() , 20} , {TOP,BOTTOM,0,0,anchor} , false )
+		FM.dam[i].icon		= FTC.UI.Texture( "FTC_MeterDamage_"..i.."Icon" , DM.inc , {20,20} , {LEFT,LEFT,1,0} , nil , false )
+		FM.dam[i].icon:SetTexture( "/esoui/art/lfg/lfg_tank_up.dds" )
+		FM.dam[i].left		= FTC.UI.Label( "FTC_MeterDamage_"..i.."Left" 	, DM.inc , {FM.dam:GetWidth(),20} , {LEFT,LEFT,25,0} , 'ZoFontGame' , nil , {0,1} , "Damage " .. i .. " Left"	, false )
+		FM.dam[i].right		= FTC.UI.Label( "FTC_MeterDamage_"..i.."Right" 	, DM.inc , {FM.dam:GetWidth(),20} , {RIGHT,RIGHT,0,0} , 'ZoFontGame' , nil , {0,1} , "Damage " .. i .. " Right" , false )
+		anchor				= FM.damage[i]
+	end
+	
+	-- Outgoing healing component
+	FM.heal			= FTC.UI.Control( "FTC_MeterHealing" 			, FM , {FM:GetWidth() - 40 , 230} , {TOP,BOTTOM,0,50} , false )
+	FM.heal.title 	= FTC.UI.Label( "FTC_MeterHealing_Title"		, FM.heal , {FM.heal:GetWidth() , 30} , {TOP,TOP,0,0} , "ZoFontWindowSubtitle" , nil , {0,1} , "Outgoing Healing" , false )
+	local anchor	= FM.heal.title
+	for i = 1 , 10 do
+		FM.heal[i]			= FTC.UI.Control( "FTC_MeterHealing_"..i		, FM.heal , {FM.heal:GetWidth() , 20} , {TOP,BOTTOM,0,0,anchor} , false )
+		FM.heal[i].icon		= FTC.UI.Texture( "FTC_MeterHealing_"..i.."Icon" , DM.inc , {20,20} , {LEFT,LEFT,1,0} , nil , false )
+		FM.heal[i].icon:SetTexture( "/esoui/art/lfg/lfg_tank_up.dds" )
+		FM.heal[i].left		= FTC.UI.Label( "FTC_MeterHealing_"..i.."Left" 	, DM.inc , {FM.heal:GetWidth(),20} , {LEFT,LEFT,25,0} , 'ZoFontGame' , nil , {0,1} , "Healing " .. i .. " Left"	, false )
+		FM.heal[i].right	= FTC.UI.Label( "FTC_MeterHealing_"..i.."Right" , DM.inc , {FM.heal:GetWidth(),20} , {RIGHT,RIGHT,0,0} , 'ZoFontGame' , nil , {0,1} , "Healing " .. i .. " Right" , false )
+		anchor				= FM.heal[i]
+	end
+	
+	-- Incoming damage component
+	FM.inc			= FTC.UI.Control( "FTC_MeterIncoming" 			, FM , {FM:GetWidth() - 40 , 230} , {TOP,BOTTOM,0,50} , false )
+	FM.inc.title 	= FTC.UI.Label( "FTC_MeterIncoming_Title"		, FM.inc , {FM.inc:GetWidth() , 30} , {TOP,TOP,0,0} , "ZoFontWindowSubtitle" , nil , {0,1} , "Incoming Damage" , false )
+	FM.inc.desc		= FTC.UI.Label( "FTC_MeterIncoming_Desc" 		, FM.inc , {FM.inc:GetWidth(),20} , {TOP,BOTTOM,0,0,FM.inc.title} , 'ZoFontGame' , nil , {0,1} , "Overview of incoming damage"	, false )	
 end

@@ -2,13 +2,16 @@
 --[[----------------------------------------------------------
 	FOUNDRY TACTICAL COMBAT
 	----------------------------------------------------------
-	* A robust addon designed to overhaul the Elder Scrolls Online interface to provide 
-	* useful and time-sensitive information about combat events. The add-on features
-	* several components:
-	* (1) Enhanced Heads-Up-Display
-	* (2) Active Buff Tracking
-	* (4) Scrolling Combat Text and Damage Meter
-	* 
+	A robust addon designed to overhaul the Elder Scrolls Online interface to provide 
+	useful and time-sensitive information about combat events. The add-on features
+	several components:
+	
+	 (1) Custom Combat-Friendly Unit Frames
+	 (2) Active Buff Tracking
+	 (3) Scrolling Combat Text
+	 (4) Combat Status Alerts
+	 (5) Damage Tracking and Data
+	 
 	* Version 0.26
 	* atropos@tamrielfoundry.com
 	* 4-13-2014
@@ -29,6 +32,7 @@ FTC.defaults			= {
 	["EnableBuffs"] 			= true,
 	["EnableSCT"] 				= true,
 	["EnableFrames"] 			= true,
+	["EnableDamage"]			= true,
 	
 	-- Scrolling Combat Text
 	["SCTCount"]				= 20,
@@ -53,11 +57,6 @@ FTC.defaults			= {
 
 -- Component Management
 FTC.init 				= {}
-FTC.debug				= {
-	["buffs"]			= false,
-	["sct"]				= false,
-	["hud"]				= false
-	}
 
 -- Allow the frames to be moved?
 FTC.move = false
@@ -79,10 +78,10 @@ function FTC.Initialize( eventCode, addOnName )
 	FTC.Target:Initialize()
 
 	-- Unit Frames Component
-	FTC.Frames:Initialize()
+	if ( FTC.vars.EnableFrames ) then FTC.Frames:Initialize() end
 	
 	-- Damage Tracking Component
-	FTC.Damage:Initialize()
+	if ( FTC.vars.EnableDamage ) then FTC.Damage:Initialize() end
 	
 	-- Active Buffs Component
 	if ( FTC.vars.EnableBuffs ) then FTC.Buffs:Initialize() end
@@ -147,8 +146,12 @@ function FTC:Update()
 		FTC.SCT:UpdateAlerts()
 	end
 	
-	-- Damage meter
-	if ( FTC.BufferScript( 'FTCMeter' , 1000 ) ) then FTC.Damage:UpdateMini() end
+	-- Damage Tracking Component
+	if ( FTC.init.Damage ) then
+	
+		-- Update the mini meter
+		if ( FTC.BufferScript( 'FTCMeter' , 1000 ) ) then FTC.Damage:UpdateMini() end
+	end
 	
 end
 

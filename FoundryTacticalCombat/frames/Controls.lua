@@ -8,22 +8,24 @@
   
 function FTC.Frames:Controls()
 
-	-- CREATE CUSTOM PLAYER FRAME
+	--[[----------------------------------------------------------
+		PLAYER FRAME
+	 ]]-----------------------------------------------------------
 	local anchor = FTC.vars["FTC_PlayerFrame"]
 		
 	-- Create the unit frame container	
-	local player 	= FTC.UI.TopLevelWindow( "FTC_PlayerFrame" , GuiRoot , {250,75} , {anchor[1],anchor[2],anchor[3],anchor[4]} , false )	
+	local player 		= FTC.UI.TopLevelWindow( "FTC_PlayerFrame" , GuiRoot , {250,75} , {anchor[1],anchor[2],anchor[3],anchor[4]} , false )	
 	player:SetDrawLayer(2)
 	player:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end)
-	player.backdrop	= FTC.UI.Backdrop( "FTC_PlayerFrameBackdrop" , player , "inherit" , {CENTER,CENTER,0,0} , nil , nil , false )	
-	player.plate	= FTC.UI.Control( "FTC_PlayerFramePlate" , player , {player:GetWidth() ,24} , {BOTTOM,TOP,0,3,parent} , false )	
-	player.name 	= FTC.UI.Label( "FTC_PlayerFrameName" , player.plate , 'inherit' , {CENTER,CENTER,0,0} , FTC.Fonts.meta(14) , nil , {0,2} , nil , false )	
-	player.class	= FTC.UI.Texture( "FTC_PlayerFrameClass" , player.plate , {24,24} , {BOTTOMRIGHT,BOTTOMRIGHT,0,2} , nil , false )
+	player.backdrop		= FTC.UI.Backdrop( "FTC_PlayerFrameBackdrop" , player , "inherit" , {CENTER,CENTER,0,0} , nil , nil , false )	
+	player.plate		= FTC.UI.Control( "FTC_PlayerFramePlate" , player , {player:GetWidth() ,24} , {BOTTOM,TOP,0,3,parent} , false )	
+	player.name 		= FTC.UI.Label( "FTC_PlayerFrameName" , player.plate , 'inherit' , {CENTER,CENTER,0,0} , FTC.Fonts.meta(14) , nil , {0,2} , nil , false )	
+	player.class		= FTC.UI.Texture( "FTC_PlayerFrameClass" , player.plate , {24,24} , {BOTTOMRIGHT,BOTTOMRIGHT,0,2} , nil , false )
 	player.class:SetTexture( "/esoui/art/contacts/social_classicon_" .. FTC.Player.class .. ".dds" )
 	
 	-- Create attribute bars
-	local parent 	= player
-	local stats 	= { 'Health' , 'Magicka' , 'Stamina' }
+	local parent 		= player
+	local stats 		= { 'Health' , 'Magicka' , 'Stamina' }
 	for i = 1 , #stats , 1 do
 		
 		-- Create each bar
@@ -56,36 +58,31 @@ function FTC.Frames:Controls()
 	xpbar.bar			= FTC.UI.Statusbar( "FTC_XPBar_Bar" , xpbar.backdrop , { xpbar.backdrop:GetWidth() - 4 , xpbar.backdrop:GetHeight() - 4 } , {LEFT,LEFT,2,0} , {1,1,1,1} , false )
 	xpbar.bar:SetGradientColors(0.2, 0.6 , 0.6, 1, 0.2, 1, 1, 1)
 
-	-- CREATE CUSTOM TARGET FRAME
-	local anchor = FTC.vars["FTC_TargetFrame"]
+	--[[----------------------------------------------------------
+		TARGET FRAME
+	 ]]-----------------------------------------------------------
+	local anchor 		= FTC.vars["FTC_TargetFrame"]
 		
 	-- Create the unit frame container	
-	local target 	= FTC.UI.TopLevelWindow( "FTC_TargetFrame" , GuiRoot , {250,26} , {anchor[1],anchor[2],anchor[3],anchor[4]} , true )
+	local target 		= FTC.UI.TopLevelWindow( "FTC_TargetFrame" , GuiRoot , {250,26} , {anchor[1],anchor[2],anchor[3],anchor[4]} , true )
 	target:SetDrawLayer(2)
 	target:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end)	
-	target.backdrop	= FTC.UI.Backdrop( "FTC_TargetFrameBackdrop" , target , "inherit" , {CENTER,CENTER,0,0} , nil , nil , false )	
-	target.name 	= FTC.UI.Label( "FTC_TargetFrameName" , target , { target:GetWidth() , 20 } , {BOTTOMLEFT,TOPLEFT,0,0} , FTC.Fonts.meta(14) , nil , {0,1} , nil , false )		
-	target.class	= FTC.UI.Texture( "FTC_TargetFrameClass" , target , {24,24} , {BOTTOMRIGHT,TOPRIGHT,0,2} , nil , true )
+	target.backdrop		= FTC.UI.Backdrop( "FTC_TargetFrameBackdrop" , target , "inherit" , {CENTER,CENTER,0,0} , nil , nil , false )	
+	target.name 		= FTC.UI.Label( "FTC_TargetFrameName" , target , { target:GetWidth() , 20 } , {BOTTOMLEFT,TOPLEFT,0,0} , FTC.Fonts.meta(14) , nil , {0,1} , nil , false )		
+	target.class		= FTC.UI.Texture( "FTC_TargetFrameClass" , target , {24,24} , {BOTTOMRIGHT,TOPRIGHT,0,2} , nil , true )
 	
 	-- Create health bar
-	local health 	= FTC.UI.Control( "FTC_TargetFrameHealth" , target , {target:GetWidth()-8,20} , {CENTER,CENTER,0,0} , false )	
-	local bar		= FTC.UI.Backdrop( "FTC_TargetFrameHealthBar" , health , "inherit" , {LEFT,LEFT,0,0} , {0.2,0,0,0.6} , {0,0,0,0.8} , false )	
-	local current	= FTC.UI.Label( "FTC_TargetFrameHealthMin" , health , { health:GetWidth() - 10 , health:GetHeight() } , {CENTER,CENTER,0,0} , FTC.Fonts.meta(12) , nil , {2,1} , nil , false )		
-	local pct		= FTC.UI.Label( "FTC_TargetFrameHealthPct" , health , { health:GetWidth() - 10 , health:GetHeight() } , {CENTER,CENTER,0,0} , "ZoFontAnnounceSmall" , nil , {0,1} , nil , false )	
+	local health 		= FTC.UI.Control( "FTC_TargetFrameHealth" , target , {target:GetWidth()-8,20} , {CENTER,CENTER,0,0} , false )	
+	local bar			= FTC.UI.Backdrop( "FTC_TargetFrameHealthBar" , health , "inherit" , {LEFT,LEFT,0,0} , {0.2,0,0,0.6} , {0,0,0,0.8} , false )	
+	local current		= FTC.UI.Label( "FTC_TargetFrameHealthMin" , health , { health:GetWidth() - 10 , health:GetHeight() } , {CENTER,CENTER,0,0} , FTC.Fonts.meta(12) , nil , {2,1} , nil , false )		
+	local pct			= FTC.UI.Label( "FTC_TargetFrameHealthPct" , health , { health:GetWidth() - 10 , health:GetHeight() } , {CENTER,CENTER,0,0} , "ZoFontAnnounceSmall" , nil , {0,1} , nil , false )	
 	
 	-- Create damage shield bar
 	local shield		= FTC.UI.Statusbar( "FTC_TargetFrame_Shield" , health , { 0 , 4 } , {BOTTOMLEFT,BOTTOMLEFT,1,-3} , {1,0.4,0,1} , false )
 
-	-- ADD LABELS TO DEFAULT FRAMES
-	local stats		= { "Health" , "Stamina" , "Magicka" }
-	for  i = 1 , #stats , 1 do
-		local parent	= _G["ZO_PlayerAttribute"..stats[i]]
-		local label		= FTC.UI.Label( "FTC_DefaultPlayer"..stats[i] , parent , { parent:GetWidth() , 20 } , {CENTER,CENTER,0,-1} , "ZoFontAnnounceSmall" , nil , {1,1} , nil , false )
-	end
-	local parent		= _G["ZO_TargetUnitFramereticleover"]
-	local label			= FTC.UI.Label( "FTC_DefaultTargetHealth" , parent , { parent:GetWidth() , 20 } , {CENTER,CENTER,0,-1} , "ZoFontAnnounceSmall" , nil , {1,1} , nil , false )
-
-	-- Create ultimate tracker
+	--[[----------------------------------------------------------
+		ULTIMATE TRACKING
+	 ]]-----------------------------------------------------------
 	local ultival 		= FTC.UI.Label( "FTC_UltimateLevel" , ActionButton8 , {50,20} , {BOTTOM,TOP,0,-3} , 'ZoFontAnnounceSmall' , nil , {1,2} , nil , false )
 	local ultipct 		= FTC.UI.Label( "FTC_UltimatePct" , ActionButton8 , 'inherit' , {CENTER,CENTER,0,0} , 'ZoFontHeader2' , nil , {1,1} , nil , false )
 end

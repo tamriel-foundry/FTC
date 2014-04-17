@@ -32,7 +32,7 @@ function FTC.Damage:Initialize()
 	ZO_CreateStringId("SI_BINDING_NAME_DISPLAY_DAMAGE_METER", "Display Damage Meter")
 
 	-- Register init status
-	FTC.Damage.init = true
+	FTC.init.Damage = true
 
 end
 
@@ -116,8 +116,8 @@ end
 function FTC.Damage:DisplayMeter()
 	
 	-- Get the damage meter container
-	local parent 	= _G["FTC_DamageMeter"]
-	local title 	= _G["FTC_DamageMeterTitle"]
+	local parent 	= _G["FTC_Meter"]
+	local title 	= _G["FTC_MeterTitle"]
 	
 	-- Make sure it's not empty
 	local meter 	= FTC.Damage.Meter
@@ -171,10 +171,10 @@ function FTC.Damage:DisplayMeter()
 			end
 			
 			-- Add the label
-			local lab = _G['FTC_DamageMeter_' .. types[i] .. 'Label']
-			local val = _G['FTC_DamageMeter_' .. types[i] .. 'Value']
-			lab:SetText(names)
-			val:SetText(values)
+			--local lab = _G['FTC_Meter_' .. types[i] .. 'Label']
+			--local val = _G['FTC_Meter_' .. types[i] .. 'Value']
+			--lab:SetText(names)
+			--val:SetText(values)
 		end
 
 	end

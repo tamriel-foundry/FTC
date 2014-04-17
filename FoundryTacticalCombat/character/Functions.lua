@@ -47,15 +47,7 @@ function FTC.Target:Initialize()
 	
 	-- Populate the target object
 	for attr , value in pairs( target ) do FTC.Target[attr] = value end	
-	
-	-- Register init status
-	FTC.Target.init = true
 end
-
---[[----------------------------------------------------------
-	EVENT HANDLERS
- ]]-----------------------------------------------------------
-
 
 --[[----------------------------------------------------------
 	HELPER FUNCTIONS

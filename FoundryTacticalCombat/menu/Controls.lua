@@ -22,6 +22,7 @@ function FTC.Menu:Controls()
 	LAM:AddHeader( FTC.Menu.id , "FTC_Settings_ComponentsHeader", "Configure Components")
 	LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_ComponentsFrames", "Enable Frames", "Enable custom unit frames component?", function() return FTC.vars.EnableFrames end , function() FTC.Menu:Toggle( 'EnableFrames' , true ) end , true , "Reloads UI" )
 	LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_ComponentsBuffs", "Enable Buffs", "Enable active buff tracking component?", function() return FTC.vars.EnableBuffs end , function() FTC.Menu:Toggle( 'EnableBuffs' , true ) end , true , "Reloads UI" )	
+	LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_ComponentsDamage", "Enable Damage Statistics", "Enable damage statistics?", function() return FTC.vars.EnableDamage end , function() FTC.Menu:Toggle( 'EnableDamage' , true ) end , true , "Reloads UI" )
 	LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_ComponentsSCT", "Enable Combat Text", "Enable scrolling combat text component?", function() return FTC.vars.EnableSCT end , function() FTC.Menu:Toggle( 'EnableSCT' , true ) end , true , "Reloads UI" )
 
 	-- Unit frames settings

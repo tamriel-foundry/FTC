@@ -9,26 +9,41 @@
 FTC.Frames = {}
 function FTC.Frames:Initialize()
 
+	-- Unregister events for default frames
+	ZO_PlayerAttributeMagicka:UnregisterForEvent(EVENT_POWER_UPDATE)
+	ZO_PlayerAttributeMagicka:UnregisterForEvent(EVENT_INTERFACE_SETTING_CHANGED)
+	ZO_PlayerAttributeMagicka:UnregisterForEvent(EVENT_PLAYER_ACTIVATED)
+	EVENT_MANAGER:UnregisterForUpdate("ZO_PlayerAttributeMagickaFadeUpdate")
+	ZO_PlayerAttributeMagicka:SetHidden(true)
+	
+	ZO_PlayerAttributeStamina:UnregisterForEvent(EVENT_POWER_UPDATE)
+	ZO_PlayerAttributeStamina:UnregisterForEvent(EVENT_INTERFACE_SETTING_CHANGED)
+	ZO_PlayerAttributeStamina:UnregisterForEvent(EVENT_PLAYER_ACTIVATED)
+	EVENT_MANAGER:UnregisterForUpdate("ZO_PlayerAttributeStaminaFadeUpdate")
+	ZO_PlayerAttributeStamina:SetHidden(true)
+	
+	ZO_PlayerAttributeHealth:UnregisterForEvent(EVENT_POWER_UPDATE)
+	ZO_PlayerAttributeHealth:UnregisterForEvent(EVENT_INTERFACE_SETTING_CHANGED)
+	ZO_PlayerAttributeHealth:UnregisterForEvent(EVENT_PLAYER_ACTIVATED)
+	EVENT_MANAGER:UnregisterForUpdate("ZO_PlayerAttributeHealthFadeUpdate")
+	ZO_PlayerAttributeHealth:SetHidden(true)	
+
 	-- Create UI elements
 	FTC.Frames:Controls()
 	
 	-- Populate the unit frames
-	FTC.Frames:UpdateFrame( 'player', POWERTYPE_HEALTH	, FTC.Player.health.current		, FTC.Player.health.max		, FTC.Player.health.max )
-	FTC.Frames:UpdateFrame( 'player', POWERTYPE_MAGICKA	, FTC.Player.magicka.current	, FTC.Player.magicka.max	, FTC.Player.magicka.max )
-	FTC.Frames:UpdateFrame( 'player', POWERTYPE_STAMINA	, FTC.Player.stamina.current	, FTC.Player.stamina.max	, FTC.Player.stamina.max )
+	FTC.Frames:UpdateFrame( 'player', POWERTYPE_HEALTH,		FTC.Player.health.current, 	FTC.Player.health.max,	FTC.Player.health.max )
+	FTC.Frames:UpdateFrame( 'player', POWERTYPE_MAGICKA, 	FTC.Player.magicka.current, FTC.Player.magicka.max, FTC.Player.magicka.max )
+	FTC.Frames:UpdateFrame( 'player', POWERTYPE_STAMINA, 	FTC.Player.stamina.current, FTC.Player.stamina.max, FTC.Player.stamina.max )
 	
 	-- Populate the ultimate
 	FTC.Frames:UpdateUltimate( POWERTYPE_ULTIMATE , FTC.Player.ultimate.current	, FTC.Player.ultimate.max , FTC.Player.ultimate.max )
-	
-	-- Configure custom unit frames
-	if ( FTC.vars.EnableFrames ) then
 
-		-- Populate some information to the player frame
-		FTC.Frames:SetupPlayer()
+	-- Populate some information to the player frame
+	FTC.Frames:SetupPlayer()
 
-		-- Register init status
-		FTC.init.Frames = true 
-	end
+	-- Register init status
+	FTC.init.Frames = true 
 end
 
 
@@ -77,16 +92,9 @@ end
 	-- Ensure visibility
 	frame:SetHidden( not FTC.init.Frames )	
 	
-	-- Update the default attribute bar
-	local default 	= ( context == "Player" ) and _G["FTC_DefaultPlayer"..attr.name] or _G["FTC_DefaultTargetHealth"]	
-	default:SetText( powerValue .. " / " .. powerEffectiveMax .. " (" .. pct .. "%)")
-	
 	-- Toggle opacity
 	local alpha = ((( powerType == POWERTYPE_HEALTH and pct == 100 )  or ( FTC.Player.health.pct == 100 )) and not IsUnitInCombat('player')) and 0.5 or 1
 	frame:SetAlpha(alpha)
-
-	-- Ensure the default unit frames remain hidden
-	ZO_PlayerAttribute:SetHidden( FTC.init.Frames )
 	
 	-- Update the database object
 	FTC[context][string.lower(attr.name)] = { ["current"] = powerValue , ["max"] = powerEffectiveMax , ["pct"] = pct }
@@ -247,6 +255,8 @@ function FTC.Frames:SetupPlayer()
 		local pct		= math.floor( 100 * ( currExp / maxExp ) )
 		FTC_XPBar_Bar:SetWidth( ( pct / 100 ) * ( FTC_XPBar:GetWidth() - 4 ) )
 	end
+	
+	-- Maybe display the bar
 	FTC_XPBar:SetHidden( not ( FTC.vars.EnableXPBar and FTC.Player.vlevel < 10 ) )
 end
 

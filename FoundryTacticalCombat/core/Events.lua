@@ -170,14 +170,15 @@ function FTC.OnCombatEvent( eventCode , result , isError , abilityName, abilityG
 		["heal"]	= ( result == ACTION_RESULT_HEAL or result == ACTION_RESULT_HOT_TICK ) and true or false,
 		["blocked"]	= ( result == ACTION_RESULT_BLOCKED_DAMAGE ) and true or false,
 		["immune"]	= ( result == ACTION_RESULT_IMMUNE ) and true or false,
-		["multi"]	= 1
+		["multi"]	= 1,
+		["tex"]		= abilityGraphic,
 	}
 	
-	-- Pass the damage object to SCT if it is enabled
+	-- Pass damage to scrolling combat text
 	if ( FTC.init.SCT ) then FTC.SCT:NewSCT( damage , context ) end
 	
 	-- Pass damage to damage meter tracking
-	if ( FTC.Damage.init ) then	FTC.Damage:UpdateMeter( damage , context ) end
+	if ( FTC.init.Damage ) then	FTC.Damage:UpdateMeter( damage , context ) end
 	
 	-- Pass damage to a callback for extensions to use
 	CALLBACK_MANAGER:FireCallbacks( "FTC_NewDamage" , damage )
@@ -262,11 +263,11 @@ function FTC.OnPowerUpdate( eventCode , unitTag, powerIndex, powerType, powerVal
 			if ( FTC.init.SCT ) then FTC.SCT:ResourceAlert( unitTag , powerType , powerValue , powerMax ) end
 			
 			-- Update the player frame
-			FTC.Frames:UpdateFrame( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
+			if ( FTC.init.Frames ) then FTC.Frames:UpdateFrame( unitTag , powerType , powerValue , powerMax , powerEffectiveMax ) end
 			
 		-- Ultimate
 		elseif ( powerType == POWERTYPE_ULTIMATE ) then
-			FTC.Frames:UpdateUltimate( powerValue , powerMax , powerEffectiveMax )
+			if ( FTC.init.Frames ) then FTC.Frames:UpdateUltimate( powerValue , powerMax , powerEffectiveMax ) end
 			
 		-- Mount Stamina
 		elseif ( powerType == POWERTYPE_MOUNT_STAMINA ) then
@@ -284,7 +285,7 @@ function FTC.OnPowerUpdate( eventCode , unitTag, powerIndex, powerType, powerVal
 			if ( FTC.init.SCT ) then FTC.SCT:ResourceAlert( unitTag , powerType , powerValue , powerMax ) end
 			
 			-- Update the target frame
-			FTC.Frames:UpdateFrame( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )		
+			if ( FTC.init.Frames ) then FTC.Frames:UpdateFrame( unitTag , powerType , powerValue , powerMax , powerEffectiveMax ) end
 		end
 	end
 end
@@ -324,7 +325,7 @@ function FTC.OnVisualAdded( eventCode , unitTag, unitAttributeVisual, statType, 
 
 	-- Damage Shields
 	if ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH ) then
-		FTC.Frames:UpdateShield( unitTag , value , maxValue )
+		if ( FTC.init.Frames ) then FTC.Frames:UpdateShield( unitTag , value , maxValue ) end
 	end
 end
 
@@ -339,7 +340,7 @@ function FTC.OnVisualUpdate( eventCode , unitTag, unitAttributeVisual, statType,
 	
 	-- Damage Shields
 	if ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH ) then
-		FTC.Frames:UpdateShield( unitTag , newValue , newMaxValue )
+		if ( FTC.init.Frames ) then FTC.Frames:UpdateShield( unitTag , newValue , newMaxValue ) end
 	end
 end
 
@@ -355,7 +356,7 @@ function FTC.OnVisualRemoved( eventCode , unitTag, unitAttributeVisual, statType
 	
 	-- Damage Shields
 	if ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH ) then
-		FTC.Frames:UpdateShield( unitTag , 0 , maxValue )
+		if ( FTC.init.Frames ) then FTC.Frames:UpdateShield( unitTag , 0 , maxValue ) end
 	end
 	
 	-- Purge any buffs related to damage shielding
