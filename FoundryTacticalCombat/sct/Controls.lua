@@ -18,7 +18,7 @@ function FTC.SCT:Controls()
 	-- Create incoming damage container
 	local name		= "FTC_CombatTextIn"
 	local anchor	= FTC.vars[name]
-	local CTI 		= FTC.UI.TopLevelWindow( name , GuiRoot , {100,750} , {anchor[1],anchor[2],anchor[3],anchor[4]} , false )
+	local CTI 		= FTC.UI.TopLevelWindow( name , GuiRoot , {150,750} , {anchor[1],anchor[2],anchor[3],anchor[4]} , false )
 	CTI.backdrop 	= FTC.UI.Backdrop( name.."_Backdrop" , CTI , "inherit" , {CENTER,CENTER,0,0} , nil , nil , true )	
 	CTI.label		= FTC.UI.Label( name.."_Label" , CTI , 'inherit' , {CENTER,CENTER,0,0} , FTC.Fonts.meta(16) , nil , {1,1} , "Incoming Damage" , true )
 	

@@ -167,10 +167,9 @@ function FTC.OnCombatEvent( eventCode , result , isError , abilityName, abilityG
 		["power"]	= powerType,
 		["type"]	= damageType,
 		["ms"]		= GetGameTimeMilliseconds(),
-		["crit"]	= ( result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_DOT_TICK_CRITICAL ) and true or false,
-		["heal"]	= ( result == ACTION_RESULT_HEAL or result == ACTION_RESULT_HOT_TICK ) and true or false,
+		["crit"]	= ( result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_DOT_TICK_CRITICAL or result == ACTION_RESULT_HOT_TICK_CRITICAL ) and true or false,
+		["heal"]	= ( result == ACTION_RESULT_HEAL or result == ACTION_RESULT_HOT_TICK or result == ACTION_RESULT_HOT_TICK_CRITICAL ) and true or false,
 		["multi"]	= 1,
-		["tex"]		= abilityGraphic,
 	}
 	
 	-- Pass damage to scrolling combat text
@@ -262,18 +261,17 @@ function FTC.OnPowerUpdate( eventCode , unitTag, powerIndex, powerType, powerVal
 			if ( FTC.init.SCT ) then FTC.SCT:ResourceAlert( unitTag , powerType , powerValue , powerMax ) end
 			
 			-- Update the player frame
-			if ( FTC.init.Frames ) then FTC.Frames:UpdateFrame( unitTag , powerType , powerValue , powerMax , powerEffectiveMax ) end
+			FTC.Frames:UpdateFrame( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
 			
 		-- Ultimate
 		elseif ( powerType == POWERTYPE_ULTIMATE ) then
-			if ( FTC.init.Frames ) then FTC.Frames:UpdateUltimate( powerValue , powerMax , powerEffectiveMax ) end
+			FTC.Frames:UpdateUltimate( powerValue , powerMax , powerEffectiveMax )
 			
 		-- Mount Stamina
 		elseif ( powerType == POWERTYPE_MOUNT_STAMINA ) then
 			if ( FTC.init.Frames ) then	FTC.Frames:UpdateMount( powerValue , powerMax , powerEffectiveMax )	end	
 		end
-	
-	
+
 	-- Target updates
 	elseif ( unitTag == 'reticleover' ) then
 	
@@ -284,7 +282,7 @@ function FTC.OnPowerUpdate( eventCode , unitTag, powerIndex, powerType, powerVal
 			if ( FTC.init.SCT ) then FTC.SCT:ResourceAlert( unitTag , powerType , powerValue , powerMax ) end
 			
 			-- Update the target frame
-			if ( FTC.init.Frames ) then FTC.Frames:UpdateFrame( unitTag , powerType , powerValue , powerMax , powerEffectiveMax ) end
+			FTC.Frames:UpdateFrame( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
 		end
 	end
 end

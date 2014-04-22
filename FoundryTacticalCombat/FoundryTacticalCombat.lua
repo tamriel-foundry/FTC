@@ -12,9 +12,9 @@
 	 (4) Combat Status Alerts
 	 (5) Damage Tracking and Data
 	 
-	* Version 0.26
+	* Version 0.27
 	* atropos@tamrielfoundry.com
-	* 4-13-2014
+	* 4-21-2014
   ]]--
 
 --[[----------------------------------------------------------
@@ -44,18 +44,26 @@ FTC.defaults			= {
 	["FTC_CombatTextStatus"]	= {TOP,TOP,0,80},
 	
 	-- Buffs
+	["AnchorBuffs"]				= true,
 	["NumBuffs"]				= 12,
 	["EnableLongBuffs"]			= true,
 	["FTC_LongBuffs"]			= {BOTTOMRIGHT,BOTTOMRIGHT,-5,-5},
+	["FTC_PlayerBuffs"]			= {CENTER,CENTER,0,400},
+	["FTC_PlayerDebuffs"]		= {CENTER,CENTER,0,500},
+	["FTC_TargetBuffs"]			= {CENTER,CENTER,0,-500},
+	["FTC_TargetDebuffs"]		= {CENTER,CENTER,0,-400},
 	
 	-- Frames
+	["DisableTargetFrame"]		= true,
+	["FrameText"]				= true,
 	["EnableXPBar"]				= true,
 	["EnableNameplate"]			= true,
 	["FTC_PlayerFrame"]			= {CENTER,CENTER,-400,300},
 	["FTC_TargetFrame"]			= {CENTER,CENTER,400,275},
 	
 	-- Damage
-	["MeterTimeout"]			= 5,
+	["FTC_MiniMeter"]			= {TOPLEFT,TOPLEFT,10,10},
+	["DamageTimeout"]			= 5,
 	}
 
 -- Component Management
@@ -81,7 +89,7 @@ function FTC.Initialize( eventCode, addOnName )
 	FTC.Target:Initialize()
 
 	-- Unit Frames Component
-	if ( FTC.vars.EnableFrames ) 	then FTC.Frames:Initialize() end
+	FTC.Frames:Initialize()
 	
 	-- Damage Tracking Component
 	if ( FTC.vars.EnableDamage ) 	then FTC.Damage:Initialize() end
@@ -90,7 +98,7 @@ function FTC.Initialize( eventCode, addOnName )
 	if ( FTC.vars.EnableBuffs ) 	then FTC.Buffs:Initialize() end
 
 	-- Scrolling Combat Text Component
-	if ( FTC.vars.EnableSCT ) 		then FTC.SCT:Initialize()	end
+	if ( FTC.vars.EnableSCT ) 		then FTC.SCT:Initialize() end
 	
 	-- Setup settings component
 	FTC.Menu.Initialize()

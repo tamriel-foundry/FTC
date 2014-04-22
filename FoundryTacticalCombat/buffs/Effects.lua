@@ -561,7 +561,10 @@ function FTC:FilterBuffInfo( changeType , unitTag , name , buffType , beginTime 
 	if ( buffType == ABILITY_TYPE_NONE ) then
 	
 		-- Summons and Toggles
-		if ( FTC.Buffs:IsToggle( name ) ) then duration = "T" end
+		if ( FTC.Buffs:IsToggle( name ) ) then duration = "T"
+		
+		-- Vampirism
+		elseif ( name == "Vampirism" ) then duration = "P" end
 		
 	-- "Bonus" Abilities (5)
 	elseif ( buffType == ABILITY_TYPE_BONUS ) then
@@ -577,7 +580,10 @@ function FTC:FilterBuffInfo( changeType , unitTag , name , buffType , beginTime 
 			else isValid = false end
 			
 		-- Lycanthropy
-		elseif ( name == "Lycanthropy" ) then duration = "P" end
+		elseif ( name == "Lycanthropy" ) then duration = "P"
+		
+		-- Spirit Armor
+		elseif ( name == "Spirit Armor" ) then duration = "P" end
 		
 	-- Blocking (52)
 	elseif ( ( buffType == ABILITY_TYPE_BLOCK ) or ( name == "Brace (Generic)" ) ) then

@@ -32,7 +32,7 @@ function FTC.Menu:Toggle( setting , reload )
 	FTC.vars[setting] = not FTC.vars[setting]
 	
 	-- Re-configure some things
-	if ( FTC.vars.EnableFrames ) then FTC.Frames:SetupPlayer() end
+	if ( FTC.init.Frames ) then FTC.Frames:SetupPlayer() end
 	
 	-- Maybe reload
 	if reload then ReloadUI() end
@@ -77,7 +77,7 @@ function FTC.Menu:MoveFrames()
 		
 		FTC_PlayerDebuffsBackdrop:SetHidden( not move )
 		FTC_PlayerDebuffsLabel:SetHidden( not move )
-		
+	
 		FTC_TargetBuffsBackdrop:SetHidden( not move )
 		FTC_TargetBuffsLabel:SetHidden( not move )
 		
@@ -87,6 +87,18 @@ function FTC.Menu:MoveFrames()
 		FTC_LongBuffs:SetHidden( false )
 		FTC_LongBuffs:SetMouseEnabled( move )
 		FTC_LongBuffs:SetMovable( move )
+		
+		if ( not FTC.vars.AnchorBuffs ) then
+			FTC_PlayerBuffs:SetMouseEnabled( move )
+			FTC_PlayerBuffs:SetMovable( move )		
+			FTC_PlayerDebuffs:SetMouseEnabled( move )
+			FTC_PlayerDebuffs:SetMovable( move )
+		
+			FTC_TargetBuffs:SetMouseEnabled( move )
+			FTC_TargetBuffs:SetMovable( move )
+			FTC_TargetDebuffs:SetMouseEnabled( move )
+			FTC_TargetDebuffs:SetMovable( move )
+		end
 	end
 	
 	-- Display SCT
@@ -110,25 +122,19 @@ function FTC.Menu:MoveFrames()
 		FTC_CombatTextStatus_Label:SetHidden( not move )	
 	end
 
+	-- Display Damage Tracking
+	if ( FTC.init.Damage ) then
+		FTC_MiniMeter:SetHidden( false )
+		FTC_MiniMeter:SetMouseEnabled( move )
+		FTC_MiniMeter:SetMovable( move )
+	end
+	
 	-- Toggle the move status
 	FTC.move = move
 	
 	-- Display a message
 	local message = move and "FTC frames are now movable, drag them to re-position!" or "FTC frames are now locked!"
 end
-
---[[ 
- * Toggles movability of unit frames
- * Called by elements created in FTC.Menu:Controls()
- ]]--
-function FTC.Menu:MoveBuffs()
-
-
-
-	-- Display a message
-	local message = move and "Long buffs are now movable, drag them to re-position!" or "Long buffs position is now locked!"
-end
-
 
 --[[ 
  * Saves the position of an element to vars
@@ -144,8 +150,6 @@ function FTC.Menu:SaveAnchor( control )
 		FTC.vars[control:GetName()] = {point,relativePoint,offsetX,offsetY}
 	end
 end
-
-
 
 --[[ 
  * Saves the position of an element to vars

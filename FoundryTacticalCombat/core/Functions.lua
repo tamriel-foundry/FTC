@@ -71,7 +71,7 @@ function FTC:ToggleVisibility( eventCode , isHidden )
 	-- Hide unit frames
 	if( FTC.init.Frames ) then		
 		FTC_PlayerFrame:SetHidden( isHidden )
-		FTC_TargetFrame:SetHidden( isHidden )
+		if ( isHidden ) then FTC_TargetFrame:SetHidden( true ) end
 	end
 	
 	-- Hide SCT elements
@@ -88,6 +88,12 @@ function FTC:ToggleVisibility( eventCode , isHidden )
 		FTC_TargetDebuffs:SetHidden( isHidden )
 		if ( FTC.vars.EnableLongBuffs ) then FTC_LongBuffs:SetHidden( isHidden ) end
 	end
+	
+	-- Hide damage elements
+	if ( FTC.init.Damage ) then
+		FTC_MiniMeter:SetHidden( isHidden )
+		FTC_Meter:SetHidden( true )
+	end
 end
 
 --[[ 
@@ -96,6 +102,11 @@ end
  ]]--
 function FTC:UpdateTarget()
 
+	-- Maybe hide the default frame
+	if ( FTC.init.Frames and FTC.vars.DisableTargetFrame ) then
+		ZO_TargetUnitFramereticleover:SetHidden(true)
+	end
+		
 	-- Get the reticle target
 	local target = GetUnitName('reticleover')
 	
@@ -105,31 +116,28 @@ function FTC:UpdateTarget()
 	-- We also want to ignore critters
 	if FTC:IsCritter( target ) then ignore = true end
 	
-	-- Only display the target frame for valid targets OR move mode
-	if( FTC.init.Frames ) then 
-		if ( FTC.move ) then ignore = false end
-		FTC.Frames.SetupTarget()
-		FTC_TargetFrame:SetHidden( ignore )
-	end
+	-- Maybe display the target frames for move mode
+	if( FTC.init.Frames and FTC.move ) then ignore = false end
 	
 	-- Update display of target buffs
 	if( FTC.init.Buffs ) then 		
 	
 		-- Update target buffs
-		FTC.Buffs:GetBuffs( 'reticleover' )
+		if ( not ignore ) then FTC.Buffs:GetBuffs( 'reticleover' ) end
 		
 		-- Toggle visibility of target buffs
 		FTC_TargetBuffs:SetHidden( ignore )
 	end
 	
-	-- Only update saved data for valid targets
-	if ( ignore ) then return end
-	
-	-- Update the saved target
-	FTC.Target.name		= target
-	FTC.Target.class	= GetUnitClass('reticleover')
-	FTC.Target.level	= GetUnitLevel('reticleover')
-	FTC.Target.vlevel	= GetUnitVeteranRank('reticleover')	
+	-- Update target data and configure frame
+	if ( not ignore ) then 
+		FTC.Target:Update() 
+		FTC.Frames.SetupTarget()
+	end
+
+	-- Toggle visibility
+	if ( FTC.init.Frames ) then	FTC_TargetFrame:SetHidden( ignore ) end
+	FTC_DefaultTargetHealth:SetHidden(ignore)
 end
 
 
@@ -168,6 +176,7 @@ function FTC:IsCritter( targetName )
 		"Goat",
 		"Scrib",
 		"Scuttler",
+		"Fox",
 	}
 	
 	-- Is the target a critter?

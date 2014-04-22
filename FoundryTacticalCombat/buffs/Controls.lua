@@ -7,16 +7,30 @@
   ]]--
   
 function FTC.Buffs:Controls()
-
+	
  	-- Player buffs
-	local PB 		= FTC.UI.TopLevelWindow( "FTC_PlayerBuffs" , FTC.init.Frames and FTC_PlayerFrame or ZO_PlayerAttributeHealth , {240,80} , FTC.init.Frames and {TOP,BOTTOM,0,20} or {BOTTOMLEFT,TOPLEFT,0,0} , false )
+	local anchor 	= FTC.vars.FTC_PlayerBuffs
+	local parent	= GuiRoot
+	if ( FTC.vars.AnchorBuffs ) then 
+		anchor 		= ( FTC.init.Frames ) and {TOP,BOTTOM,0,20} or {BOTTOMLEFT,TOPLEFT,0,0}
+		parent		= ( FTC.init.Frames ) and FTC_PlayerFrame or ZO_PlayerAttributeHealth
+	end
+	local PB 		= FTC.UI.TopLevelWindow( "FTC_PlayerBuffs" , parent , {240,80} , {anchor[1],anchor[2],anchor[3],anchor[4],parent} , false )
 	PB.backdrop		= FTC.UI.Backdrop( "FTC_PlayerBuffsBackdrop" , PB , 'inherit' , {CENTER,CENTER,0,0} , nil , nil , true )
 	PB.label		= FTC.UI.Label( "FTC_PlayerBuffsLabel" , PB , 'inherit' , {CENTER,CENTER,0,0} , FTC.Fonts.meta(16) , nil , {1,1} , "Player Buffs" , true )
+	PB:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end )
 	
 	-- Player debuffs
-	local PD 		= FTC.UI.TopLevelWindow( "FTC_PlayerDebuffs" , FTC.init.Frames and FTC_PlayerFrame or ZO_PlayerAttributeHealth , {240,80} , FTC.init.Frames and {BOTTOM,TOP,0,-25} or {BOTTOMLEFT,TOPLEFT,0,-110} , false )	
+	local anchor 	= FTC.vars.FTC_PlayerDebuffs
+	local parent	= GuiRoot
+	if ( FTC.vars.AnchorBuffs ) then 
+		anchor = ( FTC.init.Frames ) and {BOTTOM,TOP,0,-25} or {BOTTOMLEFT,TOPLEFT,0,-110}
+		parent		= ( FTC.init.Frames ) and FTC_PlayerFrame or ZO_PlayerAttributeHealth
+	end
+	local PD 		= FTC.UI.TopLevelWindow( "FTC_PlayerDebuffs" , parent , {240,80} , {anchor[1],anchor[2],anchor[3],anchor[4],parent} , false )	
 	PD.backdrop		= FTC.UI.Backdrop( "FTC_PlayerDebuffsBackdrop" , PD , 'inherit' , {CENTER,CENTER,0,0} , nil , nil , true )
 	PD.label		= FTC.UI.Label( "FTC_PlayerDebuffsLabel" , PD , 'inherit' , {CENTER,CENTER,0,0} , FTC.Fonts.meta(16) , nil , {1,1} , "Player Debuffs" , true )
+	PD:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end )
 	
 	-- Long buffs
 	local anchor 	= FTC.vars.FTC_LongBuffs
@@ -24,14 +38,28 @@ function FTC.Buffs:Controls()
 	LB:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end )
 	
 	-- Target buffs
-	local TB 		= FTC.UI.TopLevelWindow( "FTC_TargetBuffs" , FTC.init.Frames and FTC_TargetFrame or ZO_TargetUnitFramereticleover , {240,80} , FTC.init.Frames and {TOP,BOTTOM,0,5} or {TOP,BOTTOM,0,20} , false )
+	local anchor 	= FTC.vars.FTC_TargetBuffs
+	local parent	= GuiRoot
+	if ( FTC.vars.AnchorBuffs ) then 
+		anchor 		= ( FTC.init.Frames ) and {TOP,BOTTOM,0,5} or {TOP,BOTTOM,0,20} 
+		parent		= ( FTC.init.Frames ) and FTC_TargetFrame or ZO_TargetUnitFramereticleover
+	end
+	local TB 		= FTC.UI.TopLevelWindow( "FTC_TargetBuffs" , parent , {240,80} , {anchor[1],anchor[2],anchor[3],anchor[4],parent} , false )
 	TB.backdrop		= FTC.UI.Backdrop( "FTC_TargetBuffsBackdrop" , TB , 'inherit' , {CENTER,CENTER,0,0} , nil , nil , true )
 	TB.label		= FTC.UI.Label( "FTC_TargetBuffsLabel" , TB , 'inherit' , {CENTER,CENTER,0,0} , FTC.Fonts.meta(16) , nil , {1,1} , "Target Buffs" , true )
+	TB:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end )
 	
 	-- Target debuffs
-	local TD 		= FTC.UI.TopLevelWindow( "FTC_TargetDebuffs" , FTC.init.Frames and FTC_TargetFrame or ZO_TargetUnitFramereticleover , {240,80} , FTC.init.Frames and {BOTTOM,TOP,0,-25} or {TOP,BOTTOM,0,100} , false )	
+	local anchor 	= FTC.vars.FTC_TargetDebuffs
+	local parent	= GuiRoot
+	if ( FTC.vars.AnchorBuffs ) then 
+		anchor 		= ( FTC.init.Frames ) and {BOTTOM,TOP,0,-25} or {TOP,BOTTOM,0,100}
+		parent		= ( FTC.init.Frames ) and FTC_TargetFrame or ZO_TargetUnitFramereticleover
+	end
+	local TD 		= FTC.UI.TopLevelWindow( "FTC_TargetDebuffs" , parent , {240,80} , {anchor[1],anchor[2],anchor[3],anchor[4],parent} , false )	
 	TD.backdrop		= FTC.UI.Backdrop( "FTC_TargetDebuffsBackdrop" , TD , 'inherit' , {CENTER,CENTER,0,0} , nil , nil , true )
 	TD.label		= FTC.UI.Label( "FTC_TargetDebuffsLabel" , TD , 'inherit' , {CENTER,CENTER,0,0} , FTC.Fonts.meta(16) , nil , {1,1} , "Target Debuffs" , true )
+	TD:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end )
 	
 	-- Create the buff icon containers for each buff type
 	local types = { 

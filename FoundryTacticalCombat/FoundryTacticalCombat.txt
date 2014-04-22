@@ -16,7 +16,6 @@ buffs/Effects.lua
 buffs/Controls.lua
 
 character/Functions.lua
-character/Controls.lua
 
 damage/Functions.lua
 damage/Controls.lua
@@ -32,6 +31,7 @@ menu/Functions.lua
 menu/Controls.lua
 
 extensions/Sorcerer.lua
+extensions/Nightblade.lua
 extensions/Weapons.lua
 
 FoundryTacticalCombat.xml

@@ -404,6 +404,22 @@ function FTC.Buffs:CheckPotion()
 	-- Get the cooldown
 	local cd = GetSlotCooldownInfo(current)
 	
+	-- Trigger an alert if the potion has just become available
+	if ( cd == 0 and FTC.Buffs.lastPotion > 0 ) then
+		if ( FTC.init.SCT ) then
+			local newAlert = {
+				["type"]	= 'potionReady',
+				["name"]	= 'Potion Ready',
+				["value"]	= '',
+				["ms"]		= GetGameTimeMilliseconds(),
+				["color"]	= 'cffcc00',
+				["size"]	= 20
+			}
+			FTC.SCT:NewStatus( newAlert )
+		end
+		FTC.Buffs.lastPotion = 0
+	end	
+	
 	-- Bail if the potion isn't freshly used
 	if ( cd < 25000 ) then return end
 

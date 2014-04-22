@@ -41,6 +41,9 @@ function ListenForFragments( slot , button )
 
 	-- Only do this every tenth of a second
 	if ( not FTC.BufferScript( 'ListenForFragments' , 100 ) ) then return end
+	
+	-- Bail for abilities that are unknown (Werewolf Form)
+	if ( FTC.Hotbar[slot] == nil ) then return end
 
 	-- Get the new cost
 	local newCost = GetSlotAbilityCost( slot )

@@ -27,7 +27,7 @@ function FTC.Player:Initialize()
 	}
 	for i = 1 , #stats , 1 do
 		local current, maximum, effMax = GetUnitPower( "player" , stats[i].id )
-		FTC.Player[stats[i].name] = { ["current"] = current , ["max"] = effMax , ["pct"] = math.floor( ( current / effMax ) * 100 ) }
+		FTC.Player[stats[i].name] = { ["current"] = current , ["max"] = maximum , ["pct"] = math.floor( ( current / maximum ) * 100 ) }
 	end
 end
 
@@ -38,6 +38,7 @@ function FTC.Target:Initialize()
 	local target 			= {
 		["name"] 			= "-999",
 		["level"]			= 0,
+		["class"]			= "",
 		["vlevel"]			= 0,
 		["health"]			= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
 		["magicka"]			= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
@@ -46,7 +47,10 @@ function FTC.Target:Initialize()
 	}	
 	
 	-- Populate the target object
-	for attr , value in pairs( target ) do FTC.Target[attr] = value end	
+	for attr , value in pairs( target ) do FTC.Target[attr] = value end
+	
+	-- Get target data
+	FTC.Target:Update()
 end
 
 --[[----------------------------------------------------------
@@ -65,4 +69,15 @@ function FTC.Player:GetLevel()
 	FTC.Player.alevel	= GetUnitAvARank('player')
 	FTC.Player.exp		= GetUnitXP('player')
 	FTC.Player.vet		= GetUnitVeteranPoints('player')
+end
+
+
+function FTC.Target:Update()
+	
+	-- Update the saved target
+	FTC.Target.name		= GetUnitName('reticleover')
+	FTC.Target.class	= GetUnitClass('reticleover')
+	FTC.Target.level	= GetUnitLevel('reticleover')
+	FTC.Target.vlevel	= GetUnitVeteranRank('reticleover')	
+
 end
