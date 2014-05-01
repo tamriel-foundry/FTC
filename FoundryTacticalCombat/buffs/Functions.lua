@@ -183,6 +183,7 @@ function FTC.Buffs:GetHotbar()
 	for i = 3, 8 do
 		if ( IsSlotUsed(i) ) then
 			local name			= GetSlotName(i)
+			if ( FTC.language ~= "English" ) then name = FTC.L(name) end			
 			local cost, cType 	= GetSlotAbilityCost(i)
 			local slot			= {
 				["slot"]		= i,
@@ -421,7 +422,7 @@ function FTC.Buffs:CheckPotion()
 	end	
 	
 	-- Bail if the potion isn't freshly used
-	if ( cd < 25000 ) then return end
+	if ( cd < 10000 ) then return end
 
 	-- If our cooldown has just increased, it implies a potion usage
 	if ( cd > FTC.Buffs.lastPotion ) then

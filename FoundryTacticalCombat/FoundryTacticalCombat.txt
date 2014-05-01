@@ -30,6 +30,10 @@ frames/Controls.lua
 menu/Functions.lua
 menu/Controls.lua
 
+lang/Localization.lua
+lang/German.lua
+lang/French.lua
+
 extensions/Sorcerer.lua
 extensions/Nightblade.lua
 extensions/Weapons.lua

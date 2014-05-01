@@ -24,6 +24,7 @@ FTC 					= {}
 FTC.name				= "FoundryTacticalCombat"
 FTC.command				= "/ftc"
 FTC.version				= 0.28
+FTC.language			= "English"
 
 -- Default Saved Variables
 FTC.defaults			= {
@@ -83,6 +84,9 @@ function FTC.Initialize( eventCode, addOnName )
 	
 	-- Load saved variables
 	FTC.vars = ZO_SavedVars:New( 'FTC_VARS' , math.floor( FTC.version * 100 ) , nil , FTC.defaults )
+	
+	-- Setup Localization
+	FTC.Localize()
 	
 	-- Setup Character Information
 	FTC.Player:Initialize()
@@ -175,8 +179,8 @@ end
 function FTC.Slash( text )
 
 	-- Display the current version
-	d( "You are using Foundry Tactical Combat version " .. FTC.version .. "." )
-	d( "FTC configuration settings have moved to the normal game settings interface!" )
+	d( FTC.L("You are using Foundry Tactical Combat version") .. " " .. FTC.version .. "." )
+	d( FTC.L("FTC configuration settings have moved to the normal game settings interface!") )
 end
 
 --[[----------------------------------------------------------
