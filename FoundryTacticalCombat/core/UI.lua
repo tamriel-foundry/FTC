@@ -12,7 +12,7 @@
 FTC.Fonts = {}
 function FTC.Fonts.meta( size )
 	local size = size or 14
-	return 'FoundryTacticalCombat/lib/Metamorphous.otf|'..size..'|soft-shadow-thick'
+	return 'FoundryTacticalCombat/lib/fonts/Metamorphous.otf|'..size..'|soft-shadow-thick'
 end
 
 FTC.UI = {}

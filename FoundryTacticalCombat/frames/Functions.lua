@@ -11,33 +11,19 @@ function FTC.Frames:Initialize()
 
 	-- Unregister events for default frames
 	if ( FTC.vars.EnableFrames ) then
-		ZO_PlayerAttributeMagicka:UnregisterForEvent(EVENT_POWER_UPDATE)
-		ZO_PlayerAttributeMagicka:UnregisterForEvent(EVENT_INTERFACE_SETTING_CHANGED)
-		ZO_PlayerAttributeMagicka:UnregisterForEvent(EVENT_PLAYER_ACTIVATED)
-		EVENT_MANAGER:UnregisterForUpdate("ZO_PlayerAttributeMagickaFadeUpdate")
-		ZO_PlayerAttributeMagicka:SetHidden(true)
-		
-		ZO_PlayerAttributeStamina:UnregisterForEvent(EVENT_POWER_UPDATE)
-		ZO_PlayerAttributeStamina:UnregisterForEvent(EVENT_INTERFACE_SETTING_CHANGED)
-		ZO_PlayerAttributeStamina:UnregisterForEvent(EVENT_PLAYER_ACTIVATED)
-		EVENT_MANAGER:UnregisterForUpdate("ZO_PlayerAttributeStaminaFadeUpdate")
-		ZO_PlayerAttributeStamina:SetHidden(true)
-		
-		ZO_PlayerAttributeHealth:UnregisterForEvent(EVENT_POWER_UPDATE)
-		ZO_PlayerAttributeHealth:UnregisterForEvent(EVENT_INTERFACE_SETTING_CHANGED)
-		ZO_PlayerAttributeHealth:UnregisterForEvent(EVENT_PLAYER_ACTIVATED)
-		EVENT_MANAGER:UnregisterForUpdate("ZO_PlayerAttributeHealthFadeUpdate")
-		ZO_PlayerAttributeHealth:SetHidden(true)
-		
-		ZO_PlayerAttributeMountStamina:UnregisterForEvent(EVENT_POWER_UPDATE)
-		ZO_PlayerAttributeMountStamina:UnregisterForEvent(EVENT_INTERFACE_SETTING_CHANGED)
-		ZO_PlayerAttributeMountStamina:UnregisterForEvent(EVENT_PLAYER_ACTIVATED)
-		EVENT_MANAGER:UnregisterForUpdate("ZO_PlayerAttributeMountStamina")
-		ZO_PlayerAttributeMountStamina:SetHidden(true)
+		local frames = { 'Health' , 'Stamina' , 'Magicka' , 'MountStamina' , 'SiegeHealth' }
+		for i = 1 , #frames do
+			local frame = _G["ZO_PlayerAttribute"..frames[i]]
+			frame:UnregisterForEvent(EVENT_POWER_UPDATE)
+			frame:UnregisterForEvent(EVENT_INTERFACE_SETTING_CHANGED)
+			frame:UnregisterForEvent(EVENT_PLAYER_ACTIVATED)
+			EVENT_MANAGER:UnregisterForUpdate("ZO_PlayerAttribute"..frames[i].."FadeUpdate")
+			frame:SetHidden(true)		
+		end
 	end
 	
 	-- Hide the default target frame
-	if ( FTC.vars.EnableFrames and FTC.vars.DisableTargetFrame ) then
+	if ( FTC.vars.EnableFrames and not FTC.vars.TargetFrame ) then
 		ZO_TargetUnitFramereticleover:SetHidden(true)
 	end
 
@@ -53,24 +39,21 @@ end
 
 
 --[[----------------------------------------------------------
-	EVENT HANDLERS
+	ATTRIBUTES
  ]]-----------------------------------------------------------
  
  --[[ 
  * Process updates to character attributes
  * Called by OnPowerUpdate()
  ]]--
- function FTC.Frames:UpdateFrame( unitTag , powerType ,  powerValue , powerMax , powerEffectiveMax )
+ function FTC.Frames:UpdateAttribute( unitTag , powerType ,  powerValue , powerMax , powerEffectiveMax )
  
  	-- Get the context
 	local context = ( unitTag == 'player' ) and "Player" or "Target"
 	
 	-- Get the attribute
-	local attr = ""
-	if ( powerType == POWERTYPE_HEALTH ) 		then attr = { ["name"] = "Health",  ["red"] = 0.2, ["green"] = 0, ["blue"] = 0 }
-	elseif ( powerType == POWERTYPE_MAGICKA ) 	then attr = { ["name"] = "Magicka", ["red"] = 0.1, ["green"] = 0.1, ["blue"] = 0.3 }
-	elseif ( powerType == POWERTYPE_STAMINA ) 	then attr = { ["name"] = "Stamina", ["red"] = 0, ["green"] = 0.2, ["blue"] = 0 }
-	else return end
+	local attrs = {	[POWERTYPE_HEALTH] = "Health", [POWERTYPE_MAGICKA] = "Magicka", [POWERTYPE_STAMINA] = "Stamina"	}
+	local name	= attrs[powerType]
 	
 	-- Get the percentage
 	local pct = math.floor( ( powerValue / powerMax ) * 100 )
@@ -82,36 +65,253 @@ end
 		local frame = _G["FTC_" .. context .. "Frame"]
 	
 		-- Get the attribute bar
-		local parent	= _G["FTC_" .. context .. "Frame" .. attr.name]
-		local bar		= _G["FTC_" .. context .. "Frame" .. attr.name .. "Bar"]
-		local minLabel 	= _G["FTC_" .. context .. "Frame" .. attr.name .. "Min"]
-		local pctLabel 	= _G["FTC_" .. context .. "Frame" .. attr.name .. "Pct"]
+		local parent	= _G["FTC_" .. context .. "Frame_" .. name]
+		local bar		= _G["FTC_" .. context .. "Frame_" .. name .. "Bar"]
+		local curLabel 	= _G["FTC_" .. context .. "Frame_" .. name .. "Current"]
+		local pctLabel 	= _G["FTC_" .. context .. "Frame_" .. name .. "Pct"]
 		
 		-- Update bar
-		local red 	= attr.red * ( 5 - ( pct / 25 ) )
-		local green = attr.green * ( 5 - ( pct / 25 ) ) 
-		local blue	= attr.blue * ( 5 - ( pct / 25 ) ) 
-		bar:SetWidth( ( pct / 100 ) * parent:GetWidth() )
-		bar:SetCenterColor( red , green , blue , 0.5 )	
-		minLabel:SetText( ( powerValue > 10000 ) and math.floor( ( powerValue + 500 ) / 1000 ) .. "k" or powerValue )
+		bar:SetWidth( ( pct / 100 ) * ( parent:GetWidth() - 2 ) )	
+		curLabel:SetText( ( powerValue > 10000 ) and math.floor( ( powerValue + 500 ) / 1000 ) .. "k" or powerValue )
 		pctLabel:SetText(pct .. "%")
 		
 		-- Configure visibility
 		frame:SetHidden( IsReticleHidden() and not FTC.move )	
-		local alpha = ((( powerType == POWERTYPE_HEALTH and pct == 100 )  or ( FTC.Player.health.pct == 100 )) and not IsUnitInCombat('player')) and 0.5 or 1
+		local alpha = ((( powerType == POWERTYPE_HEALTH and pct == 100 )  or ( FTC.Player.health.pct == 100 )) and not IsUnitInCombat('player')) and 1 or 1
 		frame:SetAlpha(alpha)
 	end
 	
 	-- Update the default attribute bar
 	if ( FTC.vars.FrameText ) then
-		local default 	= ( context == "Player" ) and _G["FTC_DefaultPlayer"..attr.name] or _G["FTC_DefaultTargetHealth"]
+		local default 	= ( context == "Player" ) and _G["FTC_DefaultPlayer"..name] or _G["FTC_DefaultTargetHealth"]
 		default:SetText( powerValue .. " / " .. powerMax .. " (" .. pct .. "%)")
 	end
 	
 	-- Update the database object
-	FTC[context][string.lower(attr.name)] = { ["current"] = powerValue , ["max"] = powerMax , ["pct"] = pct }
+	FTC[context][string.lower(name)] = { ["current"] = powerValue , ["max"] = powerMax , ["pct"] = pct }
  end
  
+ 
+--[[----------------------------------------------------------
+	SHIELDS
+ ]]-----------------------------------------------------------
+
+ --[[ 
+ * Update shield bars
+ * Called by OnVisualAdded
+ * Called by OnVisualUpdate
+ * Called by OnVisualRemoved
+ ]]--
+function FTC.Frames:UpdateShield( unitTag , value , maxValue )
+
+	-- Get the context
+	local context 	= ( unitTag == 'player' ) and "Player" or "Target"
+	local frame		= _G['FTC_'..context..'Frame']
+	
+	-- Get the unit's maximum health
+	local maxHealth = ( unitTag == 'player' ) and FTC.Player.health.max or FTC.Target.health.max
+	
+	-- Get the shield bar
+	local health	= frame.health
+	local bar 		= frame.shield
+	
+	-- Change the bar width
+	bar:SetWidth( math.min( ( value / maxHealth ) , 1 ) * ( health:GetWidth() - 4 ) )
+	
+	-- Update the database object
+	FTC[context].shield = { ["current"] = value , ["max"] = maxValue , ["pct"] = math.floor( ( value / maxValue ) * 100 ) }
+end
+
+
+--[[----------------------------------------------------------
+	EXPERIENCE
+ ]]-----------------------------------------------------------
+
+ --[[ 
+ * Sets up and updates the mini experience bar
+ * Called by SetupPlayer()
+ ]]--
+function FTC.Frames:SetupXP()
+
+	-- Only update if the XP bar is shown
+	local parent 	= _G["FTC_PlayerFrame_Alt"]
+	if ( parent.context	~= "exp" ) then return end
+	
+	if ( FTC.vars.EnableXPBar and FTC.Player.vlevel < 10 ) then 
+
+		-- Change the icon and color
+		parent.icon:SetTexture("/esoui/art/inventory/inventory_tabicon_quest_down.dds")
+		parent:SetCenterColor(0,0.1,0.1,1)
+		parent.bar:SetColor(0,1,1,1)
+	
+		-- Get experience values
+		local maxExp	= ( FTC.Player.level == 50 ) and GetUnitVeteranPointsMax('player') or GetUnitXPMax('player')
+		local currExp	= ( FTC.Player.level == 50 ) and FTC.Player.vet or FTC.Player.exp
+		local pct		= math.floor( 100 * ( currExp / maxExp ) )
+		
+		-- Setup the bar
+		parent.bar:SetWidth( ( pct / 100 ) * ( parent:GetWidth() - 2 ) )
+	end
+
+	-- Maybe display the bar
+	parent:SetHidden( not ( FTC.vars.EnableXPBar and FTC.Player.vlevel < 10 ) )		
+end
+
+
+--[[----------------------------------------------------------
+	MOUNTS
+ ]]-----------------------------------------------------------
+
+--[[ 
+ * Toggles display of the mount stamina bar
+ * Called by OnMount()
+ ]]--
+function FTC.Frames:SetupMount( eventCode , mounted )
+	
+	-- Switch context to mount
+	local parent 	= _G["FTC_PlayerFrame_Alt"]
+	parent.context	= mounted and "mount" or "exp"
+	
+	-- If mounted, setup
+	if mounted then 
+	
+		-- Change the icon and color
+		parent.icon:SetTexture("/esoui/art/mounts/tabicon_mounts_down.dds")
+		parent:SetCenterColor(0,0.1,0,1)
+		parent.bar:SetColor(0,0.8,0,1)
+
+		-- Fetch the current mount stamina level
+		local current, maximum, effectiveMax = GetUnitPower( 'player' , POWERTYPE_MOUNT_STAMINA )
+		parent.bar:SetWidth( ( current / effectiveMax ) * parent:GetWidth() - 2 )
+	
+		-- Ensure visibility
+		parent:SetHidden(false)
+	
+	-- Otherwise show experience
+	else
+		FTC.Frames:SetupXP()
+	end
+end 
+ 
+ --[[ 
+ * Update the player's mount stamina bar
+ * Called by OnPowerUpdate()
+ ]]--
+function FTC.Frames:UpdateMount( powerValue , powerMax , powerEffectiveMax )
+
+	-- Get the alternate bar
+	local parent 	= _G["FTC_PlayerFrame_Alt"]
+	local bar		= parent.bar
+	
+	-- Bail if the bar is currently used for something else
+	if ( parent.context ~= "mount" ) then return end
+	
+	-- Change the bar width
+	bar:SetWidth( ( powerValue / powerEffectiveMax ) * ( parent:GetWidth() - 2 ) )
+end
+
+--[[----------------------------------------------------------
+	SIEGE
+ ]]-----------------------------------------------------------
+ function FTC.Frames:SetupSiege()
+
+	-- Switch context to siege
+	local parent 	= _G["FTC_PlayerFrame_Alt"]
+	local isSiege	= ( IsPlayerControllingSiegeWeapon() or IsPlayerEscortingRam() )
+	parent.context	= isSiege and "siege" or "exp"
+	
+	-- If sieging, setup
+	if isSiege then 
+	
+		-- Change the icon and color
+		parent.icon:SetTexture("/esoui/art/worldmap/map_ava_tabicon_resourcedefense_down.dds")
+		parent:SetCenterColor(0.2,0,0,1)
+		parent.bar:SetColor(0.8,0,0,1)
+
+		-- Fetch the current mount stamina level
+		local current, maximum, effectiveMax = GetUnitPower( 'controlledsiege' , POWERTYPE_HEALTH )
+		parent.bar:SetWidth( ( current / effectiveMax ) * parent:GetWidth() - 2 )
+	
+		-- Ensure visibility
+		parent:SetHidden(false)
+	
+	-- Otherwise show experience
+	else
+		FTC.Frames:SetupXP()
+	end
+	
+ end
+ 
+ function FTC.Frames:UpdateSiege( powerValue , powerMax , powerEffectiveMax )
+ 
+	-- Get the alternate bar
+	local parent 	= _G["FTC_PlayerFrame_Alt"]
+	local bar		= parent.bar
+	
+	-- Bail if the bar is currently used for something else
+	if ( parent.context ~= "siege" ) then return end
+	
+	-- Change the bar width
+	bar:SetWidth( ( powerValue / powerEffectiveMax ) * ( parent:GetWidth() - 2 ) )
+end
+ 
+ 
+ --[[----------------------------------------------------------
+	WEREWOLF
+ ]]-----------------------------------------------------------
+ 
+ --[[ 
+ * Toggles display of the mount stamina bar
+ * Called by OnMount()
+ ]]--
+function FTC.Frames:SetupWerewolf( eventCode , isWerewolf )
+	
+	-- Switch context to mount
+	local parent 	= _G["FTC_PlayerFrame_Alt"]
+	parent.context	= isWerewolf and "werewolf" or "exp"
+	
+	-- If mounted, setup
+	if isWerewolf then 
+	
+		-- Change the icon and color
+		parent.icon:SetTexture("/esoui/art/inventory/inventory_tabicon_weapons_down.dds")
+		parent:SetCenterColor(0.2,0,0,1)
+		parent.bar:SetColor(0.8,0,0,1)
+
+		-- Fetch the current mount stamina level
+		local current, maximum, effectiveMax = GetUnitPower( 'player' , POWERTYPE_WEREWOLF )
+		parent.bar:SetWidth( ( current / effectiveMax ) * parent:GetWidth() - 2 )
+	
+		-- Ensure visibility
+		parent:SetHidden(false)
+	
+	-- Otherwise show experience
+	else
+		FTC.Frames:SetupXP()
+	end
+end 
+ 
+ --[[ 
+ * Update the player's mount stamina bar
+ * Called by OnPowerUpdate()
+ ]]--
+function FTC.Frames:UpdateWerewolf( powerValue , powerMax , powerEffectiveMax )
+
+	-- Get the alternate bar
+	local parent 	= _G["FTC_PlayerFrame_Alt"]
+	local bar		= parent.bar
+	
+	-- Bail if the bar is currently used for something else
+	if ( parent.context ~= "werewolf" ) then return end
+	
+	-- Change the bar width
+	bar:SetWidth( ( powerValue / powerEffectiveMax ) * ( parent:GetWidth() - 2 ) )
+end
+ 
+
+--[[----------------------------------------------------------
+	ULTIMATE
+ ]]-----------------------------------------------------------
  
  --[[ 
  * Update the ultimate gain tracker.
@@ -156,49 +356,9 @@ function FTC.Frames:UpdateUltimate( powerValue , powerMax , powerEffectiveMax )
 	FTC.Player.ultimate = { ["current"] = powerValue , ["max"] = powerEffectiveMax , ["pct"] = pct }
 end
 
- --[[ 
- * Update the player's mount stamina bar
- * Called by OnPowerUpdate
- ]]--
-function FTC.Frames:UpdateMount( powerValue , powerMax , powerEffectiveMax )
-			
-	-- Get the mount stamina bar
-	local parent = _G["FTC_MountFrame"]
-	
-	-- Bail if the bar isn't being shown
-	if ( parent:IsHidden() ) then return end
-	
-	-- Change the bar width
-	local backdrop = _G["FTC_MountFrame_Backdrop"]
-	local bar = _G["FTC_MountFrame_Bar"]
-	bar:SetWidth( ( powerValue / powerEffectiveMax ) * ( backdrop:GetWidth() - 4 ) )
-end
 
- --[[ 
- * Update the reticle target-of-target
- * Called by OnVisualAdded
- * Called by OnVisualUpdate
- * Called by OnVisualRemoved
- ]]--
-function FTC.Frames:UpdateShield( unitTag , value , maxValue )
 
-	-- Get the context
-	local context 	= ( unitTag == 'player' ) and "Player" or "Target"
-	
-	-- Get the unit's maximum health
-	local maxHealth = ( unitTag == 'player' ) and FTC.Player.health.max or FTC.Target.health.max
-	
-	-- Get the shield bar
-	local health	= _G["FTC_" .. context .. "FrameHealth"]
-	local bar 		= _G["FTC_" .. context .. "Frame_Shield"]
-	
-	-- Change the bar width
-	bar:SetWidth( math.min( ( value / maxHealth ) , 1 ) * ( health:GetWidth() - 4 ) )
-	
-	-- Update the database object
-	FTC[context].shield = { ["current"] = value , ["max"] = maxValue , ["pct"] = math.floor( ( value / maxValue ) * 100 ) }
-end
-  
+
 
 --[[----------------------------------------------------------
 	HELPER FUNCTIONS
@@ -213,25 +373,33 @@ end
 	-- Load the target's health	
 	local current, maximum, effectiveMax = GetUnitPower( 'reticleover' , POWERTYPE_HEALTH )
 	FTC.Target.health = { ["current"] = current , ["max"] = maximum , ["pct"] = math.floor( current * 100 / maximum ) }
-	FTC.Frames:UpdateFrame( 'reticleover', POWERTYPE_HEALTH , current, maximum, effectiveMax )
+	FTC.Frames:UpdateAttribute( 'reticleover', POWERTYPE_HEALTH , current, maximum, effectiveMax )
 	
 	-- Populate custom frames
 	if ( FTC.init.Frames ) then 
 	
+		-- Get the frame
+		local frame		= _G['FTC_TargetFrame']
+	
 		-- Populate nameplate
 		local name 		= FTC.Target.name
 		local level 	= FTC.Target.vlevel > 0 and "v" .. FTC.Target.vlevel or FTC.Target.level
-		local isPlayer = IsUnitPlayer('reticleover')	
-		if( not isPlayer ) then 
-			local diff = math.max( GetUnitDifficulty('reticleover') - 1 , 0 ) 
-			for i = 1 , diff do name = name .. "^" end
-			FTC.Target.class = ( GetUnitCaption('reticleover') ~= nil ) and GetUnitCaption('reticleover') or ""
-		end
-		FTC_TargetFrameName:SetText( name .. " (" .. level .. ")" )
+		frame.name:SetText( name .. " (" .. level .. ")" )
+		local isPlayer	= IsUnitPlayer('reticleover')
 		
 		-- Populate the class icon
-		if ( isPlayer ) then FTC_TargetFrameClass:SetTexture( "/esoui/art/contacts/social_classicon_" .. FTC.Target.class .. ".dds" ) end
-		FTC_TargetFrameClass:SetHidden( not isPlayer )
+		local showIcon = isPlayer or ( GetUnitDifficulty('reticleover') > 1 )
+		if ( IsUnitPlayer('reticleover') ) then frame.class:SetTexture( "/esoui/art/contacts/social_classicon_" .. FTC.Target.class .. ".dds" )
+		elseif ( GetUnitDifficulty('reticleover') == 2) then frame.class:SetTexture( "/esoui/art/unitframes/target_veteranrank_icon.dds" ) 
+		elseif ( GetUnitDifficulty('reticleover') >= 3 ) then frame.class:SetTexture( "/esoui/art/lfg/lfg_veterandungeon_down.dds" ) end
+		frame.class:SetHidden( not showIcon )
+		
+		-- Populate title
+		local title		= GetUnitCaption( 'reticleover' )
+		if ( isPlayer ) then
+			title		= GetUnitTitle( 'reticleover' ) == "" and GetAvARankName( GetUnitGender('reticleover') , GetUnitAvARank('reticleover') ) or GetUnitTitle( 'reticleover' )
+		end
+		frame.title:SetText(title)
 		
 		-- Does the target have a shield?
 		local unitAttributeVisual, statType, attributeType, powerType, value, maxValue = GetAllUnitAttributeVisualizerEffectInfo("reticleover")
@@ -260,44 +428,23 @@ function FTC.Frames:SetupPlayer()
 		if ( FTC.vars.EnableNameplate ) then
 			local name 		= FTC.Player.name
 			local level 	= FTC.Player.vlevel > 0 and "v" .. FTC.Player.vlevel or FTC.Player.level
-			FTC_PlayerFrameName:SetText( name .. " (" .. level .. ")" )
+			FTC_PlayerFrame_Name:SetText( name .. " (" .. level .. ")" )
 		end
-		FTC_PlayerFramePlate:SetHidden( not FTC.vars.EnableNameplate )
+		FTC_PlayerFrame_Plate:SetHidden( not FTC.vars.EnableNameplate )
 		
-		-- Set the experience bar
-		if ( FTC.vars.EnableXPBar and FTC.Player.vlevel < 10 ) then 
-			local maxExp	= ( FTC.Player.level == 50 ) and GetUnitVeteranPointsMax('player') or GetUnitXPMax('player')
-			local currExp	= ( FTC.Player.level == 50 ) and FTC.Player.vet or FTC.Player.exp
-			local pct		= math.floor( 100 * ( currExp / maxExp ) )
-			FTC_XPBar_Bar:SetWidth( ( pct / 100 ) * ( FTC_XPBar:GetWidth() - 4 ) )
-		end
-		
-		-- Maybe display the bar
-		FTC_XPBar:SetHidden( not ( FTC.vars.EnableXPBar and FTC.Player.vlevel < 10 ) )
+		-- Mini experience bar
+		FTC.Frames:SetupXP()
 	end
 	
 	-- Populate attribute levels
-	FTC.Frames:UpdateFrame( 'player', POWERTYPE_HEALTH,		FTC.Player.health.current, 	FTC.Player.health.max,	FTC.Player.health.max )
-	FTC.Frames:UpdateFrame( 'player', POWERTYPE_MAGICKA, 	FTC.Player.magicka.current, FTC.Player.magicka.max, FTC.Player.magicka.max )
-	FTC.Frames:UpdateFrame( 'player', POWERTYPE_STAMINA, 	FTC.Player.stamina.current, FTC.Player.stamina.max, FTC.Player.stamina.max )
+	FTC.Frames:UpdateAttribute( 'player', POWERTYPE_HEALTH,		FTC.Player.health.current, 	FTC.Player.health.max,	FTC.Player.health.max )
+	FTC.Frames:UpdateAttribute( 'player', POWERTYPE_MAGICKA, 	FTC.Player.magicka.current, FTC.Player.magicka.max, FTC.Player.magicka.max )
+	FTC.Frames:UpdateAttribute( 'player', POWERTYPE_STAMINA, 	FTC.Player.stamina.current, FTC.Player.stamina.max, FTC.Player.stamina.max )
 	
 	-- Populate ultimate level
-	FTC.Frames:UpdateUltimate( POWERTYPE_ULTIMATE , FTC.Player.ultimate.current	, FTC.Player.ultimate.max , FTC.Player.ultimate.max )
+	FTC.Frames:UpdateUltimate( FTC.Player.ultimate.current	, FTC.Player.ultimate.max , FTC.Player.ultimate.max )
 end
 
---[[ 
- * Toggles display of the mount stamina bar
- * Called by OnMount()
- ]]--
-function FTC.Frames:DisplayMount( eventCode , isMounted )
-	
-	-- Toggle display of the experience bar
-	if ( FTC.vars.EnableXPBar and FTC.Player.vlevel < 10 ) then FTC_XPBar:SetHidden( isMounted ) end
 
-	-- Toggle display of the mount bar
-	FTC_MountFrame:SetHidden( not isMounted )
-	
-	-- Fetch the current mount stamina level
-	local current, maximum, effectiveMax = GetUnitPower( 'player' , POWERTYPE_MOUNT_STAMINA )
-	FTC_MountFrame_Bar:SetWidth( ( current / effectiveMax ) * FTC_MountFrame_Backdrop:GetWidth() - 4 )
-end
+
+

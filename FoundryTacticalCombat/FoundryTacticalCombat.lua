@@ -12,9 +12,9 @@
 	 (4) Combat Status Alerts
 	 (5) Damage Tracking and Data
 	 
-	* Version 0.27
+	* Version 0.28
 	* atropos@tamrielfoundry.com
-	* 4-21-2014
+	* 4-28-2014
   ]]--
 
 --[[----------------------------------------------------------
@@ -23,7 +23,7 @@
 FTC 					= {}
 FTC.name				= "FoundryTacticalCombat"
 FTC.command				= "/ftc"
-FTC.version				= 0.26
+FTC.version				= 0.28
 
 -- Default Saved Variables
 FTC.defaults			= {
@@ -45,7 +45,7 @@ FTC.defaults			= {
 	
 	-- Buffs
 	["AnchorBuffs"]				= true,
-	["NumBuffs"]				= 12,
+	["NumBuffs"]				= 8,
 	["EnableLongBuffs"]			= true,
 	["FTC_LongBuffs"]			= {BOTTOMRIGHT,BOTTOMRIGHT,-5,-5},
 	["FTC_PlayerBuffs"]			= {CENTER,CENTER,0,400},
@@ -54,7 +54,7 @@ FTC.defaults			= {
 	["FTC_TargetDebuffs"]		= {CENTER,CENTER,0,-400},
 	
 	-- Frames
-	["DisableTargetFrame"]		= true,
+	["TargetFrame"]				= true,
 	["FrameText"]				= true,
 	["EnableXPBar"]				= true,
 	["EnableNameplate"]			= true,

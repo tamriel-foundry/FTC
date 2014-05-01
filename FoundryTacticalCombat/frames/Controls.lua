@@ -17,49 +17,50 @@ function FTC.Frames:Controls()
 		local anchor = FTC.vars["FTC_PlayerFrame"]
 			
 		-- Create the unit frame container	
-		local player 		= FTC.UI.TopLevelWindow( "FTC_PlayerFrame" , GuiRoot , {250,75} , {anchor[1],anchor[2],anchor[3],anchor[4]} , false )	
+		local player 		= FTC.UI.TopLevelWindow( "FTC_PlayerFrame" , GuiRoot , {275,80} , {anchor[1],anchor[2],anchor[3],anchor[4]} , false )	
 		player:SetDrawLayer(2)
 		player:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end)
-		player.backdrop		= FTC.UI.Backdrop( "FTC_PlayerFrameBackdrop" , player , "inherit" , {CENTER,CENTER,0,0} , nil , nil , false )	
-		player.plate		= FTC.UI.Control( "FTC_PlayerFramePlate" , player , {player:GetWidth() ,24} , {BOTTOM,TOP,0,3,parent} , false )	
-		player.name 		= FTC.UI.Label( "FTC_PlayerFrameName" , player.plate , 'inherit' , {CENTER,CENTER,0,0} , FTC.Fonts.meta(14) , nil , {0,2} , nil , false )	
-		player.class		= FTC.UI.Texture( "FTC_PlayerFrameClass" , player.plate , {24,24} , {BOTTOMRIGHT,BOTTOMRIGHT,0,2} , nil , false )
+		player.plate		= FTC.UI.Control( "FTC_PlayerFrame_Plate" , player , {player:GetWidth() ,25} , {BOTTOM,TOP,0,3,parent} , false )	
+		player.name 		= FTC.UI.Label( "FTC_PlayerFrame_Name" , player.plate , {player:GetWidth() ,25} , {BOTTOM,BOTTOM,4,-2} , FTC.Fonts.meta(16) , nil , {0,1} , "Player Name (Level)" , false )	
+		player.class		= FTC.UI.Texture( "FTC_PlayerFrame_Class" , player.plate , {30,30} , {BOTTOMRIGHT,BOTTOMRIGHT,0,0} , nil , false )
 		player.class:SetTexture( "/esoui/art/contacts/social_classicon_" .. FTC.Player.class .. ".dds" )
+			
+		-- Health
+		local health 		= FTC.UI.Backdrop( "FTC_PlayerFrame_Health" , player , {275,34} , {TOP,TOP,0,1,player} , {0.1,0,0,1} , {0,0,0,0} , false )	
+		health:SetCenterTexture('FoundryTacticalCombat/lib/textures/grainy.dds')
+		health.bar			= FTC.UI.Statusbar( "FTC_PlayerFrame_HealthBar" , health , { health:GetWidth() - 2 , health:GetHeight() - 2 } , {TOPLEFT,TOPLEFT,1,1} , {0.6,0,0,1} , false )	
+		health.bar:SetTexture('FoundryTacticalCombat/lib/textures/grainy.dds')
+		health.current		= FTC.UI.Label( "FTC_PlayerFrame_HealthCurrent" , health , { health:GetWidth() - 16 , health:GetHeight() } , {CENTER,CENTER,0,0} , FTC.Fonts.meta(14) , nil , {0,1} , 'Health' , false )		
+		health.pct			= FTC.UI.Label( "FTC_PlayerFrame_HealthPct" , health , { health:GetWidth() - 16 , health:GetHeight() } , {CENTER,CENTER,0,0} , "ZoFontWindowSubtitle" , nil , {2,1} , 'Pct%' , false )
+		player.health		= health
+
+		-- Stamina
+		local stamina 		= FTC.UI.Backdrop( "FTC_PlayerFrame_Stamina" , player , {275,23} , {TOP,BOTTOM,0,0,health} , {0,0.05,0,1} , {0,0,0,0} , false )	
+		stamina:SetCenterTexture('FoundryTacticalCombat/lib/textures/grainy.dds')
+		stamina.bar			= FTC.UI.Statusbar( "FTC_PlayerFrame_StaminaBar" , stamina , { stamina:GetWidth() - 2 , stamina:GetHeight() - 2 } , {TOPLEFT,TOPLEFT,1,1} , {0,0.4,0,1} , false )	
+		stamina.bar:SetTexture('FoundryTacticalCombat/lib/textures/grainy.dds')
+		stamina.current		= FTC.UI.Label( "FTC_PlayerFrame_StaminaCurrent" , stamina , { stamina:GetWidth() - 16 , stamina:GetHeight() } , {CENTER,CENTER,0,0} , FTC.Fonts.meta(12) , nil , {0,1} , 'Stamina' , false )		
+		stamina.pct			= FTC.UI.Label( "FTC_PlayerFrame_StaminaPct" , stamina , { stamina:GetWidth() - 16 , stamina:GetHeight() } , {CENTER,CENTER,0,0} , "ZoFontAnnounceSmall" , nil , {2,1} , 'Pct%' , false )
+		player.stamina		= stamina
 		
-		-- Create attribute bars
-		local parent 		= player
-		local stats 		= { 'Health' , 'Magicka' , 'Stamina' }
-		for i = 1 , #stats , 1 do
-			
-			-- Create each bar
-			local stat 		= FTC.UI.Control( "FTC_PlayerFrame" .. stats[i] , player , {player:GetWidth()-8,20} , {TOP,BOTTOM,0,3,parent} , false )	
-			local bar		= FTC.UI.Backdrop( "FTC_PlayerFrame" .. stats[i] .. "Bar" , stat , "inherit" , {LEFT,LEFT,0,0} , {0.2,0,0,0.6} , {0,0,0,0.8} , false )	
-			local current	= FTC.UI.Label( "FTC_PlayerFrame" .. stats[i] .. "Min" , stat , { stat:GetWidth() - 10 , stat:GetHeight() } , {CENTER,CENTER,0,0} , FTC.Fonts.meta(12) , nil , {0,1} , nil , false )		
-			local pct		= FTC.UI.Label( "FTC_PlayerFrame" .. stats[i] .. "Pct" , stat , { stat:GetWidth() - 10 , stat:GetHeight() } , {CENTER,CENTER,0,-1} , "ZoFontAnnounceSmall" , nil , {2,1} , nil , false )	
-			
-			-- Adjust the positioning of the first bar
-			if ( i == 1 ) then stat:SetAnchor(TOP,parent,TOP,0,4) end	
-			parent = stat
-		end
+		-- Magicka
+		local magicka 		= FTC.UI.Backdrop( "FTC_PlayerFrame_Magicka" , player , {275,23} , {TOP,BOTTOM,0,0,stamina} ,{0.05,0.05,0.1,1} , {0,0,0,0} , false )	
+		magicka:SetCenterTexture('FoundryTacticalCombat/lib/textures/grainy.dds')
+		magicka.bar			= FTC.UI.Statusbar( "FTC_PlayerFrame_MagickaBar" , magicka , { magicka:GetWidth() - 2 , magicka:GetHeight() - 2 } , {TOPLEFT,TOPLEFT,1,1} , {0.4,0.4,0.8,1} , false )
+		magicka.bar:SetTexture('FoundryTacticalCombat/lib/textures/grainy.dds')		
+		magicka.current		= FTC.UI.Label( "FTC_PlayerFrame_MagickaCurrent" , magicka , { magicka:GetWidth() - 16 , magicka:GetHeight() } , {CENTER,CENTER,0,0} , FTC.Fonts.meta(12) , nil , {0,1} , 'Magicka' , false )
+		magicka.pct			= FTC.UI.Label( "FTC_PlayerFrame_MagickaPct" , magicka , { magicka:GetWidth() - 16 , magicka:GetHeight() } , {CENTER,CENTER,0,0} , "ZoFontAnnounceSmall" , nil , {2,1} , 'Pct%' , false )
+		player.magicka		= magicka
 		
 		-- Create damage shield bar
-		local health		= _G["FTC_PlayerFrameHealth"]
-		local shield		= FTC.UI.Statusbar( "FTC_PlayerFrame_Shield" , health , { 0 , 4 } , {BOTTOMLEFT,BOTTOMLEFT,1,-3} , {1,0.4,0,1} , false )
-
-		-- Create the mount stamina bar
-		local mount			= FTC.UI.Control( "FTC_MountFrame" , player , { player:GetWidth() , 20 } , {TOP,BOTTOM,0,0} , true )
-		mount.icon 			= FTC.UI.Texture( "FTC_MountFrame_Icon" , mount , {24,24} , {LEFT,LEFT,4,2} , "/esoui/art/mounts/tabicon_mounts_down.dds" , false )
-		mount.backdrop		= FTC.UI.Backdrop( "FTC_MountFrame_Backdrop" , mount , { mount:GetWidth() - 30 , 10 } , {RIGHT,RIGHT,0,0} , nil , nil , false )	
-		mount.bar			= FTC.UI.Statusbar( "FTC_MountFrame_Bar" , mount.backdrop , { mount.backdrop:GetWidth() - 4 , mount.backdrop:GetHeight() - 4 } , {LEFT,LEFT,2,0} , {1,1,1,1} , false )
-		local r1,g1,b1 		= ZO_POWER_BAR_GRADIENT_COLORS[POWERTYPE_STAMINA][1]:UnpackRGBA()
-		local r2,g2,b2 		= ZO_POWER_BAR_GRADIENT_COLORS[POWERTYPE_STAMINA][2]:UnpackRGBA()
-		mount.bar:SetGradientColors( 0 , 0.4 , 0 , 1, 0 , 0.8 , 0 , 1)
+		player.shield		= FTC.UI.Statusbar( "FTC_PlayerFrame_Shield" , health , {0,6} , {BOTTOMLEFT,BOTTOMLEFT,1,-1} , {1,0.4,0,1} , false )
 		
-		-- Create the mini experience bar
-		local xpbar			= FTC.UI.Control( "FTC_XPBar" , player , { player:GetWidth() , 20 } , {TOP,BOTTOM,0,0} , false )
-		xpbar.backdrop		= FTC.UI.Backdrop( "FTC_XPBar_Backdrop" , xpbar , { xpbar:GetWidth() , 10 } , {RIGHT,RIGHT,0,0} , nil , nil , false )	
-		xpbar.bar			= FTC.UI.Statusbar( "FTC_XPBar_Bar" , xpbar.backdrop , { xpbar.backdrop:GetWidth() - 4 , xpbar.backdrop:GetHeight() - 4 } , {LEFT,LEFT,2,0} , {1,1,1,1} , false )
-		xpbar.bar:SetGradientColors(0.2, 0.6 , 0.6, 1, 0.2, 1, 1, 1)
+		-- Experience / Siege / Mount / Werewolf
+		local alt			= FTC.UI.Backdrop( "FTC_PlayerFrame_Alt" , player , {250,10} , {TOPRIGHT,BOTTOMRIGHT,0,6} ,{0,0.1,0.1,1} , {0,0,0,1} , false )
+		alt.bar				= FTC.UI.Statusbar( "FTC_PlayerFrame_AltBar" , alt , { alt:GetWidth() - 2 , alt:GetHeight() - 3 } , {LEFT,LEFT,1,0} , {0,1,1,1} , false )
+		alt.bar:SetTexture('FoundryTacticalCombat/lib/textures/grainy.dds')	
+		alt.icon 			= FTC.UI.Texture( "FTC_PlayerFrame_AltIcon" , alt , {25,25} , {TOPLEFT,BOTTOMLEFT,0,0,player} , "/esoui/art/inventory/inventory_tabicon_quest_down.dds" , false )
+		alt.context			= 'exp'
 
 		--[[----------------------------------------------------------
 			TARGET FRAME
@@ -67,21 +68,24 @@ function FTC.Frames:Controls()
 		local anchor 		= FTC.vars["FTC_TargetFrame"]
 			
 		-- Create the unit frame container	
-		local target 		= FTC.UI.TopLevelWindow( "FTC_TargetFrame" , GuiRoot , {250,26} , {anchor[1],anchor[2],anchor[3],anchor[4]} , true )
+		local target 		= FTC.UI.TopLevelWindow( "FTC_TargetFrame" , GuiRoot , {275,34} , {anchor[1],anchor[2],anchor[3],anchor[4]} , true )
 		target:SetDrawLayer(2)
 		target:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end)	
-		target.backdrop		= FTC.UI.Backdrop( "FTC_TargetFrameBackdrop" , target , "inherit" , {CENTER,CENTER,0,0} , nil , nil , false )	
-		target.name 		= FTC.UI.Label( "FTC_TargetFrameName" , target , { target:GetWidth() , 20 } , {BOTTOMLEFT,TOPLEFT,0,0} , FTC.Fonts.meta(14) , nil , {0,1} , nil , false )		
-		target.class		= FTC.UI.Texture( "FTC_TargetFrameClass" , target , {24,24} , {BOTTOMRIGHT,TOPRIGHT,0,2} , nil , true )
+		target.name 		= FTC.UI.Label( "FTC_TargetFrame_Name" , target , { target:GetWidth() , 25 } , {BOTTOM,TOP,0,0} , FTC.Fonts.meta(16) , nil , {0,1} , 'Target Name (Level)' , false )		
+		target.class		= FTC.UI.Texture( "FTC_TargetFrame_Class" , target , {30,30} , {BOTTOMRIGHT,TOPRIGHT,0,2} , nil , true )
+		target.title		= FTC.UI.Label( "FTC_TargetFrame_Title" , target , { target:GetWidth() , 25 } , {TOP,BOTTOM,0,0} , FTC.Fonts.meta(14) , nil , {0,1} , '<Title>' , false )		
 		
 		-- Create health bar
-		local health 		= FTC.UI.Control( "FTC_TargetFrameHealth" , target , {target:GetWidth()-8,20} , {CENTER,CENTER,0,0} , false )	
-		local bar			= FTC.UI.Backdrop( "FTC_TargetFrameHealthBar" , health , "inherit" , {LEFT,LEFT,0,0} , {0.2,0,0,0.6} , {0,0,0,0.8} , false )	
-		local current		= FTC.UI.Label( "FTC_TargetFrameHealthMin" , health , { health:GetWidth() - 10 , health:GetHeight() } , {CENTER,CENTER,0,0} , FTC.Fonts.meta(12) , nil , {2,1} , nil , false )		
-		local pct			= FTC.UI.Label( "FTC_TargetFrameHealthPct" , health , { health:GetWidth() - 10 , health:GetHeight() } , {CENTER,CENTER,0,0} , "ZoFontAnnounceSmall" , nil , {0,1} , nil , false )	
+		local thp 			= FTC.UI.Backdrop( "FTC_TargetFrame_Health" , target , {275,34} , {TOP,TOP,0,0,target} , {0.1,0,0,1} , {0,0,0,0} , false )
+		thp:SetCenterTexture('FoundryTacticalCombat/lib/textures/grainy.dds')
+		thp.bar				= FTC.UI.Statusbar( "FTC_TargetFrame_HealthBar" , thp , { thp:GetWidth() - 2 , thp:GetHeight() - 2 } , {TOPLEFT,TOPLEFT,1,1} , {0.6,0,0,1} , false )	
+		thp.bar:SetTexture('FoundryTacticalCombat/lib/textures/grainy.dds')
+		thp.current			= FTC.UI.Label( "FTC_TargetFrame_HealthCurrent" , thp , { thp:GetWidth() - 16 , thp:GetHeight() } , {CENTER,CENTER,0,0} , FTC.Fonts.meta(14) , nil , {2,1} , 'Health' , false )		
+		thp.pct				= FTC.UI.Label( "FTC_TargetFrame_HealthPct" , thp , { thp:GetWidth() - 16 , thp:GetHeight() } , {CENTER,CENTER,0,0} , "ZoFontWindowSubtitle" , nil , {0,1} , 'Pct%' , false )		
+		target.health		= thp
 		
 		-- Create damage shield bar
-		local shield		= FTC.UI.Statusbar( "FTC_TargetFrame_Shield" , health , { 0 , 4 } , {BOTTOMLEFT,BOTTOMLEFT,1,-3} , {1,0.4,0,1} , false )
+		target.shield		= FTC.UI.Statusbar( "FTC_TargetFrame_Shield" , health , {0,6} , {BOTTOMLEFT,BOTTOMLEFT,1,-1} , {1,0.4,0,1} , false )
 	end
 	
 	--[[----------------------------------------------------------

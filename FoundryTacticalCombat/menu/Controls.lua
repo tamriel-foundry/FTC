@@ -27,7 +27,7 @@ function FTC.Menu:Controls()
 
 	-- Unit frames settings
 	LAM:AddHeader( FTC.Menu.id , "FTC_Settings_FramesHeader", "Unit Frames Settings")	
-	LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_DisableTarget", "Disable Default Target Frame", "Remove the default ESO target unit frame?", function() return FTC.vars.DisableTargetFrame end , function() FTC.Menu:Toggle( 'DisableTargetFrame' ) end )	
+	LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_TargetFrame", "Show Default Target Frame", "Show the default ESO target unit frame?", function() return FTC.vars.TargetFrame end , function() FTC.Menu:Toggle( 'TargetFrame' ) end )	
 	LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_FrameText", "Default Unit Frames Text", "Display text attribute values on default unit frames?", function() return FTC.vars.FrameText end , function() FTC.Menu:Toggle( 'FrameText' ) end )	
 	if ( FTC.vars.EnableFrames ) then
 		LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_EnableNameplate", "Show Player Nameplate", "Show your own character's nameplate?", function() return FTC.vars.EnableNameplate end , function() FTC.Menu:Toggle( 'EnableNameplate' ) end )	

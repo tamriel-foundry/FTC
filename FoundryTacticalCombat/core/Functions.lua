@@ -103,7 +103,7 @@ end
 function FTC:UpdateTarget()
 
 	-- Maybe hide the default frame
-	if ( FTC.init.Frames and FTC.vars.DisableTargetFrame ) then
+	if ( FTC.init.Frames and not FTC.vars.TargetFrame ) then
 		ZO_TargetUnitFramereticleover:SetHidden(true)
 	end
 		
@@ -186,4 +186,12 @@ function FTC:IsCritter( targetName )
 	
 	-- Otherwise false
 	return false
+end
+
+--[[ 
+ * Returns a formatted number with commas
+ ]]--
+function CommaValue(number)
+	local left,num,right = string.match(number,'^([^%d]*%d)(%d*)(.-)$')
+	return left..(num:reverse():gsub('(%d%d%d)','%1,'):reverse())..right
 end

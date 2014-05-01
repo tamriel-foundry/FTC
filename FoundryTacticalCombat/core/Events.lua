@@ -16,7 +16,18 @@ function FTC:RegisterEvents()
 	-- Interface Events
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_RETICLE_HIDDEN_UPDATE  		, FTC.OnReticleHidden )
 	
+	-- Unit Frames
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_POWER_UPDATE 					, FTC.OnPowerUpdate )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED  	, FTC.OnVisualAdded ) 
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_REMOVED , FTC.OnVisualRemoved )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_UPDATED , FTC.OnVisualUpdate )	
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_WEREWOLF_STATE_CHANGED		, FTC.OnWerewolf )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_BEGIN_SIEGE_CONTROL			, FTC.OnSiege )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_END_SIEGE_CONTROL				, FTC.OnSiege )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_MOUNTED_STATE_CHANGED			, FTC.OnMount )
+	
 	-- Buff Events
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_STATS_UPDATED 				, FTC.OnStatsUpdated )
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_SLOTS_FULL_UPDATE		, FTC.OnSlotUpdate )
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_SLOT_ABILITY_SLOTTED	, FTC.OnSlotUpdate )
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_UPDATE_COOLDOWNS		, FTC.OnUpdateCooldowns )
@@ -30,16 +41,6 @@ function FTC:RegisterEvents()
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_EXPERIENCE_UPDATE 			, FTC.OnXPUpdate )
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_VETERAN_POINTS_UPDATE 		, FTC.OnXPUpdate )
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ALLIANCE_POINT_UPDATE  		, FTC.OnAPUpdate )
-	
-	-- Attribute Changes
-	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_POWER_UPDATE 					, FTC.OnPowerUpdate )
-	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_STATS_UPDATED 				, FTC.OnStatsUpdated )
-	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED  	, FTC.OnVisualAdded ) 
-	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_REMOVED , FTC.OnVisualRemoved )
-	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_ATTRIBUTE_VISUAL_UPDATED , FTC.OnVisualUpdate )
-	
-	-- Mount Events
-	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_MOUNTED_STATE_CHANGED			, FTC.OnMount )
 end
 
 --[[ 
@@ -101,6 +102,18 @@ function FTC.OnSlotUpdate( eventCode , ... )
 		local isNew = select( 1 , ... )
 		if ( isNew ) then FTC.Buffs:GetHotbar() end
 	end		
+end
+
+--[[ 
+ * Runs on the EVENT_STATS_UPDATED listener.
+ * This handler fires every time the player has a change to a derived stat
+ ]]--
+function FTC.OnStatsUpdated( ... )
+
+	-- Update the hotbar to account for spell cost reduction
+	if ( FTC.init.Buffs ) then
+		FTC.Buffs:GetHotbar()
+	end
 end
 
 --[[ 
@@ -168,7 +181,7 @@ function FTC.OnCombatEvent( eventCode , result , isError , abilityName, abilityG
 		["type"]	= damageType,
 		["ms"]		= GetGameTimeMilliseconds(),
 		["crit"]	= ( result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_DOT_TICK_CRITICAL or result == ACTION_RESULT_HOT_TICK_CRITICAL ) and true or false,
-		["heal"]	= ( result == ACTION_RESULT_HEAL or result == ACTION_RESULT_HOT_TICK or result == ACTION_RESULT_HOT_TICK_CRITICAL ) and true or false,
+		["heal"]	= ( result == ACTION_RESULT_HEAL or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_HOT_TICK or result == ACTION_RESULT_HOT_TICK_CRITICAL ) and true or false,
 		["multi"]	= 1,
 	}
 	
@@ -242,7 +255,7 @@ function FTC.OnAPUpdate( ... )
 end
 
 --[[----------------------------------------------------------
-	ATTRIBUTE CHANGES
+	UNIT FRAME EVENTS
   ]]----------------------------------------------------------
 
 --[[ 
@@ -261,7 +274,7 @@ function FTC.OnPowerUpdate( eventCode , unitTag, powerIndex, powerType, powerVal
 			if ( FTC.init.SCT ) then FTC.SCT:ResourceAlert( unitTag , powerType , powerValue , powerMax ) end
 			
 			-- Update the player frame
-			FTC.Frames:UpdateFrame( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
+			FTC.Frames:UpdateAttribute( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
 			
 		-- Ultimate
 		elseif ( powerType == POWERTYPE_ULTIMATE ) then
@@ -270,6 +283,10 @@ function FTC.OnPowerUpdate( eventCode , unitTag, powerIndex, powerType, powerVal
 		-- Mount Stamina
 		elseif ( powerType == POWERTYPE_MOUNT_STAMINA ) then
 			if ( FTC.init.Frames ) then	FTC.Frames:UpdateMount( powerValue , powerMax , powerEffectiveMax )	end	
+		
+		-- Werewolf
+		elseif ( powerType == POWERTYPE_WEREWOLF ) then
+			if ( FTC.init.Frames ) then FTC.Frames:UpdateWerewolf( powerValue, powerMax, powerEffectiveMax ) end
 		end
 
 	-- Target updates
@@ -282,21 +299,18 @@ function FTC.OnPowerUpdate( eventCode , unitTag, powerIndex, powerType, powerVal
 			if ( FTC.init.SCT ) then FTC.SCT:ResourceAlert( unitTag , powerType , powerValue , powerMax ) end
 			
 			-- Update the target frame
-			FTC.Frames:UpdateFrame( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
+			FTC.Frames:UpdateAttribute( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
+		end
+	
+	-- Siege updates
+	elseif ( unitTag == 'controlledsiege' ) then
+		
+		-- Siege health
+		if ( powerType == POWERTYPE_HEALTH ) then
+			if ( FTC.init.Frames ) then FTC.Frames:UpdateSiege( powerValue , powerMax , powerEffectiveMax ) end
 		end
 	end
-end
-
---[[ 
- * Runs on the EVENT_STATS_UPDATED listener.
- * This handler fires every time the player has a change to a derived stat
- ]]--
-function FTC.OnStatsUpdated( ... )
-
-	-- Update the hotbar to account for spell cost reduction
-	if ( FTC.init.Buffs ) then
-		FTC.Buffs:GetHotbar()
-	end
+	
 end
 
 --[[ 
@@ -304,12 +318,31 @@ end
  * This handler fires every time the player has a change to a derived stat
  ]]--
 function FTC.OnMount( ... )
-
-	-- Display the custom horse stamina bar
 	if ( FTC.init.Frames ) then 
-		FTC.Frames:DisplayMount( ... )
+		FTC.Frames:SetupMount( ... )
 	end
 end
+
+--[[ 
+ * Runs on the EVENT_MOUNTED_STATE_CHANGED listener.
+ * This handler fires every time the player has a change to a derived stat
+ ]]--
+function FTC.OnSiege()
+	if ( FTC.init.Frames ) then
+		FTC.Frames:SetupSiege()
+	end
+end
+
+--[[ 
+ * Runs on the EVENT_MOUNTED_STATE_CHANGED listener.
+ * This handler fires every time the player has a change to a derived stat
+ ]]--
+function FTC.OnWerewolf( ... )
+	if ( FTC.init.Frames ) then 
+		FTC.Frames:SetupWerewolf( ... )
+	end
+end
+
 
 --[[ 
  * Runs on the EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED listener.
