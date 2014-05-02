@@ -12,7 +12,7 @@ function FTC.Player:Initialize()
 	-- Setup initial character information
 	FTC.Player.name		= GetUnitName( 'player' )
 	FTC.Player.race		= GetUnitRace( 'player' )
-	FTC.Player.class	= GetUnitClass( 'player' )
+	FTC.Player.class	= FTC.L( GetUnitClass( 'player' ) )
 	FTC.Player.nicename	= string.gsub( GetUnitName( 'player' ) , "%-", "%%%-")
 
 	-- Get experience level

@@ -1,6 +1,7 @@
 
 --[[----------------------------------------------------------
 	GERMAN TRANSLATIONS
+	-- 	Special thanks are due to MerlinGer, Rakke, Xianlung, and Rial for their assistance with German localization.
 	--	ä 	\195\164
 	--	Ä 	\195\132
 	--	ö 	\195\182
@@ -8,6 +9,9 @@
 	--	ü 	\195\188
 	--	Ü 	\195\156
 	--	ß 	\195\159
+	
+	-- TODO: FTC configuration settings in German
+	-- TODO: remainder of skill names in German translation
   ]]----------------------------------------------------------
   
 FTC.German = { 
@@ -70,32 +74,74 @@ FTC.German = {
 	["Reset Settings"] = "",
 	["Restore Defaults"] = "",
 	["Restore FTC to default settings."] = "",
-
+	
 	--[[---------------------------------
-		BUFFS AND DEBUFFS
+		GAME TRANSLATIONS
+	-----------------------------------]]
+	--[""]								= "Dragonknight",
+	--[""]								= "Nightblade",
+	--[""]								= "Sorcerer",
+	--[""]								= "Templar",
+
+	
+	--[[---------------------------------
+		WEAPON ABILITIES
 	-----------------------------------]]
 	
 	-- Sword and Shield
 	["Durchsto\195\159^m"] 				= "Puncture",
+	--[""] 								= "Ransack",
 	["Durchschlag^m"] 					= "Pierce Armor",
 	["niederer Schnitt^m"] 				= "Low Slash",
+	--[""] 								= "Deep Slash",
+	--[""] 								= "Crippling Slash",
 	["Schildlauf^m"] 					= "Shield Charge",
+	--[""]								= "Invasion",
+	--[""]								= "Shielded Assault",
 	["Schildsto\195\159^m"] 			= "Power Bash",
+	--[""]								= "Power Slam",
+	--[""]								= "Reverberating Bash",
 	
 	-- Dual Wield
 	["Doppelschnitte^p"] 				= "Twin Slashes",
+	--[""] 								= "Blood Craze",
+	--[""] 								= "Rending Slashes",	
 	["schnelle St\195\182\195\159e^p"] 	= "Rapid Strikes",
+	--[""] 								= "Sparks",
+	--[""] 								= "Heated Blades",
+	--[""] 								= "Ember Explosion",
+	--[""] 								= "Whirling Blades",
+	--[""] 								= "Hidden Blade",
+	--[""] 								= "Flying Blade",
+	--[""] 								= "Shrouded Daggers",
 	
 	-- Two Handed
 	["Trennen^n"] 						= "Cleave",
+	--[""] 								= "Brawler",
+	--[""] 								= "Carve",
+	--[""] 								= "Stampede",
 	["Aufw\195\164rtsschnitt^m"] 		= "Uppercut",
+	--[""] 								= "Wrecking Blow",
+	--[""] 								= "Dizzying Swing",
 	["Momentum^n"] 						= "Momentum",
+	--[""] 								= "Forward Momentum",
+	--[""] 								= "Rally",
 	
 	-- Bow
 	["Giftpfeil^m"] 					= "Poison Arrow",
+	--[""] 								= "Venom Arrow",
+	--[""] 								= "Poison Injection",
 	["Pfeilsalve^f"] 					= "Volley",
+	--[""] 								= "Scorched Earth",
+	--[""] 								= "Arrow Barrage",
 	["Trennschuss^m"] 					= "Scatter Shot",
+	--[""] 								= "Magnum Shot",
+	--[""] 								= "Draining Shot",
 	["Pfeilf\195\164cher^m"] 			= "Arrow Spray",
+	--[""] 								= "Bombard",
+	--[""] 								= "Acid Spray",
+	--[""] 								= "Lethal Arrow",
+	--[""] 								= "Focused Aim",
 	
 	-- Restoration Staff
 	["gro\195\159e Heilung^f"] 			= "Grand Healing",
@@ -111,9 +157,17 @@ FTC.German = {
 	["verb\195\188ndeten sch\195\188tzen^m"] = "Ward Ally",
 	["heilender Schutz^m"] 				= "Healing Ward",
 	["Kraftabsaugung^f"] 				= "Force Siphon",
+	--[""] 								= "Siphon Spirit",
+	--[""] 								= "Quick Siphon",
 	
 	-- Destruction Staff
 	["Schw\195\164che gegen die Elemente^f"] = "Weakness to Elements",
+	--[""] 								= "Elemental Succeptibility",
+	--[""] 								= "Elemental Drain",
+	
+	--[[---------------------------------
+		CLASS ABILITIES
+	-----------------------------------]]
 	
 	-- Sorcerer Daedric Summoning
 	["daedrischer Fluch^m"] 			= "Daedric Curse",
@@ -151,6 +205,17 @@ FTC.German = {
 	["dunkler Austausch^m"] 			= "Daedric Tomb",
 	["Magienegation^f"]					= "Negate Magic",
 	["Unterdr\195\188ckungsfeld^n"] 	= "Suppression Field",
-	["Absorbtionsfeld^n"] 				= "Absorption Field",
+	["Absorbtionsfeld^n"] 				= "Absorption Field",	
 	
+	--[[---------------------------------
+		EFFECT FILTERS
+	-----------------------------------]]
+	--[""]								= "Boon:",
+	["Vampirismus^m"]					= "Vampirisim",
+	--[""]								= "Lycanthropy",
+	--[""]								= "Spirit Armor",
+	--[""]								= "Brace (Generic)",
+	--[""]								= "Keep Bonus",
+	--[""]								= "Scroll Bonus",
+	--[""]								= "Emperorship",
 }

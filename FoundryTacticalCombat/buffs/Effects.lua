@@ -557,6 +557,9 @@ function FTC:FilterBuffInfo( changeType , unitTag , name , buffType , beginTime 
 	local duration 	= nil
 	local isValid	= true
 	
+	-- Localize the ability name
+	local name		= FTC.L( name )
+	
 	-- Untyped Abilities (0)
 	if ( buffType == ABILITY_TYPE_NONE ) then
 	
@@ -570,7 +573,7 @@ function FTC:FilterBuffInfo( changeType , unitTag , name , buffType , beginTime 
 	elseif ( buffType == ABILITY_TYPE_BONUS ) then
 	
 		-- Mundus Stones
-		if ( string.match( name , "Boon: " ) ) then
+		if ( string.match( name , "Boon:" ) ) then
 			if ( unitTag == 'player' ) then	duration = "P"
 			else isValid = false end
 		
