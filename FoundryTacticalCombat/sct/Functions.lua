@@ -158,6 +158,10 @@ function FTC.SCT:Update(context)
 				-- Dodges
 				elseif ( damage.result == ACTION_RESULT_DODGED ) then
 					dam		= "|c990000(Dodge)|"
+					
+				-- Misses
+				elseif ( damage.result == ACTION_RESULT_MISS ) then
+					dam		= "|c990000(Miss)|"
 				
 				-- Flag heals
 				elseif( damage.heal == true ) then

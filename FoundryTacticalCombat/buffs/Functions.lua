@@ -89,7 +89,7 @@ function FTC.Buffs:GetBuffs( unitTag )
 		local effectName, beginTime, endTime, effectSlot, stackCount, iconName, buffType, effectType, abilityType, statusEffectType, longTerm = GetUnitBuffInfo( unitTag , i )
 		
 		-- Run the effect through a filter
-		isValid, effectName, effectDuration , beginTime , endTime = FTC:FilterBuffInfo( changeType , unitTag , effectName , abilityType , beginTime , endTime )
+		isValid, effectName, effectDuration , beginTime , endTime , iconName = FTC:FilterBuffInfo( changeType , unitTag , effectName , abilityType , beginTime , endTime , iconName )
 		if ( isValid ) then 
 		
 			-- Otherwise set up a buff object
@@ -121,7 +121,7 @@ function FTC.Buffs:Remove( eventCode, changeType,  effectSlot,  effectName,  uni
 	local context = ( unitTag == 'player' ) and "Player" or "Target"
 	
 	-- Filter the name
-	isValid, effectName, effectDuration , beginTime , endTime = FTC:FilterBuffInfo( changeType , unitTag , effectName , abilityType , beginTime , endTime )
+	isValid, effectName, effectDuration , beginTime , endTime , iconName = FTC:FilterBuffInfo( changeType , unitTag , effectName , abilityType , beginTime , endTime )
 		
 	-- Remove the buff
 	if ( isValid ) then FTC.Buffs[context][effectName] = nil end

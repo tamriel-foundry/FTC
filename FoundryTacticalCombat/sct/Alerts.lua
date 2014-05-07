@@ -284,7 +284,7 @@ function FTC.SCT:UpdateAlerts()
 				
 				-- Set default appearance
 				local size 	= ( status.size == nil ) and 16 or status.size
-				local font	= 'FoundryTacticalCombat/lib/Metamorphous.otf|'.. size .. '|soft-shadow-thick'
+				local font	= FTC.Fonts.meta( size )
 				local alpha = 1
 				local color = ( status.color == nil ) and "cFFFFFF" or status.color
 			

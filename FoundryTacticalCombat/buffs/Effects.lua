@@ -551,7 +551,7 @@ end
 --[[ 
  * Filter abilities to override their displayed names or durations as necessary
  ]]--
-function FTC:FilterBuffInfo( changeType , unitTag , name , buffType , beginTime , endTime )
+function FTC:FilterBuffInfo( changeType , unitTag , name , buffType , beginTime , endTime , iconName )
 	
 	-- Default to no duration
 	local duration 	= nil
@@ -564,10 +564,7 @@ function FTC:FilterBuffInfo( changeType , unitTag , name , buffType , beginTime 
 	if ( buffType == ABILITY_TYPE_NONE ) then
 	
 		-- Summons and Toggles
-		if ( FTC.Buffs:IsToggle( name ) ) then duration = "T"
-		
-		-- Vampirism
-		elseif ( name == "Vampirism" ) then duration = "P" end
+		if ( FTC.Buffs:IsToggle( name ) ) then duration = "T" end
 		
 	-- "Bonus" Abilities (5)
 	elseif ( buffType == ABILITY_TYPE_BONUS ) then
@@ -582,11 +579,17 @@ function FTC:FilterBuffInfo( changeType , unitTag , name , buffType , beginTime 
 			if ( unitTag == 'player' ) then	duration = "P"
 			else isValid = false end
 			
+		-- Vampirism
+		elseif ( string.match( name , "Vampirism" ) ) then duration = "P"
+			
 		-- Lycanthropy
 		elseif ( name == "Lycanthropy" ) then duration = "P"
 		
 		-- Spirit Armor
-		elseif ( name == "Spirit Armor" ) then duration = "P" end
+		elseif ( name == "Spirit Armor" ) then duration = "P"
+		
+		-- Food Buffs
+		elseif ( string.match( name , "Increase Max" ) ) then iconName = "/esoui/art/icons/ability_provisioner_004.dds" end
 		
 	-- Blocking (52)
 	elseif ( ( buffType == ABILITY_TYPE_BLOCK ) or ( name == "Brace (Generic)" ) ) then
@@ -597,7 +600,7 @@ function FTC:FilterBuffInfo( changeType , unitTag , name , buffType , beginTime 
 	elseif ( ( buffType == ABILITY_TYPE_CHANGEAPPEARANCE ) ) then duration	= "T" end
 		
 	-- Return the filtered info
-	return isValid, name, duration , beginTime , endTime
+	return isValid, name, duration , beginTime , endTime , iconName 
 end
 
 

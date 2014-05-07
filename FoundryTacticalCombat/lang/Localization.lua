@@ -10,7 +10,7 @@
   function FTC.Localize()
 	local errorString = GetErrorString(16)
 	if ( errorString == "Ziel aus dem Gleichgewicht" ) then FTC.language = "German"
-	elseif ( errorString == "Cible étoudie" ) then FTC.language = "French" end
+	elseif ( errorString == "Cible \195\169tourdie" ) then FTC.language = "French" end
 end 
  
  --[[ 

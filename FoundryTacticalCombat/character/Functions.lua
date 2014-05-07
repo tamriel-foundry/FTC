@@ -76,7 +76,7 @@ function FTC.Target:Update()
 	
 	-- Update the saved target
 	FTC.Target.name		= GetUnitName('reticleover')
-	FTC.Target.class	= GetUnitClass('reticleover')
+	FTC.Target.class	= FTC.L( GetUnitClass('reticleover') )
 	FTC.Target.level	= GetUnitLevel('reticleover')
 	FTC.Target.vlevel	= GetUnitVeteranRank('reticleover')	
 

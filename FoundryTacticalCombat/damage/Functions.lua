@@ -303,7 +303,7 @@ function FTC.Damage:Filter( result , abilityName , sourceType , sourceName , tar
 	if ( string.match( targetName , FTC.Player.nicename ) == nil and string.match( sourceName , FTC.Player.nicename ) == nil ) then return false
 	
 	-- Display Certain Damage Immunities
-	elseif ( result == ACTION_RESULT_IMMUNE or result == ACTION_RESULT_DODGED or result == ACTION_RESULT_BLOCKED_DAMAGE ) then return true
+	elseif ( result == ACTION_RESULT_IMMUNE or result == ACTION_RESULT_DODGED or result == ACTION_RESULT_BLOCKED_DAMAGE or result == ACTION_RESULT_MISS ) then return true
 	
 	-- Otherwise ignore zero damage
 	elseif ( hitValue == 0 ) then return false
