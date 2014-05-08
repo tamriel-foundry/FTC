@@ -78,11 +78,15 @@ FTC.German = {
 	
 	--[[---------------------------------
 		GAME TRANSLATIONS
-	-----------------------------------]]
-	["Drachenritter"]						= "Dragonknight",
-	["Nachtklinge"]							= "Nightblade",
-	["Zauberer"]							= "Sorcerer",
-	["Templer"]								= "Templar",
+	-----------------------------------]]	
+	["Drachenritter^m"]					= "Dragonknight",
+	["Drachenritterin^f"]				= "Dragonknight",
+	["Nachtklinge^m"]					= "Nightblade",
+	["Nachtklinge^f"]					= "Nightblade",
+	["Zauberer^m"]						= "Sorcerer",
+	["Zauberin^f"]						= "Sorcerer",
+	["Templer^m"]						= "Templar",
+	["Templerin^f"]						= "Templar",
 
 	--[[---------------------------------
 		WEAPON ABILITIES
@@ -234,7 +238,7 @@ FTC.German = {
 	-- [""]								= "Fossilize",				
 	-- [""]								= "Shattering Rocks",			
 	["Aschenwolke^f"]					= "Ash Cloud", 				
-	-- [""]								= "Cinder Storm", 			
+	["Schlackensturm^m"]				= "Cinder Storm", 			
 	-- [""]								= "Eruption", 					
 	["Magmar\195\188stung"]				= "Magma Armor", 			
 	["Magmaschale^f"]					= "Magma Shell", 			

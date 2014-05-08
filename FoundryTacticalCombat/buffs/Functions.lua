@@ -218,6 +218,14 @@ end
  ]]--
 function FTC.Buffs:Update( context )
 
+	-- Get the correct table of buffs
+	local buffs = {}
+	if ( context == "Target" ) then
+		buffs = FTC.Buffs.Target
+	elseif ( context == "Player" ) then
+		buffs = FTC.Buffs.Player
+	else return end
+
 	-- Get the buff container
 	local parentBuffs 	= _G["FTC_" .. context .. "Buffs"]
 	local parentDebuffs	= _G["FTC_" .. context .. "Debuffs"]
@@ -227,36 +235,30 @@ function FTC.Buffs:Update( context )
 		parentBuffs:SetHidden(true) 
 	end
 	
-	-- Get the correct table of buffs
-	local buffs = {}
-	if ( context == "Target" ) then
-		buffs = FTC.Buffs.Target
-	elseif ( context == "Player" ) then
-		buffs = FTC.Buffs.Player
-	end
-	
-	-- Convert the table to a numeric indexed array
-	local buffs = {}
-	for k,v in pairs( FTC.Buffs[context] ) do table.insert( buffs , v ) end
-	table.sort( buffs , FTC.Buffs.Sort )
-	
-	-- Hide the element if no buffs are present
+	-- If no buffs are present, clear icons and bail out
 	if ( #buffs == 0 ) then
 		FTC.Buffs:ClearIcons(context,1,1,1)
 		return
 	end
 	
-	-- Track the current game time and counts
-	local gameTime	= GetGameTimeMilliseconds() / 1000
-	local count 	= 1
-	local debCount	= 1
-	local longCount = 1
+	-- Otherwise, convert the table to a numeric indexed array
+	local buffs = {}
+	for k,v in pairs( FTC.Buffs[context] ) do table.insert( buffs , v ) end
+	table.sort( buffs , FTC.Buffs.Sort )
+	
+	-- Track the current game time and buff counts
+	local gameTime		= GetGameTimeMilliseconds() / 1000
+	local buffCount 	= 0
+	local debuffCount	= 0
+	local longCount 	= 0
 	
 	-- Loop through buffs, updating each effect
 	for i = 1 , #buffs do
 	
-		-- Limit the number of buffs that can be tracked
-		if ( count > FTC.vars.NumBuffs ) then break end
+		-- Bail out if we have already rendered the maximum allowable buffs
+		local isCapped = ( buffCount >= FTC.vars.NumBuffs ) and ( debuffCount >= FTC.vars.NumBuffs )
+		if ( context == "Player" ) then isCapped = isCapped and longCount >= FTC.vars.NumBuffs end
+		if ( isCapped ) then break end
 		
 		-- Setup defaults
 		local name		= buffs[i].name
@@ -264,55 +266,52 @@ function FTC.Buffs:Update( context )
 		local isLong	= context == "Player" and duration ~= nil
 		local stacks 	= ""
 		local label		= ""
+		local render	= true
 		
-		-- Only show abilities which have started already
-		if ( buffs[i].begin <= gameTime ) then 
+		-- Flag abilities which have not begun yet
+		if ( buffs[i].begin <= gameTime ) then render = false end
 		
-			-- Compute remaining duration of timed abilities
-			if ( duration == nil ) then
-				duration = math.floor( ( buffs[i].ends - gameTime ) * 10 ) / 10 
-				
-				-- Clear abilities whose duration has gone negative
-				if ( duration <= 0 ) then
-					FTC.Buffs.Player[name] = nil
-					FTC.Buffs.Target[name] = nil
-				end
-				
-				-- Flag long duration buffs
-				isLong = ( context == "Player" and duration >= 75 ) and true or isLong
-				
-				-- Duration in hours
-				if ( duration > 3600 ) then
-					local hours 	= math.floor( duration / 3600 )
-					label			= string.format( "%dh" , hours )
-				
-				-- Duration in minutes
-				elseif ( duration > 60 ) then	
-					local minutes 	= math.floor( duration / 60 )
-					label			= string.format( "%dm" , minutes )
-				
-				-- Duration in seconds
-				else
-					label = string.format( "%.1f" , duration )
-				end
-				
-			-- Otherwise, grab the forced string label
+		-- Compute remaining duration of timed abilities
+		if ( duration == nil ) then
+			duration = math.floor( ( buffs[i].ends - gameTime ) * 10 ) / 10 
+			
+			-- Clear abilities whose duration has gone negative
+			if ( duration <= 0 ) then
+				FTC.Buffs.Player[name] = nil
+				FTC.Buffs.Target[name] = nil
+			end
+			
+			-- Flag long duration buffs
+			isLong = ( context == "Player" and duration >= 75 ) and true or isLong
+			
+			-- Duration in hours
+			if ( duration > 3600 ) then
+				local hours 	= math.floor( duration / 3600 )
+				label			= string.format( "%dh" , hours )
+			
+			-- Duration in minutes
+			elseif ( duration > 60 ) then	
+				local minutes 	= math.floor( duration / 60 )
+				label			= string.format( "%dm" , minutes )
+			
+			-- Duration in seconds
 			else
-				label = duration
+				label = string.format( "%.1f" , duration )
 			end
 			
-			-- Handle multiple stacks
-			if (buffs[i].stacks) ~= 0 then
-				stacks = "(" .. buffs[i].stacks .. ")"
-			end
-			
-			-- Buff or debuff?
-			local buffDebuff 	= buffs[i].debuff and "Debuffs" or "Buffs"
-			local num			= buffs[i].debuff and debCount or count
-			
+		-- Otherwise, grab the string label
+		else
+			label = duration
+		end
+		
+		-- Render the buff only if we aren't maxed out
+		local count	= buffs[i].debuff and debuffCount or buffCount	
+		if ( context == "Player" ) and isLong then count = longCount end
+		if ( count < FTC.vars.NumBuffs ) then
+		
 			-- Target the appropriate containers
+			local buffDebuff 	= buffs[i].debuff and "Debuffs" or "Buffs"
 			local container		= isLong and "LongBuffs" or context .. buffDebuff
-			num					= isLong and longCount or num
 		
 			-- Get the UI elements
 			local buff			= _G["FTC_"..container.."_"..num]
@@ -326,14 +325,10 @@ function FTC.Buffs:Update( context )
 			cooldown:StartCooldown( ( buffs[i].ends - gameTime ) * 1000 , ( buffs[i].ends - buffs[i].begin ) * 1000 , CD_TYPE_RADIAL, CD_TIME_TYPE_TIME_UNTIL, false )
 			buff:SetHidden(false)
 				
-			-- Update the buff count
-			if isLong then
-				longCount = longCount + 1
-			elseif buffs[i].debuff then
-				debCount = debCount + 1
-			else
-				count = count + 1
-			end
+			-- Update the count
+			if isLong then longCount = longCount + 1
+			elseif buffs[i].debuff then	debuffCount = debCount + 1
+			else buffCount = buffCount + 1 end
 		end
 	end
 
@@ -343,7 +338,7 @@ function FTC.Buffs:Update( context )
 	end
 
 	-- After looping through buffs, do clear any remaining buff icons
-	FTC.Buffs:ClearIcons( context , count , debCount , longCount ) 
+	FTC.Buffs:ClearIcons( context , buffCount , debuffCount , longCount ) 
 end
 
 --[[ 
