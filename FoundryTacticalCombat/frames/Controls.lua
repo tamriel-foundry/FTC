@@ -33,24 +33,24 @@ function FTC.Frames:Controls()
 		health.current		= FTC.UI.Label( "FTC_PlayerFrame_HealthCurrent" , health , { health:GetWidth() - 16 , health:GetHeight() } , {CENTER,CENTER,0,0} , FTC.Fonts.meta(14) , nil , {0,1} , 'Health' , false )		
 		health.pct			= FTC.UI.Label( "FTC_PlayerFrame_HealthPct" , health , { health:GetWidth() - 16 , health:GetHeight() } , {CENTER,CENTER,0,0} , "ZoFontWindowSubtitle" , nil , {2,1} , 'Pct%' , false )
 		player.health		= health
-
-		-- Stamina
-		local stamina 		= FTC.UI.Backdrop( "FTC_PlayerFrame_Stamina" , player , {275,23} , {TOP,BOTTOM,0,0,health} , {0,0.05,0,1} , {0,0,0,0} , false )	
-		stamina:SetCenterTexture('FoundryTacticalCombat/lib/textures/grainy.dds')
-		stamina.bar			= FTC.UI.Statusbar( "FTC_PlayerFrame_StaminaBar" , stamina , { stamina:GetWidth() - 2 , stamina:GetHeight() - 2 } , {TOPLEFT,TOPLEFT,1,1} , {0,0.4,0,1} , false )	
-		stamina.bar:SetTexture('FoundryTacticalCombat/lib/textures/grainy.dds')
-		stamina.current		= FTC.UI.Label( "FTC_PlayerFrame_StaminaCurrent" , stamina , { stamina:GetWidth() - 16 , stamina:GetHeight() } , {CENTER,CENTER,0,0} , FTC.Fonts.meta(12) , nil , {0,1} , 'Stamina' , false )		
-		stamina.pct			= FTC.UI.Label( "FTC_PlayerFrame_StaminaPct" , stamina , { stamina:GetWidth() - 16 , stamina:GetHeight() } , {CENTER,CENTER,0,0} , "ZoFontAnnounceSmall" , nil , {2,1} , 'Pct%' , false )
-		player.stamina		= stamina
 		
 		-- Magicka
-		local magicka 		= FTC.UI.Backdrop( "FTC_PlayerFrame_Magicka" , player , {275,23} , {TOP,BOTTOM,0,0,stamina} ,{0.05,0.05,0.1,1} , {0,0,0,0} , false )	
+		local magicka 		= FTC.UI.Backdrop( "FTC_PlayerFrame_Magicka" , player , {275,23} , {TOP,BOTTOM,0,0,health} ,{0.05,0.05,0.1,1} , {0,0,0,0} , false )	
 		magicka:SetCenterTexture('FoundryTacticalCombat/lib/textures/grainy.dds')
 		magicka.bar			= FTC.UI.Statusbar( "FTC_PlayerFrame_MagickaBar" , magicka , { magicka:GetWidth() - 2 , magicka:GetHeight() - 2 } , {TOPLEFT,TOPLEFT,1,1} , {0.4,0.4,0.8,1} , false )
 		magicka.bar:SetTexture('FoundryTacticalCombat/lib/textures/grainy.dds')		
 		magicka.current		= FTC.UI.Label( "FTC_PlayerFrame_MagickaCurrent" , magicka , { magicka:GetWidth() - 16 , magicka:GetHeight() } , {CENTER,CENTER,0,0} , FTC.Fonts.meta(12) , nil , {0,1} , 'Magicka' , false )
 		magicka.pct			= FTC.UI.Label( "FTC_PlayerFrame_MagickaPct" , magicka , { magicka:GetWidth() - 16 , magicka:GetHeight() } , {CENTER,CENTER,0,0} , "ZoFontAnnounceSmall" , nil , {2,1} , 'Pct%' , false )
 		player.magicka		= magicka
+		
+		-- Stamina
+		local stamina 		= FTC.UI.Backdrop( "FTC_PlayerFrame_Stamina" , player , {275,23} , {TOP,BOTTOM,0,0,magicka} , {0,0.05,0,1} , {0,0,0,0} , false )	
+		stamina:SetCenterTexture('FoundryTacticalCombat/lib/textures/grainy.dds')
+		stamina.bar			= FTC.UI.Statusbar( "FTC_PlayerFrame_StaminaBar" , stamina , { stamina:GetWidth() - 2 , stamina:GetHeight() - 2 } , {TOPLEFT,TOPLEFT,1,1} , {0,0.4,0,1} , false )	
+		stamina.bar:SetTexture('FoundryTacticalCombat/lib/textures/grainy.dds')
+		stamina.current		= FTC.UI.Label( "FTC_PlayerFrame_StaminaCurrent" , stamina , { stamina:GetWidth() - 16 , stamina:GetHeight() } , {CENTER,CENTER,0,0} , FTC.Fonts.meta(12) , nil , {0,1} , 'Stamina' , false )		
+		stamina.pct			= FTC.UI.Label( "FTC_PlayerFrame_StaminaPct" , stamina , { stamina:GetWidth() - 16 , stamina:GetHeight() } , {CENTER,CENTER,0,0} , "ZoFontAnnounceSmall" , nil , {2,1} , 'Pct%' , false )
+		player.stamina		= stamina
 		
 		-- Create damage shield bar
 		player.shield		= FTC.UI.Statusbar( "FTC_PlayerFrame_Shield" , health , {0,6} , {BOTTOMLEFT,BOTTOMLEFT,1,-1} , {1,0.4,0,1} , false )

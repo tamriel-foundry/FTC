@@ -236,7 +236,7 @@ function FTC.Buffs:Update( context )
 	end
 	
 	-- If no buffs are present, clear icons and bail out
-	if ( #buffs == 0 ) then
+	if ( next(buffs) == nil ) then
 		FTC.Buffs:ClearIcons(context,1,1,1)
 		return
 	end
@@ -248,16 +248,16 @@ function FTC.Buffs:Update( context )
 	
 	-- Track the current game time and buff counts
 	local gameTime		= GetGameTimeMilliseconds() / 1000
-	local buffCount 	= 0
-	local debuffCount	= 0
-	local longCount 	= 0
+	local buffCount 	= 1
+	local debuffCount	= 1
+	local longCount 	= 1
 	
 	-- Loop through buffs, updating each effect
 	for i = 1 , #buffs do
 	
 		-- Bail out if we have already rendered the maximum allowable buffs
-		local isCapped = ( buffCount >= FTC.vars.NumBuffs ) and ( debuffCount >= FTC.vars.NumBuffs )
-		if ( context == "Player" ) then isCapped = isCapped and longCount >= FTC.vars.NumBuffs end
+		local isCapped = ( buffCount > FTC.vars.NumBuffs ) and ( debuffCount > FTC.vars.NumBuffs )
+		if ( context == "Player" ) then isCapped = isCapped and longCount > FTC.vars.NumBuffs end
 		if ( isCapped ) then break end
 		
 		-- Setup defaults
@@ -269,7 +269,7 @@ function FTC.Buffs:Update( context )
 		local render	= true
 		
 		-- Flag abilities which have not begun yet
-		if ( buffs[i].begin <= gameTime ) then render = false end
+		if ( buffs[i].begin > gameTime ) then render = false end
 		
 		-- Compute remaining duration of timed abilities
 		if ( duration == nil ) then
@@ -304,20 +304,23 @@ function FTC.Buffs:Update( context )
 			label = duration
 		end
 		
-		-- Render the buff only if we aren't maxed out
+		-- Get the number of buffs already rendered
 		local count	= buffs[i].debuff and debuffCount or buffCount	
 		if ( context == "Player" ) and isLong then count = longCount end
-		if ( count < FTC.vars.NumBuffs ) then
+		
+		-- Render the buff only if we aren't maxed out
+		if ( count > FTC.vars.NumBuffs ) then render = false end
+		if ( render ) then
 		
 			-- Target the appropriate containers
 			local buffDebuff 	= buffs[i].debuff and "Debuffs" or "Buffs"
 			local container		= isLong and "LongBuffs" or context .. buffDebuff
 		
 			-- Get the UI elements
-			local buff			= _G["FTC_"..container.."_"..num]
-			local newlabel 		= _G["FTC_"..container.."_"..num.."_Label"]
-			local newicon		= _G["FTC_"..container.."_"..num.."_Icon"]		
-			local cooldown		= _G["FTC_"..container.."_"..num.."_CD"]
+			local buff			= _G["FTC_"..container.."_"..count]
+			local newlabel 		= _G["FTC_"..container.."_"..count.."_Label"]
+			local newicon		= _G["FTC_"..container.."_"..count.."_Icon"]		
+			local cooldown		= _G["FTC_"..container.."_"..count.."_CD"]
 			
 			-- Update the display
 			newlabel:SetText(label)
@@ -327,7 +330,7 @@ function FTC.Buffs:Update( context )
 				
 			-- Update the count
 			if isLong then longCount = longCount + 1
-			elseif buffs[i].debuff then	debuffCount = debCount + 1
+			elseif buffs[i].debuff then	debuffCount = debuffCount + 1
 			else buffCount = buffCount + 1 end
 		end
 	end
@@ -347,18 +350,19 @@ end
  ]]--
 function FTC.Buffs:CheckCast()
 
+	-- Check each action bar button
 	for i = 3 , 8 do
 		local button = _G["ActionButton"..i.."Button"]
 		if( button:GetState() == BSTATE_PRESSED ) then
-		
-			-- Make sure the ability is usable
-			if( FTC.Buffs:HasFailure( i ) ) then return end
 			
 			-- Get the time
 			local ms = GetGameTimeMilliseconds()
 		
 			-- Was this spell already registered?
-			if ( ms < FTC.Buffs.lastCast + 250 ) then return end
+			if ( ms < FTC.Buffs.lastCast + 1000 ) then return end
+		
+			-- Make sure the ability is usable
+			if( FTC.Buffs:HasFailure( i ) ) then return end
 			
 			-- Get the used ability
 			local ability = FTC.Hotbar[i]

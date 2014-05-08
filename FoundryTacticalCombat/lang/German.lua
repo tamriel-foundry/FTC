@@ -290,8 +290,8 @@ FTC.German = {
 	["Lykanthropie^f"]					= "Lycanthropy",
 	--[""]								= "Spirit Armor",
 	--[""]								= "Brace (Generic)",
-	--[""]								= "Keep Bonus",
-	--[""]								= "Scroll Bonus",
-	--[""]								= "Emperorship",
+	["Kampfgeist^m"]					= "Keep Bonus",
+	["Schriften"]						= "Scroll Bonus",
+	["Kaiserlich"]						= "Emperorship",
 	--[""]								= "Increase Max",
 }
