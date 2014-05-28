@@ -13,7 +13,9 @@ function IsMightGuild( ability )
 	
 	-- Is Might of the Guild already procced?
 	if ( FTC.Buffs.Player["Might of the Guild"] ~= nil ) then
-		d( 'Might of the Guild already exists!' )
+	
+		-- Clear the buff a spell was cast (costs Magicka)
+		if ( ability.type == POWERTYPE_MAGICKA ) then FTC.Buffs.Player["Might of the Guild"] = nil end
 	end
 
 	-- Look for mages' guild abilities
@@ -29,14 +31,30 @@ function IsMightGuild( ability )
 		'Scalding Rune',
 		'Equilibrium',
 		'Balance',
-		'Spell Symmetry'	
+		'Spell Symmetry',
+		'Magelight',
+		'Inner Light',
+		'Radiant Magelight'
 	}
 	
 	-- Check if it was a mage ability
 	for i = 1 , #mages do
 		if ( ability.name == mages[i] ) then	
-			d( 'Might of the Guild procced!' )
-
+		
+			-- Get the time
+			local ms = GetGameTimeMilliseconds()
+			
+			-- Trigger a buff
+			local newBuff = {
+				["name"]	= "Might of the Guild",
+				["begin"]	= ms / 1000,
+				["ends"]	= ( ms / 1000 ) + 8,
+				["debuff"]	= false,
+				["stacks"]	= 0,
+				["tag"]		= 'player',
+				["icon"]	= '/esoui/art/icons/ability_mage_038.dds',
+			}
+			FTC.Buffs.Player["Might of the Guild"] = newBuff
 		end	
 	end
 end

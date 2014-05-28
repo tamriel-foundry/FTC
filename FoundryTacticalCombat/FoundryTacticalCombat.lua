@@ -12,9 +12,9 @@
 	 (4) Combat Status Alerts
 	 (5) Damage Tracking and Data
 	 
-	* Version 0.29
+	* Version 0.31
 	* atropos@tamrielfoundry.com
-	* 5-6-2014
+	* 5-24-2014
   ]]--
 
 --[[----------------------------------------------------------
@@ -23,7 +23,7 @@
 FTC 					= {}
 FTC.name				= "FoundryTacticalCombat"
 FTC.command				= "/ftc"
-FTC.version				= 0.29
+FTC.version				= 0.31
 FTC.language			= "English"
 
 -- Default Saved Variables
@@ -59,6 +59,8 @@ FTC.defaults			= {
 	["FrameText"]				= true,
 	["EnableXPBar"]				= true,
 	["EnableNameplate"]			= true,
+	["OpacityIn"]				= 100,
+	["OpacityOut"]				= 60,
 	["FTC_PlayerFrame"]			= {CENTER,CENTER,-400,300},
 	["FTC_TargetFrame"]			= {CENTER,CENTER,400,275},
 	

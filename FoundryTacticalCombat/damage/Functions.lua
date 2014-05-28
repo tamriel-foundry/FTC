@@ -17,6 +17,7 @@ function FTC.Damage:Initialize()
 	
 	-- Register keybinding
 	ZO_CreateStringId("SI_BINDING_NAME_DISPLAY_DAMAGE_METER", "Display Damage Meter")
+	ZO_CreateStringId("SI_BINDING_NAME_POST_DAMAGE_RESULTS", "Post Damage Results")
 
 	-- Register init status
 	FTC.init.Damage = true
@@ -38,81 +39,85 @@ function FTC.Damage:UpdateMeter( newDamage , context )
 	local damage	= newDamage.dam
 	local name		= newDamage.name
 	local target	= newDamage.target
+	local source	= newDamage.source
 	
-	-- If the meter has been inactive for over X seconds, restart tracking
+	-- If the meter is inactive, don't start it for heals
+	if ( meter.endTime == 0 and newDamage.heal ) then return end
+	
+	-- If the meter has been inactive for over X seconds
 	if( ( ( newDamage.ms - meter.endTime ) / 1000 ) >= FTC.vars.DamageTimeout ) then
-		FTC.Damage:Reset()
-		meter				= FTC.Damage.Meter
-		meter.startTime 	= newDamage.ms
+		
+		-- If it's a new source of damage, reset the meter
+		if ( not newDamage.heal ) then
+			FTC.Damage:Reset()
+			meter				= FTC.Damage.Meter
+			meter.startTime 	= newDamage.ms
+			
+		-- Otherwise, bail out
+		else return end
 	end
 	
-	-- Process outgoing events
-	if ( context == "Out" ) then
-	
-		-- Outgoing healing
-		if ( newDamage.heal ) then
+	-- Process outgoing healing events
+	if ( newDamage.heal and context == "Out") then
 		
-			-- Update meter
-			meter.healing			= meter.healing + damage
-			if ( damage > meter.maxHeal ) then
-				meter.maxHeal		= damage
-				meter.maxHealName 	= name			
-			end
-			
-			-- Track ability
-			if ( FTC.Damage.Heals[name] ~= nil ) then
-				FTC.Damage.Heals[name].total 	= FTC.Damage.Heals[name].total + damage
-				FTC.Damage.Heals[name].count 	= FTC.Damage.Heals[name].count + 1
-				FTC.Damage.Heals[name].crit		= newDamage.crit and FTC.Damage.Heals[name].crit + 1 or FTC.Damage.Heals[name].crit
-			else
-				FTC.Damage.Heals[name] 	= {
-					["total"]			= damage,
-					["count"]			= 1,
-					["crit"]			= newDamage.crit and 1 or 0,
-					["tex"]				= newDamage.tex,				
-				}
-			end
-		
-		-- Outgoing damage
-		else 
-		
-			-- Update meter
-			meter.damage			= meter.damage + damage
-			if ( damage > meter.maxDam ) then
-				meter.maxDam		= damage
-				meter.maxDamName 	= name			
-			end
-			
-			-- Track ability
-			if ( FTC.Damage.Damages[name] ~= nil ) then
-				FTC.Damage.Damages[name].total 	= FTC.Damage.Damages[name].total + damage
-				FTC.Damage.Damages[name].count 	= FTC.Damage.Damages[name].count + 1
-				FTC.Damage.Damages[name].crit	= newDamage.crit and FTC.Damage.Damages[name].crit + 1 or FTC.Damage.Damages[name].crit
-			else
-				FTC.Damage.Damages[name] 	= {
-					["total"]			= damage,
-					["count"]			= 1,
-					["crit"]			= newDamage.crit and 1 or 0,
-					["tex"]				= newDamage.tex,				
-				}
-			end
-			
-			-- Track target
-			FTC.Damage.Targets[target] = ( FTC.Damage.Targets[target] ~= nil ) and FTC.Damage.Targets[target] + damage or damage
+		-- Update meter
+		meter.healing			= meter.healing + damage
+		if ( damage > meter.maxHeal ) then
+			meter.maxHeal		= damage
+			meter.maxHealName 	= name			
 		end
 		
-	-- Incoming events
-	elseif ( context == "In" and not newDamage.heal ) then
+		-- Track ability
+		if ( FTC.Damage.Heals[name] ~= nil ) then
+			FTC.Damage.Heals[name].total 	= FTC.Damage.Heals[name].total + damage
+			FTC.Damage.Heals[name].count 	= FTC.Damage.Heals[name].count + 1
+			FTC.Damage.Heals[name].crit		= newDamage.crit and FTC.Damage.Heals[name].crit + 1 or FTC.Damage.Heals[name].crit
+		else
+			FTC.Damage.Heals[name] 	= {
+				["total"]			= damage,
+				["count"]			= 1,
+				["crit"]			= newDamage.crit and 1 or 0,			
+			}
+		end
+	
+	-- Process outgoing damage events
+	elseif ( context == "Out" ) then
+			
+		-- Update meter
+		meter.damage			= meter.damage + damage
+		if ( damage > meter.maxDam ) then
+			meter.maxDam		= damage
+			meter.maxDamName 	= name			
+		end
+
+		-- Track ability
+		if ( FTC.Damage.Damages[name] ~= nil ) then
+			FTC.Damage.Damages[name].total 	= FTC.Damage.Damages[name].total + damage
+			FTC.Damage.Damages[name].count 	= FTC.Damage.Damages[name].count + 1
+			FTC.Damage.Damages[name].crit	= newDamage.crit and FTC.Damage.Damages[name].crit + 1 or FTC.Damage.Damages[name].crit
+		else
+			FTC.Damage.Damages[name] 	= {
+				["total"]			= damage,
+				["count"]			= 1,
+				["crit"]			= newDamage.crit and 1 or 0,			
+			}
+		end
+		
+		-- Track target
+		FTC.Damage.Targets[target]	= ( FTC.Damage.Targets[target] ~= nil ) and FTC.Damage.Targets[target] + damage or damage
+	
+	-- Process incoming damage events
+	elseif ( context == "In" ) then
 	
 		-- Update meter
-		meter.incoming			= meter.incoming + damage
+		meter.incoming					= meter.incoming + damage
 		if ( damage > meter.maxInc ) then
-			meter.maxInc		= damage		
+			meter.maxInc				= damage		
 		end	
 	end
 	
-	-- Stamp the time
-	meter.endTime = newDamage.ms
+	-- Stamp the time (but not for heals)
+	if ( not newDamage.heal ) then meter.endTime = newDamage.ms end
 	
 	-- Return data back to the meter
 	FTC.Damage.Meter = meter	
@@ -133,11 +138,6 @@ function FTC.Damage:Display()
 	local meter 	= FTC.Damage.Meter
 	local header 	= "FTC Damage Meter"
 	
-	-- Handle cases of no data
-	if ( ( meter.damage + meter.healing + meter.incoming ) == 0 ) then
-		header = header ..  " - No Combat Recorded"
-	end
-	
 	-- Compute the most damaged target
 	local most_damaged_target = ""
 	local most_damage = 0
@@ -152,7 +152,9 @@ function FTC.Damage:Display()
 	local fight_time = math.max( ( meter.endTime - meter.startTime ) / 1000 , 1 )
 	
 	-- Generate a title
-	if ( ( meter.damage + meter.healing + meter.incoming ) ~= 0 ) then
+	if ( meter.damage + meter.healing == 0 ) then
+		header = header ..  " - No Combat Recorded"
+	else
 		header = header .. " - " .. most_damaged_target .. " (" .. string.format( "%.1f" , fight_time ) .. " seconds)"
 	end
 	
@@ -174,7 +176,7 @@ function FTC.Damage:Display()
 	table.sort( damages , function(x,y) return x.total > y.total end )
 
 	local ndamage = math.min( #damages , 10 )
-	for i = 1 , math.min( ndamage , 10 ) do
+	for i = 1 , ndamage do
 		
 		-- Get elements
 		local line	= _G["FTC_MeterDamage_"..i]
@@ -202,7 +204,6 @@ function FTC.Damage:Display()
 	-- Change the element height
 	FTC_MeterDamage:SetHeight( 50 + ( #damages * 24 ) )
 	
-	
 	--[[----------------------------------
 		OUTGOING HEALING
 	  ]]----------------------------------		
@@ -221,7 +222,7 @@ function FTC.Damage:Display()
 	table.sort( heals , function(x,y) return x.total > y.total end )	
 
 	local nheals = math.min( #heals , 10 )
-	for i = 1 , #heals do
+	for i = 1 , nheals do
 		
 		-- Get elements
 		local line	= _G["FTC_MeterHealing_"..i]
@@ -249,7 +250,6 @@ function FTC.Damage:Display()
 	-- Change the element height
 	FTC_MeterHealing:SetHeight( 50 + ( #heals * 24 ) )		
 	
-	
 	--[[----------------------------------
 		INCOMING DAMAGE
 	  ]]----------------------------------			
@@ -259,13 +259,12 @@ function FTC.Damage:Display()
 	local head	= ( meter.incoming > 0 ) and CommaValue( meter.incoming ) .. " Incoming Damage (" .. ips .. " IPS)" or "No Incoming Damage"
 	FTC_MeterIncoming_Title:SetText( head )
 	
-	
 	--[[----------------------------------
 		ADJUST DISPLAY
 	  ]]----------------------------------		 
 	local height = 60 + FTC_MeterDamage:GetHeight() + FTC_MeterHealing:GetHeight() + 60 
 	parent:SetHeight( height )
-	FTC_MeterBackdrop:SetHeight( height )
+	parent.backdrop:SetHeight( height )
 	title:SetText(header)
 end
 
@@ -274,19 +273,20 @@ function FTC.Damage:UpdateMini()
 
 	-- Retrieve the data
 	local meter = FTC.Damage.Meter
+	local mini	= _G["FTC_MiniMeter"]
 
 	-- Compute the fight time
 	local fight_time = math.max( ( meter.endTime - meter.startTime ) / 1000 , 1 )
 
-	-- Compute simple statistics
-	local dps = string.format( "%.1f" , meter.damage/fight_time  	)
-	local hps = string.format( "%.1f" , meter.healing/fight_time  	)
-	local ips = string.format( "%.1f" , meter.incoming/fight_time 	)
+	-- Compute player statistics
+	local dps = string.format( "%d" , meter.damage/fight_time  	)
+	local hps = string.format( "%d" , meter.healing/fight_time  	)
+	local ips = string.format( "%d" , meter.incoming/fight_time 	)
 	
 	-- Update the labels
-	FTC_MiniMeter_DamageLabel:SetText( dps )
-	FTC_MiniMeter_HealLabel:SetText( hps )
-	FTC_MiniMeter_IncLabel:SetText( ips )
+	mini.dam.label:SetText( dps )
+	mini.heal.label:SetText( hps )
+	mini.inc.label:SetText( ips )
 end
 
 
@@ -296,32 +296,70 @@ end
 
 --[[ 
  * Filter combat events to validate including them in SCT
+ * sourceType
+ * COMBAT_UNIT_TYPE_NONE = 0
+ * COMBAT_UNIT_TYPE_PLAYER = 1
+ * COMBAT_UNIT_TYPE_PLAYER_PET = 2
+ * COMBAT_UNIT_TYPE_PLAYER_GROUP = 3
+ * COMBAT_UNIT_TYPE_PLAYER_OTHER = 4
  ]]--
 function FTC.Damage:Filter( result , abilityName , sourceType , sourceName , targetName , hitValue )
+
+	-- Debugging
+	-- d( sourceName .. "/" .. sourceType .. "/" .. abilityName .. "/" .. targetName .. "/" .. result .. "/" ..  hitValue )
 	
-	-- Only count damage related to the player
-	if ( string.match( targetName , FTC.Player.nicename ) == nil and string.match( sourceName , FTC.Player.nicename ) == nil ) then return false
+	-- Ignore by default
+	local isValid = false
 	
-	-- Display Certain Damage Immunities
-	elseif ( result == ACTION_RESULT_IMMUNE or result == ACTION_RESULT_DODGED or result == ACTION_RESULT_BLOCKED_DAMAGE or result == ACTION_RESULT_MISS ) then return true
+	-- Ignore miscellaneous player damage
+	if ( sourceType == COMBAT_UNIT_TYPE_OTHER ) then isValid = false
 	
-	-- Otherwise ignore zero damage
-	elseif ( hitValue == 0 ) then return false
+	-- Outgoing player actions
+	elseif ( sourceType == COMBAT_UNIT_TYPE_PLAYER or sourceType == COMBAT_UNIT_TYPE_PLAYER_PET ) then
+	
+		-- Reflag self-harm
+		if ( string.match( targetName , FTC.Player.nicename ) and ( result ~= ACTION_RESULT_HEAL and result ~= ACTION_RESULT_HOT_TICK and result ~= ACTION_RESULT_HOT_TICK_CRITICAL ) ) then sourceType = COMBAT_UNIT_TYPE_NONE end
+	
+		-- Immunities
+		if ( result == ACTION_RESULT_IMMUNE or result == ACTION_RESULT_DODGED or result == ACTION_RESULT_BLOCKED_DAMAGE or result == ACTION_RESULT_MISS ) then isValid = true
 		
-	-- Ignore Self-Harm
-	elseif ( sourceType == 1 ) and ( string.match( targetName , FTC.Player.nicename ) ~= nil ) and ( result ~= ACTION_RESULT_HEAL and result ~= ACTION_RESULT_HOT_TICK and result ~= ACTION_RESULT_HOT_TICK_CRITICAL ) then return false
-
-	-- Direct Damage
-	elseif ( result == ACTION_RESULT_DAMAGE or result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_FALL_DAMAGE ) then return true
+		-- Ignore zeroes
+		elseif ( hitValue == 0 ) then isValid = false
+		
+		-- Damage
+		elseif ( result == ACTION_RESULT_DAMAGE or result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_DOT_TICK or result == ACTION_RESULT_DOT_TICK_CRITICAL ) then isValid = true
+		
+		-- Healing
+		elseif ( result == ACTION_RESULT_HEAL or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_HOT_TICK or result == ACTION_RESULT_HOT_TICK_CRITICAL ) then isValid = true end
 	
-	-- Damage Over Time
-	elseif ( result == ACTION_RESULT_DOT_TICK or result == ACTION_RESULT_DOT_TICK_CRITICAL ) then return true
 	
-	-- Heals
-	elseif ( result == ACTION_RESULT_HEAL or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_HOT_TICK or result == ACTION_RESULT_HOT_TICK_CRITICAL ) then return true
+	-- Incoming actions
+	elseif ( sourceType == COMBAT_UNIT_TYPE_NONE and string.match( targetName , FTC.Player.nicename ) ) then 
+	
+		-- Immunities
+		if ( result == ACTION_RESULT_IMMUNE or result == ACTION_RESULT_DODGED or result == ACTION_RESULT_BLOCKED_DAMAGE or result == ACTION_RESULT_MISS ) then isValid = true
+		
+		-- Ignore zeroes
+		elseif ( hitValue == 0 ) then isValid = false
+			
+		-- Damage
+		elseif ( result == ACTION_RESULT_DAMAGE or result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_DOT_TICK or result == ACTION_RESULT_DOT_TICK_CRITICAL ) then isValid = true
+			
+		-- Falling damage
+		elseif ( result == ACTION_RESULT_FALL_DAMAGE ) then isValid = true
+		
+		-- Healing
+		elseif ( result == ACTION_RESULT_HEAL or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_HOT_TICK or result == ACTION_RESULT_HOT_TICK_CRITICAL ) then isValid = true end
 
-	-- Otherwise, ignore it
-	else return false end	
+	-- Group actions
+	elseif ( sourceType == COMBAT_UNIT_TYPE_GROUP ) then
+	
+		-- Damage
+		if ( result == ACTION_RESULT_DAMAGE or result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_DOT_TICK or result == ACTION_RESULT_DOT_TICK_CRITICAL ) then isValid = true end	
+	end
+	
+	-- Return results
+	return isValid, result , abilityName , sourceType , sourceName , targetName , hitValue
 end
 
 
@@ -330,7 +368,7 @@ end
  ]]--
 function FTC.Damage:Reset()
 
-	-- Setup damage totals
+	-- Setup damage overview
 	FTC.Damage.Meter 	= {
 		['damage']		= 0,
 		['maxDam']		= 0,
@@ -340,11 +378,12 @@ function FTC.Damage:Reset()
 		['maxHealName']	= "",
 		['incoming']	= 0,
 		['maxInc']		= 0,
+		['group']		= 0,
 		['startTime']	= 0,
 		['endTime']		= 0,
 	}
 	
-	-- Setup damage target tracking
+	-- Setup damaged target tracking
 	FTC.Damage.Targets 	= {}
 	
 	-- Setup damage ability tracking
@@ -352,6 +391,9 @@ function FTC.Damage:Reset()
 	
 	-- Setup healing ability tracking
 	FTC.Damage.Heals	= {}
+	
+	-- Setup group tracking
+	FTC.Damage.Group	= {}
 
 end
 
@@ -375,4 +417,45 @@ function FTC.Damage:ToggleMeter()
 	mini:SetHidden( full:IsHidden() )
 	full:SetHidden( not full:IsHidden() )
 
+end
+
+--[[ 
+ * Print damage output to chat
+ ]]--
+function FTC.Damage:Post()
+
+	-- Retrieve the data
+	local meter = FTC.Damage.Meter
+	
+	-- Make sure there's something to report
+	if ( meter.damage + meter.healing == 0 ) then 
+		d( "No damage to report!" ) 
+		return
+	end
+
+	-- Compute the most damaged target
+	local most_damaged_target = ""
+	local most_damage = 0
+	for k,v in pairs( FTC.Damage.Targets ) do
+		if ( v > most_damage ) then
+			most_damage = v
+			most_damaged_target = k
+		end
+	end
+	
+	-- Sanitize the name
+	local name = SanitizeLocalization( most_damaged_target )
+	
+	-- Compute the fight time
+	local fight_time = math.max( ( meter.endTime - meter.startTime ) / 1000 , 1 )
+	
+	-- Generate output
+	local dps = string.format( "%.1f" , meter.damage/fight_time  	)
+	local label = name .. " (" .. string.format( "%.1f" , fight_time ) .. "s) - " .. CommaValue(meter.damage) .. " Damage " .. " (" .. dps .. " DPS)"
+	
+	-- Determine appropriate channel
+	local channel = IsUnitGrouped('player') and "/p " or "/say "
+
+	-- Print output to chat
+	CHAT_SYSTEM.textEntry:SetText( channel .. label )
 end

@@ -88,12 +88,6 @@ function FTC:ToggleVisibility( eventCode , isHidden )
 		FTC_TargetDebuffs:SetHidden( isHidden )
 		if ( FTC.vars.EnableLongBuffs ) then FTC_LongBuffs:SetHidden( isHidden ) end
 	end
-	
-	-- Hide damage elements
-	if ( FTC.init.Damage ) then
-		FTC_MiniMeter:SetHidden( isHidden )
-		FTC_Meter:SetHidden( true )
-	end
 end
 
 --[[ 
@@ -194,4 +188,13 @@ end
 function CommaValue(number)
 	local left,num,right = string.match(number,'^([^%d]*%d)(%d*)(.-)$')
 	return left..(num:reverse():gsub('(%d%d%d)','%1,'):reverse())..right
+end
+
+--[[ 
+ * Sanitizes a localized string, removing characters like ^m
+ ]]--
+function SanitizeLocalization( localString )
+	local a,b 	= string.find( localString , "%^" )
+	if ( a ~= nil ) then return string.sub( localString , 1 , a - 1 )
+	else return localString end
 end

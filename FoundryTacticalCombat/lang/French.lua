@@ -49,6 +49,10 @@ FTC.French = {
 	["Show your own character's nameplate?"] = "Afficher votre nameplate?",
 	["Enable Mini Experience Bar"] = "Activer la mini barre d'exp\195\169rience",
 	["Show a small experience bar on the player frame?"] = "Afficher la mini barre d'exp\195\169rience sous le cadre du joueur?",
+	--["In Combat Opacity"] = "",
+	--["Adjust the in-combat transparency of unit frames."] = "",
+	--["Non-Combat Opacity"] = "",
+	--["Adjust the out-of-combat transparency of unit frames."] = "",
 	
 	["Buff Tracker Settings"] = "Options du traqueur de buffs",
 	["Anchor Buffs"] = "Ancrage des buffs",
@@ -168,6 +172,8 @@ FTC.French = {
 	["Vuln\195\169rabilit\195\169 aux \195\169l\195\169ments^f"] = "Weakness to Elements",
 	["Susceptibilit\195\169 aux \195\169l\195\169ments^f"] = "Elemental Succeptibility",
 	["Ponction \195\169l\195\169mentaire^f"] 			= "Elemental Drain",
+	--[""]												= "Destructive Touch",
+	--[""]												= "Force Shock",
 	
 	--[[---------------------------------
 		SORCERER
@@ -396,6 +402,9 @@ FTC.French = {
 	["Expertise de la chasse^f"]						= "Expert Hunter",
 	["Chasse aux mal\195\169fices^f"]					= "Evil Hunter",
 	["Chasseur camoufl\195\169^m"]						= "Camouflaged Hunter",
+	--[""] 												= "Silver Bolts",
+	--[""] 												= "Silver Shards",
+	--[""] 												= "Silver Leash",
 	
 	-- Mages Guild
 	["Entropie^f"]										= "Entropy",
@@ -461,11 +470,16 @@ FTC.French = {
 		EFFECT FILTERS
 	-----------------------------------]]
 	["B\195\169n\195\169dictions:"]						= "Boon:",
+	["B\195\169n\195\169diction^f:"]					= "Boon:",
 	--[""]												= "Vampirisim",
+	["R\195\169cup\195\169ration surnaturelle^f"] 		= "Supernatural Recovery",
 	--[""]												= "Lycanthropy",
 	["Spirit Armor"]									= "Spirit Armor",
 	--[""]												= "Brace (Generic)",
-	--[""]												= "Keep Bonus",
-	--[""]												= "Scroll Bonus",
-	["Bonus d'all\195\169geance à l'empereur"] 			= "Emperorship",
+	["Bonus de fort"]									= "Keep Bonus",
+	["Bonus de Parchemin^m"]							= "Scroll Bonus",
+	["Bonus d'all\195\169geance \195\160 l'empereur"] 	= "Emperorship",
+	["Vigueur maximale augment\195\169e"]				= "Increase Max",
+	["Magie maximale augment\195\169e"]					= "Increase Max",
+	["Sant\195\169 maximale augment\195\169e"]			= "Increase Max",
 }

@@ -1,12 +1,12 @@
 <Bindings>
-  <Layer name="General">
-    <Category name="Foundry Tactical Combat">
-      <Action name="DISPLAY_CHARACTER_SHEET">
-        <Down>FTC.Player:DisplaySheet()</Down>
-      </Action>
-      <Action name="DISPLAY_DAMAGE_METER">
-        <Down>FTC.Damage:ToggleMeter()</Down>
-      </Action>
-    </Category>
-  </Layer>
+	<Layer name="SI_KEYBINDINGS_LAYER_GENERAL">
+		<Category name="Foundry Tactical Combat">
+			<Action name="DISPLAY_DAMAGE_METER">
+				<Down>FTC.Damage:ToggleMeter()</Down>
+			</Action>
+			<Action name="POST_DAMAGE_RESULTS">
+				<Down>FTC.Damage:Post()</Down>
+			</Action>
+		</Category>
+	</Layer>
 </Bindings>

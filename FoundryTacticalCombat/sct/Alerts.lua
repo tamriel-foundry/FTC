@@ -232,6 +232,30 @@ function FTC.SCT:Deathspam( eventCode , unitTag , isDead )
 	FTC.SCT:NewStatus( newAlert )
 end
 
+ --[[ 
+  * Handles combat status changes.
+  * Runs OnCombatState()
+ ]]--
+function FTC.SCT:CombatStatus( inCombat )
+
+	-- Get the context
+	local context 	= inCombat and "combatIn" or "combatOut"
+	local label		= inCombat and "In Combat" or "Left Combat"
+	
+	-- Create an alert object
+	local newAlert = {
+		["type"]	= context,
+		["name"]	= label,
+		["value"]	= '',
+		["ms"]		= GetGameTimeMilliseconds(),
+		["color"]	= 'cffcc00',
+		["size"]	= 16
+	}
+	
+	-- Submit the new status
+	FTC.SCT:NewStatus( newAlert )		
+end
+
 
 --[[----------------------------------------------------------
 	UPDATING FUNCTIONS

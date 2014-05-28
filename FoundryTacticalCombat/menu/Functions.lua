@@ -121,13 +121,6 @@ function FTC.Menu:MoveFrames()
 		FTC_CombatTextStatus_Backdrop:SetHidden( not move )
 		FTC_CombatTextStatus_Label:SetHidden( not move )	
 	end
-
-	-- Display Damage Tracking
-	if ( FTC.init.Damage ) then
-		FTC_MiniMeter:SetHidden( false )
-		FTC_MiniMeter:SetMouseEnabled( move )
-		FTC_MiniMeter:SetMovable( move )
-	end
 	
 	-- Toggle the move status
 	FTC.move = move

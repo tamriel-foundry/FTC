@@ -367,14 +367,14 @@ function FTC.Buffs:CheckCast()
 			-- Get the used ability
 			local ability = FTC.Hotbar[i]
 			
-			-- Fire a callback when we know a spell was cast
-			CALLBACK_MANAGER:FireCallbacks( "FTC_SpellCast" , ability )
-			
 			-- Dont process effects immediately for ground-target spells
 			if ( ability.ground ) then 
 				FTC.Buffs.ground = ability
 				return 
 			end
+			
+			-- Fire a callback when we know a spell was cast
+			CALLBACK_MANAGER:FireCallbacks( "FTC_SpellCast" , ability )
 			
 			-- Otherwise register the effects!
 			FTC.Buffs:NewEffects( ability )

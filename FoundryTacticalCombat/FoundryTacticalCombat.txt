@@ -1,5 +1,5 @@
 ## Title: Foundry Tactical Combat
-## APIVersion: 100003
+## APIVersion: 100004
 ## SavedVariables: FTC_VARS
 
 FoundryTacticalCombat.lua
@@ -37,6 +37,7 @@ lang/French.lua
 extensions/Sorcerer.lua
 extensions/Nightblade.lua
 extensions/Weapons.lua
+extensions/Guild.lua
 
 FoundryTacticalCombat.xml
 bindings.xml

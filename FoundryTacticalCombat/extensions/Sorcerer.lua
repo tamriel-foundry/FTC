@@ -18,6 +18,7 @@ function CanFragmentsProc( ability )
 	if ( ability.name == "Crystal Fragments" ) then
 		FTC.Buffs.Player["Crystal Fragments"] = nil	
 		FTC.Hotbar[ability.slot].effects = { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 2.4 , true , 2 } }
+		return
 	end
 
 	-- Is Crystal Fragments available?
@@ -49,7 +50,7 @@ function ListenForFragments( slot , button )
 	local newCost = GetSlotAbilityCost( slot )
 	
 	-- If the new cost is half the old cost or less, assume PROC!
-	if ( newCost <= ( FTC.Hotbar[slot].cost / 2 ) ) then
+	if ( newCost <= ( FTC.Hotbar[slot].cost / 2 ) and newCost ~= 0 ) then
 	
 		-- Reduce the buff cast time
 		FTC.Hotbar[slot].effects 	= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 2.4 , true , 0.5 } }

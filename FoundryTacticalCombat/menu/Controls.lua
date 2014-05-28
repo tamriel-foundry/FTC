@@ -31,7 +31,9 @@ function FTC.Menu:Controls()
 	LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_FrameText", FTC.L("Default Unit Frames Text"), FTC.L("Display text attribute values on default unit frames?"), function() return FTC.vars.FrameText end , function() FTC.Menu:Toggle( 'FrameText' ) end )	
 	if ( FTC.vars.EnableFrames ) then
 		LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_EnableNameplate", FTC.L("Show Player Nameplate"), FTC.L("Show your own character's nameplate?"), function() return FTC.vars.EnableNameplate end , function() FTC.Menu:Toggle( 'EnableNameplate' ) end )	
-		LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_EnableXPBar", FTC.L("Enable Mini Experience Bar"), FTC.L("Show a small experience bar on the player frame?"), function() return FTC.vars.EnableXPBar end , function() FTC.Menu:Toggle( 'EnableXPBar' ) end )	
+		LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_EnableXPBar", FTC.L("Enable Mini Experience Bar"), FTC.L("Show a small experience bar on the player frame?"), function() return FTC.vars.EnableXPBar end , function() FTC.Menu:Toggle( 'EnableXPBar' ) end )
+		LAM:AddSlider( FTC.Menu.id , "FTC_Settings_OpacityIn", FTC.L("In Combat Opacity"), FTC.L("Adjust the in-combat transparency of unit frames."), 0, 100, 10, function() return FTC.vars.OpacityIn end, function( value ) FTC.Menu:Update( "OpacityIn" , value ) end )
+		LAM:AddSlider( FTC.Menu.id , "FTC_Settings_OpacityOut", FTC.L("Non-Combat Opacity"), FTC.L("Adjust the out-of-combat transparency of unit frames."), 0, 100, 10, function() return FTC.vars.OpacityOut end, function( value ) FTC.Menu:Update( "OpacityOut" , value ) end )
 	end
 
 	-- Buffs settings
@@ -45,7 +47,7 @@ function FTC.Menu:Controls()
 	if ( FTC.vars.EnableSCT ) then 
 		LAM:AddHeader( FTC.Menu.id , "FTC_Settings_SCTHeader", FTC.L("Scrolling Combat Text Settings"))		
 		LAM:AddSlider( FTC.Menu.id , "FTC_Settings_SCTSpeed", FTC.L("Combat Text Scroll Speed"), FTC.L("Adjust combat text scroll speed."), 1, 5, 1, function() return FTC.vars.SCTSpeed end, function( value ) FTC.Menu:Update( "SCTSpeed" , value ) end )		
-		LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_SCTNames", FTC.L("Display Ability Names"), FTC.L("Display ability names in combat text?"), function() return FTC.vars.SCTNames end , function() FTC.Menu:Toggle( 'SCTNames' ) end , true , "Reloads UI" )		
+		LAM:AddCheckbox( FTC.Menu.id , "FTC_Settings_SCTNames", FTC.L("Display Ability Names"), FTC.L("Display ability names in combat text?"), function() return FTC.vars.SCTNames end , function() FTC.Menu:Toggle( 'SCTNames' , true ) end , true , FTC.L("Reloads UI") )		
 		LAM:AddDropdown( FTC.Menu.id , "FTC_Settings_SCTPath", FTC.L("Scroll Path Animation"), FTC.L("Choose scroll animation."), { "Arc", "Line" }, function() return FTC.vars.SCTPath end, function( value )  FTC.Menu:Update( "SCTPath" , value ) end )
 	end
 	

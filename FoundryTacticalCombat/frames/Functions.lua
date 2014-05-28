@@ -77,7 +77,7 @@ end
 		
 		-- Configure visibility
 		frame:SetHidden( IsReticleHidden() and not FTC.move )	
-		local alpha = ((( powerType == POWERTYPE_HEALTH and pct == 100 )  or ( FTC.Player.health.pct == 100 )) and not IsUnitInCombat('player')) and 1 or 1
+		local alpha = ((( powerType == POWERTYPE_HEALTH and pct == 100 )  or ( FTC.Player.health.pct == 100 )) and not IsUnitInCombat('player')) and ( FTC.vars.OpacityOut / 100 ) or ( FTC.vars.OpacityIn / 100 )
 		frame:SetAlpha(alpha)
 	end
 	
@@ -137,7 +137,7 @@ function FTC.Frames:SetupXP()
 	local parent 	= _G["FTC_PlayerFrame_Alt"]
 	if ( parent.context	~= "exp" ) then return end
 	
-	if ( FTC.vars.EnableXPBar and FTC.Player.vlevel < 10 ) then 
+	if ( FTC.vars.EnableXPBar and FTC.Player.vlevel < 12 ) then 
 
 		-- Change the icon and color
 		parent.icon:SetTexture("/esoui/art/inventory/inventory_tabicon_quest_down.dds")
@@ -154,7 +154,7 @@ function FTC.Frames:SetupXP()
 	end
 
 	-- Maybe display the bar
-	parent:SetHidden( not ( FTC.vars.EnableXPBar and FTC.Player.vlevel < 10 ) )		
+	parent:SetHidden( not ( FTC.vars.EnableXPBar and FTC.Player.vlevel < 12 ) )		
 end
 
 
