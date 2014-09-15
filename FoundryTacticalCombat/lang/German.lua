@@ -1,7 +1,8 @@
 
 --[[----------------------------------------------------------
 	GERMAN TRANSLATIONS
-	-- 	Special thanks are due to MerlinGer, Rakke, Xianlung, and Rial for their assistance with German localization.
+	-- 	Special thanks are due to MerlinGer, Rakke, Tonyleila, cl1ckb4n, FViper, Xianlung, Zuhligan, and Rial for their assistance with German localization.
+	
 		à : \195\160	è : \195\168	ì : \195\172	ò : \195\178	ù : \195\185
 		á : \195\161	é : \195\169	í : \195\173	ó : \195\179	ú : \195\186
 		â : \195\162	ê : \195\170	î : \195\174	ô : \195\180	û : \195\187
@@ -130,25 +131,25 @@ FTC.German = {
 	["kritisches Toben^n"] 								= "Stampede",
 	["Aufw\195\164rtsschnitt^m"] 						= "Uppercut",
 	["vernichtender Schlag^m"] 							= "Wrecking Blow",
-	--[""] 												= "Dizzying Swing",
+	["verwirrender Schwung^m"] 							= "Dizzying Swing",
 	["Momentum^n"] 										= "Momentum",
-	--[""] 												= "Forward Momentum",
+	["gerichtetes Momentum^n"] 							= "Forward Momentum",
 	["ruhendes Momentum^n"] 							= "Rally",
 	
 	-- Bow
 	["Giftpfeil^m"] 									= "Poison Arrow",
-	--[""] 												= "Venom Arrow",
+	["Giftschuss^m"] 									= "Venom Arrow",
 	["Giftinjektion^f"] 								= "Poison Injection",
 	["Pfeilsalve^f"] 									= "Volley",
-	--[""] 												= "Scorched Earth",
-	--[""] 												= "Arrow Barrage",
+	["verbrannte Erde^f"] 								= "Scorched Earth",
+	["Pfeilhagel^m"] 									= "Arrow Barrage",
 	["Trennschuss^m"] 									= "Scatter Shot",
-	--[""] 												= "Magnum Shot",
-	--[""] 												= "Draining Shot",
+	["gro\195\159er Schuss^m"] 							= "Magnum Shot",
+	["entziehender Schuss^m"] 							= "Draining Shot",
 	["Pfeilf\195\164cher^m"] 							= "Arrow Spray",
-	--[""] 												= "Bombard",
-	--[""] 												= "Acid Spray",
-	--[""] 												= "Lethal Arrow",
+	["Bombarde^f"]										= "Bombard",
+	["S\195\164uref\195\164cher^m"]						= "Acid Spray",
+	["t\195\182dlicher Pfeil^m"]						= "Lethal Arrow",
 	["geziehlter Schuss^m"] 							= "Focused Aim",
 	
 	-- Restoration Staff
@@ -169,11 +170,48 @@ FTC.German = {
 	["schnelle Absaugung^f"] 							= "Quick Siphon",
 	
 	-- Destruction Staff
+	["Zerst\195\182rerische Ber\195\188hrung^f"]		= "Destructive Touch",
+	["Zerst\195\182rerische Faust^f"] 					= "Destructive Reach",
+	["zerst\195\182rerischer Hieb^m"]					= "Destructive Clench",
+	["Schockber\195\188hrung^f"]						= "Shock Touch",
+	["Blitzfaust^f"]									= "Shock Clench",
+	["Blitzhieb^m"]										= "Shock Reach",
+	["Frostber\195\188hrung^f"]							= "Frost Touch",
+	["Frostfaust^f"]									= "Frost Clench",
+	["Frosthieb^m"]										= "Frost Reach",
+	["Feuerber\195\188hrung^f"]							= "Fire Touch",
+	["Feuerfaust^f"]									= "Fire Clench",
+	["Feuerhieb^m"]										= "Fire Reach",
+	["elementare Wand^f"]								= "Wall of Elements",
+	["instabile Elementare Wand^f"]						= "Unstable Wall of Elements",
+	["elementare Blockade^f"]							= "Elemental Blockade",
+	["Blitzwand^f"] 									= "Wall of Storms",
+	["instabile Blitzwand^f"]							= "Unstable Wall of Storms",
+	["Blitzblockade^f"]									= "Blockade of Storms",
+	["Frostwand^f"] 									= "Wall of Frost",
+	["instabile Frostwand^f"]							= "Unstable Wall of Frost",
+	["Frostblockade^f"] 								= "Blockade of Frost",
+	["Feuerwand^f"] 									= "Wall of Fire",
+	["instabile Feuerwand^f"] 							= "Unstable Wall of Fire",
+	["Feuerblockade^f"] 								= "Elemental Blockade",
+	["Impuls^m"]										= "Impulse",
+	["elementarer Ring^m"]								= "Elemental Ring",
+	["Pulsar^m"]										= "Pulsar",
+	["Schockimpuls^m"]									= "Shock Impulse",
+	["Lightning Ring"]									= "Lightning Ring",
+	["Lightning Pulsar"] 								= "Lightning Pulsar",
+	["Frostimpuls^m"]									= "Frost Impulse",
+	["Frost Ring"]										= "Frost Ring",
+	["Frost Pulsar"] 									= "Frost Pulsar",
+	["Feuerimpuls^m"]									= "Fire Impulse",
+	["Fire Ring"]										= "Fire Ring",
+	["Fiery Pulsar"] 									= "Fiery Pulsar",
+	["Kraftschlag^m"]									= "Force Shock",
+	["zermalmender Schlag^m"]							= "Crushing Shock",
+	["Kraftimpuls^m"]									= "Force Pulse",
 	["Schw\195\164che gegen die Elemente^f"] 			= "Weakness to Elements",
 	["elementare Anf\195\164lligkeit^f"] 				= "Elemental Succeptibility",
 	["elementarer Entzug^m"] 							= "Elemental Drain",
-	["Schockber\195\188hrung^f"]						= "Destructive Touch",
-	["Kraftschlag^m"]									= "Force Shock",
 	
 	--[[---------------------------------
 		SORCERER
@@ -200,8 +238,8 @@ FTC.German = {
 	["geladenen Atronachen beschw\195\182ren^N"] 		= "Summon Charged Atronach",
 	
 	-- Storm Calling
-	["Magierzorn^m"] 									= "Mages Fury",
-	["Magierrage^m"] 									= "Mages Wrath",
+	["Magierzorn^m"] 									= "Mages' Fury",
+	["Magierrage^m"] 									= "Mages' Wrath",
 	["endloser Zorn^m"] 								= "Endless Fury",
 	["Blitzgestalt^f"] 									= "Lightning Form",
 	["donnernde Pr\195\164senz^m"] 						= "Boundless Storm",
@@ -252,8 +290,8 @@ FTC.German = {
 	["Standarte der Macht^f"] 							= "Standard of Might",		
 	["bewegliche Standarte^f"]							= "Shifting Standard",
 	["Inferno^n"] 										= "Inferno",
-	--[""] 												= "Flames Of Oblivion",
-	--[""] 												= "Sea Of Flames",	
+	["Flammen des Vergessens^f"] 						= "Flames Of Oblivion",
+	["Flammenmeer^f"] 									= "Sea Of Flames",	
 	
 	-- Earthen Heart
 	["Steinfaust^f"]									= "Stonefist",			
@@ -284,7 +322,10 @@ FTC.German = {
 	["gerinnendes Blut^n"]								= "Coagulating Blood",		
 	["reflektierende Schuppe^f"]						= "Reflective Scale", 		
 	["Drachenfeuerschuppe^f"]							= "Dragon Fire Scale", 		
-	--[""]												= "Reflective Plate", 		
+	["reflektierende Platte^f"]							= "Reflective Plate",
+	["Inhalieren^n"]									= "Inhale", 			
+	["tiefer Odem^m"]									= "Deep Breath", 			
+	["Essenzentzug^m"]									= "Draw Essence",		
 
 	--[[---------------------------------
 		NIGHTBLADE
@@ -303,7 +344,7 @@ FTC.German = {
 	["Hast^f"] 											= "Haste",
 	--[""] 												= "Focused Attacks",
 	--[""] 												= "Incapacitate",	
-	["Todesstoß^m"] 									= "Death Stroke",
+	["Todessto\195\159^m"] 								= "Death Stroke",
 	--[""] 												= "Incapacitating Strike",
 	["Seelenernte^f"] 									= "Soul Harvest",
 	
@@ -404,12 +445,12 @@ FTC.German = {
 	-- Heavy Armour
 	["fester Stand^m"] 									= "Immovable",
 	["sicherer Stand^m"] 								= "Immovable Brute",
-	--[""] 												= "Unstoppable",
+	["wehrhafter Stand^m"] 								= "Unstoppable",
 	
 	-- Medium Armour
 	["Ausweichen^n"] 									= "Evasion",
-	--[""] 												= "Elude",
-	--[""] 												= "Shuffle",
+	["Entrinnen^n"] 									= "Elude",
+	["Stellungswechsel^m"] 								= "Shuffle",
 	
 	-- Light Armour
 	["neutralisierende Magie^f"] 						= "Annulment",
@@ -423,10 +464,10 @@ FTC.German = {
 	-- Fighters Guild
 	["Meisterj\195\164ger^m"] 							= "Expert Hunter",
 	["J\195\164ger des B\195\182sen^m"] 				= "Evil Hunter",
-	--[""] 												= "Camouflaged Hunter",
+	["getarnter J\195\164ger^m"] 						= "Camouflaged Hunter",
 	["Silberbolzen^p"] 									= "Silver Bolts",
 	["Silbersplitter"] 									= "Silver Shards",
-	--[""] 												= "Silver Leash",
+	["Silberleine^p"] 									= "Silver Leash",
 	
 	-- Mages Guild
 	["Entropie^f"] 										= "Entropy",
@@ -441,8 +482,8 @@ FTC.German = {
 	
 	-- Undaunted
 	["inneres Feuer^n"] 								= "Inner Fire",
-	--[""] 												= "Inner Rage",
-	--[""] 												= "Inner Beast",
+	["innere Wut^f"] 									= "Inner Rage",
+	["innere Bestie^f"] 								= "Inner Beast",
 	
 	--[[---------------------------------
 		WORLD
@@ -464,7 +505,7 @@ FTC.German = {
 	["trennende Seelenfalle^f"] 						= "Soul Splitting Trap",
 	["erholende Seelenfalle^f"] 						= "Consuming Trap",	
 	["Seelenschlag^m"] 									= "Soul Strike",
-	--[""] 												= "Shatter Soul",
+	["Seelenbersten^n"] 								= "Shatter Soul",
 	["Seelenangriff^m"] 								= "Soul Assault",
 	
 	--[[---------------------------------
@@ -473,37 +514,38 @@ FTC.German = {
 	
 	-- Support
 	["L\195\164uterung^f"] 								= "Purge",
-	--[""] 												= "Efficient Purge",
-	--[""] 												= "Cleanse",
+	["effiziente L\195\164uterung^f"] 					= "Efficient Purge",
+	["Reinigung^f"] 									= "Cleanse",
 	["Belagerungsschild^m"] 							= "Siege Shield",
-	--[""] 												= "Siege Weapon Shield",
-	--[""] 												= "Propelling Shield",
+	["Belagerungswaffenschild^m"] 						= "Siege Weapon Shield",
+	["wuchtender Schild^m"] 							= "Propelling Shield",
 	["Barriere^f"] 										= "Barrier",
 	--[""] 												= "Reviving Barrier",
 	--[""] 												= "Replenishing Barrier",
 	
 	-- Assault
 	["hastiges Man\195\182ver^n"] 						= "Rapid Maneuver",
-	--[""] 												= "Retreating Maneuver",
-	--[""] 												= "Charging Maneuver",
+	["defensives Man\195\182ver^n"] 					= "Retreating Maneuver",
+	["vorpreschendes Man\195\182ver^n"] 				= "Charging Maneuver",
 	["Kr\195\164henf\195\188sse^p"] 					= "Caltrops",
 	--[""] 												= "Anti-Cavalry Caltrops",
 	--[""] 												= "Razor Caltrops",
 	["Kriegshorn^n"] 									= "War Horn",
-	--[""] 												= "Aggressive Horn",
-	--[""] 												= "Sturdy Horn",
+	["aggressives Signal^n"] 							= "Aggressive Horn",
+	["kraftvolles Signal^n"] 							= "Sturdy Horn",
 	
 	--[[---------------------------------
 		EFFECT FILTERS
 	-----------------------------------]]
-	["Segen:"]											= "Boon:",
+	["Boon:"]											= "Segen:",
+	["Keep Bonus"]										= "Kampfgeist^m",
+	["Scroll Bonus"]									= "Schriften",
+	["Emperorship"]										= "Kaiserlich",
+	["Increase Max"]									= "Erh\195\182ht maximale",
+	
 	["Vampirismus^m"]									= "Vampirisim",
 	["Lykanthropie^f"]									= "Lycanthropy",
 	["Spirit Armor"]									= "Spirit Armor",
 	["Wehren^n"]										= "Brace (Generic)",
-	["Kampfgeist^m"]									= "Keep Bonus",
-	["Schriften"]										= "Scroll Bonus",
-	["Kaiserlich"]										= "Emperorship",
-	--[""]												= "Increase Max",
 	["\195\188bernat\195\188rliche Erholung^f"] 		= "Supernatural Recovery",
 }

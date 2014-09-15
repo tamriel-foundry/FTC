@@ -1,15 +1,32 @@
 ## Title: Foundry Tactical Combat
-## APIVersion: 100004
+## APIVersion: 100009
 ## SavedVariables: FTC_VARS
+## OptionalDependsOn: LibAddonMenu-2.0
 
 FoundryTacticalCombat.lua
 
 lib/LibStub.lua
-lib/LibAddonMenu-1.0.lua
+lib/LAM/LibAddonMenu-2.0.lua
+lib/LAM/controls/panel.lua
+lib/LAM/controls/submenu.lua
+lib/LAM/controls/button.lua
+lib/LAM/controls/checkbox.lua
+lib/LAM/controls/colorpicker.lua
+lib/LAM/controls/custom.lua
+lib/LAM/controls/description.lua
+lib/LAM/controls/dropdown.lua
+lib/LAM/controls/editbox.lua
+lib/LAM/controls/header.lua
+lib/LAM/controls/slider.lua
+lib/LAM/controls/texture.lua
 
 core/Functions.lua
 core/UI.lua
 core/Events.lua
+
+lang/Localization.lua
+lang/German.lua
+lang/French.lua
 
 buffs/Functions.lua
 buffs/Effects.lua
@@ -29,10 +46,6 @@ frames/Controls.lua
 
 menu/Functions.lua
 menu/Controls.lua
-
-lang/Localization.lua
-lang/German.lua
-lang/French.lua
 
 extensions/Sorcerer.lua
 extensions/Nightblade.lua

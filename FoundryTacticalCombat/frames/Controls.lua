@@ -91,8 +91,10 @@ function FTC.Frames:Controls()
 	--[[----------------------------------------------------------
 		ULTIMATE TRACKING
 	 ]]-----------------------------------------------------------
-	local ultival 		= FTC.UI.Label( "FTC_UltimateLevel" , ActionButton8 , {50,20} , {BOTTOM,TOP,0,-3} , 'ZoFontAnnounceSmall' , nil , {1,2} , nil , false )
-	local ultipct 		= FTC.UI.Label( "FTC_UltimatePct" , ActionButton8 , 'inherit' , {CENTER,CENTER,0,0} , 'ZoFontHeader2' , nil , {1,1} , nil , false )
+	if ( FTC.vars.EnableUltimate ) then
+		local ultival 		= FTC.UI.Label( "FTC_UltimateLevel" , ActionButton8 , {50,20} , {BOTTOM,TOP,0,-3} , 'ZoFontAnnounceSmall' , nil , {1,2} , nil , false )
+		local ultipct 		= FTC.UI.Label( "FTC_UltimatePct" , ActionButton8 , 'inherit' , {CENTER,CENTER,0,0} , 'ZoFontHeader2' , nil , {1,1} , nil , false )
+	end
 	
 	--[[----------------------------------------------------------
 		DEFAULT FRAMES

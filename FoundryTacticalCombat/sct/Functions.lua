@@ -143,7 +143,7 @@ function FTC.SCT:Update(context)
 				-- Flag critical hits
 				if ( damage.crit == true ) then
 					dam 	= "*" .. dam .. "*"
-					font	= FTC.Fonts.meta(20)
+					font	= FTC.Fonts.meta(18)
 					alpha	= 1
 				end
 				

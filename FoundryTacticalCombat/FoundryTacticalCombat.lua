@@ -12,9 +12,9 @@
 	 (4) Combat Status Alerts
 	 (5) Damage Tracking and Data
 	 
-	* Version 0.31
+	* Version 0.35
 	* atropos@tamrielfoundry.com
-	* 5-24-2014
+	* 9-14-2014
   ]]--
 
 --[[----------------------------------------------------------
@@ -23,7 +23,8 @@
 FTC 					= {}
 FTC.name				= "FoundryTacticalCombat"
 FTC.command				= "/ftc"
-FTC.version				= 0.31
+FTC.version				= 0.35
+FTC.settings			= 0.35
 FTC.language			= "English"
 
 -- Default Saved Variables
@@ -34,14 +35,15 @@ FTC.defaults			= {
 	["EnableSCT"] 				= true,
 	["EnableFrames"] 			= true,
 	["EnableDamage"]			= true,
+	["EnableUltimate"]			= true,
 	
 	-- Scrolling Combat Text
 	["SCTCount"]				= 20,
 	["SCTSpeed"]				= 3,
 	["SCTNames"]				= true,
 	["SCTPath"]					= 'Arc',
-	["FTC_CombatTextOut"]		= {TOP,TOP,-400,80},
-	["FTC_CombatTextIn"]		= {TOP,TOP,400,80},
+	["FTC_CombatTextOut"]		= {TOP,TOP,-450,80},
+	["FTC_CombatTextIn"]		= {TOP,TOP,450,80},
 	["FTC_CombatTextStatus"]	= {TOP,TOP,0,80},
 	
 	-- Buffs
@@ -61,8 +63,8 @@ FTC.defaults			= {
 	["EnableNameplate"]			= true,
 	["OpacityIn"]				= 100,
 	["OpacityOut"]				= 60,
-	["FTC_PlayerFrame"]			= {CENTER,CENTER,-400,300},
-	["FTC_TargetFrame"]			= {CENTER,CENTER,400,275},
+	["FTC_PlayerFrame"]			= {CENTER,CENTER,-450,300},
+	["FTC_TargetFrame"]			= {CENTER,CENTER,450,275},
 	
 	-- Damage
 	["FTC_MiniMeter"]			= {TOPLEFT,TOPLEFT,10,10},
@@ -85,7 +87,7 @@ function FTC.Initialize( eventCode, addOnName )
 	if ( addOnName ~= FTC.name ) 	then return end
 	
 	-- Load saved variables
-	FTC.vars = ZO_SavedVars:New( 'FTC_VARS' , math.floor( FTC.version * 100 ) , nil , FTC.defaults )
+	FTC.vars = ZO_SavedVars:New( 'FTC_VARS' , math.floor( FTC.settings * 100 ) , nil , FTC.defaults )
 	
 	-- Setup Localization
 	FTC.Localize()
@@ -107,7 +109,7 @@ function FTC.Initialize( eventCode, addOnName )
 	if ( FTC.vars.EnableSCT ) 		then FTC.SCT:Initialize() end
 	
 	-- Setup settings component
-	FTC.Menu.Initialize()
+	FTC.Menu:Initialize()
 	
 	-- Register event listeners
 	FTC:RegisterEvents()
@@ -182,7 +184,7 @@ function FTC.Slash( text )
 
 	-- Display the current version
 	d( FTC.L("You are using Foundry Tactical Combat version") .. " " .. FTC.version .. "." )
-	d( FTC.L("FTC configuration settings have moved to the normal game settings interface!") )
+	d( FTC.L("FTC configuration settings have moved to the addon settings section of the game interface!") )
 end
 
 --[[----------------------------------------------------------

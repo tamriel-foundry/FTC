@@ -4,7 +4,16 @@ CALLBACK_MANAGER:RegisterCallback( "FTC_Ready" , function() InitializeFragmentsW
 -- Register the callback to fire whenever a spell is cast
 function InitializeFragmentsWatcher()
 	if ( FTC.Player.class == "Sorcerer" ) then
-		CALLBACK_MANAGER:RegisterCallback("FTC_SpellCast" , function( ability ) CanFragmentsProc( ability ) end )
+		
+		-- Setup defaults 
+		FTC.Sorcerer = {
+			["fragSlot"]	= nil,
+			["fragButton"]	= nil,
+		}		
+		
+		-- Register callbacks
+		CALLBACK_MANAGER:RegisterCallback( "FTC_SpellCast" , function( ability ) CanFragmentsProc( ability ) end )
+		CALLBACK_MANAGER:RegisterCallback( "FTC_CostChanged" , function() ListenForFragments() end )
 	end
 end
 
@@ -27,9 +36,8 @@ function CanFragmentsProc( ability )
 		
 			-- Get the button
 			local button = _G["ActionButton"..i.."Button"]
-		
-			-- Start a listener to wait for the proc
-			button:SetHandler( "OnUpdate" , function() ListenForFragments( i , button ) end )
+			FTC.Sorcerer.fragSlot 	= i
+			FTC.Sorcerer.fragButton = button
 			
 			-- Bail out of the loop
 			break
@@ -38,17 +46,16 @@ function CanFragmentsProc( ability )
 end
 
 -- If Crystal Fragments is eligible, listen for it proccing
-function ListenForFragments( slot , button )
+function ListenForFragments()
 
-	-- Only do this every tenth of a second
-	if ( not FTC.BufferScript( 'ListenForFragments' , 100 ) ) then return end
-	
-	-- Bail for abilities that are unknown (Werewolf Form)
-	if ( FTC.Hotbar[slot] == nil ) then return end
+	-- Get the data
+	local slot 		= FTC.Sorcerer.fragSlot
+	if ( slot == nil ) then return end;
+	local button 	= FTC.Sorcerer.fragButton
 
 	-- Get the new cost
 	local newCost = GetSlotAbilityCost( slot )
-	
+
 	-- If the new cost is half the old cost or less, assume PROC!
 	if ( newCost <= ( FTC.Hotbar[slot].cost / 2 ) and newCost ~= 0 ) then
 	

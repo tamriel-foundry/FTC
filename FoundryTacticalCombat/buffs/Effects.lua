@@ -107,7 +107,13 @@ FTC.Buffs.Effects = {
 	["Elemental Drain"] 	    = {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 18 , true , nil } },
 	
 	["Destructive Touch"]		= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , true , nil } },
+	["Shock Touch"]				= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , true , nil } },
+	["Frost Touch"]				= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , true , nil } },
+	["Fire Touch"]				= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , true , nil } },
+
 	["Force Shock"]				= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , true , nil } },
+	["Crushing Shock"]			= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , true , nil } },
+	["Force Pulse"]				= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , true , nil } },
 	
 	--[[---------------------------------
 		SORCERER
@@ -127,8 +133,8 @@ FTC.Buffs.Effects = {
 	["Summon Charged Atronach"] = {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 18 , false , nil } },	
 	
 	-- Storm Calling
-	["Mages Fury"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4 , true , nil } },
-	["Mages Wrath"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4 , true , nil } },
+	["Mages' Fury"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4 , true , nil } },
+	["Mages' Wrath"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4 , true , nil } },
 	["Endless Fury"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4 , true , nil } },	
 	
 	["Lightning Form"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , nil } },
@@ -582,17 +588,17 @@ function FTC:FilterBuffInfo( changeType , unitTag , name , buffType , beginTime 
 	elseif ( buffType == ABILITY_TYPE_BONUS ) then
 	
 		-- Mundus Stones
-		if ( string.match( name , "Boon:" ) ) then
+		if ( string.match( name , FTC.L("Boon:") ) ) then
 			if ( unitTag == 'player' ) then	duration = "P"
 			else isValid = false end
 		
 		-- Ignore Cyrodiil Bonuses
-		elseif ( string.match( name , "Keep Bonus" ) or string.match( name , "Scroll Bonus" ) or string.match( name , "Emperorship" ) ) then
+		elseif ( string.match( name , FTC.L("Keep Bonus") ) or string.match( name , FTC.L("Scroll Bonus") ) or string.match( name , FTC.L("Emperorship") ) ) then
 			if ( unitTag == 'player' ) then	duration = "P"
 			else isValid = false end
 			
 		-- Vampirism
-		elseif ( string.match( name , "Vampirism" ) ) then duration = "P"
+		elseif ( name == "Vampirism" ) then duration = "P"
 			
 		-- Lycanthropy
 		elseif ( name == "Lycanthropy" ) then duration = "P"
@@ -601,7 +607,7 @@ function FTC:FilterBuffInfo( changeType , unitTag , name , buffType , beginTime 
 		elseif ( name == "Spirit Armor" ) then duration = "P"
 		
 		-- Food Buffs
-		elseif ( string.match( name , "Increase Max" ) ) then iconName = "/esoui/art/icons/ability_provisioner_004.dds"
+		elseif ( string.match( name , FTC.L("Increase Max") ) or string.match( name , FTC.L("Increase All Primary") ) ) then iconName = "/esoui/art/icons/ability_provisioner_004.dds"
 		
 		-- Supernatural Recovery
 		elseif ( name == "Supernatural Recovery" ) then duration = "P" end

@@ -7,7 +7,7 @@
  * Initializes localization options
  * Runs once during FTC.Initialize()
  ]]-- 
-  function FTC.Localize()
+function FTC.Localize()
 	local errorString = GetErrorString(16)
 	if ( errorString == "Ziel aus dem Gleichgewicht" ) then FTC.language = "German"
 	elseif ( errorString == "Cible \195\169tourdie" ) then FTC.language = "French" end

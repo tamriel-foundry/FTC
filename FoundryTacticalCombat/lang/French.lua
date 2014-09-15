@@ -469,17 +469,16 @@ FTC.French = {
 	--[[---------------------------------
 		EFFECT FILTERS
 	-----------------------------------]]
-	["B\195\169n\195\169dictions:"]						= "Boon:",
-	["B\195\169n\195\169diction^f:"]					= "Boon:",
+	["Boon:"]											= "B\195\169n\195\169diction",
+	["Boon:"]											= "B\195\169n\195\169diction",	
+	["Keep Bonus"]										= "Bonus de fort",
+	["Scroll Bonus"]									= "Bonus de Parchemin",
+	["Emperorship"]										= "Bonus d'all\195\169geance \195\160 l'empereur",
+	["Increase Max"]									= "maximale augment\195\169e",
+	
 	--[""]												= "Vampirisim",
-	["R\195\169cup\195\169ration surnaturelle^f"] 		= "Supernatural Recovery",
 	--[""]												= "Lycanthropy",
 	["Spirit Armor"]									= "Spirit Armor",
 	--[""]												= "Brace (Generic)",
-	["Bonus de fort"]									= "Keep Bonus",
-	["Bonus de Parchemin^m"]							= "Scroll Bonus",
-	["Bonus d'all\195\169geance \195\160 l'empereur"] 	= "Emperorship",
-	["Vigueur maximale augment\195\169e"]				= "Increase Max",
-	["Magie maximale augment\195\169e"]					= "Increase Max",
-	["Sant\195\169 maximale augment\195\169e"]			= "Increase Max",
+	["R\195\169cup\195\169ration surnaturelle^f"] 		= "Supernatural Recovery",
 }

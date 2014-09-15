@@ -65,16 +65,16 @@ function FTC.SCT:NewExp( eventCode, unitTag, currentExp, maxExp, reason )
 	-- Bail if it's not earned by the player
 	if ( unitTag ~= "player" ) then return end
 	
-	-- Ignore finesse bonuses, they will get rolled into the next reward
-	--if ( reason == XP_REASON_FINESSE ) then return end
-	
 	-- Experience gains for non-veteran players
-	local base = FTC.Player.exp	
+	local base		= 0
+	if ( FTC.Player.level < 50 ) then
+		currentExp 	= GetUnitXP('player')
+		base 		= FTC.Player.exp
 	
 	-- Experience gains for veteran players
-	if ( eventCode == EVENT_EXPERIENCE_UPDATE and FTC.Player.level == 50 ) then
-		base 		= FTC.Player.vet
+	elseif ( eventCode == EVENT_EXPERIENCE_UPDATE and FTC.Player.level == 50 ) then
 		currentExp 	= GetUnitVeteranPoints('player')
+		base 		= FTC.Player.vet
 		maxExp		= GetUnitVeteranPointsMax('player')
 	
 	-- Veteran point rewards for quest turn-ins

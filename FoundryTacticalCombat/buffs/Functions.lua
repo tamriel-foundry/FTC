@@ -353,6 +353,7 @@ function FTC.Buffs:CheckCast()
 	-- Check each action bar button
 	for i = 3 , 8 do
 		local button = _G["ActionButton"..i.."Button"]
+		
 		if( button:GetState() == BSTATE_PRESSED ) then
 			
 			-- Get the time

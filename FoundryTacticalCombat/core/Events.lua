@@ -39,7 +39,7 @@ function FTC:RegisterEvents()
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_DEATH_STATE_CHANGED		, FTC.OnDeath )
 	
 	-- Experience Events
-	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_EXPERIENCE_UPDATE 			, FTC.OnXPUpdate )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_EXPERIENCE_UPDATE				, FTC.OnXPUpdate )
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_VETERAN_POINTS_UPDATE 		, FTC.OnXPUpdate )
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ALLIANCE_POINT_UPDATE  		, FTC.OnAPUpdate )
 end
@@ -93,6 +93,9 @@ end
  * This handler fires every time the player changes the contents of their action bar
  ]]--
 function FTC.OnSlotUpdate( eventCode , ... )
+
+	-- Fire callback
+	CALLBACK_MANAGER:FireCallbacks( "FTC_CostChanged" )
 	
 	-- Hotbars swappped
 	if ( eventCode == EVENT_ACTION_SLOTS_FULL_UPDATE ) then
@@ -191,6 +194,9 @@ function FTC.OnCombatEvent( eventCode , result , isError , abilityName, abilityG
 
 	-- Strip parentheses from name
 	abilityName = string.gsub ( abilityName , ' %(.*%)' , "" )
+	
+	-- Localize damage sources
+	abilityName = SanitizeLocalization(abilityName)
 	
 	-- Setup a new damage object
 	local damage = {
@@ -299,7 +305,7 @@ function FTC.OnPowerUpdate( eventCode , unitTag, powerIndex, powerType, powerVal
 			FTC.Frames:UpdateAttribute( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
 			
 		-- Ultimate
-		elseif ( powerType == POWERTYPE_ULTIMATE ) then
+		elseif ( powerType == POWERTYPE_ULTIMATE and FTC.init.Ultimate ) then
 			FTC.Frames:UpdateUltimate( powerValue , powerMax , powerEffectiveMax )
 			
 		-- Mount Stamina

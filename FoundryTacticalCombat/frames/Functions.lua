@@ -32,6 +32,7 @@ function FTC.Frames:Initialize()
 
 	-- Register init status
 	if ( FTC.vars.EnableFrames ) then FTC.init.Frames = true end
+	if ( FTC.vars.EnableUltimate ) then FTC.init.Ultimate = true end
 
 	-- Populate some information to the player frame
 	FTC.Frames:SetupPlayer()
@@ -330,7 +331,7 @@ function FTC.Frames:UpdateUltimate( powerValue , powerMax , powerEffectiveMax )
 	
 	-- Update the tooltip
 	FTC_UltimatePct:SetText( pct .. "%")
-	FTC_UltimateLevel:SetText( powerValue )
+	FTC_UltimateLevel:SetText( powerValue .. "/" .. cost )
 	
 	-- Maybe fire an alert
 	if ( FTC.init.SCT ) then
@@ -399,6 +400,7 @@ end
 		if ( isPlayer ) then
 			title		= GetUnitTitle( 'reticleover' ) == "" and GetAvARankName( GetUnitGender('reticleover') , GetUnitAvARank('reticleover') ) or GetUnitTitle( 'reticleover' )
 		end
+		if ( title ~= nil ) then title = SanitizeLocalization(title) end
 		frame.title:SetText(title)
 		
 		-- Does the target have a shield?
@@ -442,7 +444,9 @@ function FTC.Frames:SetupPlayer()
 	FTC.Frames:UpdateAttribute( 'player', POWERTYPE_STAMINA, 	FTC.Player.stamina.current, FTC.Player.stamina.max, FTC.Player.stamina.max )
 	
 	-- Populate ultimate level
-	FTC.Frames:UpdateUltimate( FTC.Player.ultimate.current	, FTC.Player.ultimate.max , FTC.Player.ultimate.max )
+	if ( FTC.init.Ultimate ) then
+		FTC.Frames:UpdateUltimate( FTC.Player.ultimate.current	, FTC.Player.ultimate.max , FTC.Player.ultimate.max )
+	end
 end
 
 

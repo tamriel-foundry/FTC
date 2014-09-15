@@ -6,19 +6,31 @@
 	* Runs last in the initialization order
   ]]--
 
-FTC.Menu = {
-	["name"] 	= "FTC_SettingsPanel",
-	["title"] 	= "FTC Settings",
-}
+-- Initialize the menu component
+FTC.Menu = {}
+local LAM2 = LibStub("LibAddonMenu-2.0")		
+function FTC.Menu:Initialize()
 
-local LAM = LibStub("LibAddonMenu-1.0")		
-function FTC.Menu.Initialize()
+	-- Configure the master panel
+	FTC.Menu.panel = { 
+		type 				= "panel", 
+		name 				= "FTC", 
+		displayName			= "Foundry Tactical Combat by Atropos",
+		author 				= "Atropos", 
+		version 			= FTC.version, 
+		registerForRefresh 	= false,
+		registerForDefaults = false,
+	}
 
-	-- Register the options panel
-	FTC.Menu.id = LAM:CreateControlPanel( FTC.Menu.name , FTC.Menu.title )
+	-- Setup the initial panel
+	LAM2:RegisterAddonPanel( "FTC_Menu" , FTC.Menu.panel )
+
 	
-	-- Setup menu controls
+	-- Configure menu control options
 	FTC.Menu:Controls()
+
+	-- Setup the menus
+	LAM2:RegisterOptionControls( "FTC_Menu", FTC.Menu.options )
 end
 
 
