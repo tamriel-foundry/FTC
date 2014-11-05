@@ -395,6 +395,10 @@ FTC.Buffs.Effects = {
 	["Silver Bolts"] 			= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 3.5 , false , nil } },
 	["Silver Shards"] 			= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 3.5 , false , nil } },
 	["Silver Leash"] 			= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 3.5 , false , nil } },
+
+	["Circle of Protection"] 	= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
+	["Ring of Preservation"] 	= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
+	["Turn Undead"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
 	
 	-- Mages Guild
 	["Entropy"]					= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 15.6 , true , nil } },

@@ -138,7 +138,7 @@ function FTC.Frames:SetupXP()
 	local parent 	= _G["FTC_PlayerFrame_Alt"]
 	if ( parent.context	~= "exp" ) then return end
 	
-	if ( FTC.vars.EnableXPBar and FTC.Player.vlevel < 12 ) then 
+	if ( FTC.vars.EnableXPBar and FTC.Player.vlevel < 14 ) then 
 
 		-- Change the icon and color
 		parent.icon:SetTexture("/esoui/art/inventory/inventory_tabicon_quest_down.dds")
@@ -155,7 +155,7 @@ function FTC.Frames:SetupXP()
 	end
 
 	-- Maybe display the bar
-	parent:SetHidden( not ( FTC.vars.EnableXPBar and FTC.Player.vlevel < 12 ) )		
+	parent:SetHidden( not ( FTC.vars.EnableXPBar and FTC.Player.vlevel < 14 ) )		
 end
 
 
