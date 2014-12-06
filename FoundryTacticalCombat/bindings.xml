@@ -5,7 +5,10 @@
 				<Down>FTC.Damage:ToggleMeter()</Down>
 			</Action>
 			<Action name="POST_DAMAGE_RESULTS">
-				<Down>FTC.Damage:Post()</Down>
+				<Down>FTC.Damage:Post('damage')</Down>
+			</Action>
+			<Action name="POST_HEALING_RESULTS">
+				<Down>FTC.Damage:Post('healing')</Down>
 			</Action>
 		</Category>
 	</Layer>

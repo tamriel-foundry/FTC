@@ -18,6 +18,7 @@ function FTC.Damage:Initialize()
 	-- Register keybinding
 	ZO_CreateStringId("SI_BINDING_NAME_DISPLAY_DAMAGE_METER", "Display Damage Meter")
 	ZO_CreateStringId("SI_BINDING_NAME_POST_DAMAGE_RESULTS", "Post Damage Results")
+	ZO_CreateStringId("SI_BINDING_NAME_POST_HEALING_RESULTS", "Post Healing Results")
 
 	-- Register init status
 	FTC.init.Damage = true
@@ -422,7 +423,7 @@ end
 --[[ 
  * Print damage output to chat
  ]]--
-function FTC.Damage:Post()
+function FTC.Damage:Post( context )
 
 	-- Retrieve the data
 	local meter = FTC.Damage.Meter
@@ -447,11 +448,22 @@ function FTC.Damage:Post()
 	local name = SanitizeLocalization( most_damaged_target )
 	
 	-- Compute the fight time
+	local total = 0
+	local metric = 0
 	local fight_time = math.max( ( meter.endTime - meter.startTime ) / 1000 , 1 )
-	
+	local label = ""
+
 	-- Generate output
-	local dps = string.format( "%.1f" , meter.damage/fight_time  	)
-	local label = name .. " (" .. string.format( "%.1f" , fight_time ) .. "s) - " .. CommaValue(meter.damage) .. " Damage " .. " (" .. dps .. " DPS)"
+	if ( 'damage' == context ) then
+		total 	= meter.damage
+		metric	= string.format( "%.1f" , total / fight_time )
+		label 	= name .. " (" .. string.format( "%.1f" , fight_time ) .. "s) - " .. CommaValue(total) .. " Total Damage " .. " (" .. metric .. " DPS)"
+
+	elseif ( 'healing' == context ) then
+		total 	= meter.healing
+		metric	= string.format( "%.1f" , total / fight_time )
+		label 	= name .. " (" .. string.format( "%.1f" , fight_time ) .. "s) - " .. CommaValue(total) .. " Total Healing " .. " (" .. metric .. " HPS)"
+	end
 	
 	-- Determine appropriate channel
 	local channel = IsUnitGrouped('player') and "/p " or "/say "

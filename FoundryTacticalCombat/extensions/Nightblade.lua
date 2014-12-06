@@ -1,3 +1,6 @@
+
+-- This file has been DEPRECATED as of ESO Update 1.5, it is not currently used by the addon.
+
 -- Watch for FTC initialization
 CALLBACK_MANAGER:RegisterCallback( "FTC_Ready" , function() InitializeNightblade()  end )
 

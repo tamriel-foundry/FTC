@@ -12,9 +12,9 @@
 	 (4) Combat Status Alerts
 	 (5) Damage Tracking and Data
 	 
-	* Version 0.35
+	* Version 0.36
 	* atropos@tamrielfoundry.com
-	* 9-14-2014
+	* 11-09-2014
   ]]--
 
 --[[----------------------------------------------------------

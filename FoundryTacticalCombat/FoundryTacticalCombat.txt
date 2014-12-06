@@ -1,5 +1,5 @@
 ## Title: Foundry Tactical Combat
-## APIVersion: 100009
+## APIVersion: 100010
 ## SavedVariables: FTC_VARS
 ## OptionalDependsOn: LibAddonMenu-2.0
 
@@ -48,7 +48,6 @@ menu/Functions.lua
 menu/Controls.lua
 
 extensions/Sorcerer.lua
-extensions/Nightblade.lua
 extensions/Weapons.lua
 extensions/Guild.lua
 

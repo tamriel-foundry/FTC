@@ -18,7 +18,7 @@ FTC.Buffs.Effects = {
 	
 	["Low Slash"]				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 12 , true , nil } },
 	["Deep Slash"]				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 12 , true , nil } },
-	["Crippling Slash"]			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 9 , true , nil } },
+	["Crippling Slash"]			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 12 , true , nil } },
 	
 	["Shield Charge"]			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 2 , true , 0.5 } },
 	["Invasion"]				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3 , true , 0.5 } },
@@ -65,9 +65,9 @@ FTC.Buffs.Effects = {
 	["Venom Arrow"]				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , true , nil } },
 	["Poison Injection"]		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , true , nil } },
 	
-	["Volley"]					= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3 , false , nil } },
-	["Scorched Earth"]			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 6 , false , nil } },
-	["Arrow Barrage"]			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3 , false , nil } },
+	["Volley"]					= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , false , nil } },
+	["Scorched Earth"]			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 11 , false , nil } },
+	["Arrow Barrage"]			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , false , nil } },
 	
 	["Scatter Shot"]			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , true , nil } },
 	["Magnum Shot"]				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , true , nil } },
@@ -139,7 +139,7 @@ FTC.Buffs.Effects = {
 	
 	["Lightning Form"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , nil } },
 	["Boundless Storm"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , nil } },
-	["Thundering Presence"] 	= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 8 , false , nil } },
+	["Thundering Presence"] 	= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 9 , false , nil } },
 	
 	["Lightning Splash"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3 , false , nil } },
 	["Liquid Lightning"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3 , false , nil } },
@@ -315,15 +315,19 @@ FTC.Buffs.Effects = {
 	["Aurora Javelin"]      	= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3 , true , 0.3 } },
 	["Binding Javelin"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3.5 , true , 0.3 } },
 	
-	["Empowering Sweep"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 10 , false , nil } },
-	
 	["Focused Charge"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3 , true , 1 } },
 	["Explosive Charge"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3 , true , 1 } },
 	["Toppling Charge"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 2.4 , true , 1 } },
+
+    ["Spear Shards"]            = { { 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , 1.3 } },
+    ["Luminous Shards"]         = { { 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , 1.3 } },
+    ["Blazing Spear"]           = { { 1 , BUFF_EFFECT_TYPE_BUFF , 2 , false , 1.3 } },
 	
 	["Sun Shield"] 				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , nil } },
 	["Radiant Ward"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , nil } },
 	["Blazing Shield"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , nil } },
+
+	["Empowering Sweep"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 10 , false , nil } },
 	
 	-- Dawn's Wrath
 	["Sun Fire"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5.3 , true , 0.5 } },
@@ -343,15 +347,15 @@ FTC.Buffs.Effects = {
 	["Blinding Light"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4.8 , false , nil } },
 	["Blinding Flashes"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 8.8 , false , nil } },
 	["Searing Light"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4.8 , false , nil } },
+
+    ["Nova"]                    = { { 1 , BUFF_EFFECT_TYPE_BUFF , 8 , false , nil } },
+    ["Solar Prison"]            = { { 1 , BUFF_EFFECT_TYPE_BUFF , 8 , false , nil } },
+    ["Solar Disturbance"]       = { { 1 , BUFF_EFFECT_TYPE_BUFF , 8 , false , nil } },
 	
 	-- Restoring Light
 	["Honor The Dead"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 8 , false , nil } },	
 	
 	["Lingering Ritual"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 8 , false , 2 } },	
-
-	["Rite of Passage"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 4 , false , nil } },
-	["Remembrance"]				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 4 , false , nil } },
-	["Practiced Incarnation"]   = {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , nil } },
 	
 	["Restoring Aura"]			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 9 , false , nil } },	
 	["Radiant Aura"]    		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 9 , false , nil } },	
@@ -362,7 +366,11 @@ FTC.Buffs.Effects = {
 
 	["Rune Focus"]    			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 15 , false , nil } },	
 	["Channeled Focus"]    		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 18 , false , nil } },	
-	["Restoring Focus"]    		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 18 , false , nil } },		
+	["Restoring Focus"]    		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 18 , false , nil } },
+
+	["Rite of Passage"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 4 , false , nil } },
+	["Remembrance"]				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 4 , false , nil } },
+	["Practiced Incarnation"]   = {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , nil } },
 		
 	--[[---------------------------------
 		ARMOR
@@ -399,6 +407,8 @@ FTC.Buffs.Effects = {
 	["Circle of Protection"] 	= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
 	["Ring of Preservation"] 	= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
 	["Turn Undead"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
+
+	["Trap Beast"] 				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 30 , false , nil } },
 	
 	-- Mages Guild
 	["Entropy"]					= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 15.6 , true , nil } },
@@ -409,7 +419,11 @@ FTC.Buffs.Effects = {
 	["Inner Fire"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 15 , true , nil } },
 	["Inner Rage"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 15 , true , nil } },
 	["Inner Beast"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 15 , true , nil } },
-	
+
+	["Bone Shield"]				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , true , nil } },
+	["Bone Surge"]				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , true , nil } },
+	["Spiked Bone Shield"]		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , true , nil } },
+		
 	--[[---------------------------------
 		WORLD
 	-----------------------------------]]
@@ -426,6 +440,13 @@ FTC.Buffs.Effects = {
 	["Bat Swarm"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , false , nil } },
 	["Devouring Swarm"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , false , nil } },
 	["Clouding Swarm"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , false , nil } },
+
+	-- Werewolf
+	["Roar"]					= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 3.5 , false , nil } },
+
+	["Piercing Howl"]			= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 3 , true , nil } },
+
+	["Infectious Claws"]		= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , true , nil } },
 	
 	-- Soul Magic
 	["Soul Trap"] 				= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , true , nil } },
@@ -602,7 +623,7 @@ function FTC:FilterBuffInfo( changeType , unitTag , name , buffType , beginTime 
 			else isValid = false end
 			
 		-- Vampirism
-		elseif ( name == "Vampirism" ) then duration = "P"
+		elseif ( string.match( name , FTC.L("Vampirism") ) ) then duration = "P"
 			
 		-- Lycanthropy
 		elseif ( name == "Lycanthropy" ) then duration = "P"
