@@ -68,10 +68,10 @@ function FTC.Player:GetLevel()
 	FTC.Player.level	= GetUnitLevel('player')
 	FTC.Player.vlevel	= GetUnitVeteranRank('player')
 	FTC.Player.alevel	= GetUnitAvARank('player')
-	FTC.Player.clevel	= GetPlayerChampionPointsEarned();
+	FTC.Player.clevel	= GetPlayerChampionPointsEarned()
 	FTC.Player.exp		= GetUnitXP('player')
 	FTC.Player.vet		= GetUnitVeteranPoints('player')
-	FTC.Player.cxp		= GetPlayerChampionXP();
+	FTC.Player.cxp		= GetPlayerChampionXP()
 end
 
 

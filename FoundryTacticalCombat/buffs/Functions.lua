@@ -358,9 +358,10 @@ function FTC.Buffs:CheckCast()
 
 	-- Check each action bar button
 	for i = 3 , 8 do
+
+		-- Get the button
 		local button = _G["ActionButton"..i.."Button"]
-		
-		if( button:GetState() == BSTATE_PRESSED ) then
+		if( IsSlotUsed(i) and button:GetState() == BSTATE_PRESSED ) then
 			
 			-- Get the time
 			local ms = GetGameTimeMilliseconds()
@@ -369,7 +370,7 @@ function FTC.Buffs:CheckCast()
 			if ( ms < FTC.Buffs.lastCast + 1000 ) then return end
 		
 			-- Make sure the ability is usable
-			if( FTC.Buffs:HasFailure( i ) ) then return end
+			if( FTC.Buffs:HasFailure(i) ) then return end
 			
 			-- Get the used ability
 			local ability = FTC.Hotbar[i]
