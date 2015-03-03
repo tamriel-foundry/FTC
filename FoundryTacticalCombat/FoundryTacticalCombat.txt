@@ -1,5 +1,7 @@
 ## Title: Foundry Tactical Combat
-## APIVersion: 100010
+## Description: A combat enhancement addon designed to give players access to relevant combat data in an easy to process framework which allows them to respond quickly and effectively to evolving combat situations.
+## Version: 0.37
+## APIVersion: 100011
 ## SavedVariables: FTC_VARS
 ## OptionalDependsOn: LibAddonMenu-2.0
 
@@ -53,3 +55,13 @@ extensions/Guild.lua
 
 FoundryTacticalCombat.xml
 bindings.xml
+
+; DISCLAIMER:
+;
+; This Add-on is not created by, affiliated with or sponsored by ZeniMax
+; Media Inc. or its affiliates. The Elder Scrolls® and related logos are
+; registered trademarks or trademarks of ZeniMax Media Inc. in the United
+; States and/or other countries. All rights reserved.
+;
+; You can read the full terms at:
+; https://account.elderscrollsonline.com/add-on-terms

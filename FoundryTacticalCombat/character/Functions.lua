@@ -40,6 +40,7 @@ function FTC.Target:Initialize()
 		["level"]			= 0,
 		["class"]			= "",
 		["vlevel"]			= 0,
+		["clevel"]			= 0,
 		["health"]			= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
 		["magicka"]			= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
 		["stamina"]			= { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
@@ -67,8 +68,10 @@ function FTC.Player:GetLevel()
 	FTC.Player.level	= GetUnitLevel('player')
 	FTC.Player.vlevel	= GetUnitVeteranRank('player')
 	FTC.Player.alevel	= GetUnitAvARank('player')
+	FTC.Player.clevel	= GetPlayerChampionPointsEarned();
 	FTC.Player.exp		= GetUnitXP('player')
 	FTC.Player.vet		= GetUnitVeteranPoints('player')
+	FTC.Player.cxp		= GetPlayerChampionXP();
 end
 
 

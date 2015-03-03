@@ -29,12 +29,11 @@ function FTC.Buffs.Initialize()
 	
 	-- Placeholder for last cast spell and potion
 	FTC.Buffs.lastCast = 0
-	FTC.Buffs.lastPotion = 0
+	FTC.Buffs.canPotion = true
 	
 	-- Register init status
 	FTC.init.Buffs = true
 end
-
 
 --[[----------------------------------------------------------
 	EVENT HANDLERS
@@ -173,36 +172,43 @@ end
  * Called by OnSlotUpdate()
  ]]--
 function FTC.Buffs:GetHotbar()
-	
+
 	-- Empty the hotbar
 	FTC.Hotbar 					= {}
-	FTC.Hotbar[1] 				= {}
-	FTC.Hotbar[2] 				= {}
 
 	-- Get the current loadout
 	for i = 3, 8 do
+
+		-- Is the slot in use?
+		local slot = {}
 		if ( IsSlotUsed(i) ) then
-			local name			= GetSlotName(i)
-			if ( FTC.language ~= "English" ) then name = FTC.L(name) end			
+
+			-- Get the slotted ability ID
+			local ability_id	= GetSlotBoundId(i)
+
+			-- Get additional ability information
+			local name = GetAbilityName(ability_id)
 			local cost, cType 	= GetSlotAbilityCost(i)
-			local slot			= {
+			local channeled, castTime, channelTime = GetAbilityCastInfo(ability_id)
+
+			-- Populate the slot object
+			slot = {
 				["slot"]		= i,
-				["name"]		= name,
+				["id"]			= ability_id,
+				["name"]		= FTC.L(name),
 				["type"]		= cType,
 				["cost"]		= cost,
+				["cast"]		= castTime,
+				["chan"]		= channeled and channelTime or 0,
+				["dur"]			= GetAbilityDuration(ability_id),
 				["tex"]			= GetSlotTexture(i),
 				["ground"]		= FTC.Buffs:IsGroundTarget( name ),
-				["effects"]		= FTC.Buffs.Effects[name],
-			}
-			FTC.Hotbar[i] 		= slot
-		else
-			FTC.Hotbar[i] 		= {
-				["slot"]		= i,
-				["name"]		= 'unused',
-				["type"]		= -999,
-				["cost"]		= -999,
+				["effects"]		= FTC.Buffs.Effects[name]
 			}
 		end
+
+		-- Save the slot
+		FTC.Hotbar[i] = slot
 	end
 end
 
@@ -282,7 +288,7 @@ function FTC.Buffs:Update( context )
 			end
 			
 			-- Flag long duration buffs
-			isLong = ( context == "Player" and duration >= 75 ) and true or isLong
+			isLong = ( context == "Player" and duration >= 60 ) and true or isLong
 			
 			-- Duration in hours
 			if ( duration > 3600 ) then
@@ -389,7 +395,6 @@ function FTC.Buffs:CheckCast()
 	end
 end
 
-
 --[[ 
  * Check for whether a potion has been used
  * Runs OnUpdate - 50 ms buffer
@@ -403,10 +408,10 @@ function FTC.Buffs:CheckPotion()
 	if ( GetSlotName( current ) == "" ) then return end
 	
 	-- Get the cooldown
-	local cd = GetSlotCooldownInfo(current)
+	local cd, dur , usable = GetSlotCooldownInfo(current)
 	
 	-- Trigger an alert if the potion has just become available
-	if ( cd == 0 and FTC.Buffs.lastPotion > 0 ) then
+	if ( usable and not FTC.Buffs.canPotion ) then
 		if ( FTC.init.SCT ) then
 			local newAlert = {
 				["type"]	= 'potionReady',
@@ -418,46 +423,44 @@ function FTC.Buffs:CheckPotion()
 			}
 			FTC.SCT:NewStatus( newAlert )
 		end
-		FTC.Buffs.lastPotion = 0
-	end	
-	
-	-- Bail if the potion isn't freshly used
-	if ( cd < 10000 ) then return end
+	end
 
-	-- If our cooldown has just increased, it implies a potion usage
-	if ( cd > FTC.Buffs.lastPotion ) then
+	-- If the potion goes on cooldown, display a new alert
+	if ( FTC.Buffs.canPotion and cd > 5000 ) then
 	
 		-- Make sure it's a potion
 		local name 		= string.lower( GetSlotName(current) )
-		local keys		= { "health" , "stamina" , "magicka" , "weapon power" , "weapon critical" , "spell critical" , "spell power" }
+		local keys		= { "sip" , "tincture" , "dram" , "potion" , "solution" , "elixir" , "panacea" }
 		local isPotion 	= false
 		for i = 1 , #keys do
 			if ( string.find( name , keys[i] ) ) then 
 				isPotion = true 
-				break
+				break	
 			end
 		end
 		if ( not isPotion ) then return end
-	
+
+		-- Translate the time to seconds
+		local time = cd / 1000
+
 		-- Get the current potion
 		local potion		= {
 			["slot"]		= current,
 			["name"]		= name,
 			["type"]		= 'potion',
-			["cost"]		= 0,
 			["tex"]			= GetSlotTexture( current ),
-			["effects"]		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 10 , false , nil } },
+			["effects"]		= { time , 0 , 0 },
 		}
 		
 		-- Submit the effect
 		FTC.Buffs:NewEffects( potion )
 	end
 
+	-- Update the potion status
+	FTC.Buffs.canPotion = usable
+
 	-- Fire a callback when we know a spell was cast
 	CALLBACK_MANAGER:FireCallbacks( "FTC_PotionUsed" , potion )
-	
-	-- Save the potion CD
-	FTC.Buffs.lastPotion = cd
 end
 
 
@@ -510,40 +513,74 @@ end
  * Called by Buffs:CheckCast()
  ]]--
 function FTC.Buffs:NewEffects( ability )
+
+	-- Get the time
+	local ms = GetGameTimeMilliseconds()
 	
-	-- Process new effects
+	-- Try manually tracked effects first
 	local effects = ability.effects
 	if ( effects ~= nil ) then
-		for e = 1 , #effects do
-		
-			-- Get some data
-			local target 		= effects[e][1]
-			local effectType 	= effects[e][2]
-			local duration		= effects[e][3]
-			local reqTarget		= effects[e][4]
-			local castTime		= effects[e][5] or 0
-			
-			-- Get the time
-			local ms = GetGameTimeMilliseconds()
-		
-			-- Construct the buff object
+
+		-- Get data
+		local castTime	= ( ability.cast ~= nil and ability.cast > 0 ) and ability.cast or ( effects[3] or 0 ) * 1000
+
+		-- Register Buffs
+		if ( effects[1] > 0 ) then
+
+			-- Setup Buff Object
 			local newBuff = {
 				["target"]	= FTC.Target.name,
 				["name"]	= ability.name,
-				["area"]	= not reqTarget,
-				["begin"]	= ms / 1000 + castTime,
-				["ends"]	= ( ms / 1000 ) + castTime + duration,
-				["debuff"]	= effectType == BUFF_EFFECT_TYPE_DEBUFF,
+				["area"]	= true,
+				["begin"]	= ( ms + castTime ) / 1000,
+				["ends"]	= ( ( ms + castTime ) / 1000 ) + effects[1],
+				["debuff"]	= false,
 				["stacks"]	= 0,
 				["icon"]	= ability.tex,
 			}
-			
-			-- Add it to the appropriate table
-			local context	= ( target == 1 ) and "Player" or "Target"
-			FTC.Buffs[context][ability.name] = newBuff
 
-			-- Saved targetted buffs for later
-			if ( target == 2 ) then FTC.Buffs.Saved[ability.name] = newBuff end
-		end
+			-- Register buff
+			FTC.Buffs["Player"][ability.name] = newBuff
+		end	
+
+		-- Register Debuffs
+		if ( effects[2] > 0 ) then
+
+			-- Setup Buff Object
+			local newBuff = {
+				["target"]	= FTC.Target.name,
+				["name"]	= ability.name,
+				["area"]	= true,
+				["begin"]	= ( ms + castTime ) / 1000,
+				["ends"]	= ( ( ms + castTime ) / 1000 ) + effects[2],
+				["debuff"]	= true,
+				["stacks"]	= 0,
+				["icon"]	= ability.tex,
+			}
+
+			-- Register buff
+			FTC.Buffs["Target"][ability.name] = newBuff
+
+			-- Save targetted buffs
+			FTC.Buffs.Saved[ability.name] = newBuff
+		end	
+
+	-- Next go with API reported player buffs
+	elseif ( ability.dur > 0 ) then
+		
+		-- Construct the buff object
+		local newBuff = {
+			["target"]	= FTC.Target.name,
+			["name"]	= ability.name,
+			["area"]	= true,
+			["begin"]	= ( ms + ability.cast ) / 1000,
+			["ends"]	= ( ms + ability.cast + ability.dur ) / 1000,
+			["debuff"]	= false,
+			["stacks"]	= 0,
+			["icon"]	= ability.tex,
+		}
+
+		-- Add it to the player table
+		FTC.Buffs["Player"][ability.name] = newBuff
 	end
 end

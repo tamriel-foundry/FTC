@@ -1,8 +1,8 @@
  --[[----------------------------------------------------------
 	ACTIVE BUFF EFFECTS
 	* Get a custom buff/debuff effect when the player casts a spell
-	* Effects are listed as [name] = { target ( 1 == player , 2 == target ) , type ( 1 == buff, 2 == debuff ) , duration (in seconds) , reqTarget , delay or cast time
-	* List multiple effects as sub-tables
+	* Effects are listed as [name] = { buff duration , debuff duration , cast time }
+	* Only "exception" effects are stored here, as default cast times and durations are retrieved from the API
 	]]-----------------------------------------------------------
 	
 FTC.Buffs.Effects = {
@@ -12,450 +12,351 @@ FTC.Buffs.Effects = {
 	-----------------------------------]]
 	
 	-- Sword and Shield
-	["Puncture"]				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 15 , true , nil } },
-	["Ransack"]					= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 15 , true , nil } },
-	["Pierce Armor"]			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 15 , true , nil } },
+	["Puncture"]				= {	0 , 15 , 0 },
+	["Ransack"]					= {	0 , 15 , 0 },
+	["Pierce Armor"]			= {	0 , 15 , 0 },
 	
-	["Low Slash"]				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 12 , true , nil } },
-	["Deep Slash"]				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 12 , true , nil } },
-	["Crippling Slash"]			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 12 , true , nil } },
+	["Low Slash"]				= {	0 , 9 , 0 },
+	["Deep Slash"]				= {	0 , 12 , 0 },
+	["Heroic Slash"]			= {	0 , 12 , 0 },
 	
-	["Shield Charge"]			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 2 , true , 0.5 } },
-	["Invasion"]				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3 , true , 0.5 } },
-	["Shielded Assault"]		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 2 , true , 0.5 }, { 1 , BUFF_EFFECT_TYPE_BUFF , 4 , false , 0.5 } },
+	["Shield Charge"]			= {	0 , 2 , 0.25 },
+	["Invasion"]				= {	0 , 3 , 0.25 },
+	["Shielded Assault"]		= {	6 , 2 , 0.25 },
 	
-	["Power Bash"]				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 8 , true , 0 } },
-	["Power Slam"]				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 15 , true , 0 } },
-	["Reverberating Bash"]		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 8 , true , 0 } },
+	["Power Bash"]				= {	0 , 15 , 0 },
+	["Power Slam"]				= {	0 , 15 , 0 },
+	["Reverberating Bash"]		= {	0 , 10 , 0 },
 	
 	-- Dual Wield
-	["Twin Slashes"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 9 , true , nil } },
-	["Blood Craze"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 9 , true , nil } , { 1 , BUFF_EFFECT_TYPE_BUFF , 9 , true , nil } },
-	["Rending Slashes"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 9 , true , nil } },	
+	["Twin Slashes"] 			= {	0 , 9 , 0 },
+	["Blood Craze"] 			= {	9 , 9 , 0 },
+	["Rending Slashes"] 		= {	0 , 9 , 0 },
 	
-	["Rapid Strikes"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , 1.5 } },
+	["Rapid Strikes"] 			= {	6 , 0 , 1.3 },
 	
-	["Sparks"] 					= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4 , true , nil } },
-	["Heated Blades"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4 , true , nil } },
-	["Ember Explosion"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4 , false , nil } },
+	["Whirling Blades"] 		= {	10 , 0 , 0 },
 	
-	["Whirling Blades"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 10 , false , nil } },
-	
-	["Hidden Blade"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 6 , true , nil } },
-	["Flying Blade"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 6 , true , nil } },
-	["Shrouded Daggers"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 6 , false , nil } },
-	
+	["Hidden Blade"] 			= {	0 , 6 , 0 },
+	["Flying Blade"] 			= {	0 , 6 , 0 },
+	["Shrouded Daggers"] 		= {	0 , 6 , 0 },
+
 	-- Two Handed
-	["Cleave"] 					= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , false , nil } },
-	["Brawler"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , false , nil } , { 1 , BUFF_EFFECT_TYPE_BUFF , 8 , true , nil } },
-	["Carve"] 					= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , false , nil } },
+	["Cleave"] 					= { 0 , 10 , 0 },
+	["Brawler"] 				= { 8 , 10 , 0 },
+	["Carve"] 					= { 0 , 10 , 0 },
 	
-	["Stampede"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3.5 , true , 0.5 } },
+	["Stampede"] 				= { 0 , 8 , 0.25 },
 	
-	["Uppercut"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3.5 , true , 1.5 } },
-	["Wrecking Blow"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3.5 , true , 1.5 } },
-	["Dizzying Swing"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 7.5 , true , 1.5 } },
-	
-	["Momentum"] 				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 23 , false , nil } },
-	["Forward Momentum"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 23 , false , nil } },
-	["Rally"] 					= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 23 , false , nil } },
+	["Uppercut"] 				= { 0 , 3.5 , 0.8 },
+	["Wrecking Blow"] 			= { 0 , 3.5 , 0.8 },
+	["Dizzying Swing"] 			= { 0 , 7.5 , 0.8 },
 	
 	-- Bow
-	["Poison Arrow"]			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , true , nil } },
-	["Venom Arrow"]				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , true , nil } },
-	["Poison Injection"]		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , true , nil } },
+	["Poison Arrow"]			= { 0 , 10 , 0 },
+	["Venom Arrow"]				= { 0 , 10 , 0 },
+	["Poison Injection"]		= { 0 , 10 , 0 },
 	
-	["Volley"]					= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , false , nil } },
-	["Scorched Earth"]			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 11 , false , nil } },
-	["Arrow Barrage"]			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , false , nil } },
+	["Volley"]					= { 0 , 5 , 1.5 },
+	["Scorched Earth"]			= { 0 , 11 , 1.5 },
+	["Arrow Barrage"]			= { 0 , 5 , 1.5 },
 	
-	["Scatter Shot"]			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , true , nil } },
-	["Magnum Shot"]				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , true , nil } },
-	["Draining Shot"]			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 6 , true , nil } },
+	["Scatter Shot"]			= { 0 , 5 , 0 },
+	["Magnum Shot"]				= { 0 , 5 , 0 },
+	["Draining Shot"]			= { 0 , 6 , 0 },
 	
-	["Arrow Spray"]				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , false , nil } },
-	["Bombard"]					= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , false , nil } },
-	["Acid Spray"]				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , false , nil } },
+	["Arrow Spray"]				= { 0 , 5 , 0 },
+	["Bombard"]					= { 0 , 5 , 0 },
+	["Acid Spray"]				= { 0 , 5 , 0 },
 	
-	["Lethal Arrow"]			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , true , 3.5 } },
-	["Focused Aim"]				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , true , 3.5 } },
+	["Lethal Arrow"]			= { 0 , 10 , 1.25 },
+	["Focused Aim"]				= { 0 , 10 , 1.25 },
 	
-	-- Restoration Staff
-	["Grand Healing"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 3 , false , nil } },
-	["Healing Springs"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 3 , false , nil } },
-	["Illustrious Healing"] 	= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 4 , false , nil } },
+	["Blessing of Protection"] 	= { 8 , 0 , 0 },
+	["Blessing of Restoration"] = { 15 , 0 , 0 },
+	["Combat Prayer"] 			= { 8 , 0 , 0 },
 	
-	["Regeneration"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	["Mutagen"] 				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	["Rapid Regeneration"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 16.5 , false , nil } },
-	
-	["Blessing of Protection"] 	= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 8 , false , nil } },
-	["Blessing of Restoration"] = {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 8 , false , nil } },
-	["Combat Prayer"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 8 , false , nil } },
-	
-	["Steadfast Ward"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , nil } },
-	["Ward Ally"] 				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , nil } },
-	["Healing Ward"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , nil } },
-	
-	["Force Siphon"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 20 , true , nil } },
-	["Siphon Spirit"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 20 , true , nil } },
-	["Quick Siphon"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 20 , true , nil } },
+	["Force Siphon"] 			= { 0 , 20 , 1.5 },
+	["Siphon Spirit"] 			= { 0 , 20 , 1.5 },
+	["Quick Siphon"] 			= { 0 , 20 , 0 },
 	
 	-- Destruction Staff
-	["Weakness to Elements"] 	= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 18 , true , nil } },
-	["Elemental Susceptibility"]= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 18 , true , nil } },
-	["Elemental Drain"] 	    = {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 18 , true , nil } },
+	["Weakness to Elements"] 	= {	0 , 18 , 0 },
+	["Elemental Susceptibility"]= {	0 , 18 , 0 },
+	["Elemental Drain"] 	    = {	0 , 18 , 0 },
 	
-	["Destructive Touch"]		= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , true , nil } },
-	["Shock Touch"]				= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , true , nil } },
-	["Frost Touch"]				= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , true , nil } },
-	["Fire Touch"]				= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , true , nil } },
+	["Destructive Touch"]		= {	0 , 5 , 0 },
+	["Shock Touch"]				= {	0 , 5 , 0 },
+	["Frost Touch"]				= {	0 , 5 , 0 },
+	["Fire Touch"]				= {	0 , 5 , 0 },
 
-	["Force Shock"]				= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , true , nil } },
-	["Crushing Shock"]			= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , true , nil } },
-	["Force Pulse"]				= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , true , nil } },
+	["Force Shock"]				= {	0 , 5 , 0 },
+	["Crushing Shock"]			= {	0 , 5 , 0 },
+	["Force Pulse"]				= {	0 , 5 , 0 },
+
+    ["Elemental_Ring"]			= { 0 , 10 , 0 },
+    ["Fire_Ring"]				= { 0 , 10 , 0 },
+    ["Frost_Ring"]				= { 0 , 10 , 0 },
+    ["Shock_Ring"]				= { 0 , 10 , 0 },
+    ["Pulsar"] 					= { 0 , 10 , 0 },
+    ["Fiery_Pulsar"]			= { 0 , 10 , 0 },
+    ["Icy_Pulsar"] 				= { 0 , 10 , 0 },
+    ["Electric_Pulsar"] 		= { 0 , 10 , 0 },
 	
 	--[[---------------------------------
 		SORCERER
 	-----------------------------------]]
 	
 	-- Daedric Summoning
-	["Daedric Curse"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 6 , true , nil } },
-	["Velocious Curse"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3.5 , true , nil } },
-	["Explosive Curse"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 6 , true , nil } },
-	
-	["Conjured Ward"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	["Empowered Ward"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	["Hardened Ward"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	
-	["Summon Storm Atronach"] 	= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 18 , false , nil } },
-	["Greater Storm Atronach"]  = {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 28 , false , nil } },
-	["Summon Charged Atronach"] = {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 18 , false , nil } },	
+	["Daedric Curse"] 			= { 0 , 6 , 0 },
+	["Velocious Curse"] 		= { 0 , 3.5 , 0 },
+	["Explosive Curse"] 		= { 0 , 6 , 0 },
 	
 	-- Storm Calling
-	["Mages' Fury"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4 , true , nil } },
-	["Mages' Wrath"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4 , true , nil } },
-	["Endless Fury"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4 , true , nil } },	
+	["Mages' Fury"] 			= { 0 , 4 , 0 },
+	["Mages' Wrath"] 			= { 0 , 4 , 0 },
+	["Endless Fury"] 			= { 0 , 4 , 0 },
 	
-	["Lightning Form"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , nil } },
-	["Boundless Storm"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , nil } },
-	["Thundering Presence"] 	= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 9 , false , nil } },
+	["Lightning Splash"] 		= { 0 , 6 , 0 },
+	["Liquid Lightning"] 		= { 0 , 10 , 0 },
+	["Lightning Flood"] 		= { 0 , 6 , 0 },
 	
-	["Lightning Splash"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3 , false , nil } },
-	["Liquid Lightning"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3 , false , nil } },
-	["Lightning Flood"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3 , false , nil } },	
-	
-	["Surge"] 					= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	["Critical Surge"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	["Power Surge"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 40 , false , nil } },	
-	
-	["Bolt Escape"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 2 , false , nil } },
-	["Streak"] 					= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 2 , false , nil } },
-	["Ball of Lightning"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 2 , false , nil }, { 1 , BUFF_EFFECT_TYPE_BUFF , 5 , false , nil } },	
+	["Bolt Escape"] 			= { 0 , 2 , 0 },
+	["Streak"] 					= { 0 , 2 , 0 },
+	["Ball of Lightning"] 		= { 5 , 2 , 0 },
 
 	-- Dark Magic
-	["Crystal Shard"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 2.4 , true , 2 } },
-	["Crystal Fragments"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 2.4 , true , 2 } },
-	["Crystal Blast"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 2.4 , true , 2 } },
+	["Crystal Shard"] 			= { 0 , 2.4 , 1.3 },
+	["Crystal Fragments"] 		= { 0 , 2.4 , 1.3 },
+	["Crystal Blast"] 			= { 0 , 2.4 , 1.3 },
 	
-	["Encase"] 					= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 6.4 , false , nil } },
-	["Restraining Prison"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 12.4 , false , nil } },
-	["Shattering Prison"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5.4 , false , nil } },
+	["Encase"] 					= { 0 , 5.4 , 0 },
+	["Restraining Prison"] 		= { 0 , 10.2 , 0 },
+	["Shattering Prison"] 		= { 0 , 5.4 , 0 },
 	
-	["Rune Prison"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 19.9 , true , 1.5 } },
-	["Weakening Prison"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 19.9 , true , 1.5 } },
-	["Rune Cage"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 19.9 , true , 1.5 } },
+	["Rune Prison"] 			= { 0 , 19.9 , 0 },
+	["Weakening Prison"] 		= { 0 , 19.9 , 0 },
+	["Defensive Rune"] 			= { 144000 , 19.9 , 0 },
 	
-	["Daedric Mines"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 36 , false , nil } },
-	["Daedric Minefield"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 36 , false , nil } },
-	["Daedric Tomb"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 36 , false , nil } },
+	["Daedric Mines"] 			= { 0 , 36 , 0 },
+	["Daedric Minefield"] 		= { 0 , 36 , 0 },
+	["Daedric Tomb"] 			= { 0 , 36 , 0 },
 	
-	["Dark Exchange"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 4 , false , nil } },
-	["Dark Conversion"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 4 , false , nil } },
-	["Dark Deal"] 				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 4 , false , nil } },
+	["Dark Exchange"] 			= { 4 , 0 , 0 },
+	["Dark Conversion"] 		= { 4 , 0 , 0 },
+	["Dark Deal"] 				= { 4 , 0 , 0 },
 	
-	["Negate Magic"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 11.4 , false , nil } },
-	["Suppression Field"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 11.4 , false , nil } },
-	["Absorption Field"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 11.4 , false , nil } },
+	["Negate Magic"] 			= { 0 , 11.4 , 0 },
+	["Suppression Field"] 		= { 11.4 , 11.4 , 0 },
+	["Absorption Field"] 		= { 12 , 9.6 , 0 },
 	
 	--[[---------------------------------
 		DRAGONKNIGHT
 	-----------------------------------]]
 	
-	-- Ardent Flame
-	["Empowering Chain"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 24 , false , nil } },
+	-- Ardent Flame	
+	["Searing Strike"] 			= {	0 , 10.5 , 0 },
+	["Unstable Flame"] 			= {	0 , 10.5 , 0 },
+	["Burning Embers"] 			= {	0 , 10.5 , 0 },
 	
-	["Searing Strike"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 10.5 , true , nil } },
-	["Unstable Flame"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 10.5 , true , nil } },
-	["Burning Embers"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 10.5 , true , nil } },
-	
-	["Fiery Breath"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 8 , false , nil } },
-	["Burning Breath"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 8 , false , nil } },
-	["Engulfing Flames"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 8 , false , nil } },
-	
-	["Dragonknight Standard"] 	= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 17 , false , nil }, { 2 , BUFF_EFFECT_TYPE_DEBUFF , 17 , false , nil } },
-	["Standard of Might"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 17 , false , nil }, { 2 , BUFF_EFFECT_TYPE_DEBUFF , 17 , false , nil } },
-	["Shifting Standard"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 17 , false , nil }, { 2 , BUFF_EFFECT_TYPE_DEBUFF , 17 , false , nil } },
+	["Fiery Breath"] 			= {	0 , 10 , 0 },
+	["Burning Breath"] 			= {	0 , 10 , 0 },
+	["Engulfing Flames"] 		= {	0 , 10 , 0 },
 	
 	-- Earthen Heart
-	["Stonefist"]				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3.6 , true , 0.5 } },
-	["Stone Giant"]				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3.6 , true , 0.5 }, { 1 , BUFF_EFFECT_TYPE_BUFF , 4.8 , true , nil } },
-	["Obsidian Shard"]			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3.6 , true , 0.5 } },
+	["Stonefist"]				= {	0 , 3.6 , 0.25 },
+	["Stone Giant"]				= {	15 , 3.6 , 0.25 },
+	["Obsidian Shard"]			= {	0 , 3.6 , 0.25 },
 	
-	["Obsidian Shield"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 24 , false , nil } },
-	["Igneous Shield"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 24 , false , nil } },
-	["Fragmented Shield"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 24 , false , nil } },
-	
-	["Petrify"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 14.4 , true , nil } },
-	["Fossilize"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 14.4 , true , nil } },
-	["Shattering Rocks"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 14.4 , true , nil } },
-	
-	["Ash Cloud"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 18 , false , nil } },
-	["Cinder Storm"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 18 , false , nil } },
-	["Eruption"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 18 , false , nil } },
-	
-	["Magma Armor"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 14.4 , false , nil } },
-	["Magma Shell"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 14.4 , false , nil } },
-	["Corrosive Armor"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 14.4 , false , nil } },
+	["Petrify"] 				= {	0 , 20 , 0 },
+	["Fossilize"] 				= {	0 , 20 , 0 },
+	["Shattering Rocks"] 		= {	0 , 20 , 0 },
 
 	-- Draconic Power
-	["Spiked Armor"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	["Razor Armor"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	["Volatile Armor"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	
-	["Dark Talons"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4 , false , nil } },
-	["Burning Talons"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4 , false , nil } },
-	["Choking Talons"]			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4 , false , nil } },
-	
-	["Dragon Blood"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	["Green Dragon Blood"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	["Coagulating Blood"]		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	
-	["Reflective Scale"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 4 , false , nil } },
-	["Dragon Fire Scale"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 4 , false , nil } },
-	["Reflective Plate"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , nil } },
+	["Dark Talons"] 			= { 0 , 4 , 0 },
+	["Burning Talons"] 			= { 0 , 4 , 0 },
+	["Choking Talons"]			= { 0 , 4 , 0 },
+
+	["Inhale"] 					= { 0 , 2.5 , 0 },
+	["Deep Breath"] 			= { 0 , 2.5 , 0 },
+	["Draw Essence"]			= { 0 , 2.5 , 0 },
+
+	["Ferocious Leap"] 			= { 6 , 0 , 0 },
 	
 	--[[---------------------------------
 		NIGHTBLADE
 	-----------------------------------]]
 	
 	-- Assassination
-	["Teleport Strike"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 1.5 , true , 0.8 } },
-	["Ambush"] 					= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 1.5 , true , 0.8 } },
-	["Lotus Fan"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 6 , false , 0.8 } },	
-	
-	["Blur"] 					= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 26 , false , nil } },
-	["Mirage"] 					= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 26 , false , nil } },
-	["Double Take"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 26 , false , nil } },
-	
-	["Mark Target"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 60 , true , nil } },
-	["Piercing Mark"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 60 , true , nil } },
-	["Reaper's Mark"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 60 , true , nil } },
-	
-	["Haste"] 					= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	["Focused Attacks"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	["Incapacitate"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	
-	["Death Stroke"] 			= {	{ 1 , BUFF_EFFECT_TYPE_DEBUFF , 5 , true , nil } },
-	["Incapacitating Strike"] 	= {	{ 1 , BUFF_EFFECT_TYPE_DEBUFF , 5 , true , nil } },
-	["Soul Harvest"] 			= {	{ 1 , BUFF_EFFECT_TYPE_DEBUFF , 5 , true , nil } },	
+	["Killer's Blade"] 			= { 2 , 0 , 0 },
 
-	-- Siphoning
-	["Strife"] 					= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 10 , true , nil }, { 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , true , nil } },
-	["Swallow Soul"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 10 , true , nil }, { 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , true , nil } },
-	["Funnel Health"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 10 , true , nil }, { 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , true , nil } },
+	["Teleport Strike"] 		= { 0 , 1.5 , 0.25 },
+	["Ambush"] 					= { 0 , 1.5 , 0.25 },
+	["Lotus Fan"] 				= { 0 , 6 , 0.25 },
+
+	["Mark Target"] 			= { 0 , 20 , 0 },
+	["Piercing Mark"] 			= { 0 , 20 , 0 },
+	["Reaper's Mark"] 			= { 0 , 20 , 0 },
 	
-	["Agony"] 					= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 12 , true , 1.5 } },
-	["Prolonged Suffering"]		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 12 , true , 1.5 } },
-	["Malefic Wreath"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 12 , false , 1.5 } },	
-	
-	["Cripple"] 				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 8 , false , nil }, { 2 , BUFF_EFFECT_TYPE_DEBUFF , 8 , true , nil } },
-	["Debilitate"] 				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 8 , false , nil }, { 2 , BUFF_EFFECT_TYPE_DEBUFF , 8 , true , nil } },
-	["Crippling Grasp"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 8 , false , nil }, { 2 , BUFF_EFFECT_TYPE_DEBUFF , 8 , true , nil } },
-	
-	["Drain Power"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	["Power Extraction"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	["Sap Essence"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	
-	["Soul Shred"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4.5 , false , nil } },
-	["Soul Tether"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4.5 , false , nil }, { 1 , BUFF_EFFECT_TYPE_BUFF , 8 , false , nil } },
-	["Soul Siphon"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4.5 , false , nil }, { 1 , BUFF_EFFECT_TYPE_BUFF , 3 , false , nil } },
+	["Death Stroke"] 			= { 0 , 6 , 0 },
+	["Incapacitating Strike"] 	= { 0 , 6 , 0 },
+	["Soul Harvest"] 			= { 0 , 6 , 0 },
 																	
-	-- Shadow
-	["Shadow Cloak"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 2.9 , false , nil } },
-	["Shadowy Disguise"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 2.9 , false , nil } },
-	["Dark Cloak"] 				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 2.9 , false , nil } },
+	-- Shadow	
+	["Veiled Strike"] 			= {	0 , 4.6 , 0 },
+	["Surprise Attack"] 		= {	0 , 12 , 0 },
+	["Concealed Weapon"] 		= {	0 , 4.6 , 0 },
 	
-	["Veiled Strike"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4.6 , true , nil } },
-	["Surprise Attack"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 12 , true , nil } },
-	["Concealed Weapon"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4.6 , true , nil } },
+	["Path of Darkness"] 		= {	11.5 , 11.5 , 0 },
+	["Twisting Path"] 			= {	11.5 , 11.5 , 0 },
+	["Refreshing Path"] 		= {	11.5 , 11.5 , 0 },
 	
-	["Path of Darkness"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 10 , false , nil }, { 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , false , nil } },
-	["Twisting Path"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 10 , false , nil }, { 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , false , nil } },
-	["Refreshing Path"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 10 , false , nil }, { 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , false , nil } },
+	["Aspect of Terror"] 		= {	0 , 4.5 , 0 },
+	["Mass Hysteria"] 			= {	0 , 4.5 , 0 },
+	["Manifestation of Terror"] = {	0 , 4.5 , 0 },
 	
-	["Aspect of Terror"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4.5 , false , nil } },
-	["Mass Hysteria"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4.5 , false , nil } },
-	["Manifestation of Terror"] = {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4.5 , false , nil } },
+	-- Siphoning
+	["Strife"] 					= { 10 , 10 , 0 },
+	["Swallow Soul"] 			= { 10 , 10 , 0 },
+	["Funnel Health"] 			= { 10 , 10 , 0 },
 	
-	["Summon Shade"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 23 , false , nil } },
-	["Dark Shades"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 23 , false , nil } },
-	["Shadow Image"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 23 , false , nil } },
+	["Agony"] 					= { 0 , 30 , 1.2 },
+	["Prolonged Suffering"]		= { 0 , 30 , 1.2 },
+	["Malefic Wreath"] 			= { 0 , 30 , 1.2 },
 	
-	["Consuming Darkness"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 17.3 , false , nil } },
-	["Bolstering Darkness"] 	= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 17.3 , false , nil } },
-	["Veil of Blades"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 17.3 , false , nil }, { 2 , BUFF_EFFECT_TYPE_DEBUFF , 17.3 , false , nil } },
+	["Cripple"] 				= { 8 , 8 , 0 },
+	["Debilitate"] 				= { 8 , 8 , 0 },
+	["Crippling Grasp"] 		= { 8 , 8 , 0 },
 	
+	["Soul Shred"] 				= { 0 , 3.5 , 0 },
+	["Soul Tether"] 			= { 8 , 4.5 , 0 },
+	["Soul Siphon"] 			= { 3.5 , 3.5 , 0 },
+
 	--[[---------------------------------
 		TEMPLAR
 	-----------------------------------]]
 	
 	-- Aedric Spear
-	["Piercing Javelin"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3 , true , 0.3 } },
-	["Aurora Javelin"]      	= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3 , true , 0.3 } },
-	["Binding Javelin"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3.5 , true , 0.3 } },
+	["Binding Javelin"] 		= {	0 , 3 , 0.25 },
 	
-	["Focused Charge"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3 , true , 1 } },
-	["Explosive Charge"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 3 , true , 1 } },
-	["Toppling Charge"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 2.4 , true , 1 } },
+	["Focused Charge"] 			= {	0 , 3 , 0.5 },
+	["Explosive Charge"] 		= {	0 , 3 , 0.5 },
+	["Toppling Charge"] 		= {	0 , 2.4 , 0.5 },
 
-    ["Spear Shards"]            = { { 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , 1.3 } },
-    ["Luminous Shards"]         = { { 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , 1.3 } },
-    ["Blazing Spear"]           = { { 1 , BUFF_EFFECT_TYPE_BUFF , 2 , false , 1.3 } },
-	
-	["Sun Shield"] 				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , nil } },
-	["Radiant Ward"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , nil } },
-	["Blazing Shield"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , nil } },
-
-	["Empowering Sweep"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 10 , false , nil } },
+	["Radial Sweep"] 			= {	0 , 6 , 0 },
+	["Empowering Sweep"] 		= {	0 , 8 , 0 },
+	["Crescent Sweep"] 			= {	0 , 6 , 0 },
 	
 	-- Dawn's Wrath
-	["Sun Fire"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5.3 , true , 0.5 } },
-	["Reflective Light"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5.3 , true , 0.5 } },
-	["Vampire's Bane"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 7.8 , true , 0.5 } },
+	["Sun Fire"] 				= {	0 , 5.3 , 0.5 },
+	["Reflective Light"] 		= {	0 , 5.3 , 0.5 },
+	["Vampire's Bane"] 			= {	0 , 5.3 , 0.5 },
 	
-	["Dark Flare"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 7.2 , true , 1.5 } },
+	["Dark Flare"] 				= {	0 , 7.2 , 1.25 },
 	
-	["Eclipse"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 6 , true , nil } },
-	["Total Dark"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 13.2 , true , nil } },
-	["Unstable Core"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 9.8 , true , 0.5 } },
+	["Eclipse"] 				= {	0 , 6 , 0 },
+	["Total Dark"] 				= {	0 , 6 , 0 },
+	["Unstable Core"] 			= {	0 , 6 , 0 },
 
-	["Backlash"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 7.2 , true , 1.5 } },
-	["Power of the Light"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 7.2 , true , 1.5 } },
-	["Purifying Light"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 7.2 , true , 1.5 }, { 1 , BUFF_EFFECT_TYPE_BUFF , 8.4 , true , 1.5 } },
+	["Backlash"] 				= {	0 , 6 , 0 },
+	["Power of the Light"] 		= {	0 , 6 , 0 },
+	["Purifying Light"] 		= {	7.2 , 6 , 0 },
 	
-	["Blinding Light"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4.8 , false , nil } },
-	["Blinding Flashes"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 8.8 , false , nil } },
-	["Searing Light"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 4.8 , false , nil } },
+	["Radiant Destruction"] 	= {	0 , 3.6 , 0 },
+	["Radiant Glory"] 			= {	0 , 3.6 , 0 },
+	["Radiant Oppression"] 		= {	0 , 3.6 , 0 },
 
-    ["Nova"]                    = { { 1 , BUFF_EFFECT_TYPE_BUFF , 8 , false , nil } },
-    ["Solar Prison"]            = { { 1 , BUFF_EFFECT_TYPE_BUFF , 8 , false , nil } },
-    ["Solar Disturbance"]       = { { 1 , BUFF_EFFECT_TYPE_BUFF , 8 , false , nil } },
+    ["Nova"]                    = {	9.6 , 0 , 0 },
+    ["Solar Prison"]            = {	9.6 , 0 , 0 },
+    ["Solar Disturbance"]       = {	9.6 , 0 , 0 },
 	
 	-- Restoring Light
-	["Honor The Dead"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 8 , false , nil } },	
+	["Honor The Dead"] 			= {	8 , 0 , 0 },	
 	
-	["Lingering Ritual"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 8 , false , 2 } },	
-	
-	["Restoring Aura"]			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 9 , false , nil } },	
-	["Radiant Aura"]    		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 9 , false , nil } },	
-
-	["Cleansing Ritual"]    	= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 12 , false , nil } },	
-	["Purifying Ritual"]    	= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 12 , false , nil } },	
-	["Extended Ritual"]    		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 22 , false , nil } },		
-
-	["Rune Focus"]    			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 15 , false , nil } },	
-	["Channeled Focus"]    		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 18 , false , nil } },	
-	["Restoring Focus"]    		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 18 , false , nil } },
-
-	["Rite of Passage"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 4 , false , nil } },
-	["Remembrance"]				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 4 , false , nil } },
-	["Practiced Incarnation"]   = {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , nil } },
+	["Lingering Ritual"] 		= { 8 , 0 , 0 },
 		
 	--[[---------------------------------
 		ARMOR
 	-----------------------------------]]
-
-	-- Heavy Armour
-	["Immovable"]				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 8 , false , nil } },
-	["Immovable Brute"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 8 , false , nil } },
-	["Unstoppable"]				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 10.8 , false , nil } },	
 	
 	-- Medium Armor
-	["Evasion"] 				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	["Elude"] 					= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 25 , false , nil } },
-	["Shuffle"] 				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	
-	-- Light Armour
-	["Annulment"]				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	["Dampen Magic"]			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	["Harness Magicka"]			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },	
+	["Evasion"] 				= { 20 , 0 , 0 },
+	["Elude"] 					= { 23 , 0 , 0 },
+	["Shuffle"] 				= { 20 , 0 , 0 },
 
 	--[[---------------------------------
 		GUILDS
 	-----------------------------------]]
 	
-	-- Fighters Guild
-	["Expert Hunter"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 15 , false , nil } },
-	["Evil Hunter"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 13 , false , nil } },
-	["Camouflaged Hunter"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 15 , false , nil } },
-	
-	["Silver Bolts"] 			= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 3.5 , false , nil } },
-	["Silver Shards"] 			= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 3.5 , false , nil } },
-	["Silver Leash"] 			= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 3.5 , false , nil } },
+	["Silver Bolts"] 			= { 0 , 3.5 , 0 },
+	["Silver Shards"] 			= { 0 , 3.5 , 0 },
+	["Silver Leash"] 			= { 0 , 3.5 , 0 },
 
-	["Circle of Protection"] 	= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	["Ring of Preservation"] 	= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	["Turn Undead"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-
-	["Trap Beast"] 				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 30 , false , nil } },
+	["Dawnbreaker"] 			= { 0 , 4 , 0 },
+	["Flawless Dawnbreaker"] 	= { 0 , 6 , 0 },
+	["Dawnbreaker of Smiting"] 	= { 0 , 4 , 0 },
 	
 	-- Mages Guild
-	["Entropy"]					= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 15.6 , true , nil } },
-	["Degeneration"]			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 15.6 , true , nil } , { 1 , BUFF_EFFECT_TYPE_BUFF , 15.6 , true , nil } },
-	["Structured Entropy"]		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 15.6 , true , nil } },
+	["Entropy"]					= { 0 , 15.6 , 0 },
+	["Degeneration"]			= { 0 , 15.6 , 0 },
+	["Structured Entropy"]		= { 15.6 , 15.6 , 0 },
+
+	["Scalding Rune"] 			= { 0 , 11.6 , 0 },
+	
+	["Meteor"] 					= { 0 , 11.8 , 0 },
+	["Ice Comet"] 				= { 0 , 11.8 , 0 },
+	["Shooting Star"] 			= { 0 , 11.8 , 0 },
 	
 	-- Undaunted
-	["Inner Fire"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 15 , true , nil } },
-	["Inner Rage"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 15 , true , nil } },
-	["Inner Beast"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 15 , true , nil } },
+	["Inner Fire"] 				= { 0 , 15 , 0 },
+	["Inner Rage"] 				= { 0 , 15 , 0 },
+	["Inner Beast"] 			= { 0 , 15 , 0 },
 
-	["Bone Shield"]				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , true , nil } },
-	["Bone Surge"]				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , true , nil } },
-	["Spiked Bone Shield"]		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , true , nil } },
+	["Trapping Webs"] 			= { 0 , 8 , 0 },
+	["Shadow Silk"] 			= { 0 , 8 , 0 },
+	["Tangling Webs"] 			= { 0 , 8 , 0 },
 		
 	--[[---------------------------------
 		WORLD
 	-----------------------------------]]
 	
 	-- Vampire
-	["Drain Essence"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 3 , true , nil } , { 2 , BUFF_EFFECT_TYPE_DEBUFF , 3 , true , nil } },
-	["Invigorating Drain"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 3 , true , nil } , { 2 , BUFF_EFFECT_TYPE_DEBUFF , 3 , true , nil } },
-	["Midnight Drain"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 3 , true , nil } , { 2 , BUFF_EFFECT_TYPE_DEBUFF , 3 , true , nil } },
+	["Drain Essence"] 			= { 3 , 3 , 0 },
+	["Invigorating Drain"] 		= { 3 , 3 , 0 },
+	["Midnight Drain"] 			= { 3 , 3 , 0 },
 	
-	["Mist Form"] 				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 3.5 , false , nil } },
-	["Elusive Mist"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 4 , false , nil } },
-	["Poison Mist"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 4 , false , nil } , { 2 , BUFF_EFFECT_TYPE_DEBUFF , 4 , false , nil } },
+	["Mist Form"] 				= { 3.5 , 0 , 0 },
+	["Elusive Mist"] 			= { 4 , 0 , 0 },
+	["Poison Mist"] 			= { 4 , 4 , 0 },
 	
-	["Bat Swarm"] 				= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , false , nil } },
-	["Devouring Swarm"] 		= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , false , nil } },
-	["Clouding Swarm"] 			= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 5 , false , nil } },
+	["Bat Swarm"] 				= { 0 , 5 , 0 },
+	["Devouring Swarm"] 		= { 0 , 5 , 0 },
+	["Clouding Swarm"] 			= { 0 , 5 , 0 },
 
 	-- Werewolf
-	["Roar"]					= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 3.5 , false , nil } },
+	["Roar"]					= { 0 , 4.3 , 1 },
+	["Ferocious Roar"]			= { 0 , 4.3 , 1 },
+	["Rousing Roar"]			= { 0 , 4.3 , 1 },
 
-	["Piercing Howl"]			= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 3 , true , nil } },
+	["Piercing Howl"]			= { 0 , 3 , 0 },
+	["Howl of Despair"]			= { 0 , 3 , 0 },
+	["Howl of Agony"]			= { 0 , 3 , 0 },
 
-	["Infectious Claws"]		= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , true , nil } },
+	["Infectious Claws"]		= { 0 , 10 , 0 },
+	["Claws of Anguish"]		= { 0 , 10 , 0 },
+	["Claws of Life"]			= { 0 , 10 , 0 },
+
+	["Hircine's Rage"]			= { 17 , 0 , 0 },
+	["Hircine's Fortitude"]		= { 8 , 0 , 0 },
 	
 	-- Soul Magic
-	["Soul Trap"] 				= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , true , nil } },
-	["Consuming Trap"] 			= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , true , nil } },
-	["Soul Splitting Trap"] 	= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , true , nil } },
+	["Soul Trap"] 				= { 0 , 10 , 0 },
+	["Consuming Trap"] 			= { 0 , 10 , 0 },
+	["Soul Splitting Trap"] 	= { 0 , 10 , 0 },
 	
-	["Soul Strike"] 			= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 3.7 , true , nil } },
-	["Shatter Soul"] 			= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , true , nil } },
-	["Soul Assault"] 			= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 10 , true , nil } },
+	["Soul Strike"] 			= { 0 , 2.8 , 0 },
+	["Shatter Soul"] 			= { 0 , 2.8 , 0 },
+	["Soul Assault"] 			= { 0 , 3.9 , 0 },
 
 	
 	--[[---------------------------------
@@ -463,30 +364,21 @@ FTC.Buffs.Effects = {
 	-----------------------------------]]
 	
 	-- Support
-	["Purge"] 					= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 3 , false , nil } },
-	["Efficient Purge"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 3 , false , nil } },
-	["Cleanse"] 				= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 6 , false , nil } },
-	
-	["Siege Shield"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 17 , false , nil } },
-	["Siege Weapon Shield"] 	= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	["Propelling Shield"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	
-	["Barrier"] 				= { { 1 , BUFF_EFFECT_TYPE_BUFF , 30 , false , nil } },
-	["Reviving Barrier"] 		= { { 1 , BUFF_EFFECT_TYPE_BUFF , 30 , false , nil } },
-	["Replenishing Barrier"] 	= { { 1 , BUFF_EFFECT_TYPE_BUFF , 30 , false , nil } },
-	
-	-- Assault
-	["Rapid Maneuver"] 			= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	["Retreating Maneuver"] 	= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	["Charging Maneuver"] 		= {	{ 1 , BUFF_EFFECT_TYPE_BUFF , 20 , false , nil } },
-	
-	["Caltrops"] 				= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 30 , false , nil } },
-	["Anti-Cavalry Caltrops"] 	= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 30 , false , nil } },
-	["Razor Caltrops"] 			= { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 30 , false , nil } },
-	
-	["War Horn"] 				= { { 1 , BUFF_EFFECT_TYPE_BUFF , 30 , false , nil } },
-	["Aggressive Horn"] 		= { { 1 , BUFF_EFFECT_TYPE_BUFF , 30 , false , nil } },
-	["Sturdy Horn"] 			= { { 1 , BUFF_EFFECT_TYPE_BUFF , 33 , false , nil } },
+	["Purge"] 					= { 6 , 0 , 0 },
+	["Efficient Purge"] 		= { 6 , 0 , 0 },
+	["Cleanse"] 				= { 6 , 0 , 0 },
+
+	["Caltrops"] 				= { 0 , 30 , 1 },
+	["Anti-Cavalry Caltrops"] 	= { 0 , 8 , 1 },
+	["Razor Caltrops"] 			= { 0 , 8 , 1 },
+
+	["Vigor"] 					= { 20 , 0 , 0 },
+	["Echoing Vigor"] 			= { 20 , 0 , 0 },
+	["Resolving Vigor"] 		= { 20 , 0 , 0 },
+
+	["Magicka Detonation"] 		= { 0 , 4 , 0 },
+	["Inevitable Detonation"] 	= { 0 , 4 , 0 },
+	["Proximity Detonation"] 	= { 0 , 4 , 0 },
 }
 
 --[[ 
@@ -551,7 +443,10 @@ function FTC.Buffs:IsToggle( name )
 		'Inferno',
 		'Flames Of Oblivion',
 		'Sea Of Flames',
-		'Repentance'
+		'Repentance',
+		'Guard',
+		'Mystic Guard',
+		'Stalwart Guard'
 	}
 	for i = 1 , #toggles do
 		if ( name == toggles[i] ) then return true end
@@ -617,25 +512,20 @@ function FTC:FilterBuffInfo( changeType , unitTag , name , buffType , beginTime 
 			if ( unitTag == 'player' ) then	duration = "P"
 			else isValid = false end
 		
-		-- Ignore Cyrodiil Bonuses
+		-- Exclude Cyrodiil Bonuses on Targets
 		elseif ( string.match( name , FTC.L("Keep Bonus") ) or string.match( name , FTC.L("Scroll Bonus") ) or string.match( name , FTC.L("Emperorship") ) ) then
-			if ( unitTag == 'player' ) then	duration = "P"
-			else isValid = false end
-			
-		-- Vampirism
-		elseif ( string.match( name , FTC.L("Vampirism") ) ) then duration = "P"
-			
-		-- Lycanthropy
-		elseif ( name == "Lycanthropy" ) then duration = "P"
-		
-		-- Spirit Armor
-		elseif ( name == "Spirit Armor" ) then duration = "P"
+			if ( unitTag ~= 'player' ) then isValid = false end
 		
 		-- Food Buffs
-		elseif ( string.match( name , FTC.L("Increase Max") ) or string.match( name , FTC.L("Increase All Primary") ) ) then iconName = "/esoui/art/icons/ability_provisioner_004.dds"
-		
-		-- Supernatural Recovery
-		elseif ( name == "Supernatural Recovery" ) then duration = "P" end
+		elseif ( string.match( name , FTC.L("Increase Max") ) or string.match( name , FTC.L("Increase All Primary") ) ) 
+			then iconName = "/esoui/art/icons/ability_provisioner_004.dds"
+
+		-- Exclude Medicinal Use
+		elseif ( string.match( name , FTC.L("Medicinal Use") ) ) then
+			isValid = false
+
+		-- Catch Defaults
+		else duration = "P" end
 		
 	-- Blocking (52)
 	elseif ( ( buffType == ABILITY_TYPE_BLOCK ) or ( name == "Brace (Generic)" ) ) then

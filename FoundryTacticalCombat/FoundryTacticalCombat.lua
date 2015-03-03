@@ -12,9 +12,9 @@
 	 (4) Combat Status Alerts
 	 (5) Damage Tracking and Data
 	 
-	* Version 0.36
+	* Version 0.37
 	* atropos@tamrielfoundry.com
-	* 11-09-2014
+	* 2-7-2015
   ]]--
 
 --[[----------------------------------------------------------
@@ -23,7 +23,7 @@
 FTC 					= {}
 FTC.name				= "FoundryTacticalCombat"
 FTC.command				= "/ftc"
-FTC.version				= 0.35
+FTC.version				= 0.37
 FTC.settings			= 0.35
 FTC.language			= "English"
 
@@ -75,7 +75,7 @@ FTC.defaults			= {
 FTC.init 				= {}
 
 -- Allow the frames to be moved?
-FTC.move = false
+FTC.move 				= false
 	
 --[[ 
  * Initialization function

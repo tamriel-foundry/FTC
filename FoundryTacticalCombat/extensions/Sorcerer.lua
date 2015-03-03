@@ -60,7 +60,7 @@ function ListenForFragments()
 	if ( newCost <= ( FTC.Hotbar[slot].cost / 2 ) and newCost ~= 0 ) then
 	
 		-- Reduce the buff cast time
-		FTC.Hotbar[slot].effects 	= {	{ 2 , BUFF_EFFECT_TYPE_DEBUFF , 2.4 , true , 0.5 } }
+		FTC.Hotbar[slot].effects 	= { 0 , 2.4 , 0.25 }
 	
 		-- Unset the handler
 		button:SetHandler( "OnUpdate" , nil )

@@ -65,21 +65,17 @@ function FTC.SCT:NewExp( eventCode, unitTag, currentExp, maxExp, reason )
 	-- Bail if it's not earned by the player
 	if ( unitTag ~= "player" ) then return end
 	
-	-- Experience gains for non-veteran players
+	-- Experience gains for low level players
 	local base		= 0
 	if ( FTC.Player.level < 50 ) then
 		currentExp 	= GetUnitXP('player')
 		base 		= FTC.Player.exp
 	
-	-- Experience gains for veteran players
-	elseif ( eventCode == EVENT_EXPERIENCE_UPDATE and FTC.Player.level == 50 ) then
-		currentExp 	= GetUnitVeteranPoints('player')
-		base 		= FTC.Player.vet
-		maxExp		= GetUnitVeteranPointsMax('player')
-	
-	-- Veteran point rewards for quest turn-ins
-	elseif ( eventCode == EVENT_VETERAN_POINTS_UPDATE ) then	
-		base 		= FTC.Player.vet
+	-- Champion point gains for level 50 players
+	else
+		currentExp 	= 1500
+		base 		= FTC.Player.cxp
+		maxExp		= 400000
 	end
 	
 	-- Calculate the difference, and ignore zeroes
@@ -90,13 +86,13 @@ function FTC.SCT:NewExp( eventCode, unitTag, currentExp, maxExp, reason )
 	local pct		= math.floor( 100 * ( currentExp / maxExp ) )
 	
 	-- Setup the name
-	local name 		= ( FTC.Player.level == 50 ) and "Veteran Points (" .. pct .. "%)" or "Experience (" .. pct .. "%)"
+	local name 		= "Experience (" .. pct .. "%)"
 
 	-- Setup a new Alert object
 	local newAlert = {
 		["type"]	= 'exp',
 		["name"]	= name,
-		["value"]	= "+" .. diff,
+		["value"]	= CommaValue(diff),
 		["ms"]		= GetGameTimeMilliseconds(),
 		["color"]	= 'c99FFFF',
 	}

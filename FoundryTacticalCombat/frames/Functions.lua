@@ -73,7 +73,7 @@ end
 		
 		-- Update bar
 		bar:SetWidth( ( pct / 100 ) * ( parent:GetWidth() - 2 ) )	
-		curLabel:SetText( ( powerValue > 10000 ) and math.floor( ( powerValue + 500 ) / 1000 ) .. "k" or powerValue )
+		curLabel:SetText( ( powerValue > 100000 ) and math.floor( ( powerValue + 500 ) / 1000 ) .. "k" or CommaValue(powerValue) )
 		pctLabel:SetText(pct .. "%")
 		
 		-- Configure visibility
@@ -138,7 +138,7 @@ function FTC.Frames:SetupXP()
 	local parent 	= _G["FTC_PlayerFrame_Alt"]
 	if ( parent.context	~= "exp" ) then return end
 	
-	if ( FTC.vars.EnableXPBar and FTC.Player.vlevel < 14 ) then 
+	if ( FTC.vars.EnableXPBar ) then 
 
 		-- Change the icon and color
 		parent.icon:SetTexture("/esoui/art/inventory/inventory_tabicon_quest_down.dds")
@@ -146,8 +146,8 @@ function FTC.Frames:SetupXP()
 		parent.bar:SetColor(0,1,1,1)
 	
 		-- Get experience values
-		local maxExp	= ( FTC.Player.level == 50 ) and GetUnitVeteranPointsMax('player') or GetUnitXPMax('player')
-		local currExp	= ( FTC.Player.level == 50 ) and FTC.Player.vet or FTC.Player.exp
+		local maxExp	= ( FTC.Player.level == 50 ) and 400000 or GetUnitXPMax('player')
+		local currExp	= ( FTC.Player.level == 50 ) and GetPlayerChampionXP() or FTC.Player.exp
 		local pct		= math.floor( 100 * ( currExp / maxExp ) )
 		
 		-- Setup the bar
@@ -155,7 +155,7 @@ function FTC.Frames:SetupXP()
 	end
 
 	-- Maybe display the bar
-	parent:SetHidden( not ( FTC.vars.EnableXPBar and FTC.Player.vlevel < 14 ) )		
+	parent:SetHidden( not FTC.vars.EnableXPBar )		
 end
 
 

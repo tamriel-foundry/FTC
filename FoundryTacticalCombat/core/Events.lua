@@ -28,8 +28,7 @@ function FTC:RegisterEvents()
 	
 	-- Buff Events
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_STATS_UPDATED 				, FTC.OnStatsUpdated )
-	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_SLOTS_FULL_UPDATE		, FTC.OnSlotUpdate )
-	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_SLOT_ABILITY_SLOTTED	, FTC.OnSlotUpdate )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_SLOT_UPDATED			, FTC.OnSlotUpdate )
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_UPDATE_COOLDOWNS		, FTC.OnUpdateCooldowns )
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_EFFECT_CHANGED 				, FTC.OnEffectChanged )
 	
@@ -92,20 +91,16 @@ end
  * Runs on the EVENT_STATS_UPDATED listener.
  * This handler fires every time the player changes the contents of their action bar
  ]]--
-function FTC.OnSlotUpdate( eventCode , ... )
+function FTC.OnSlotUpdate( eventCode , slotNum )
 
 	-- Fire callback
 	CALLBACK_MANAGER:FireCallbacks( "FTC_CostChanged" )
+
+	-- Bail if nothing was updated
+	if slotNum > 8 then return end
 	
-	-- Hotbars swappped
-	if ( eventCode == EVENT_ACTION_SLOTS_FULL_UPDATE ) then
-		FTC.Buffs:GetHotbar()
-	
-	-- Hotbar ability changed
-	elseif ( eventCode == EVENT_ACTION_SLOT_ABILITY_SLOTTED ) then
-		local isNew = select( 1 , ... )
-		if ( isNew ) then FTC.Buffs:GetHotbar() end
-	end		
+	-- Update Hotbars
+	FTC.Buffs:GetHotbar()
 end
 
 --[[ 
@@ -418,5 +413,5 @@ function FTC.OnVisualRemoved( eventCode , unitTag, unitAttributeVisual, statType
 	end
 	
 	-- Purge any buffs related to damage shielding
-	if ( FTC.init.Buffs ) then FTC.Buffs:RemoveVisuals( unitTag , unitAttributeVisual , powerType ) end
+	-- if ( FTC.init.Buffs ) then FTC.Buffs:RemoveVisuals( unitTag , unitAttributeVisual , powerType ) end
 end

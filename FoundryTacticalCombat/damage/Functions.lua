@@ -186,24 +186,25 @@ function FTC.Damage:Display()
 		
 		-- Get data
 		local total	= CommaValue( damages[i].total )
-		local crit	= math.floor( ( damages[i].crit / damages[i].count ) * 100 )
+		local count	= damages[i].count
+		local crit	= math.floor( ( damages[i].crit / count ) * 100 )
 		local adps	= string.format( "%.2f" , damages[i].total/fight_time )
 		local pdps	= math.floor( ( adps / dps ) * 100 )
 		
 		-- Add data
 		line:SetHidden(false)
-		left:SetText( damages[i].name .. " - " .. total .. " Damage (" .. crit .. "% Crit)")
+		left:SetText( damages[i].name .. " - " .. total .. " Damage || " .. count .. " Hits || " .. crit .. "% Crit" )
 		right:SetText( "(" .. pdps .. "%) " .. adps .. " DPS" )
 	end
 	
 	-- Hide unused lines
 	for i = ndamage + 1 , 10 do
 		local line 	= _G["FTC_MeterDamage_"..i]
-		line:SetHidden(true)	
+		line:SetHidden(true)
 	end
 	
 	-- Change the element height
-	FTC_MeterDamage:SetHeight( 50 + ( #damages * 24 ) )
+	FTC_MeterDamage:SetHeight( 50 + ( math.min(#damages,10) * 24 ) )
 	
 	--[[----------------------------------
 		OUTGOING HEALING
@@ -232,13 +233,14 @@ function FTC.Damage:Display()
 		
 		-- Get data
 		local total	= CommaValue( heals[i].total )
-		local crit	= math.floor( ( heals[i].crit / heals[i].count ) * 100 )
+		local count	= damages[i].count
+		local crit	= math.floor( ( heals[i].crit / count ) * 100 )
 		local ahps	= string.format( "%.2f" , heals[i].total/fight_time )
 		local phps	= math.floor( ( ahps / hps ) * 100 )
 		
 		-- Add data
 		line:SetHidden(false)
-		left:SetText( heals[i].name .. " - " .. total .. " (" .. crit .. "% Crit)")
+		left:SetText( heals[i].name .. " - " .. total .. " Healing || " .. count .. " Hits || " .. crit .. "% Crit")
 		right:SetText( "(" .. phps .. "%) " .. ahps .. " HPS" )
 	end
 	
@@ -379,7 +381,6 @@ function FTC.Damage:Reset()
 		['maxHealName']	= "",
 		['incoming']	= 0,
 		['maxInc']		= 0,
-		['group']		= 0,
 		['startTime']	= 0,
 		['endTime']		= 0,
 	}
@@ -392,10 +393,6 @@ function FTC.Damage:Reset()
 	
 	-- Setup healing ability tracking
 	FTC.Damage.Heals	= {}
-	
-	-- Setup group tracking
-	FTC.Damage.Group	= {}
-
 end
 
 
@@ -457,12 +454,12 @@ function FTC.Damage:Post( context )
 	if ( 'damage' == context ) then
 		total 	= meter.damage
 		metric	= string.format( "%.1f" , total / fight_time )
-		label 	= name .. " (" .. string.format( "%.1f" , fight_time ) .. "s) - " .. CommaValue(total) .. " Total Damage " .. " (" .. metric .. " DPS)"
+		label 	= name .. " (" .. string.format( "%.1f" , fight_time ) .. "s) || " .. CommaValue(total) .. " Total Damage " .. " (" .. metric .. " DPS)"
 
 	elseif ( 'healing' == context ) then
 		total 	= meter.healing
 		metric	= string.format( "%.1f" , total / fight_time )
-		label 	= name .. " (" .. string.format( "%.1f" , fight_time ) .. "s) - " .. CommaValue(total) .. " Total Healing " .. " (" .. metric .. " HPS)"
+		label 	= name .. " (" .. string.format( "%.1f" , fight_time ) .. "s) || " .. CommaValue(total) .. " Total Healing " .. " (" .. metric .. " HPS)"
 	end
 	
 	-- Determine appropriate channel
