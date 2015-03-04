@@ -26,7 +26,7 @@ function CanFragmentsProc( ability )
 	-- Clear any existing proc buff
 	if ( ability.name == "Crystal Fragments" ) then
 		FTC.Buffs.Player["Crystal Fragments"] = nil	
-		FTC.Hotbar[ability.slot].effects = { { 2 , BUFF_EFFECT_TYPE_DEBUFF , 2.4 , true , 2 } }
+		FTC.Hotbar[ability.slot].effects = FTC.Buffs.Effects["Crystal Fragments"]
 		return
 	end
 

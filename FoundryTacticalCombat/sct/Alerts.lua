@@ -73,7 +73,7 @@ function FTC.SCT:NewExp( eventCode, unitTag, currentExp, maxExp, reason )
 	
 	-- Champion point gains for level 50 players
 	else
-		currentExp 	= 1500
+		currentExp 	= GetPlayerChampionXP()
 		base 		= FTC.Player.cxp
 		maxExp		= 400000
 	end

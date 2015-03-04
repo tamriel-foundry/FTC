@@ -248,9 +248,9 @@ FTC.Buffs.Effects = {
 	["Crescent Sweep"] 			= {	0 , 6 , 0 },
 	
 	-- Dawn's Wrath
-	["Sun Fire"] 				= {	0 , 5.3 , 0.5 },
-	["Reflective Light"] 		= {	0 , 5.3 , 0.5 },
-	["Vampire's Bane"] 			= {	0 , 5.3 , 0.5 },
+	["Sun Fire"] 				= {	0 , 6 , 0.5 },
+	["Reflective Light"] 		= {	0 , 6 , 0.5 },
+	["Vampire's Bane"] 			= {	0 , 8.4 , 0.5 },
 	
 	["Dark Flare"] 				= {	0 , 7.2 , 1.25 },
 	
