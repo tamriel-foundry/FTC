@@ -369,8 +369,8 @@ FTC.Buffs.Effects = {
 	["Cleanse"] 				= { 6 , 0 , 0 },
 
 	["Caltrops"] 				= { 0 , 30 , 1 },
-	["Anti-Cavalry Caltrops"] 	= { 0 , 8 , 1 },
-	["Razor Caltrops"] 			= { 0 , 8 , 1 },
+	["Anti-Cavalry Caltrops"] 	= { 0 , 30 , 1 },
+	["Razor Caltrops"] 			= { 0 , 30 , 1 },
 
 	["Vigor"] 					= { 20 , 0 , 0 },
 	["Echoing Vigor"] 			= { 20 , 0 , 0 },

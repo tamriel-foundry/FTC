@@ -142,13 +142,16 @@ end
  * This handler fires every time a buff effect on a valid unitTag is changed
  ]]--
 function FTC.OnEffectChanged( ... )
+
+	-- Fire callback
+	CALLBACK_MANAGER:FireCallbacks( "FTC_EffectChanged" , ... )
 	
 	-- Otherwise retrieve current buffs if the buffs component is active
 	if ( FTC.init.Buffs ) then 
 	
 		-- Grab relevant arguments
 		local changeType 	= select( 2 , ... )
-		local unitTag 		= select( 5 , ... )	
+		local unitTag 		= select( 5 , ... )
 
 		-- Remove expired buffs
 		if ( changeType == 2 ) then FTC.Buffs:Remove( ... )
@@ -181,6 +184,9 @@ function FTC.OnCombatEvent( eventCode , result , isError , abilityName, abilityG
 	-- Verify it's a valid result type
 	isValid, result , abilityName , sourceType , sourceName , targetName , hitValue = FTC.Damage:Filter( result , abilityName , sourceType , sourceName , targetName , hitValue )
 	if not isValid then return end
+
+	-- Debugging
+	-- d( result .. "||" ..  abilityName  .. "||" .. sourceType  .. "||" .. sourceName  .. "||" .. targetName  .. "||" .. hitValue )
 	
 	-- Determine the context
 	local context = ( sourceType == COMBAT_UNIT_TYPE_PLAYER or sourceType == COMBAT_UNIT_TYPE_PLAYER_PET ) and "Out" or ""

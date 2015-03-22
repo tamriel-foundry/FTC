@@ -322,9 +322,15 @@ function FTC.Damage:Filter( result , abilityName , sourceType , sourceName , tar
 	
 		-- Reflag self-harm
 		if ( string.match( targetName , FTC.Player.nicename ) and ( result ~= ACTION_RESULT_HEAL and result ~= ACTION_RESULT_HOT_TICK and result ~= ACTION_RESULT_HOT_TICK_CRITICAL ) ) then sourceType = COMBAT_UNIT_TYPE_NONE end
+
+		-- Reduced Damage
+		if ( result == ACTION_RESULT_BLOCKED_DAMAGE ) then isValid = true
 	
-		-- Immunities
-		if ( result == ACTION_RESULT_IMMUNE or result == ACTION_RESULT_DODGED or result == ACTION_RESULT_BLOCKED_DAMAGE or result == ACTION_RESULT_MISS ) then isValid = true
+		-- Misses
+		elseif ( result == ACTION_RESULT_DODGED or result == ACTION_RESULT_MISS ) then isValid = true
+
+		-- Immunities (IGNORE in 1.6, duplicate damage issue)
+		elseif ( result == ACTION_RESULT_IMMUNE ) then isValid = false
 		
 		-- Ignore zeroes
 		elseif ( hitValue == 0 ) then isValid = false
@@ -339,8 +345,14 @@ function FTC.Damage:Filter( result , abilityName , sourceType , sourceName , tar
 	-- Incoming actions
 	elseif ( sourceType == COMBAT_UNIT_TYPE_NONE and string.match( targetName , FTC.Player.nicename ) ) then 
 	
-		-- Immunities
-		if ( result == ACTION_RESULT_IMMUNE or result == ACTION_RESULT_DODGED or result == ACTION_RESULT_BLOCKED_DAMAGE or result == ACTION_RESULT_MISS ) then isValid = true
+		-- Reduced Damage
+		if ( result == ACTION_RESULT_BLOCKED_DAMAGE ) then isValid = true
+	
+		-- Misses
+		elseif ( result == ACTION_RESULT_DODGED or result == ACTION_RESULT_MISS ) then isValid = true
+
+		-- Immunities (IGNORE in 1.6, duplicate damage issue)
+		elseif ( result == ACTION_RESULT_IMMUNE ) then isValid = false
 		
 		-- Ignore zeroes
 		elseif ( hitValue == 0 ) then isValid = false
