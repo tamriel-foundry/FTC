@@ -77,7 +77,7 @@ function CanFragmentsProc( ability )
 
 	-- Is Crystal Fragments (47569) available?
 	for i = 3 , #FTC.Hotbar do
-		if ( FTC.Hotbar[i].id == 47569 ) then
+		if ( FTC.Hotbar[i].id == 46324 or FTC.Hotbar[i].id == 47565 or FTC.Hotbar[i].id == 47567 or FTC.Hotbar[i].id == 47569 ) then
 		
 			-- Get the button
 			local button = _G["ActionButton"..i.."Button"]
