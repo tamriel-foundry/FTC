@@ -44,7 +44,7 @@ end
  * Minimizes the number of cycles needed for updating if a refresh is not required every frame
  ]]-- 
 FTC.buffers = {}
-function FTC.BufferScript( bufferKey , bufferTime )
+function FTC:BufferScript( bufferKey , bufferTime )
 	
 	-- Make sure a function is passed and exists
 	if not bufferKey then return end

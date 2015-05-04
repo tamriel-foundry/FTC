@@ -26,7 +26,6 @@ FTC.Frames.Defaults = {
     -- Target Frame
     ["FTC_TargetFrame"]         = {CENTER,CENTER,350,350},
     ["TargetFrame"]             = true,
-    ["FrameText"]               = true,
 }
 
 --[[----------------------------------------------------------
@@ -42,30 +41,25 @@ FTC.Frames.Defaults = {
  ]]--
 function FTC.Frames:Initialize()
 
-    -- Unregister events for default frames
-    if ( FTC.Vars.EnableFrames ) then
-        local frames = { 'Health' , 'Stamina' , 'Magicka' , 'MountStamina' , 'SiegeHealth' , 'Werewolf' }
-        for i = 1 , #frames do
-            local frame = _G["ZO_PlayerAttribute"..frames[i]]
-            frame:UnregisterForEvent(EVENT_POWER_UPDATE)
-            frame:UnregisterForEvent(EVENT_INTERFACE_SETTING_CHANGED)
-            frame:UnregisterForEvent(EVENT_PLAYER_ACTIVATED)
-            EVENT_MANAGER:UnregisterForUpdate("ZO_PlayerAttribute"..frames[i].."FadeUpdate")
-            frame:SetHidden(true)       
-        end
+    -- Unregister events to disable default frames
+    local frames = { 'Health' , 'Stamina' , 'Magicka' , 'MountStamina' , 'SiegeHealth' , 'Werewolf' }
+    for i = 1 , #frames do
+        local frame = _G["ZO_PlayerAttribute"..frames[i]]
+        frame:UnregisterForEvent(EVENT_POWER_UPDATE)
+        frame:UnregisterForEvent(EVENT_INTERFACE_SETTING_CHANGED)
+        frame:UnregisterForEvent(EVENT_PLAYER_ACTIVATED)
+        EVENT_MANAGER:UnregisterForUpdate("ZO_PlayerAttribute"..frames[i].."FadeUpdate")
+        frame:SetHidden(true)       
     end
     
     -- Hide the default target frame
-    if ( FTC.Vars.EnableFrames and not FTC.Vars.TargetFrame ) then
-        ZO_TargetUnitFramereticleover:SetHidden(true)
-    end
+    if ( not FTC.Vars.TargetFrame ) then ZO_TargetUnitFramereticleover:SetHidden(true) end
 
-    -- Create UI elements
+    -- Create unit frame UI elements
     FTC.Frames:Controls()
 
     -- Register init status
-    if ( FTC.Vars.EnableFrames ) then FTC.init.Frames = true end
-    if ( FTC.Vars.EnableHotbar ) then FTC.init.Hotbar = true end
+    FTC.init.Frames = true
 
     -- Populate starting information to player and target frames
     FTC.Frames:SetupPlayer()

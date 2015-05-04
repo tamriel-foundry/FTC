@@ -1,15 +1,16 @@
 
 FTC Weekend of Code - Objectives!
 
-	Unit Frames
-		Options 		sizing, color, font, etc...
-		Shielding		better representation of shielded health
-		Visualizations	regen/DoT/execute/etc..
+DONE	Unit Frames
+DONE		Options 		sizing, color, font, etc...
+DONE		Shielding		better representation of shielded health
+DONE		Visualizations	regen/DoT/execute/etc..
 
-	Advanced Hotbar
-		Show GCD
-		Move ultimate tracking to advanced hotbar
-		Move potion tracking to advanced hotbar
+DONE	Advanced Hotbar
+			Show global cooldown
+DONE		Move ultimate tracking to advanced hotbar
+			Show quickslots
+			Move potion tracking to advanced hotbar
 
 	Buffs/Debuffs
 		Options			icon and/or text
@@ -27,4 +28,4 @@ FTC Weekend of Code - Objectives!
 	Damage Meter
 		Statistics		more reported statistics, better insight into per/mob
 
-
+DONE 	Default Frames	deprecate default frame text

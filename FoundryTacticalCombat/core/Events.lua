@@ -47,14 +47,6 @@ function FTC:RegisterEvents()
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ALLIANCE_POINT_UPDATE  		, FTC.OnAPUpdate )
 end
 
---[[ 
- * Unregisters event listeners that are no longer needed due to FTC overrides
- * Runs during FTC:Initialize()
- ]]--
-function FTC:UnregisterEvents()
-	EVENT_MANAGER:UnregisterForEvent( "FTC" , EVENT_ADD_ON_LOADED )
-end
-
 --[[----------------------------------------------------------
 	LOAD EVENTS
   ]]----------------------------------------------------------
@@ -62,9 +54,6 @@ function FTC.OnLoad()
 	EVENT_MANAGER:UnregisterForEvent( "FTC" , EVENT_PLAYER_ACTIVATED )
 	d("[FTC] " .. GetString(FTC_LongInfo))
 end
-
-
-
 
 --[[----------------------------------------------------------
 	TARGET EVENTS
