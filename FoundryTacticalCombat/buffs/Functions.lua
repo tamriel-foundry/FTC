@@ -174,7 +174,7 @@ end
 function FTC.Buffs:GetHotbar()
 
 	-- Empty the hotbar
-	FTC.Hotbar 					= {}
+	FTC.Hotbar.Abilities = {}
 
 	-- Get the current loadout
 	for i = 3, 8 do
@@ -208,7 +208,7 @@ function FTC.Buffs:GetHotbar()
 		end
 
 		-- Save the slot
-		FTC.Hotbar[i] = slot
+		FTC.Hotbar.Abilities[i] = slot
 	end
 end
 
@@ -373,7 +373,7 @@ function FTC.Buffs:CheckCast()
 			if( FTC.Buffs:HasFailure(i) ) then return end
 			
 			-- Get the used ability
-			local ability = FTC.Hotbar[i]
+			local ability = FTC.Hotbar.Abilities[i]
 			
 			-- Dont process effects immediately for ground-target spells
 			if ( ability.ground ) then 

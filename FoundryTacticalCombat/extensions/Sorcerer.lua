@@ -29,6 +29,7 @@ function FTC.ProcFragments( ... )
 
 		-- Get the slot
 		local slot = FTC.Sorcerer.fragSlot
+		if slot == nil then return end
 
 		-- Get the time
 		local ms = GetGameTimeMilliseconds()
@@ -42,7 +43,7 @@ function FTC.ProcFragments( ... )
 				["debuff"]	= false,
 				["stacks"]	= 0,
 				["tag"]		= 'player',
-				["icon"]	= FTC.Hotbar[slot].tex,
+				["icon"]	= FTC.Hotbar.Abilities[slot].tex,
 			}
 			FTC.Buffs.Player["Crystal Fragments"] = newBuff
 		end
@@ -71,13 +72,13 @@ function CanFragmentsProc( ability )
 	-- Clear any existing proc buff
 	if ( ability.name == "Crystal Fragments" ) then
 		FTC.Buffs.Player["Crystal Fragments"] = nil	
-		FTC.Hotbar[ability.slot].effects = FTC.Buffs.Effects["Crystal Fragments"]
+		FTC.Hotbar.Abilities[ability.slot].effects = FTC.Buffs.Effects["Crystal Fragments"]
 		return
 	end
 
 	-- Is Crystal Fragments (47569) available?
 	for i = 3 , #FTC.Hotbar do
-		if ( FTC.Hotbar[i].id == 46324 or FTC.Hotbar[i].id == 47565 or FTC.Hotbar[i].id == 47567 or FTC.Hotbar[i].id == 47569 ) then
+		if ( FTC.Hotbar.Abilities[i].id == 47569 ) then
 		
 			-- Get the button
 			local button = _G["ActionButton"..i.."Button"]

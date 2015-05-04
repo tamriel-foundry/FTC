@@ -12,7 +12,7 @@
 	 (4) Combat Status Alerts
 	 (5) Damage Tracking and Data
 	 
-	* Version 0.38
+	* Version 0.39
 	* atropos@tamrielfoundry.com
 	* 3-22-2015
   ]]--
@@ -20,23 +20,25 @@
 --[[----------------------------------------------------------
 	INITIALIZATION
   ]]----------------------------------------------------------
-FTC 					= {}
+FTC = {}
 FTC.name				= "FoundryTacticalCombat"
 FTC.command				= "/ftc"
-FTC.version				= 0.37
-FTC.settings			= 0.35
-FTC.language			= "English"
+FTC.version				= 0.39
+FTC.settings			= 0.39
+FTC.language			= GetCVar("language.2")
 
--- Default Saved Variables
+-- Declare default components
+FTC.Defaults 			= {
+	["EnableBuffs"] 			= false,
+	["EnableSCT"] 				= false,
+	["EnableFrames"] 			= true,
+	["EnableDamage"]			= false,
+	["EnableHotbar"]			= true,
+}
+
+--[[ Default Saved Variables
 FTC.defaults			= {
 
-	-- Components
-	["EnableBuffs"] 			= true,
-	["EnableSCT"] 				= true,
-	["EnableFrames"] 			= true,
-	["EnableDamage"]			= true,
-	["EnableUltimate"]			= true,
-	
 	-- Scrolling Combat Text
 	["SCTCount"]				= 20,
 	["SCTSpeed"]				= 3,
@@ -56,25 +58,17 @@ FTC.defaults			= {
 	["FTC_TargetBuffs"]			= {CENTER,CENTER,0,-500},
 	["FTC_TargetDebuffs"]		= {CENTER,CENTER,0,-400},
 	
-	-- Frames
-	["TargetFrame"]				= true,
-	["FrameText"]				= true,
-	["EnableXPBar"]				= true,
-	["EnableNameplate"]			= true,
-	["OpacityIn"]				= 100,
-	["OpacityOut"]				= 60,
-	["FTC_PlayerFrame"]			= {CENTER,CENTER,-450,300},
-	["FTC_TargetFrame"]			= {CENTER,CENTER,450,275},
-	
 	-- Damage
 	["FTC_MiniMeter"]			= {TOPLEFT,TOPLEFT,10,10},
 	["DamageTimeout"]			= 5,
-	}
+
+]] --
 
 -- Component Management
 FTC.init 				= {}
 
 -- Allow the frames to be moved?
+FTC.inMenu				= false
 FTC.move 				= false
 	
 --[[ 
@@ -85,9 +79,13 @@ function FTC.Initialize( eventCode, addOnName )
 
 	-- Only set up for FTC
 	if ( addOnName ~= FTC.name ) 	then return end
+
+	-- Pull defaults from sub-components
+	FTC.JoinTables(FTC.Defaults,FTC.Frames.Defaults)
 	
 	-- Load saved variables
-	FTC.vars = ZO_SavedVars:New( 'FTC_VARS' , math.floor( FTC.settings * 100 ) , nil , FTC.defaults )
+	FTC.Vars = ZO_SavedVars:NewAccountWide( 'FTC_VARS' , math.floor( FTC.settings * 100 ) , nil , FTC.Defaults )
+	FTC.Vars = FTC.Defaults
 	
 	-- Setup Localization
 	FTC.Localize()
@@ -98,15 +96,18 @@ function FTC.Initialize( eventCode, addOnName )
 
 	-- Unit Frames Component
 	FTC.Frames:Initialize()
+
+	-- Advanced Hotbar Component
+	if ( FTC.Vars.EnableHotbar )	then FTC.Hotbar:Initialize() end
 	
 	-- Damage Tracking Component
-	if ( FTC.vars.EnableDamage ) 	then FTC.Damage:Initialize() end
+	if ( FTC.Vars.EnableDamage ) 	then FTC.Damage:Initialize() end
 	
 	-- Active Buffs Component
-	if ( FTC.vars.EnableBuffs ) 	then FTC.Buffs:Initialize() end
+	if ( FTC.Vars.EnableBuffs ) 	then FTC.Buffs:Initialize() end
 
 	-- Scrolling Combat Text Component
-	if ( FTC.vars.EnableSCT ) 		then FTC.SCT:Initialize() end
+	if ( FTC.Vars.EnableSCT ) 		then FTC.SCT:Initialize() end
 	
 	-- Setup settings component
 	FTC.Menu:Initialize()

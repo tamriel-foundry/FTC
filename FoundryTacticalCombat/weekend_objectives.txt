@@ -1,0 +1,30 @@
+
+FTC Weekend of Code - Objectives!
+
+	Unit Frames
+		Options 		sizing, color, font, etc...
+		Shielding		better representation of shielded health
+		Visualizations	regen/DoT/execute/etc..
+
+	Advanced Hotbar
+		Show GCD
+		Move ultimate tracking to advanced hotbar
+		Move potion tracking to advanced hotbar
+
+	Buffs/Debuffs
+		Options			icon and/or text
+		Options			sizing, color, fonts, etc..
+		Localization	make sure buff tracking works with all languages
+
+	Scrolling Combat Text
+		Options			icon and/or text
+		Options			font size, color, etc...
+		Frames			Show large Mag/Stam +/- next to frames
+		
+	Alerts
+		Expansion		more useful alerts, different positioning
+
+	Damage Meter
+		Statistics		more reported statistics, better insight into per/mob
+
+

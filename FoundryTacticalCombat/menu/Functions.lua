@@ -1,6 +1,6 @@
 
  --[[----------------------------------------------------------
-	MENU FUNCTIONS
+		MENU FUNCTIONS
 	-----------------------------------------------------------
 	* Initializes and handles menu actions
 	* Runs last in the initialization order
@@ -18,21 +18,74 @@ function FTC.Menu:Initialize()
 		displayName			= "Foundry Tactical Combat by Atropos",
 		author 				= "Atropos", 
 		version 			= FTC.version, 
-		registerForRefresh 	= false,
-		registerForDefaults = false,
+		registerForRefresh 	= true,
+		registerForDefaults = true,
 	}
 
 	-- Setup the initial panel
 	LAM2:RegisterAddonPanel( "FTC_Menu" , FTC.Menu.panel )
 
-	
 	-- Configure menu control options
 	FTC.Menu:Controls()
 
 	-- Setup the menus
 	LAM2:RegisterOptionControls( "FTC_Menu", FTC.Menu.options )
+
+	-- Register callback to detect when the menu is open
+	CALLBACK_MANAGER:RegisterCallback("LAM-RefreshPanel" , function(panel) FTC.Menu:Reposition(panel) end )
+
+	-- Register a callback to detect when the menu closes
+	FTC_Menu:SetHandler( "OnHide", function(panel) FTC.Menu:Reposition(panel) end)
 end
 
+
+function FTC.Menu:Reposition(panel)
+	
+	-- Bail if it's some other panel
+	if ( panel ~= FTC_Menu ) then return end
+
+	-- If the menu is shown, move some objects to the right side of the screen
+	if ( not panel:IsHidden() ) then
+
+		-- Show the player frame
+		FTC_PlayerFrame:ClearAnchors()
+		FTC_PlayerFrame:SetAnchor(BOTTOMLEFT,FTC_UI,CENTER,50,-20)
+		FTC_PlayerFrame:SetHidden(false)
+		FTC_PlayerFrame:SetAlpha(1)
+
+		-- Show the target frame
+		FTC_TargetFrame:ClearAnchors()
+		FTC_TargetFrame:SetAnchor(TOPLEFT,FTC_UI,CENTER,50,20)
+		FTC_TargetFrame:SetHidden(false)
+		FTC_TargetFrame:SetAlpha(1)
+
+		-- Spoof a shield on the player frame
+		FTC.Frames:UpdateShield( 'player', math.floor(FTC.Player.health.max*.75) ,  FTC.Player.health.max )
+
+		-- Toggle visibility
+		FTC.inMenu = true
+		FTC:ToggleVisibility()
+
+	-- Otherwise, restore their positions
+	else
+
+		-- Reset the player frame
+		FTC_PlayerFrame:ClearAnchors()
+		local anchor = FTC.Vars.FTC_PlayerFrame
+		FTC_PlayerFrame:SetAnchor(anchor[1],FTC_UI,anchor[2],anchor[3],anchor[4])
+		FTC.Frames:SetupPlayer()
+
+		-- Reset the target frame
+		FTC_TargetFrame:ClearAnchors()
+		local anchor = FTC.Vars.FTC_TargetFrame
+		FTC_TargetFrame:SetAnchor(anchor[1],FTC_UI,anchor[2],anchor[3],anchor[4])
+		FTC.Frames:SetupTarget()
+
+		-- Toggle visibility
+		FTC.inMenu = false
+		FTC:ToggleVisibility()
+	end
+end
 
 --[[ 
  * Toggles current setting for a variable
@@ -41,7 +94,7 @@ end
 function FTC.Menu:Toggle( setting , reload )
 	
 	-- Update the database
-	FTC.vars[setting] = not FTC.vars[setting]
+	FTC.Vars[setting] = not FTC.Vars[setting]
 	
 	-- Re-configure some things
 	if ( FTC.init.Frames ) then FTC.Frames:SetupPlayer() end
@@ -50,21 +103,39 @@ function FTC.Menu:Toggle( setting , reload )
 	if reload then ReloadUI() end
 end
 
-
 --[[ 
  * Toggles current setting for a variable
  * Called by elements created in FTC.Menu:Controls()
  ]]-- 
 function FTC.Menu:Update( setting , value , reload )
-	FTC.vars[setting] = value
+	FTC.Vars[setting] = value
 	
 	-- Maybe reload
 	if reload then ReloadUI() end
 end
 
+--[[----------------------------------------------------------
+	 UNIT FRAMES
+  ]]----------------------------------------------------------
+
+function FTC.Menu:UpdateFrames(setting,value,...)
+
+	-- Apply the new setting
+	FTC.Vars[setting] = value
+
+	-- Rebuild the frames dynamically
+	FTC.Frames:Controls()
+
+	-- Re-populate the frames
+	FTC.Frames:SetupPlayer()
+
+	-- Position the frame for menu display
+	FTC.Menu:Reposition(FTC_Menu)
+end
+
 --[[ 
- * Toggles movability of unit frames
- * Called by elements created in FTC.Menu:Controls()
+	Toggles movability of unit frames
+	Called by elements created in FTC.Menu:Controls()
  ]]--
 function FTC.Menu:MoveFrames()
 
@@ -100,7 +171,7 @@ function FTC.Menu:MoveFrames()
 		FTC_LongBuffs:SetMouseEnabled( move )
 		FTC_LongBuffs:SetMovable( move )
 		
-		if ( not FTC.vars.AnchorBuffs ) then
+		if ( not FTC.Vars.AnchorBuffs ) then
 			FTC_PlayerBuffs:SetMouseEnabled( move )
 			FTC_PlayerBuffs:SetMovable( move )		
 			FTC_PlayerDebuffs:SetMouseEnabled( move )
@@ -152,7 +223,7 @@ function FTC.Menu:SaveAnchor( control )
 	
 	-- Save the anchors
 	if ( isValidAnchor ) then
-		FTC.vars[control:GetName()] = {point,relativePoint,offsetX,offsetY}
+		FTC.Vars[control:GetName()] = {point,relativePoint,offsetX,offsetY}
 	end
 end
 
@@ -167,7 +238,7 @@ function FTC.Menu:Reset()
 	
 	-- Reset the vars
 	for var , value in pairs( defaults ) do
-		FTC.vars[var] = value	
+		FTC.Vars[var] = value	
 	end
 		
 	-- Reload UI

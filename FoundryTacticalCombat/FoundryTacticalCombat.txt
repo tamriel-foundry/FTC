@@ -1,11 +1,39 @@
 ## Title: Foundry Tactical Combat
 ## Description: A combat enhancement addon designed to give players access to relevant combat data in an easy to process framework which allows them to respond quickly and effectively to evolving combat situations.
-## Version: 0.38
+## Version: 0.39
 ## APIVersion: 100011
 ## SavedVariables: FTC_VARS
 ## OptionalDependsOn: LibAddonMenu-2.0
 
 FoundryTacticalCombat.lua
+FoundryTacticalCombat.xml
+bindings.xml
+
+buffs/Functions.lua
+buffs/Effects.lua
+buffs/Controls.lua
+
+core/Functions.lua
+core/UI.lua
+core/Events.lua
+
+character/Functions.lua
+
+damage/Functions.lua
+damage/Controls.lua
+
+extensions/Sorcerer.lua
+extensions/Weapons.lua
+extensions/Guild.lua
+
+frames/Functions.lua
+frames/Controls.lua
+
+hotbar/Functions.lua
+hotbar/Controls.lua
+
+lang/Localization.lua
+lang/English.lua
 
 lib/LibStub.lua
 lib/LAM/LibAddonMenu-2.0.lua
@@ -22,39 +50,12 @@ lib/LAM/controls/header.lua
 lib/LAM/controls/slider.lua
 lib/LAM/controls/texture.lua
 
-core/Functions.lua
-core/UI.lua
-core/Events.lua
-
-lang/Localization.lua
-lang/German.lua
-lang/French.lua
-
-buffs/Functions.lua
-buffs/Effects.lua
-buffs/Controls.lua
-
-character/Functions.lua
-
-damage/Functions.lua
-damage/Controls.lua
+menu/Functions.lua
+menu/Controls.lua
 
 sct/Functions.lua
 sct/Alerts.lua
 sct/Controls.lua
-
-frames/Functions.lua
-frames/Controls.lua
-
-menu/Functions.lua
-menu/Controls.lua
-
-extensions/Sorcerer.lua
-extensions/Weapons.lua
-extensions/Guild.lua
-
-FoundryTacticalCombat.xml
-bindings.xml
 
 ; DISCLAIMER:
 ;

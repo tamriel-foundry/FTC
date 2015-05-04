@@ -31,6 +31,13 @@ function FTC.Chain( object )
 	return T
 end
 
+ --[[ 
+ * Simple function for appending two tables together
+ ]]-- 
+function FTC.JoinTables(t1,t2)
+	for k,v in pairs(t2) do t1[k]=v end
+	return t1
+end
 
  --[[ 
  * A buffering function useful for remembering the last time an OnUpdate script ran
@@ -63,17 +70,17 @@ end
  * Toggles the visibility of add-on elements
  * Called by OnReticleHidden()
  ]]-- 
-function FTC:ToggleVisibility( eventCode , isHidden )
+function FTC:ToggleVisibility( activeLayerIndex )
+
+	-- Maybe get action layer
+	activeLayerIndex = activeLayerIndex or GetNumActiveActionLayers()
 
 	-- Are we in move mode?
-	if( FTC.move ) then isHidden = false end
+	local hidden = activeLayerIndex > 2 and not FTC.move and not FTC.inMenu
 	
-	-- Hide unit frames
-	if( FTC.init.Frames ) then		
-		FTC_PlayerFrame:SetHidden( isHidden )
-		if ( isHidden ) then FTC_TargetFrame:SetHidden( true ) end
-	end
-	
+	-- Hide the FTC_UI Layer
+	FTC_UI:SetHidden(hidden)
+
 	-- Hide SCT elements
 	if( FTC.init.SCT) then
 		FTC_CombatTextOut:SetHidden( isHidden )
@@ -86,7 +93,7 @@ function FTC:ToggleVisibility( eventCode , isHidden )
 		FTC_PlayerDebuffs:SetHidden( isHidden )
 		FTC_TargetBuffs:SetHidden( isHidden )
 		FTC_TargetDebuffs:SetHidden( isHidden )
-		if ( FTC.vars.EnableLongBuffs ) then FTC_LongBuffs:SetHidden( isHidden ) end
+		if ( FTC.Vars.EnableLongBuffs ) then FTC_LongBuffs:SetHidden( isHidden ) end
 	end
 end
 
@@ -95,9 +102,9 @@ end
  * Called by OnTargetChanged()
  ]]--
 function FTC:UpdateTarget()
-
+	
 	-- Maybe hide the default frame
-	if ( FTC.init.Frames and not FTC.vars.TargetFrame ) then
+	if ( FTC.init.Frames and not FTC.Vars.TargetFrame ) then
 		ZO_TargetUnitFramereticleover:SetHidden(true)
 	end
 		
@@ -126,7 +133,7 @@ function FTC:UpdateTarget()
 	-- Update target data and configure frame
 	if ( not ignore ) then 
 		FTC.Target:Update() 
-		FTC.Frames.SetupTarget()
+		FTC.Frames:SetupTarget()
 	end
 
 	-- Toggle visibility
@@ -194,7 +201,7 @@ end
  * Sanitizes a localized string, removing characters like ^m
  ]]--
 function SanitizeLocalization( localString )
-	local a,b 	= string.find( localString , "%^" )
-	if ( a ~= nil ) then return string.sub( localString , 1 , a - 1 )
-	else return localString end
+	if ( localString == nil ) then return "" end
+	local a,b = string.find( localString , "%^" )
+	return ( a ~= nil ) and string.sub( localString , 1 , a - 1 ) or ""
 end

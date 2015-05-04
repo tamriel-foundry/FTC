@@ -10,11 +10,15 @@
  
 function FTC:RegisterEvents()
 
+	-- Startup Events
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_PLAYER_ACTIVATED				, FTC.OnLoad )
+
 	-- Target Events
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_RETICLE_TARGET_CHANGED  		, FTC.OnTargetChanged )
 	
 	-- Interface Events
-	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_RETICLE_HIDDEN_UPDATE  		, FTC.OnReticleHidden )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_LAYER_POPPED			, FTC.OnLayerChange )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_LAYER_PUSHED			, FTC.OnLayerChange )
 	
 	-- Unit Frames
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_POWER_UPDATE 					, FTC.OnPowerUpdate )
@@ -52,6 +56,17 @@ function FTC:UnregisterEvents()
 end
 
 --[[----------------------------------------------------------
+	LOAD EVENTS
+  ]]----------------------------------------------------------
+function FTC.OnLoad()
+	EVENT_MANAGER:UnregisterForEvent( "FTC" , EVENT_PLAYER_ACTIVATED )
+	d("[FTC] " .. GetString(FTC_LongInfo))
+end
+
+
+
+
+--[[----------------------------------------------------------
 	TARGET EVENTS
   ]]----------------------------------------------------------
  
@@ -74,10 +89,10 @@ end
  * Runs on the EVENT_RETICLE_HIDDEN_UPDATE listener.
  * This handler fires every time the interface mode is changed from reticle to cursor
  ]]--
-function FTC.OnReticleHidden( ... )
+function FTC.OnLayerChange( eventCode, layerIndex, activeLayerIndex )
 
 	-- Toggle element visibility
-	FTC:ToggleVisibility( ... )
+	FTC:ToggleVisibility( activeLayerIndex )
 	
 end
 
@@ -306,8 +321,8 @@ function FTC.OnPowerUpdate( eventCode , unitTag, powerIndex, powerType, powerVal
 			FTC.Frames:UpdateAttribute( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
 			
 		-- Ultimate
-		elseif ( powerType == POWERTYPE_ULTIMATE and FTC.init.Ultimate ) then
-			FTC.Frames:UpdateUltimate( powerValue , powerMax , powerEffectiveMax )
+		elseif ( powerType == POWERTYPE_ULTIMATE ) then
+			if ( FTC.init.Hotbar ) then FTC.Hotbar:UpdateUltimate( powerValue , powerMax , powerEffectiveMax ) end
 			
 		-- Mount Stamina
 		elseif ( powerType == POWERTYPE_MOUNT_STAMINA ) then
@@ -315,7 +330,7 @@ function FTC.OnPowerUpdate( eventCode , unitTag, powerIndex, powerType, powerVal
 		
 		-- Werewolf
 		elseif ( powerType == POWERTYPE_WEREWOLF ) then
-			if ( FTC.init.Frames ) then FTC.Frames:UpdateWerewolf( powerValue, powerMax, powerEffectiveMax ) end
+			--if ( FTC.init.Frames ) then FTC.Frames:UpdateWerewolf( powerValue, powerMax, powerEffectiveMax ) end
 		end
 
 	-- Target updates
@@ -346,30 +361,24 @@ end
  * Runs on the EVENT_MOUNTED_STATE_CHANGED listener.
  * This handler fires every time the player has a change to a derived stat
  ]]--
-function FTC.OnMount( ... )
-	if ( FTC.init.Frames ) then 
-		FTC.Frames:SetupMount( ... )
-	end
+function FTC.OnMount()
+	if ( FTC.init.Frames ) then FTC.Frames:SetupAltBar() end
 end
 
 --[[ 
- * Runs on the EVENT_MOUNTED_STATE_CHANGED listener.
+ * Runs on the EVENT_BEGIN_SIEGE_CONTROL and EVENT_END_SIEGE_CONTROL listener.
  * This handler fires every time the player has a change to a derived stat
  ]]--
 function FTC.OnSiege()
-	if ( FTC.init.Frames ) then
-		FTC.Frames:SetupSiege()
-	end
+	if ( FTC.init.Frames ) then FTC.Frames:SetupAltBar() end
 end
 
 --[[ 
- * Runs on the EVENT_MOUNTED_STATE_CHANGED listener.
+ * Runs on the EVENT_WEREWOLF_STATE_CHANGED listener.
  * This handler fires every time the player has a change to a derived stat
  ]]--
-function FTC.OnWerewolf( ... )
-	if ( FTC.init.Frames ) then 
-		FTC.Frames:SetupWerewolf( ... )
-	end
+function FTC.OnWerewolf()
+	if ( FTC.init.Frames ) then FTC.Frames:SetupAltBar() end
 end
 
 
@@ -382,8 +391,12 @@ function FTC.OnVisualAdded( eventCode , unitTag, unitAttributeVisual, statType, 
 	-- We only care about player and reticletarget
 	if ( unitTag ~= "player" and unitTag ~= "reticleover" ) then return end
 
-	-- Damage Shields
-	if ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH ) then
+	-- Attribute Regeneration
+	if ( unitAttributeVisual == ATTRIBUTE_VISUAL_INCREASED_REGEN_POWER or unitAttributeVisual == ATTRIBUTE_VISUAL_DECREASED_REGEN_POWER ) then
+		if ( FTC.init.Frames )  then FTC.Frames:Regen(unitTag,unitAttributeVisual,powerType,2000) end	
+	
+	-- Damage Shields 
+	elseif ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH and value > 0) then
 		if ( FTC.init.Frames ) then FTC.Frames:UpdateShield( unitTag , value , maxValue ) end
 	end
 end
@@ -396,28 +409,36 @@ function FTC.OnVisualUpdate( eventCode , unitTag, unitAttributeVisual, statType,
 
 	-- We only care about player and reticletarget
 	if ( unitTag ~= "player" and unitTag ~= "reticleover" ) then return end
-	
+
+	-- Attribute Regeneration
+	if ( unitAttributeVisual == ATTRIBUTE_VISUAL_INCREASED_REGEN_POWER or unitAttributeVisual == ATTRIBUTE_VISUAL_DECREASED_REGEN_POWER ) then
+		if ( FTC.init.Frames )  then FTC.Frames:Regen(unitTag,unitAttributeVisual,powerType,2000) end	
+
 	-- Damage Shields
-	if ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH ) then
+	elseif ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH ) then
 		if ( FTC.init.Frames ) then FTC.Frames:UpdateShield( unitTag , newValue , newMaxValue ) end
 	end
 end
 
 
 --[[ 
- * Runs on the EVENT_UNIT_ATTRIBUTE_VISUAL_UPDATED listener.
- * This handler fires every time a damage shield, buff, or other "visual" effect occurs
- ]]--				
+ * Runs on the EVENT_UNIT_ATTRIBUTE_VISUAL_REMOVED listener.
+ * This handler fires every time a damage shield, buff, or other "visual" effect is removed
+--]]
 function FTC.OnVisualRemoved( eventCode , unitTag, unitAttributeVisual, statType, attributeType, powerType, value, maxValue )
 
 	-- We only care about player and reticletarget
 	if ( unitTag ~= "player" and unitTag ~= "reticleover" ) then return end
 	
+	-- Attribute Regeneration
+	if ( unitAttributeVisual == ATTRIBUTE_VISUAL_INCREASED_REGEN_POWER or unitAttributeVisual == ATTRIBUTE_VISUAL_DECREASED_REGEN_POWER ) then
+		if ( FTC.init.Frames )  then FTC.Frames:Regen(unitTag,unitAttributeVisual,powerType,0) end	
+
 	-- Damage Shields
-	if ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH ) then
+	elseif ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH ) then
 		if ( FTC.init.Frames ) then FTC.Frames:UpdateShield( unitTag , 0 , maxValue ) end
 	end
 	
 	-- Purge any buffs related to damage shielding
 	-- if ( FTC.init.Buffs ) then FTC.Buffs:RemoveVisuals( unitTag , unitAttributeVisual , powerType ) end
-end
+end	

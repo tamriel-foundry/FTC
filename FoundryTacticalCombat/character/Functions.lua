@@ -12,10 +12,8 @@ function FTC.Player:Initialize()
 	-- Setup initial character information
 	FTC.Player.name		= GetUnitName( 'player' )
 	FTC.Player.race		= GetUnitRace( 'player' )
-	FTC.Player.class	= FTC.L( GetUnitClass( 'player' ) )
+	FTC.Player.class	= FTC.Player:GetClass(GetUnitClassId( 'player' ))
 	FTC.Player.nicename	= string.gsub( GetUnitName( 'player' ) , "%-", "%%%-")
-
-	-- Get experience level
 	FTC.Player:GetLevel()
 	
 	-- Load starting attributes
@@ -29,6 +27,10 @@ function FTC.Player:Initialize()
 		local current, maximum, effMax = GetUnitPower( "player" , stats[i].id )
 		FTC.Player[stats[i].name] = { ["current"] = current , ["max"] = maximum , ["pct"] = math.floor( ( current / maximum ) * 100 ) }
 	end
+
+	-- Load starting shield
+	local value, maxValue = GetUnitAttributeVisualizerEffectInfo('player',ATTRIBUTE_VISUAL_POWER_SHIELDING,STAT_MITIGATION,ATTRIBUTE_HEALTH,POWERTYPE_HEALTH)
+	FTC.Player.shield = { ["current"] = value or 0 , ["max"] = maxValue or 0 , ["pct"] = math.floor( ( value or 0 / FTC.Player.health.max ) * 100 ) }
 end
 
 FTC.Target = {}
@@ -74,13 +76,23 @@ function FTC.Player:GetLevel()
 	FTC.Player.cxp		= GetPlayerChampionXP()
 end
 
+  --[[ 
+ * Translates global classId into English class name
+ * Called by Initialize()
+ ]]-- 
+function FTC.Player:GetClass(classId)
+	if ( classId == 1 ) then return "Dragonknight"
+	elseif ( classId == 2 ) then return "Sorcerer"
+	elseif ( classId == 3 ) then return "Nightblade"
+	elseif ( classId == 6 ) then return "Templar" end
+end
 
+  --[[ 
+ * Updates the stored target object
+ ]]-- 
 function FTC.Target:Update()
-	
-	-- Update the saved target
 	FTC.Target.name		= GetUnitName('reticleover')
-	FTC.Target.class	= FTC.L( GetUnitClass('reticleover') )
+	FTC.Target.class	= FTC.Player:GetClass(GetUnitClassId('reticleover'))
 	FTC.Target.level	= GetUnitLevel('reticleover')
 	FTC.Target.vlevel	= GetUnitVeteranRank('reticleover')	
-
 end
