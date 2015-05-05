@@ -14,7 +14,7 @@ FTC.Frames.Defaults = {
     -- Target Frame
     ["FTC_TargetFrame"]         = {CENTER,CENTER,350,350},
     ["ExecuteThreshold"]        = 25,
-    ["DefaultTargetFrame"]      = true,
+    ["DefaultTargetFrame"]      = false,
 
     -- Shared Settings
     ["FrameWidth"]              = 350,
@@ -67,7 +67,6 @@ function FTC.Frames:Initialize()
     FTC.Frames:SetupPlayer()
     FTC.Frames:SetupTarget()
 end
-
 
   --[[ 
  * Set Up Player Frame
@@ -235,12 +234,6 @@ end
 
         -- Control frame visibility
         FTC.Frames:Fade(unitTag)
-    end
-    
-    -- Update the default attribute bar
-    if ( FTC.Vars.FrameText ) then
-        local default = ( unitTag == 'player' ) and _G["FTC_DefaultPlayer"..name] or _G["FTC_DefaultTargetHealth"]
-        default:SetText( powerValue .. " / " .. powerMax .. " (" .. pct .. "%)")
     end
     
     -- Update the database object

@@ -57,13 +57,13 @@ function FTC.Menu:Reposition(panel)
 
         -- Show the player frame
         FTC_PlayerFrame:ClearAnchors()
-        FTC_PlayerFrame:SetAnchor(BOTTOMLEFT,FTC_UI,CENTER,50,-20)
+        FTC_PlayerFrame:SetAnchor(BOTTOMLEFT,FTC_UI,CENTER,50,-100)
         FTC_PlayerFrame:SetHidden(false)
         FTC_PlayerFrame:SetAlpha(1)
 
         -- Show the target frame
         FTC_TargetFrame:ClearAnchors()
-        FTC_TargetFrame:SetAnchor(TOPLEFT,FTC_UI,CENTER,50,20)
+        FTC_TargetFrame:SetAnchor(TOPLEFT,FTC_UI,CENTER,50,100)
         FTC_TargetFrame:SetHidden(false)
         FTC_TargetFrame:SetAlpha(1)
 

@@ -21,43 +21,37 @@
     INITIALIZATION
   ]]----------------------------------------------------------
 
--- Setup UI Layer
-FTC = FTC.UI:TopLevelWindow( "FTC" , GuiRoot , {GuiRoot:GetWidth(),GuiRoot:GetHeight()} , {CENTER,CENTER,0,0} , false )   
-
 -- Core FTC Settings
+FTC                     = {}
 FTC.name                = "FoundryTacticalCombat"
 FTC.tag                 = "FTC"
 FTC.version             = 0.39
 FTC.settings            = 0.39
 FTC.language            = GetCVar("language.2")
+FTC.UI                  = WINDOW_MANAGER:CreateTopLevelWindow( "FTC_UI" )
 
--- Declare Default Components
+-- Default Components
 FTC.Defaults            = {
-    ["EnableFrames"]            = true,
-    ["EnableBuffs"]             = false,
-    ["EnableSCT"]               = false,
-    ["EnableHotbar"]            = true,
-    ["EnableDamage"]            = false,
+    ["EnableFrames"]    = true,
+    ["EnableBuffs"]     = true,
+    ["EnableSCT"]       = false,
+    ["EnableHotbar"]    = true,
+    ["EnableDamage"]    = false,
 }
 
 --[[ Default Saved Variables
-FTC.defaults            = {
+-- Scrolling Combat Text
+["SCTCount"]                = 20,
+["SCTSpeed"]                = 3,
+["SCTNames"]                = true,
+["SCTPath"]                 = 'Arc',
+["FTC_CombatTextOut"]       = {TOP,TOP,-450,80},
+["FTC_CombatTextIn"]        = {TOP,TOP,450,80},
+["FTC_CombatTextStatus"]    = {TOP,TOP,0,80},
 
-    -- Scrolling Combat Text
-    ["SCTCount"]                = 20,
-    ["SCTSpeed"]                = 3,
-    ["SCTNames"]                = true,
-    ["SCTPath"]                 = 'Arc',
-    ["FTC_CombatTextOut"]       = {TOP,TOP,-450,80},
-    ["FTC_CombatTextIn"]        = {TOP,TOP,450,80},
-    ["FTC_CombatTextStatus"]    = {TOP,TOP,0,80},
-    
-
-    
-    -- Damage
-    ["FTC_MiniMeter"]           = {TOPLEFT,TOPLEFT,10,10},
-    ["DamageTimeout"]           = 5,
-
+-- Damage
+["FTC_MiniMeter"]           = {TOPLEFT,TOPLEFT,10,10},
+["DamageTimeout"]           = 5,
 ]] --
 
 -- Track component initialization
@@ -66,9 +60,6 @@ FTC.init                = {}
 -- Track custom display conditions
 FTC.inMenu              = false
 FTC.move                = false
-
- -- Hook initialization to EVENT_ADD_ON_LOADED
-EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ADD_ON_LOADED , FTC.Initialize )
 
 --[[ 
  * Master Initialization Function
@@ -89,7 +80,10 @@ function FTC.Initialize( eventCode, addOnName )
     FTC.Vars = FTC.Defaults
     
     -- Setup Localization
-    FTC.Localize()
+    --FTC.Localize()
+
+    -- Initialize UI Layer
+    FTC.UI:Initialize()
     
     -- Setup Character Information
     FTC.Player:Initialize()
@@ -123,6 +117,9 @@ function FTC.Initialize( eventCode, addOnName )
     -- Fire a callback after setup
     CALLBACK_MANAGER:FireCallbacks("FTC_Ready")
 end
+
+ -- Hook initialization to EVENT_ADD_ON_LOADED
+EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ADD_ON_LOADED , FTC.Initialize )
 
 --[[----------------------------------------------------------
     UPDATING

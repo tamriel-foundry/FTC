@@ -495,9 +495,6 @@ function FTC:FilterBuffInfo( changeType , unitTag , name , buffType , beginTime 
 	local duration 	= nil
 	local isValid	= true
 	
-	-- Localize the ability name
-	local name		= FTC.L( name )
-	
 	-- Untyped Abilities (0)
 	if ( buffType == ABILITY_TYPE_NONE ) then
 	
@@ -508,20 +505,20 @@ function FTC:FilterBuffInfo( changeType , unitTag , name , buffType , beginTime 
 	elseif ( buffType == ABILITY_TYPE_BONUS ) then
 	
 		-- Mundus Stones
-		if ( string.match( name , FTC.L("Boon:") ) ) then
+		if ( string.match( name , "Boon:" ) ) then
 			if ( unitTag == 'player' ) then	duration = "P"
 			else isValid = false end
 		
 		-- Exclude Cyrodiil Bonuses on Targets
-		elseif ( string.match( name , FTC.L("Keep Bonus") ) or string.match( name , FTC.L("Scroll Bonus") ) or string.match( name , FTC.L("Emperorship") ) ) then
+		elseif ( string.match( name , "Keep Bonus" ) or string.match( name , "Scroll Bonus" ) or string.match( name , "Emperorship" ) ) then
 			if ( unitTag ~= 'player' ) then isValid = false end
 		
 		-- Food Buffs
-		elseif ( string.match( name , FTC.L("Increase Max") ) or string.match( name , FTC.L("Increase All Primary") ) ) 
+		elseif ( string.match( name , "Increase Max" ) or string.match( name , "Increase All Primary" ) ) 
 			then iconName = "/esoui/art/icons/ability_provisioner_004.dds"
 
 		-- Exclude Medicinal Use
-		elseif ( string.match( name , FTC.L("Medicinal Use") ) ) then
+		elseif ( string.match( name , "Medicinal Use" ) ) then
 			isValid = false
 
 		-- Catch Defaults

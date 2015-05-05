@@ -87,7 +87,7 @@ function FTC:ToggleVisibility( activeLayerIndex )
 		FTC_CombatTextIn:SetHidden( isHidden )
 	end
 	
-	-- Hide buff elements
+	--[[ Hide buff elements
 	if( FTC.init.Buffs ) then
 		FTC_PlayerBuffs:SetHidden( isHidden )
 		FTC_PlayerDebuffs:SetHidden( isHidden )
@@ -95,6 +95,7 @@ function FTC:ToggleVisibility( activeLayerIndex )
 		FTC_TargetDebuffs:SetHidden( isHidden )
 		if ( FTC.Vars.EnableLongBuffs ) then FTC_LongBuffs:SetHidden( isHidden ) end
 	end
+	]]--
 end
 
 --[[ 
@@ -118,15 +119,12 @@ function FTC:UpdateTarget()
 	-- Maybe display the target frames for move mode
 	if( FTC.init.Frames and FTC.move ) then ignore = false end
 	
-	-- Update display of target buffs
+	--[[ Update display of target buffs
 	if( FTC.init.Buffs ) then 		
-	
-		-- Update target buffs
 		if ( not ignore ) then FTC.Buffs:GetBuffs( 'reticleover' ) end
-		
-		-- Toggle visibility of target buffs
 		FTC_TargetBuffs:SetHidden( ignore )
 	end
+	]]--
 	
 	-- Update target data and configure frame
 	if ( not ignore ) then 
@@ -134,9 +132,8 @@ function FTC:UpdateTarget()
 		FTC.Frames:SetupTarget()
 	end
 
-	-- Toggle visibility
+	-- Toggle frame visibility
 	if ( FTC.init.Frames ) then	FTC_TargetFrame:SetHidden( ignore ) end
-	FTC_DefaultTargetHealth:SetHidden(ignore)
 end
 
 
