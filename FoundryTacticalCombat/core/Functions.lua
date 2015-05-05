@@ -104,9 +104,7 @@ end
 function FTC:UpdateTarget()
 	
 	-- Maybe hide the default frame
-	if ( FTC.init.Frames and not FTC.Vars.TargetFrame ) then
-		ZO_TargetUnitFramereticleover:SetHidden(true)
-	end
+	if ( FTC.init.Frames and not FTC.Vars.DefaultTargetFrame ) then ZO_TargetUnitFramereticleover:SetHidden(true) end
 		
 	-- Get the reticle target
 	local target = GetUnitName('reticleover')

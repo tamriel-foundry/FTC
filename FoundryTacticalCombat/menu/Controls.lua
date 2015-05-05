@@ -182,9 +182,9 @@ function FTC.Menu:Controls()
         {   type        = "checkbox", 
             name        = GetString(FTC_Menu_FShowDef),
             tooltip     = GetString(FTC_Menu_FShowDefDesc),
-            getFunc     =  function() return FTC.Vars.TargetFrame end, 
-            setFunc     = function() FTC.Menu:Toggle( 'TargetFrame' ) end,
-            default     = FTC.Defaults.TargetFrame
+            getFunc     =  function() return FTC.Vars.DefaultTargetFrame end, 
+            setFunc     = function() FTC.Menu:Toggle( 'DefaultTargetFrame' ) end,
+            default     = FTC.Defaults.DefaultTargetFrame
         },
 
         -- Display Nameplate?

@@ -20,14 +20,18 @@
 --[[----------------------------------------------------------
     INITIALIZATION
   ]]----------------------------------------------------------
-FTC = {}
+
+-- Setup UI Layer
+FTC = FTC.UI:TopLevelWindow( "FTC" , GuiRoot , {GuiRoot:GetWidth(),GuiRoot:GetHeight()} , {CENTER,CENTER,0,0} , false )   
+
+-- Core FTC Settings
 FTC.name                = "FoundryTacticalCombat"
 FTC.tag                 = "FTC"
 FTC.version             = 0.39
 FTC.settings            = 0.39
 FTC.language            = GetCVar("language.2")
 
--- Declare default components
+-- Declare Default Components
 FTC.Defaults            = {
     ["EnableFrames"]            = true,
     ["EnableBuffs"]             = false,
@@ -48,15 +52,7 @@ FTC.defaults            = {
     ["FTC_CombatTextIn"]        = {TOP,TOP,450,80},
     ["FTC_CombatTextStatus"]    = {TOP,TOP,0,80},
     
-    -- Buffs
-    ["AnchorBuffs"]             = true,
-    ["NumBuffs"]                = 8,
-    ["EnableLongBuffs"]         = true,
-    ["FTC_LongBuffs"]           = {BOTTOMRIGHT,BOTTOMRIGHT,-5,-5},
-    ["FTC_PlayerBuffs"]         = {CENTER,CENTER,0,400},
-    ["FTC_PlayerDebuffs"]       = {CENTER,CENTER,0,500},
-    ["FTC_TargetBuffs"]         = {CENTER,CENTER,0,-500},
-    ["FTC_TargetDebuffs"]       = {CENTER,CENTER,0,-400},
+
     
     -- Damage
     ["FTC_MiniMeter"]           = {TOPLEFT,TOPLEFT,10,10},
@@ -87,9 +83,6 @@ function FTC.Initialize( eventCode, addOnName )
 
     -- Unregister setup event
     EVENT_MANAGER:UnregisterForEvent( "FTC" , EVENT_ADD_ON_LOADED )
-
-    -- Pull defaults from sub-components
-    FTC.JoinTables(FTC.Defaults,FTC.Frames.Defaults)
     
     -- Load saved variables
     FTC.Vars = ZO_SavedVars:NewAccountWide( 'FTC_VARS' , math.floor( FTC.settings * 100 ) , nil , FTC.Defaults )
@@ -150,11 +143,6 @@ function FTC:Update()
         if ( FTC:BufferScript( 'FTCBuffs' , 10 ) ) then
             FTC.Buffs:Update( 'Player' )
             FTC.Buffs:Update( 'Target' )
-        end
-        
-        -- Check for ability casts
-        if ( FTC:BufferScript( 'FTCCast' , 50 ) ) then
-            FTC.Buffs:CheckCast()
         end
         
         -- Check for potion usage

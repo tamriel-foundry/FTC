@@ -6,9 +6,6 @@
         <TopLevelControl name="FTC_UI" mouseEnabled="false">
 			<Dimensions x="1920" y="1080" />
 			<Anchor point="CENTER" />
-            <OnUpdate>
-				      FTC:Update()
-            </OnUpdate>
         </TopLevelControl>
 	</Controls>
 </GuiXml>

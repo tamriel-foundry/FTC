@@ -8,25 +8,28 @@ FTC.Frames.Defaults = {
     
     -- Player Frame
     ["FTC_PlayerFrame"]         = {CENTER,CENTER,-350,350},
-    ["FrameWidth"]              = 350,
-    ["FrameHeight"]             = 180,
     ["EnableNameplate"]         = true,
-    ["FrameOpacityIn"]          = 100,
-    ["FrameOpacityOut"]         = 60,
     ["EnableXPBar"]             = true,
-    ["FrameFont1"]              = 'trajan',
-    ["FrameFont2"]              = 'esobold',
-    ["FrameFontSize"]           = 16,
-    ["ExecuteThreshold"]        = 25,
-    ["FrameHealthColor"]        = {0.6,0,0},
-    ["FrameMagickaColor"]       = {0.4,0.4,0.8},
-    ["FrameStaminaColor"]       = {0,0.4,0},
-    ["FrameShieldColor"]        = {1,0.4,0},
 
     -- Target Frame
     ["FTC_TargetFrame"]         = {CENTER,CENTER,350,350},
-    ["TargetFrame"]             = true,
+    ["ExecuteThreshold"]        = 25,
+    ["DefaultTargetFrame"]      = true,
+
+    -- Shared Settings
+    ["FrameWidth"]              = 350,
+    ["FrameHeight"]             = 180,  
+    ["FrameOpacityIn"]          = 100,
+    ["FrameOpacityOut"]         = 60,    
+    ["FrameFont1"]              = 'trajan',
+    ["FrameFont2"]              = 'esobold',
+    ["FrameFontSize"]           = 16,
+    ["FrameHealthColor"]        = {0.6,0.0,0.0},
+    ["FrameMagickaColor"]       = {0.4,0.4,0.8},
+    ["FrameStaminaColor"]       = {0.0,0.4,0.0},
+    ["FrameShieldColor"]        = {1.0,0.4,0.0},
 }
+FTC.JoinTables(FTC.Defaults,FTC.Frames.Defaults)
 
 --[[----------------------------------------------------------
     UNIT FRAMES FUNCTIONS
@@ -36,7 +39,6 @@ FTC.Frames.Defaults = {
  * Initialize Unit Frames Component
  * --------------------------------
  * Called by FTC:Initialize()
- * Called by FTC.Frames:OnXPUpdate()
  * --------------------------------
  ]]--
 function FTC.Frames:Initialize()
@@ -53,7 +55,7 @@ function FTC.Frames:Initialize()
     end
     
     -- Hide the default target frame
-    if ( not FTC.Vars.TargetFrame ) then ZO_TargetUnitFramereticleover:SetHidden(true) end
+    if ( not FTC.Vars.DefaultTargetFrame ) then ZO_TargetUnitFramereticleover:SetHidden(true) end
 
     -- Create unit frame UI elements
     FTC.Frames:Controls()
@@ -61,7 +63,7 @@ function FTC.Frames:Initialize()
     -- Register init status
     FTC.init.Frames = true
 
-    -- Populate starting information to player and target frames
+    -- Populate initial frames
     FTC.Frames:SetupPlayer()
     FTC.Frames:SetupTarget()
 end

@@ -104,7 +104,7 @@ function FTC.OnSlotUpdate( eventCode , slotNum )
 	if slotNum > 8 then return end
 	
 	-- Update Hotbars
-	FTC.Buffs:GetHotbar()
+	FTC.Buffs:GetActionBar()
 end
 
 --[[ 
@@ -115,7 +115,7 @@ function FTC.OnStatsUpdated( ... )
 
 	-- Update the hotbar to account for spell cost reduction
 	if ( FTC.init.Buffs ) then
-		FTC.Buffs:GetHotbar()
+		FTC.Buffs:GetActionBar()
 	end
 end
 

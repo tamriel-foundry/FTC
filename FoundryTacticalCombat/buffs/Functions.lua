@@ -1,14 +1,40 @@
  
- --[[----------------------------------------------------------
-	ACTIVE BUFF TRACKER FUNCTIONS
-	-----------------------------------------------------------
-	* Tracks buff and debuff abilities
-	* Separates by player/target and by buff/debuff
-	* "Long" duration player buffs get their own window
-	* Thanks to Lyeos and UnityHUD for some nice ideas
-  ]]--
- 
+--[[----------------------------------------------------------
+    BUFF TRACKING COMPONENT
+  ]]----------------------------------------------------------
 FTC.Buffs = {}
+FTC.Buffs.Defaults = {
+
+	-- Player Buffs
+    ["FTC_PlayerBuffs"]         = {CENTER,CENTER,0,400},
+    ["EnableLongBuffs"]         = true,
+    ["FTC_LongBuffs"]           = {BOTTOMRIGHT,BOTTOMRIGHT,-5,-5},
+
+	-- Player Debuffs
+    ["FTC_PlayerDebuffs"]       = {CENTER,CENTER,0,500},
+
+	-- Target Buffs
+    ["FTC_TargetBuffs"]         = {CENTER,CENTER,0,-500},
+
+	-- Target Debuffs
+    ["FTC_TargetDebuffs"]       = {CENTER,CENTER,0,-400},
+
+	-- Shared Settings
+    ["AnchorBuffs"]             = true,	
+    ["NumBuffs"]                = 8,
+}
+FTC.JoinTables(FTC.Defaults,FTC.Buffs.Defaults)
+
+--[[----------------------------------------------------------
+    BUFF TRACKING FUNCTIONS
+  ]]----------------------------------------------------------
+
+--[[ 
+ * Initialize Buff Tracking Component
+ * --------------------------------
+ * Called by FTC:Initialize()
+ * --------------------------------
+ ]]--
 function FTC.Buffs.Initialize()
 
 	-- Setup displayed buff tables
@@ -21,18 +47,101 @@ function FTC.Buffs.Initialize()
 	-- Create the controls
 	FTC.Buffs:Controls()
 
-	-- Populate buffs for the player
-	FTC.Buffs:GetBuffs( 'player' )
+	-- Populate initial buffs
+	FTC.Buffs:GetBuffs('player')
+
+	-- Setup action bar hooks
+	FTC.Buffs:SetupActionBar()
 	
-	-- Get the hotbar loadout
-	FTC.Buffs:GetHotbar()
+	-- Get initial action bar loadout
+	FTC.Buffs:GetActionBar()
 	
-	-- Placeholder for last cast spell and potion
+	-- Setup status flags
 	FTC.Buffs.lastCast = 0
 	FTC.Buffs.canPotion = true
 	
 	-- Register init status
 	FTC.init.Buffs = true
+
+	-- Activate uldating
+	EVENT_MANAGER:RegisterForUpdate( "FTC_Buffs" , 100 , FTC.Buffs:Update() )
+end
+
+--[[ 
+ * Setup Action Bar to Report Casts
+ * --------------------------------
+ * Called by FTC.Buffs:Initialize()
+ * Credit goes to Spellbuilder for the clever idea!
+ * --------------------------------
+ ]]--
+function FTC.Buffs:SetupActionBar()
+
+	-- Store the original action button SetState function
+	FTC.Buffs.SetStateOrig = ActionButton3Button.SetState
+
+	-- Replace the SetState method for each action button with my custom function
+	for i = 3 , 8 do
+		local button = _G["ActionButton"..i.."Button"]
+		button.SetState = FTC.Buffs.SetStateCustom
+	end
+end
+
+--[[ 
+ * Custom Action Button SetState Function
+ * --------------------------------
+ * Called by FTC.Buffs:SetupActionBar()
+ * --------------------------------
+ ]]--
+function FTC.Buffs.SetStateCustom( self , state , locked )
+
+	-- Get the original function return
+	local retval = FTC.Buffs.SetStateOrig( self , state , locked )
+
+	-- Get the pressed slot
+	local slot = self.slotNum
+
+	-- Get the used ability
+	local ability = FTC.Player.Abilities[slot]
+
+	-- Bail if the ability has no relevant effects
+	if ( ability.effects == nil ) then return retval end
+
+	-- The button is being depressed
+	if ( state == BSTATE_PRESSED ) then
+
+		-- Store the pressed status
+		FTC.Player.Abilities[slot].isPressed = true
+
+		-- Clear any pending ground target
+		if ( FTC.Buffs.pendingGT ~= nil and FTC.Buffs.pendingGT.name == ability.name ) then FTC.Buffs.pendingGT = nil end
+
+	-- The button is being released
+	elseif ( state == BSTATE_NORMAL ) then
+
+		-- Get the time
+		local time = GetGameTimeMilliseconds()
+
+		-- Avoid erroneous detection, skill failure, and spamming
+		if ( FTC.Buffs:HasFailure(slot) or ( not FTC.Player.Abilities[slot].isPressed ) or ( time < FTC.Player.Abilities[slot].lastCast + 500 ) ) then return retval end
+
+		-- Put ground target abilities into the pending queue
+		if ( ability.ground ) then 
+			FTC.Buffs.pendingGT = ability
+			return retval
+		end
+		
+		-- Fire a callback to hook extensions
+		CALLBACK_MANAGER:FireCallbacks( "FTC_SpellCast" , ability )
+
+		-- Register the new effect
+		FTC.Buffs:NewEffect( ability )
+
+		-- Flag the last cast time
+		FTC.Player.Abilities[slot].lastCast = time	
+	end
+
+	-- Return the original function
+	return retval
 end
 
 --[[----------------------------------------------------------
@@ -171,7 +280,7 @@ end
  * Get the player's current and active hotbar loadout
  * Called by OnSlotUpdate()
  ]]--
-function FTC.Buffs:GetHotbar()
+function FTC.Buffs:GetActionBar()
 
 	-- Empty the hotbar
 	FTC.Hotbar.Abilities = {}
@@ -348,52 +457,6 @@ function FTC.Buffs:Update( context )
 
 	-- After looping through buffs, do clear any remaining buff icons
 	FTC.Buffs:ClearIcons( context , buffCount , debuffCount , longCount ) 
-end
-
---[[ 
- * Check for whether a spell is being cast
- * Runs OnUpdate - 100 ms buffer
- ]]--
-function FTC.Buffs:CheckCast()
-
-	-- Check each action bar button
-	for i = 3 , 8 do
-
-		-- Get the button
-		local button = _G["ActionButton"..i.."Button"]
-		if( IsSlotUsed(i) and button:GetState() == BSTATE_PRESSED ) then
-			
-			-- Get the time
-			local ms = GetGameTimeMilliseconds()
-		
-			-- Was this spell already registered?
-			if ( ms < FTC.Buffs.lastCast + 1000 ) then return end
-		
-			-- Make sure the ability is usable
-			if( FTC.Buffs:HasFailure(i) ) then return end
-			
-			-- Get the used ability
-			local ability = FTC.Hotbar.Abilities[i]
-			
-			-- Dont process effects immediately for ground-target spells
-			if ( ability.ground ) then 
-				FTC.Buffs.ground = ability
-				return 
-			end
-			
-			-- Fire a callback when we know a spell was cast
-			CALLBACK_MANAGER:FireCallbacks( "FTC_SpellCast" , ability )
-			
-			-- Otherwise register the effects!
-			FTC.Buffs:NewEffects( ability )
-			
-			-- Clear the ground target queue
-			FTC.Buffs.ground = nil
-			
-			-- Flag the last cast time
-			FTC.Buffs.lastCast = ms
-		end
-	end
 end
 
 --[[ 
