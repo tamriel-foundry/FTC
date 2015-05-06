@@ -31,9 +31,10 @@ function FTC:RegisterEvents()
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_MOUNTED_STATE_CHANGED			, FTC.OnMount )
 	
 	-- Buff Events
-	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_STATS_UPDATED 				, FTC.OnStatsUpdated )
+	--EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_STATS_UPDATED 				, FTC.OnStatsUpdated )
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_SLOT_UPDATED			, FTC.OnSlotUpdate )
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_UPDATE_COOLDOWNS		, FTC.OnUpdateCooldowns )
+	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTIVE_WEAPON_PAIR_CHANGED	, FTC.OnSwapWeapons )
 	EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_EFFECT_CHANGED 				, FTC.OnEffectChanged )
 	
 	-- Combat Events
@@ -107,17 +108,18 @@ function FTC.OnSlotUpdate( eventCode , slotNum )
 	FTC.Player:GetActionBar()
 end
 
---[[ 
- * Runs on the EVENT_STATS_UPDATED listener.
- * This handler fires every time the player has a change to a derived stat
- ]]--
-function FTC.OnStatsUpdated( ... )
 
-	-- Update the hotbar to account for spell cost reduction
-	if ( FTC.init.Buffs ) then
-		FTC.Player:GetActionBar()
-	end
+--[[ 
+ * Updates Action Bar on Weapon Swap
+ * --------------------------------
+ * Called by EVENT_ACTIVE_WEAPON_PAIR_CHANGED
+ * --------------------------------
+ ]]--
+function FTC:OnSwapWeapons( eventCode , activeWeaponPair , locked )
+	if ( FTC.init.Buffs and not locked ) then FTC.Player:GetActionBar() end
 end
+
+
 
 --[[ 
  * Runs on the EVENT_ACTION_UPDATE_COOLDOWNS listener.
@@ -141,27 +143,22 @@ function FTC.OnUpdateCooldowns( ... )
 	end
 end
 
+
+
+
+
 --[[ 
  * Runs on the EVENT_EFFECT_CHANGED listener.
  * This handler fires every time a buff effect on a valid unitTag is changed
  ]]--
-function FTC.OnEffectChanged( ... )
+function FTC.OnEffectChanged( eventCode , changeType , effectSlot , effectName , unitTag , beginTime , endTime , stackCount , iconName , buffType , effectType , abilityType , statusEffectType )
 
 	-- Fire callback
-	CALLBACK_MANAGER:FireCallbacks( "FTC_EffectChanged" , ... )
+	CALLBACK_MANAGER:FireCallbacks( "FTC_EffectChanged" ,  eventCode , changeType , effectSlot , effectName , unitTag , beginTime , endTime , stackCount , iconName , buffType , effectType , abilityType , statusEffectType )
 	
 	-- Otherwise retrieve current buffs if the buffs component is active
 	if ( FTC.init.Buffs ) then 
-	
-		-- Grab relevant arguments
-		local changeType 	= select( 2 , ... )
-		local unitTag 		= select( 5 , ... )
-
-		-- Remove expired buffs
-		if ( changeType == 2 ) then FTC.Buffs:Remove( ... )
-		
-		-- Otherwise get new buffs
-		else FTC.Buffs:GetBuffs( unitTag ) end
+		FTC.Buffs:EffectChanged( changeType , unitTag , effectName , endTime , abilityType , iconName )
 	end
 end
 

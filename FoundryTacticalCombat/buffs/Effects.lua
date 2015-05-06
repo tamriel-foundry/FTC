@@ -489,24 +489,24 @@ end
 --[[ 
  * Filter abilities to override their displayed names or durations as necessary
  ]]--
-function FTC:FilterBuffInfo( changeType , unitTag , name , buffType , beginTime , endTime , iconName )
+function FTC:FilterBuffInfo( unitTag , name , buffType , iconName )
 	
-	-- Default to no duration
-	local duration 	= nil
+	-- Default to no isType
+	local isType	= nil
 	local isValid	= true
 	
 	-- Untyped Abilities (0)
 	if ( buffType == ABILITY_TYPE_NONE ) then
 	
 		-- Summons and Toggles
-		if ( FTC.Buffs:IsToggle( name ) ) then duration = "T" end
+		if ( FTC.Buffs:IsToggle( name ) ) then isType = "T" end
 		
 	-- "Bonus" Abilities (5)
 	elseif ( buffType == ABILITY_TYPE_BONUS ) then
 	
 		-- Mundus Stones
 		if ( string.match( name , "Boon:" ) ) then
-			if ( unitTag == 'player' ) then	duration = "P"
+			if ( unitTag == 'player' ) then	isType = "P"
 			else isValid = false end
 		
 		-- Exclude Cyrodiil Bonuses on Targets
@@ -522,18 +522,18 @@ function FTC:FilterBuffInfo( changeType , unitTag , name , buffType , beginTime 
 			isValid = false
 
 		-- Catch Defaults
-		else duration = "P" end
+		else isType = "P" end
 		
 	-- Blocking (52)
 	elseif ( ( buffType == ABILITY_TYPE_BLOCK ) or ( name == "Brace (Generic)" ) ) then
 		name		= "Blocking"
-		duration 	= "T"
+		isType 		= "T"
 
 	-- Change Appearance ( 64 )
-	elseif ( ( buffType == ABILITY_TYPE_CHANGEAPPEARANCE ) ) then duration	= "T" end
+	elseif ( ( buffType == ABILITY_TYPE_CHANGEAPPEARANCE ) ) then isType	= "T" end
 		
 	-- Return the filtered info
-	return isValid, name, duration , beginTime , endTime , iconName 
+	return isValid, name, isType , iconName 
 end
 
 

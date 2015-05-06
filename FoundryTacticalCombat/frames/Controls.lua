@@ -18,7 +18,7 @@ function FTC.Frames:Controls()
         
     -- Create the player frame container    
     local player    = FTC.UI:Control(   "FTC_PlayerFrame",                  FTC_UI,     {FTC.Vars.FrameWidth,FTC.Vars.FrameHeight},             FTC.Vars.FTC_PlayerFrame,       false )  
-    player.backdrop = FTC.UI:Backdrop(  "FTC_PlayerFrame_BG",               player,     "inherit",                                              {CENTER,CENTER,0,0},            {0,0,0,0.4}, {0,0,0,1}, nil, false )
+    player.backdrop = FTC.UI:Backdrop(  "FTC_PlayerFrame_BG",               player,     "inherit",                                              {CENTER,CENTER,0,0},            {0,0,0,0.4}, {0,0,0,1}, nil, true )
     player.backdrop:SetEdgeTexture("",16,4,4)
     player:SetDrawLayer(2)
     player:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end)
