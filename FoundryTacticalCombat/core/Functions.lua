@@ -99,92 +99,6 @@ function FTC:ToggleVisibility( activeLayerIndex )
 end
 
 --[[ 
- * Updates the player's target, and initializes several component specific actions.
- * Called by OnTargetChanged()
- ]]--
-function FTC:UpdateTarget()
-	
-	-- Maybe hide the default frame
-	if ( FTC.init.Frames and not FTC.Vars.DefaultTargetFrame ) then ZO_TargetUnitFramereticleover:SetHidden(true) end
-		
-	-- Get the reticle target
-	local target = GetUnitName('reticleover')
-	
-	-- Ignore blank targets
-	local ignore = ( target == "" )
-	
-	-- We also want to ignore critters
-	if FTC:IsCritter( target ) then ignore = true end
-	
-	-- Maybe display the target frames for move mode
-	if( FTC.init.Frames and FTC.move ) then ignore = false end
-	
-	--[[ Update display of target buffs
-	if( FTC.init.Buffs ) then 		
-		if ( not ignore ) then FTC.Buffs:GetBuffs( 'reticleover' ) end
-		FTC_TargetBuffs:SetHidden( ignore )
-	end
-	]]--
-	
-	-- Update target data and configure frame
-	if ( not ignore ) then 
-		FTC.Target:Update() 
-		FTC.Frames:SetupTarget()
-	end
-
-	-- Toggle frame visibility
-	if ( FTC.init.Frames ) then	FTC_TargetFrame:SetHidden( ignore ) end
-end
-
-
---[[ 
- * Filters valid targets by removing known "critters"
- * Called by UpdateTarget()
- ]]--
-function FTC:IsCritter( targetName )
-
-	-- Critters are always level 1
-	if ( GetUnitLevel('reticleover') ~= 1 ) then return false end
-
-	-- The list of critters
-	local critters = { 
-		"Butterfly",
-		"Lizard",
-		"Rat",
-		"Snake",
-		"Pony Guar",
-		"Frog",
-		"Squirrel",
-		"Rabbit",
-		"Deer",
-		"Cat",
-		"Pig",
-		"Sheep",
-		"Antelope",
-		"Wasp",
-		"Monkey",
-		"Fleshflies",
-		"Centipede",
-		"Chicken",
-		"Torchbug",
-		"Spider",
-		"Scorpion",
-		"Goat",
-		"Scrib",
-		"Scuttler",
-		"Fox",
-	}
-	
-	-- Is the target a critter?
-	for i = 1, #critters do
-		if ( targetName == critters[i] ) then return true end
-	end
-	
-	-- Otherwise false
-	return false
-end
-
---[[ 
  * Returns a formatted number with commas
  ]]--
 function CommaValue(number)
@@ -199,4 +113,19 @@ function SanitizeLocalization( localString )
 	if ( localString == nil ) then return "" end
 	local a,b = string.find( localString , "%^" )
 	return ( a ~= nil ) and string.sub( localString , 1 , a - 1 ) or ""
+end
+
+--[[ 
+ * Slash Function
+ * --------------------------------
+ * Triggered by /ftc or /FTC
+ * --------------------------------
+ ]]--  
+function FTC:Slash( text )
+
+    -- Display info to chat
+    d( GetString(FTC_LongInfo) )
+
+    -- Open the settings panel
+    LAM2:OpenToPanel(FTC_Menu)
 end

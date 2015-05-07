@@ -1,12 +1,15 @@
  
- --[[----------------------------------------------------------
-    CHARACTER FUNCTIONS
-    -----------------------------------------------------------
-    * Relevant functions for the player character components of FTC
-    * Runs during FTC:Initialize()
-  ]]--
- 
-FTC.Player = {}     
+--[[----------------------------------------------------------
+    PLAYER DATA COMPONENT
+  ]]----------------------------------------------------------
+FTC.Player = {} 
+
+--[[ 
+ * Initialize Player Data Table
+ * --------------------------------
+ * Called by FTC:Initialize()
+ * --------------------------------
+ ]]--  
 function FTC.Player:Initialize()
 
     -- Setup initial character information
@@ -37,7 +40,17 @@ function FTC.Player:Initialize()
     FTC.Player:GetActionBar()
 end
 
+--[[----------------------------------------------------------
+    TARGET DATA COMPONENT
+  ]]----------------------------------------------------------
 FTC.Target = {}
+
+--[[ 
+ * Initialize Target Data Table
+ * --------------------------------
+ * Called by FTC:Initialize()
+ * --------------------------------
+ ]]--  
 function FTC.Target:Initialize()
 
     -- Setup initial target information
@@ -60,16 +73,69 @@ function FTC.Target:Initialize()
     FTC.Target:Update()
 end
 
+--[[ 
+ * Update the Target Object
+ * --------------------------------
+ * Called by FTC.Target:Initialize()
+ * Called by FTC:OnTargetChanged()
+ * --------------------------------
+ ]]--  
+function FTC.Target:Update()
+
+    -- Hide default frame
+    if ( FTC.init.Frames and not FTC.Vars.DefaultTargetFrame ) then ZO_TargetUnitFramereticleover:SetHidden(true) end
+        
+    -- Get the target name
+    local name = GetUnitName('reticleover')
+
+    -- Ignore empty and critters, but not during move mode
+    local ignore = ( ( target == "" ) or FTC:IsCritter( target ) ) and not FTC.move
+
+    -- Update valid targets
+    if ( not ignore ) then
+
+        -- Update the target data object
+        FTC.Target.name     = name
+        FTC.Target.class    = FTC.Player:GetClass(GetUnitClassId('reticleover'))
+        FTC.Target.level    = GetUnitLevel('reticleover')
+        FTC.Target.vlevel   = GetUnitVeteranRank('reticleover') 
+
+        -- Update target frame
+        if ( FTC.init.Frames ) then FTC.Frames:SetupTarget() end
+
+        -- Update target buffs
+        if ( FTC.init.Buffs ) then FTC.Buffs:GetBuffs( 'reticleover' ) end
+    end
+
+    -- Hide invalid targets
+    if ( FTC.init.Frames ) then FTC_TargetFrame:SetHidden( ignore ) end
+
+end
+
 --[[----------------------------------------------------------
     HELPER FUNCTIONS
- ]]-----------------------------------------------------------
- 
-  --[[ 
- * Populates the character level
- * Called by Initialize()
- * Called by OnXPUpdate()
- * Called by OnVPUpdate()
+  ]]-----------------------------------------------------------
+
+--[[ 
+ * Filters Targets for "Critters"
+ * --------------------------------
+ * Called by FTC.Target:Update()
+ * --------------------------------
  ]]-- 
+function FTC:IsCritter( unitTag )
+
+    -- Critters meet all the following criteria: Level 1, Difficulty = NONE, Attackable, and Neutral reaction
+    return (( GetUnitLevel(unitTag) == 1 ) and ( GetUnitDifficulty(unitTag) == MONSTER_DIFFICULTY_NONE ) and IsUnitAttackable(unitTag) and ( GetUnitReaction(unitTag) == UNIT_REACTION_NEUTRAL ) )
+end
+
+--[[ 
+ * Re-populates Player Experience
+ * --------------------------------
+ * Called by FTC.Player:Initialize()
+ * Called by FTC:OnXPUpdate()
+ * Called by FTC:OnVPUpdate()
+ * --------------------------------
+ ]]--  
 function FTC.Player:GetLevel()
     FTC.Player.level    = GetUnitLevel('player')
     FTC.Player.vlevel   = GetUnitVeteranRank('player')
@@ -80,9 +146,11 @@ function FTC.Player:GetLevel()
     FTC.Player.cxp      = GetPlayerChampionXP()
 end
 
-  --[[ 
- * Translates global classId into English class name
- * Called by Initialize()
+--[[ 
+ * Translate Class-ID to English Name
+ * --------------------------------
+ * Called by FTC.Player:Initialize()
+ * --------------------------------
  ]]-- 
 function FTC.Player:GetClass(classId)
     if ( classId == 1 ) then return "Dragonknight"
@@ -92,9 +160,13 @@ function FTC.Player:GetClass(classId)
 end
 
 --[[ 
- * Get the player's current and active hotbar loadout
+ * Get Current Action Bar Loadout
+ * --------------------------------
  * Called by FTC.Player:Initialize()
- ]]--
+ * Called by FTC:OnSwapWeapons()
+ * Called by FTC:OnSlotUpdate()
+ * --------------------------------
+ ]]-- 
 function FTC.Player:GetActionBar()
 
     -- Get the current loadout
@@ -133,15 +205,26 @@ function FTC.Player:GetActionBar()
     end
 end
 
-
-
-
-  --[[ 
- * Updates the stored target object
+FTC.Abilities = {}
+--[[ 
+ * Get abilityID from abilityName
+ * --------------------------------
+ * UNUSED
+ * --------------------------------
  ]]-- 
-function FTC.Target:Update()
-    FTC.Target.name     = GetUnitName('reticleover')
-    FTC.Target.class    = FTC.Player:GetClass(GetUnitClassId('reticleover'))
-    FTC.Target.level    = GetUnitLevel('reticleover')
-    FTC.Target.vlevel   = GetUnitVeteranRank('reticleover') 
+function FTC:GetAbilityId( abilityName )
+
+    -- Do we already know it?
+    if ( FTC.Abilities[abilityName] = nil ) then
+
+        -- Loop over all ability IDs until we find it
+        for i = 1, 70000 do
+           if ( DoesAbilityExist(i) and ( GetAbilityName(i) == abilityName ) ) then
+                FTC.Abilities[abilityName] = i
+           end
+        end
+    end
+
+    -- Return the ID
+    return FTC.Abilities[abilityName] end
 end

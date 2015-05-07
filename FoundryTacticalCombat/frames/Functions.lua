@@ -72,7 +72,7 @@ end
  * Set Up Player Frame
  * --------------------------------
  * Called by FTC.Frames:Initialize()
- * Called by FTC.Frames:OnXPUpdate()
+ * Called by FTC.Frames:OnLevel()
  * --------------------------------
  ]]--
 function FTC.Frames:SetupPlayer()
@@ -98,15 +98,14 @@ function FTC.Frames:SetupPlayer()
     FTC.Frames:UpdateAttribute( 'player', POWERTYPE_STAMINA,    FTC.Player.stamina.current, FTC.Player.stamina.max, FTC.Player.stamina.max )
 
     -- Populate shield
-    local value, maxValue = GetUnitAttributeVisualizerEffectInfo('player',ATTRIBUTE_VISUAL_POWER_SHIELDING,STAT_MITIGATION,ATTRIBUTE_HEALTH,POWERTYPE_HEALTH)
-    FTC.Frames:UpdateShield( 'player', value or 0 , maxValue or 0 )
+    FTC.Frames:UpdateShield( 'player', FTC.Player.shield.current , FTC.Player.shield.max )
 end
  
  --[[ 
  * Set Up Target Frame
  * --------------------------------
  * Called by FTC.Frames:Initialize()
- * Called by FTC:UpdateTarget()
+ * Called by FTC.Target:Update()
  * Called by FTC.Menu:Reposition()
  * --------------------------------
  ]]--
@@ -170,6 +169,9 @@ end
         -- Populate shield
         local value, maxValue = GetUnitAttributeVisualizerEffectInfo('reticleover',ATTRIBUTE_VISUAL_POWER_SHIELDING,STAT_MITIGATION,ATTRIBUTE_HEALTH,POWERTYPE_HEALTH)
         FTC.Frames:UpdateShield( 'reticleover' , ( value ~= nil and value > 0 ) and value or 0 , FTC.Target.health.max )
+
+        -- Display the frame
+        frame:SetHidden(false)
     end
 end
 
