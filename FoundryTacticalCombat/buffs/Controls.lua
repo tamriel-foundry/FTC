@@ -46,6 +46,7 @@ function FTC.Buffs:Controls()
     lb.backdrop     = FTC.UI:Backdrop(  "FTC_LongBuffs_BG",                 lb,         "inherit",                                              {CENTER,CENTER,0,0},            {0,0,0,0.4}, {0,0,0,1}, nil, true )
     lb.label        = FTC.UI:Label(     "FTC_LongBuffs_Label",              lb,         "inherit",                                              {CENTER,CENTER,0,0},            FTC.UI:Font("trajan",24,true) , nil , {1,1} , "L\no\nn\ng\n\nB\nu\nf\nf\ns" , true )   
     lb:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end )
+    lb:SetDrawTier(DT_MEDIUM)
   
     --[[-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         TARGET BUFFS                    NAME                                PARENT      DIMENSIONS                                              ANCHOR                          EXTRAS
@@ -87,6 +88,7 @@ function FTC.Buffs:CreateBuff()
     local buff      = FTC.UI:Control(   "FTC_Buff"..counter,                FTC_UI,  {50,50},  {CENTER,CENTER,0,0},  true )
     buff.frame      = FTC.UI:Texture(   "FTC_Buff"..counter.."_Frame",      buff,    {44,44},  {CENTER,CENTER,0,0},  '/esoui/art/actionbar/buff_frame.dds', false )
     buff.frame:SetTextureCoords(0.22,0.78,0.22,0.78)
+    buff.frame:SetDrawLayer(DL_BACKGROUND)
     buff.backdrop   = FTC.UI:Backdrop(  "FTC_Buff"..counter.."_BG",         buff,    {36,36},  {CENTER,CENTER,0,0},  {0,0,0,1}, {0,0,0,1}, nil, false )
     buff.backdrop:SetDrawLayer(DL_BACKGROUND)
     buff.cooldown   = FTC.UI:Cooldown(  "FTC_Buff"..counter.."_CD",         buff,    {44,44},  {CENTER,CENTER,0,0},  {0,0,0,0.75}, false )
@@ -96,7 +98,7 @@ function FTC.Buffs:CreateBuff()
     buff.label      = FTC.UI:Label(     "FTC_Buff"..counter.."_Label",      buff,    {50,20},  {BOTTOM,BOTTOM,-1,-4},  FTC.UI:Font('esobold',20,true) , {0.8,1,1,1}, {1,1}, nil, false )
    
     -- Return buff to pool
-    d("Buff " .. counter .. " added to pool.")
+    --d("Buff " .. counter .. " added to pool.")
     return buff
 end
 
@@ -108,7 +110,7 @@ end
  ]]--
 function FTC.Buffs:ReleaseBuff(object)
     object:SetHidden(true)
-    d("Buff " .. object.id .. " released to pool.")
+    --d("Buff " .. object.id .. " released to pool.")
 end
 
 

@@ -489,20 +489,20 @@ end
 --[[ 
  * Filter abilities to override their displayed names or durations as necessary
  ]]--
-function FTC:FilterBuffInfo( unitTag , name , buffType , iconName )
+function FTC:FilterBuffInfo( unitTag , name , abilityType , iconName )
 	
 	-- Default to no isType
 	local isType	= nil
 	local isValid	= true
 	
 	-- Untyped Abilities (0)
-	if ( buffType == ABILITY_TYPE_NONE ) then
+	if ( abilityType == ABILITY_TYPE_NONE ) then
 	
 		-- Summons and Toggles
 		if ( FTC.Buffs:IsToggle( name ) ) then isType = "T" end
 		
 	-- "Bonus" Abilities (5)
-	elseif ( buffType == ABILITY_TYPE_BONUS ) then
+	elseif ( abilityType == ABILITY_TYPE_BONUS ) then
 	
 		-- Mundus Stones
 		if ( string.match( name , "Boon:" ) ) then
@@ -512,10 +512,6 @@ function FTC:FilterBuffInfo( unitTag , name , buffType , iconName )
 		-- Exclude Cyrodiil Bonuses on Targets
 		elseif ( string.match( name , "Keep Bonus" ) or string.match( name , "Scroll Bonus" ) or string.match( name , "Emperorship" ) ) then
 			if ( unitTag ~= 'player' ) then isValid = false end
-		
-		-- Food Buffs
-		elseif ( string.match( name , "Increase Max" ) or string.match( name , "Increase All Primary" ) ) 
-			then iconName = "/esoui/art/icons/ability_provisioner_004.dds"
 
 		-- Exclude Medicinal Use
 		elseif ( string.match( name , "Medicinal Use" ) ) then
@@ -525,12 +521,12 @@ function FTC:FilterBuffInfo( unitTag , name , buffType , iconName )
 		else isType = "P" end
 		
 	-- Blocking (52)
-	elseif ( ( buffType == ABILITY_TYPE_BLOCK ) or ( name == "Brace (Generic)" ) ) then
+	elseif ( ( abilityType == ABILITY_TYPE_BLOCK ) or ( name == "Brace (Generic)" ) ) then
 		name		= "Blocking"
 		isType 		= "T"
 
 	-- Change Appearance ( 64 )
-	elseif ( ( buffType == ABILITY_TYPE_CHANGEAPPEARANCE ) ) then isType	= "T" end
+	elseif ( ( abilityType == ABILITY_TYPE_CHANGEAPPEARANCE ) ) then isType	= "T" end
 		
 	-- Return the filtered info
 	return isValid, name, isType , iconName 

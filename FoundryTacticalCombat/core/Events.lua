@@ -111,7 +111,6 @@ function FTC.OnSlotUpdate( eventCode , slotNum )
     FTC.Player:GetActionBar()
 end
 
-
 --[[ 
  * Updates Action Bar on Weapon Swap
  * --------------------------------
@@ -123,31 +122,27 @@ function FTC:OnSwapWeapons( eventCode , activeWeaponPair , locked )
 end
 
 
-
 --[[ 
  * Runs on the EVENT_ACTION_UPDATE_COOLDOWNS listener.
  * This handler fires every time the player uses an active ability
  ]]--
 function FTC.OnUpdateCooldowns( ... )
     
-    -- Maybe process a ground-target spell
+    -- Process pending ground targets
     if ( FTC.init.Buffs ) then
-        if ( FTC.Buffs.ground ~= nil ) then
+        if ( FTC.Buffs.pendingGT ~= nil ) then
+
+            -- Fire a callback to hook extensions
+            CALLBACK_MANAGER:FireCallbacks( "FTC_SpellCast" , FTC.Buffs.pendingGT )
         
             -- Process the queued ground target spell
-            FTC.Buffs:NewEffects( FTC.Buffs.ground )
-            
-            -- Fire a callback when we know a spell was cast
-            CALLBACK_MANAGER:FireCallbacks( "FTC_SpellCast" , FTC.Buffs.ground )
+            FTC.Buffs:NewEffect( FTC.Buffs.pendingGT )
             
             -- Clear the queue
-            FTC.Buffs.ground = nil
+            FTC.Buffs.pendingGT = nil
         end
     end
 end
-
-
-
 
 
 --[[ 

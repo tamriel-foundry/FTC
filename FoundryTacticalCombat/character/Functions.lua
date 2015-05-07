@@ -89,13 +89,13 @@ function FTC.Target:Update()
     local name = GetUnitName('reticleover')
 
     -- Ignore empty and critters, but not during move mode
-    local ignore = ( ( target == "" ) or FTC:IsCritter( target ) ) and not FTC.move
+    local ignore = ( ( not DoesUnitExist('reticleover') ) or FTC:IsCritter('reticleover') ) and not FTC.move
 
     -- Update valid targets
     if ( not ignore ) then
 
         -- Update the target data object
-        FTC.Target.name     = name
+        FTC.Target.name     = GetUnitName('reticleover')
         FTC.Target.class    = FTC.Player:GetClass(GetUnitClassId('reticleover'))
         FTC.Target.level    = GetUnitLevel('reticleover')
         FTC.Target.vlevel   = GetUnitVeteranRank('reticleover') 
@@ -123,9 +123,8 @@ end
  * --------------------------------
  ]]-- 
 function FTC:IsCritter( unitTag )
-
-    -- Critters meet all the following criteria: Level 1, Difficulty = NONE, Attackable, and Neutral reaction
-    return (( GetUnitLevel(unitTag) == 1 ) and ( GetUnitDifficulty(unitTag) == MONSTER_DIFFICULTY_NONE ) and IsUnitAttackable(unitTag) and ( GetUnitReaction(unitTag) == UNIT_REACTION_NEUTRAL ) )
+    -- Critters meet all the following criteria: Level 1, Difficulty = NONE, and Neutral or Friendly reaction
+    return (( GetUnitLevel(unitTag) == 1 ) and ( GetUnitDifficulty(unitTag) == MONSTER_DIFFICULTY_NONE ) and ( GetUnitReaction(unitTag) == UNIT_REACTION_NEUTRAL or GetUnitReaction(unitTag) == UNIT_REACTION_FRIENDLY ) )
 end
 
 --[[ 
@@ -186,6 +185,7 @@ function FTC.Player:GetActionBar()
 
             -- Populate the slot object
             slot = {
+                ["owner"]       = FTC.Player.name,
                 ["slot"]        = i,
                 ["id"]          = ability_id,
                 ["name"]        = name,
@@ -205,17 +205,18 @@ function FTC.Player:GetActionBar()
     end
 end
 
-FTC.Abilities = {}
+
 --[[ 
  * Get abilityID from abilityName
  * --------------------------------
  * UNUSED
  * --------------------------------
- ]]-- 
+
+FTC.Abilities = {}
 function FTC:GetAbilityId( abilityName )
 
     -- Do we already know it?
-    if ( FTC.Abilities[abilityName] = nil ) then
+    if ( FTC.Abilities[abilityName] == nil ) then
 
         -- Loop over all ability IDs until we find it
         for i = 1, 70000 do
@@ -226,5 +227,6 @@ function FTC:GetAbilityId( abilityName )
     end
 
     -- Return the ID
-    return FTC.Abilities[abilityName] end
+    return FTC.Abilities[abilityName]
 end
+]]-- 

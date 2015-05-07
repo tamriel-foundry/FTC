@@ -61,8 +61,8 @@ function FTC.Buffs.Initialize()
     FTC.init.Buffs = true
 
     -- Activate uldating
-    EVENT_MANAGER:RegisterForUpdate( "FTC_PlayerBuffs" , 100 , function() FTC.Buffs:Update("Player") end )
-    EVENT_MANAGER:RegisterForUpdate( "FTC_TargetBuffs" , 100 , function() FTC.Buffs:Update("Target") end )
+    EVENT_MANAGER:RegisterForUpdate( "FTC_PlayerBuffs" , 100 , function() FTC.Buffs:Update('player') end )
+    EVENT_MANAGER:RegisterForUpdate( "FTC_TargetBuffs" , 100 , function() FTC.Buffs:Update('reticleover') end )
 end
 
 --[[ 
@@ -107,9 +107,6 @@ function FTC.Buffs.SetStateCustom( self , state , locked )
     -- The button is being depressed
     if ( state == BSTATE_PRESSED ) then
 
-        -- Store the pressed status
-        FTC.Player.Abilities[slot].isPressed = true
-
         -- Clear any pending ground target
         if ( FTC.Buffs.pendingGT ~= nil and FTC.Buffs.pendingGT.name == ability.name ) then FTC.Buffs.pendingGT = nil end
 
@@ -119,8 +116,8 @@ function FTC.Buffs.SetStateCustom( self , state , locked )
         -- Get the time
         local time = GetGameTimeMilliseconds()
 
-        -- Avoid erroneous detection, skill failure, and spamming
-        if ( FTC.Buffs:HasFailure(slot) or ( not FTC.Player.Abilities[slot].isPressed ) or ( time < ( FTC.Player.Abilities[slot].lastCast or 0 ) + 500 ) ) then return retval end
+        -- Avoid skill failure and spamming
+        if ( FTC.Buffs:HasFailure(slot) or ( time < ( FTC.Player.Abilities[slot].lastCast or 0 ) + 500 ) ) then return retval end
 
         -- Put ground target abilities into the pending queue
         if ( ability.ground ) then 
@@ -131,11 +128,11 @@ function FTC.Buffs.SetStateCustom( self , state , locked )
         -- Fire a callback to hook extensions
         CALLBACK_MANAGER:FireCallbacks( "FTC_SpellCast" , ability )
 
-        -- Register the new effect
-        FTC.Buffs:NewEffect( ability )
+        -- Register abilities with durations or custom effects
+        if ( ( ability.effects ~= nil ) or ( ability.dur > 0 ) ) then FTC.Buffs:NewEffect( ability ) end
 
-        -- Flag the last cast time
-        FTC.Player.Abilities[slot].lastCast = time  
+        -- Flag the last cast time  
+        FTC.Player.Abilities[slot].lastCast = time
     end
 
     -- Return the original function
@@ -178,14 +175,17 @@ function FTC.Buffs:GetBuffs( unitTag )
         isValid, effectName, isType , iconName = FTC:FilterBuffInfo( unitTag , effectName , abilityType , iconName )
         if ( isValid ) then 
 
+            -- Get the remaining duration
+            local duration  = (endTime - GetFrameTimeSeconds()) * 1000
+
             -- Setup the ability object
             local ability = {
-                ["target"]  = GetUnitName( unitTag ),
+                ["owner"]   = GetUnitName( unitTag ),
                 ["name"]    = effectName,
-                ["dur"]     = endTime - GetGameTimeMilliseconds(),
+                ["dur"]     = duration, 
                 ["debuff"]  = effectType == BUFF_EFFECT_TYPE_DEBUFF,
                 ["tex"]     = iconName,
-                ["type"]    = isType,
+                ["type"]    = ( duration > 0 ) and nil or isType,
                 ["cast"]    = 0
             }
 
@@ -203,6 +203,9 @@ end
  ]]--
 function FTC.Buffs:EffectChanged( changeType , unitTag , effectName , endTime , abilityType , iconName )
 
+    -- Only take action for player and target
+    if ( unitTag ~= "player" and unitTag ~= "reticleover" ) then return end
+
     -- Get the context
     local context = ( unitTag == 'player' ) and "Player" or "Target"
     
@@ -213,16 +216,19 @@ function FTC.Buffs:EffectChanged( changeType , unitTag , effectName , endTime , 
     if ( changeType == 2 and isValid ) then
         FTC.Buffs[context][effectName] = nil 
         FTC.Buffs:ReleaseUnusedBuffs()
-
-    -- Add a new effect
     else
+        
+        -- Get the remaining duration
+        local duration  = (endTime - GetFrameTimeSeconds()) * 1000
+
+        -- Add a new effect
         local ability = {
-            ["target"]  = GetUnitName( unitTag ),
+            ["owner"]   = GetUnitName( unitTag ),
             ["name"]    = effectName,
-            ["dur"]     = endTime - GetGameTimeMilliseconds(),
+            ["dur"]     = duration,
             ["debuff"]  = effectType == BUFF_EFFECT_TYPE_DEBUFF,
             ["tex"]     = iconName,
-            ["type"]    = isType,
+            ["type"]    = ( duration > 0 ) and nil or isType,
             ["cast"]    = 0
         }
 
@@ -243,9 +249,6 @@ function FTC.Buffs:NewEffect( ability )
 
     -- Get the time
     local ms = GetGameTimeMilliseconds()
-    
-    -- Only proceed for abilities with an explicit duration or custom effects
-    if ( ability.effects == nil and ( ability.type == nil ) and not ( ability.dur > 0 ) ) then return end
 
     -- Get ability info
     local effects   = ability.effects
@@ -253,13 +256,16 @@ function FTC.Buffs:NewEffect( ability )
 
     -- Setup buff object
     local buffTemplate = {
-        ["target"]  = ability.target,
+        ["owner"]   = ability.owner,
         ["name"]    = ability.name,
         ["stacks"]  = 0,
         ["debuff"]  = false,
         ["icon"]    = ability.tex,
         ["begin"]   = ( ms + castTime ) / 1000,
     }
+
+    -- Arbitrate context
+    local context   = ( ability.owner == FTC.Player.name ) and "Player" or "Target"
 
     -- Custom tracked effects
     if ( effects ~= nil ) then
@@ -272,12 +278,13 @@ function FTC.Buffs:NewEffect( ability )
             newBuff.ends    = ( ( ms + castTime ) / 1000 ) + effects[1]
 
             -- Assign buff to pooled control
-            local object, objectKey = FTC.Buffs.Pool:AcquireObject()
-            object.id       = objectKey
-            newBuff.control = object
+            local control, objectKey = FTC.Buffs.Pool:AcquireObject()
+            control.id      = objectKey
+            control.icon:SetTexture(newBuff.icon)
+            newBuff.control = control
 
             -- Add buff to active table
-            FTC.Buffs.Player[ability.name] = newBuff
+            FTC.Buffs[context][ability.name] = newBuff
         end
 
         -- Custom debuffs
@@ -289,9 +296,10 @@ function FTC.Buffs:NewEffect( ability )
             newBuff.debuff  = true
 
             -- Assign buff to pooled control
-            local object, objectKey = FTC.Buffs.Pool:AcquireObject()
-            object.id       = objectKey
-            newBuff.control = object
+            local control, objectKey = FTC.Buffs.Pool:AcquireObject()
+            control.id       = objectKey
+            control.icon:SetTexture(newBuff.icon)
+            newBuff.control = control
 
             -- Add buff to active table
             FTC.Buffs.Target[ability.name] = newBuff
@@ -305,13 +313,13 @@ function FTC.Buffs:NewEffect( ability )
         newBuff.ends        = ( ms + ability.cast + ability.dur ) / 1000
 
         -- Assign buff to pooled control
-        local object, objectKey = FTC.Buffs.Pool:AcquireObject()
-        object.id       = objectKey
-        newBuff.control = object
+        local control, objectKey = FTC.Buffs.Pool:AcquireObject()
+        control.id       = objectKey
+        control.icon:SetTexture(newBuff.icon)
+        newBuff.control = control
 
         -- Add buff to active table
-        FTC.Buffs.Player[ability.name] = newBuff
-
+        FTC.Buffs[context][ability.name] = newBuff
 
     -- API tracked toggles
     elseif ( tonumber(ability.type) == nil  ) then
@@ -322,12 +330,13 @@ function FTC.Buffs:NewEffect( ability )
         newBuff.toggle      = ability.type
         
         -- Assign buff to pooled control
-        local object, objectKey = FTC.Buffs.Pool:AcquireObject()
-        object.id       = objectKey
-        newBuff.control = object
+        local control, objectKey = FTC.Buffs.Pool:AcquireObject()
+        control.id       = objectKey
+        control.icon:SetTexture(newBuff.icon)
+        newBuff.control = control
 
         -- Add buff to active table
-        FTC.Buffs.Player[ability.name] = newBuff
+        FTC.Buffs[context][ability.name] = newBuff
     end
 
     -- Release any unused objects
@@ -348,7 +357,7 @@ function FTC.Buffs:WipeBuffs( unitTag )
     
     -- Wipe out buffs that are specific to the deceased
     for name , buff in pairs( FTC.Buffs[context] ) do
-        if ( buff.target == GetUnitName( unitTag ) and buff.area == false ) then
+        if ( buff.owner == GetUnitName( unitTag ) and buff.area == false ) then
             FTC.Buffs.Pool:ReleaseObject(buff.control.id)
             FTC.Buffs[context][name] = nil
         end 
@@ -366,13 +375,16 @@ end
  * Called by FTC_TargetBuffs:OnUpdate()
  * --------------------------------
  ]]--
-function FTC.Buffs:Update( context )
+function FTC.Buffs:Update( unitTag )
+
+    -- Get context
+    local context       = ( unitTag == 'player' ) and "Player" or "Target"
 
     -- Get data
-    local buffs         = ( context == "Player" ) and FTC.Buffs.Player or FTC.Buffs.Target
+    local buffs         = FTC.Buffs[context]
         
-    -- Hide target buffs if the target frame isn't shown
-    if ( context == "Target" and FTC.init.Frames and FTC_TargetFrame:IsHidden() ) then FTC_TargetBuffs:SetHidden(true) end
+    -- Hide target buffs if we have no target
+    FTC_TargetBuffs:SetHidden( context == "Target" and FTC.init.Frames and FTC_TargetFrame:IsHidden() ) 
     
     -- Bail out if no buffs are present
     if ( next(buffs) == nil ) then return end
@@ -411,6 +423,11 @@ function FTC.Buffs:Update( context )
             FTC.Buffs[context][name] = nil 
             FTC.Buffs.Pool:ReleaseObject(control.id)
 
+        -- Purge any non-timed buffs belonging to others
+        elseif ( buffs[i].toggle ~= nil and buffs[i].owner ~= GetUnitName(unitTag) ) then
+            FTC.Buffs[context][name] = nil 
+            FTC.Buffs.Pool:ReleaseObject(control.id)
+
         -- Otherwise process away!
         else
             if ( duration > 0 ) then 
@@ -434,8 +451,6 @@ function FTC.Buffs:Update( context )
 
             -- Update the display
             control.label:SetText(label)
-            control.icon:SetTexture(buffs[i].icon)
-            control.cooldown:StartCooldown( ( buffs[i].ends - gameTime ) * 1000 , ( buffs[i].ends - buffs[i].begin ) * 1000 , CD_TYPE_RADIAL, CD_TIME_TYPE_TIME_UNTIL, false )
 
             -- Long Buffs
             if ( context == "Player" and isLong ) then
@@ -460,6 +475,7 @@ function FTC.Buffs:Update( context )
                 control:ClearAnchors()
                 control:SetAnchor(BOTTOMLEFT,container,BOTTOMLEFT,(debuffCount*50),0)
                 control.frame:SetTexture('/esoui/art/actionbar/debuff_frame.dds')
+                control.cooldown:StartCooldown( ( buffs[i].ends - gameTime ) * 1000 , ( buffs[i].ends - buffs[i].begin ) * 1000 , CD_TYPE_RADIAL, CD_TIME_TYPE_TIME_UNTIL, false )
                 control:SetHidden(false)
 
                 -- Update the count
@@ -474,6 +490,7 @@ function FTC.Buffs:Update( context )
                 control:ClearAnchors()
                 control:SetAnchor(TOPLEFT,container,TOPLEFT,(buffCount*50),0)
                 control.frame:SetTexture('/esoui/art/actionbar/buff_frame.dds')
+                control.cooldown:StartCooldown( ( buffs[i].ends - gameTime ) * 1000 , ( buffs[i].ends - buffs[i].begin ) * 1000 , CD_TYPE_RADIAL, CD_TIME_TYPE_TIME_UNTIL, false )
                 control:SetHidden(false)
 
                 -- Update the count
