@@ -489,7 +489,7 @@ end
 --[[ 
  * Filter abilities to override their displayed names or durations as necessary
  ]]--
-function FTC:FilterBuffInfo( unitTag , name , abilityType , iconName )
+function FTC:FilterBuffInfo( unitTag , name ,  abilityType , iconName )
 	
 	-- Default to no isType
 	local isType	= nil
@@ -514,8 +514,10 @@ function FTC:FilterBuffInfo( unitTag , name , abilityType , iconName )
 			if ( unitTag ~= 'player' ) then isValid = false end
 
 		-- Exclude Medicinal Use
-		elseif ( string.match( name , "Medicinal Use" ) ) then
-			isValid = false
+		elseif ( string.match( name , "Medicinal Use" ) ) then isValid = false
+
+		-- Exclude "Fed on ally"
+		elseif ( string.match( name , "Fed on ally" ) ) then isValid = false
 
 		-- Catch Defaults
 		else isType = "P" end

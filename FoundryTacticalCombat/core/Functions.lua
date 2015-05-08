@@ -34,7 +34,9 @@ end
  --[[ 
  * Simple function for appending two tables together
  ]]-- 
-function FTC.JoinTables(t1,t2)
+function FTC:JoinTables(t1,t2)
+	local t1 = t1 or {}
+	local t2 = t2 or {}
 	for k,v in pairs(t2) do t1[k]=v end
 	return t1
 end

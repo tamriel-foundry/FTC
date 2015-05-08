@@ -81,7 +81,10 @@ function FTC.Menu:Reposition(panel)
         FTC_PlayerFrame:ClearAnchors()
         local anchor = FTC.Vars.FTC_PlayerFrame
         FTC_PlayerFrame:SetAnchor(anchor[1],FTC_UI,anchor[2],anchor[3],anchor[4])
-        FTC.Frames:SetupPlayer()
+
+        -- Restore the correct shield
+        local value, maxValue = GetUnitAttributeVisualizerEffectInfo('player',ATTRIBUTE_VISUAL_POWER_SHIELDING,STAT_MITIGATION,ATTRIBUTE_HEALTH,POWERTYPE_HEALTH)
+        FTC.Frames:UpdateShield( 'player', value or 0 , maxValue or 0)
 
         -- Reset the target frame
         FTC_TargetFrame:ClearAnchors()

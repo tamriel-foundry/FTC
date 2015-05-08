@@ -29,7 +29,7 @@ FTC.Frames.Defaults = {
     ["FrameStaminaColor"]       = {0.0,0.4,0.0},
     ["FrameShieldColor"]        = {1.0,0.4,0.0},
 }
-FTC.JoinTables(FTC.Defaults,FTC.Frames.Defaults)
+FTC:JoinTables(FTC.Defaults,FTC.Frames.Defaults)
 
 --[[----------------------------------------------------------
     UNIT FRAMES FUNCTIONS
@@ -149,6 +149,10 @@ end
         -- Boss Mobs
         elseif ( GetUnitDifficulty('reticleover') >= 3 ) then 
             icon  = "/esoui/art/lfg/lfg_veterandungeon_down.dds"
+            title = GetUnitCaption( 'reticleover' )
+
+        -- Normal NPCs
+        else
             title = GetUnitCaption( 'reticleover' )
         end
 

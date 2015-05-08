@@ -15,10 +15,10 @@ function FTC.Buffs:Controls()
     local pbAnchor  = ( FTC.Vars.AnchorBuffs and FTC.init.Frames ) and {TOP,BOTTOM,0,6,FTC_PlayerFrame} or FTC.Vars.FTC_PlayerBuffs
     local pdAnchor  = ( FTC.Vars.AnchorBuffs and FTC.init.Frames ) and {BOTTOM,TOP,0,-6,FTC_PlayerFrame} or FTC.Vars.FTC_PlayerDebuffs
     local lbAnchor  = FTC.Vars.FTC_LongBuffs
-    local tbAnchor  = ( FTC.Vars.AnchorBuffs and FTC.init.Frames ) and {TOP,BOTTOM,0,6,FTC_TargetFrame} or FTC.Vars.FTC_TargetBuffs
+    local tbAnchor  = ( FTC.Vars.AnchorBuffs and FTC.init.Frames ) and {TOP,BOTTOM,0,6 - FTC_TargetFrame:GetHeight()*(2/6),FTC_TargetFrame} or FTC.Vars.FTC_TargetBuffs
     local tdAnchor  = ( FTC.Vars.AnchorBuffs and FTC.init.Frames ) and {BOTTOM,TOP,0,-6,FTC_TargetFrame} or FTC.Vars.FTC_TargetDebuffs
     local width     = ( FTC.Vars.AnchorBuffs and FTC.init.Frames ) and FTC.Vars.FrameWidth or 500
-    local height    = ( FTC.Vars.BuffText )  and 500 or 50
+    local height    = ( FTC.Vars.BuffNames )  and 500 or 50
 
     -- Define Buff Pool
     FTC.Buffs.Pool  = ZO_ObjectPool:New( FTC.Buffs.CreateBuff , function(object) FTC.Buffs:ReleaseBuff(object) end )
@@ -88,17 +88,13 @@ function FTC.Buffs:CreateBuff()
     local buff      = FTC.UI:Control(   "FTC_Buff"..counter,                FTC_UI,  {50,50},  {CENTER,CENTER,0,0},  true )
     buff.frame      = FTC.UI:Texture(   "FTC_Buff"..counter.."_Frame",      buff,    {44,44},  {CENTER,CENTER,0,0},  '/esoui/art/actionbar/buff_frame.dds', false )
     buff.frame:SetTextureCoords(0.22,0.78,0.22,0.78)
-    buff.frame:SetDrawLayer(DL_BACKGROUND)
     buff.backdrop   = FTC.UI:Backdrop(  "FTC_Buff"..counter.."_BG",         buff,    {36,36},  {CENTER,CENTER,0,0},  {0,0,0,1}, {0,0,0,1}, nil, false )
-    buff.backdrop:SetDrawLayer(DL_BACKGROUND)
     buff.cooldown   = FTC.UI:Cooldown(  "FTC_Buff"..counter.."_CD",         buff,    {44,44},  {CENTER,CENTER,0,0},  {0,0,0,0.75}, false )
-    buff.cooldown:SetDrawLayer(DL_CONTROLS)
     buff.icon       = FTC.UI:Texture(   "FTC_Buff"..counter.."_Icon",       buff,    {32,32},  {CENTER,CENTER,0,0},  '/esoui/art/icons/icon_missing.dds', false )
-    buff.icon:SetDrawLayer(DL_CONTROLS) 
-    buff.label      = FTC.UI:Label(     "FTC_Buff"..counter.."_Label",      buff,    {50,20},  {BOTTOM,BOTTOM,-1,-4},  FTC.UI:Font('esobold',20,true) , {0.8,1,1,1}, {1,1}, nil, false )
+    buff.label      = FTC.UI:Label(     "FTC_Buff"..counter.."_Label",      buff,    {50,20},  {BOTTOM,BOTTOM,-1,-4}, FTC.UI:Font('esobold',20,true) , {0.8,1,1,1}, {1,1}, nil, false )
+    buff.name       = FTC.UI:Label(     "FTC_Buff"..counter.."_Name",       buff,    {450,20}, {LEFT,RIGHT,10,0},     FTC.UI:Font('esobold',18,true) , {1,1,1,1}, {0,1}, "Buff Name", false )
    
     -- Return buff to pool
-    --d("Buff " .. counter .. " added to pool.")
     return buff
 end
 
@@ -109,10 +105,9 @@ end
  * --------------------------------
  ]]--
 function FTC.Buffs:ReleaseBuff(object)
+    object:SetParent(FTC_UI)
     object:SetHidden(true)
-    --d("Buff " .. object.id .. " released to pool.")
 end
-
 
 --[[ 
  * Release All Unused Buff Controls
@@ -125,10 +120,18 @@ function FTC.Buffs:ReleaseUnusedBuffs()
 
     -- Iterate over active controls
     for _ , control in pairs( FTC.Buffs.Pool.m_Active ) do
-        local isUsed = false5
+        local isUsed = false
         
-        -- Iterate over active buffs
-        for _ , buff in pairs( FTC.JoinTables(FTC.Buffs.Player,FTC.Buffs.Target) ) do
+        -- Iterate over player buffs
+        for _ , buff in pairs( FTC.Buffs.Player ) do
+            if (buff.control == control ) then
+                isUsed = true
+                break
+            end
+        end
+
+        -- Next try target buffs
+        for _ , buff in pairs( FTC.Buffs.Target ) do
             if (buff.control == control ) then
                 isUsed = true
                 break

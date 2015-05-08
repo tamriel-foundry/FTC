@@ -37,6 +37,7 @@
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTIVE_WEAPON_PAIR_CHANGED    , FTC.OnSwapWeapons )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTIVE_QUICKSLOT_CHANGED      , FTC.OnQuickslotChanged )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_UPDATE_COOLDOWNS       , FTC.OnUpdateCooldowns )
+        EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_INVENTORY_ITEM_USED           , FTC.OnItemUsed )
 
         -- Buff Events
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_EFFECT_CHANGED                , FTC.OnEffectChanged )
@@ -345,6 +346,19 @@
         end
     end
 
+    --[[ 
+     * Handles Quickslot Item Usage
+     * --------------------------------
+     * Called by EVENT_INVENTORY_ITEM_USED
+     * --------------------------------
+     ]]--
+    function FTC.OnItemUsed( eventCode , itemSoundCategory )
+
+        -- Process potion consumption
+        if( itemSoundCategory == ITEM_SOUND_CATEGORY_POTION ) then 
+            if ( FTC.init.Buffs ) then FTC.Buffs:NewEffect( FTC.Player.Quickslot ) end
+        end
+    end
 
 
 --[[----------------------------------------------------------

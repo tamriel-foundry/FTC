@@ -84,6 +84,6 @@ lib/LAM/controls/texture.lua
 menu/Functions.lua
 menu/Controls.lua
 
-extensions/Sorcerer.lua
-extensions/Weapons.lua
-extensions/Guild.lua
+#extensions/Sorcerer.lua
+#extensions/Weapons.lua
+#extensions/Guild.lua

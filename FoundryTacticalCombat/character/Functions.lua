@@ -199,6 +199,7 @@ function FTC.Player:GetActionBar()
                 ["dur"]         = GetAbilityDuration(ability_id),
                 ["tex"]         = GetSlotTexture(i),
                 ["ground"]      = FTC.Buffs:IsGroundTarget( name ),
+                ["area"]        = ( ( not DoesUnitExist('reticleover') ) and ( not HasTargetFailure(i) ) ) or ( GetAbilityRadius(ability_id) > 0 ),
                 ["effects"]     = FTC.Buffs.Effects[name]
             }
         end
@@ -222,23 +223,35 @@ function FTC.Player:GetQuickslot(slotNum)
 
     -- Populate the quickslot object
     if ( IsSlotUsed(slotNum) ) then
-        local ability_id    = GetSlotBoundId(slotNum)
+        local abilityId     = GetSlotBoundId(slotNum)
+
+        -- Get potion base duration
+        local baseDur       = tonumber(zo_strformat("<<x:1>>",string.match(GetAbilityDescription(abilityId),'for (.*) seconds'))) or 0
+
+        -- Get potion level
+        local itemLevel     = ( GetItemLinkRequiredLevel(GetSlotItemLink(slotNum)) or 0 ) + ( GetItemLinkRequiredVeteranRank(GetSlotItemLink(slotNum)) or 0 )
+
+        -- Get Medicinal Use multiplier
+        local multiplier    = GetSkillAbilityUpgradeInfo(SKILL_TYPE_TRADESKILL, 1, 3)
+        multiplier          = 1.0 + (0.1*multiplier)
+
+        -- Approximate potion duration with a close (but incorrect) formula
+        local duration      = ( baseDur + ( itemLevel * .325 ) ) * multiplier * 1000
 
         -- Setup object
         local ability = {
             ["owner"]       = FTC.Player.name,
             ["slot"]        = slotNum,
             ["id"]          = abilityId,
-            ["name"]        = GetSlotName(slotNum),
+            ["name"]        = zo_strformat("<<t:1>>",GetSlotName(slotNum)),
             ["cast"]        = 0,
             ["chan"]        = 0,
-            ["dur"]         = GetAbilityDuration(ability_id),
-            ["tex"]         = GetSlotTexture(i),
+            ["dur"]         = duration,
+            ["tex"]         = GetSlotTexture(slotNum),
         }
 
         -- Save the slot
         FTC.Player.Quickslot = ability
-        d("getting quickslot " .. slotNum)
 
     -- Otherwise empty the object
     else FTC.Player.Quickslot = {} end 
@@ -248,24 +261,15 @@ end
 --[[ 
  * Get abilityID from abilityName
  * --------------------------------
- * UNUSED
+ * UNUSED / DEBUGGING
  * --------------------------------
-
-FTC.Abilities = {}
+ ]]--
 function FTC:GetAbilityId( abilityName )
 
-    -- Do we already know it?
-    if ( FTC.Abilities[abilityName] == nil ) then
-
-        -- Loop over all ability IDs until we find it
-        for i = 1, 70000 do
-           if ( DoesAbilityExist(i) and ( GetAbilityName(i) == abilityName ) ) then
-                FTC.Abilities[abilityName] = i
-           end
-        end
+    -- Loop over all ability IDs until we find it
+    for i = 1, 70000 do
+       if ( DoesAbilityExist(i) and ( GetAbilityName(i) == abilityName ) ) then
+            d(i)
+       end
     end
-
-    -- Return the ID
-    return FTC.Abilities[abilityName]
 end
-]]-- 
