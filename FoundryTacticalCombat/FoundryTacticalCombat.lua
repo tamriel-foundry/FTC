@@ -36,7 +36,7 @@ FTC.Defaults            = {
     ["EnableBuffs"]     = true,
     ["EnableSCT"]       = false,
     ["EnableHotbar"]    = false,
-    ["EnableDamage"]    = false,
+    ["EnableStats"]     = false,
 }
 
 --[[ Default Saved Variables
@@ -82,9 +82,12 @@ function FTC.Initialize( eventCode, addOnName )
     -- Initialize UI Layer
     FTC.UI:Initialize()
     
-    -- Setup Character Information
+    -- Setup Character Management
     FTC.Player:Initialize()
     FTC.Target:Initialize()
+
+    -- Setup Damage Management
+    FTC.Damage:Initialize()
 
     -- Unit Frames Component
     if ( FTC.Vars.EnableFrames )    then FTC.Frames:Initialize() end
@@ -92,8 +95,8 @@ function FTC.Initialize( eventCode, addOnName )
     -- Advanced Hotbar Component
     if ( FTC.Vars.EnableHotbar )    then FTC.Hotbar:Initialize() end
     
-    -- Damage Tracking Component
-    if ( FTC.Vars.EnableDamage )    then FTC.Damage:Initialize() end
+    -- Combat Statistics
+    if ( FTC.Vars.EnableStats )     then FTC.Stats:Initialize() end
     
     -- Active Buffs Component
     if ( FTC.Vars.EnableBuffs )     then FTC.Buffs:Initialize() end

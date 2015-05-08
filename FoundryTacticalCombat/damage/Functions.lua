@@ -10,18 +10,18 @@ FTC.Damage = {}
 function FTC.Damage:Initialize()
 
 	-- Reset the meter
-	FTC.Damage:Reset()
+	--FTC.Damage:Reset()
 	
 	-- Create controls
-	FTC.Damage:Controls()
+	--FTC.Damage:Controls()
 	
 	-- Register keybinding
-	ZO_CreateStringId("SI_BINDING_NAME_DISPLAY_DAMAGE_METER", "Display Damage Meter")
-	ZO_CreateStringId("SI_BINDING_NAME_POST_DAMAGE_RESULTS", "Post Damage Results")
-	ZO_CreateStringId("SI_BINDING_NAME_POST_HEALING_RESULTS", "Post Healing Results")
+	--ZO_CreateStringId("SI_BINDING_NAME_DISPLAY_DAMAGE_METER", "Display Damage Meter")
+	--ZO_CreateStringId("SI_BINDING_NAME_POST_DAMAGE_RESULTS", "Post Damage Results")
+	--ZO_CreateStringId("SI_BINDING_NAME_POST_HEALING_RESULTS", "Post Healing Results")
 
 	-- Register init status
-	FTC.init.Damage = true
+	--FTC.init.Damage = true
 
 end
 

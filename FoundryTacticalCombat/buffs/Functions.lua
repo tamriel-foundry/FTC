@@ -556,6 +556,9 @@ function FTC.Buffs:CheckPotion()
     
     -- Get the cooldown
     local cd, dur , usable = GetSlotCooldownInfo(current)
+
+    --local upgradeLevel = GetSkillAbilityUpgradeInfo(SKILL_TYPE_TRADESKILL, 1, 3)
+    --g_potionMultiplier = 1.0 + 0.1*upgradeLevel
     
     -- Trigger an alert if the potion has just become available
     if ( usable and not FTC.Buffs.canPotion ) then

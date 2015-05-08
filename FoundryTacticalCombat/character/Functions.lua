@@ -38,6 +38,9 @@ function FTC.Player:Initialize()
     -- Load action bar abilities
     FTC.Player.Abilities = {}
     FTC.Player:GetActionBar()
+
+    -- Load quickslot ability
+    FTC.Player:GetQuickslot()
 end
 
 --[[----------------------------------------------------------
@@ -203,6 +206,42 @@ function FTC.Player:GetActionBar()
         -- Save the slot
         FTC.Player.Abilities[i] = slot
     end
+end
+
+
+--[[ 
+ * Get Currently Active Quickslot
+ * --------------------------------
+ * Called by FTC:OnQuickslotChanged
+ * --------------------------------
+ ]]-- 
+function FTC.Player:GetQuickslot(slotNum)
+
+    -- Get the current slot
+    local slotNum       = slotNum or GetCurrentQuickslot()
+
+    -- Populate the quickslot object
+    if ( IsSlotUsed(slotNum) ) then
+        local ability_id    = GetSlotBoundId(slotNum)
+
+        -- Setup object
+        local ability = {
+            ["owner"]       = FTC.Player.name,
+            ["slot"]        = slotNum,
+            ["id"]          = abilityId,
+            ["name"]        = GetSlotName(slotNum),
+            ["cast"]        = 0,
+            ["chan"]        = 0,
+            ["dur"]         = GetAbilityDuration(ability_id),
+            ["tex"]         = GetSlotTexture(i),
+        }
+
+        -- Save the slot
+        FTC.Player.Quickslot = ability
+        d("getting quickslot " .. slotNum)
+
+    -- Otherwise empty the object
+    else FTC.Player.Quickslot = {} end 
 end
 
 
