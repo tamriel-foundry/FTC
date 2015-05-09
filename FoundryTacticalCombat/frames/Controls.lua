@@ -31,7 +31,7 @@ function FTC.Frames:Controls()
 
     --Health Bar
     local health    = FTC.UI:Backdrop(  "FTC_PlayerFrame_Health",           player,     {player:GetWidth(),player:GetHeight()*2/6},             {TOP,BOTTOM,0,0,player.plate},  {FTC.Vars.FrameHealthColor[1]/5,FTC.Vars.FrameHealthColor[2]/5,FTC.Vars.FrameHealthColor[3]/5,1}, {0,0,0,1}, FTC.UI.Textures.grainy, false ) 
-    health.bar      = FTC.UI:Statusbar( "FTC_PlayerFrame_HealthBar",        health,     {health:GetWidth()-4,health:GetHeight()-4},             {TOPLEFT,TOPLEFT,2,2},          {FTC.Vars.FrameHealthColor[1],FTC.Vars.FrameHealthColor[2],FTC.Vars.FrameHealthColor[3],1}, FTC.UI.Textures.grainy, false )   
+    health.bar      = FTC.UI:Statusbar( "FTC_PlayerFrame_HealthBar",        health,     {health:GetWidth()-6,health:GetHeight()-4},             {TOPLEFT,TOPLEFT,3,3},          {FTC.Vars.FrameHealthColor[1],FTC.Vars.FrameHealthColor[2],FTC.Vars.FrameHealthColor[3],1}, FTC.UI.Textures.grainy, false )   
     health.current  = FTC.UI:Label(     "FTC_PlayerFrame_HealthCurrent",    health,     {health:GetWidth()*2/3,health:GetHeight()},             {TOPLEFT,TOPLEFT,12,0},         FTC.UI:Font(FTC.Vars.FrameFont1,FTC.Vars.FrameFontSize+2,true), nil, {0,1}, 'Health', false )       
     health.pct      = FTC.UI:Label(     "FTC_PlayerFrame_HealthPct",        health,     {health:GetWidth()*1/3,health:GetHeight()},             {TOPRIGHT,TOPRIGHT,-12,0},      FTC.UI:Font(FTC.Vars.FrameFont2,FTC.Vars.FrameFontSize+2,true), nil, {2,1}, 'Pct%', false )
     health.hot      = FTC.UI:Texture(   "FTC_PlayerFrame_HealthHoT",        health,     {health.bar:GetWidth()/6,health.bar:GetWidth()/12},     {LEFT,CENTER,6,0},              FTC.UI.Textures.regenLg, true )
@@ -41,7 +41,7 @@ function FTC.Frames:Controls()
     
     -- Magicka Bar
     local magicka   = FTC.UI:Backdrop(  "FTC_PlayerFrame_Magicka",          player,     {player:GetWidth(),player:GetHeight()/6},               {TOP,BOTTOM,0,-1,health},       {FTC.Vars.FrameMagickaColor[1]/5,FTC.Vars.FrameMagickaColor[2]/5,FTC.Vars.FrameMagickaColor[3]/5,1}, {0,0,0,1}, FTC.UI.Textures.grainy, false )   
-    magicka.bar     = FTC.UI:Statusbar( "FTC_PlayerFrame_MagickaBar",       magicka,    {magicka:GetWidth()-4,magicka:GetHeight()-4},           {TOPLEFT,TOPLEFT,2,2},          {FTC.Vars.FrameMagickaColor[1],FTC.Vars.FrameMagickaColor[2],FTC.Vars.FrameMagickaColor[3],1}, FTC.UI.Textures.grainy, false )
+    magicka.bar     = FTC.UI:Statusbar( "FTC_PlayerFrame_MagickaBar",       magicka,    {magicka:GetWidth()-6,magicka:GetHeight()-4},           {TOPLEFT,TOPLEFT,3,2},          {FTC.Vars.FrameMagickaColor[1],FTC.Vars.FrameMagickaColor[2],FTC.Vars.FrameMagickaColor[3],1}, FTC.UI.Textures.grainy, false )
     magicka.current = FTC.UI:Label(     "FTC_PlayerFrame_MagickaCurrent",   magicka,    {magicka:GetWidth()*2/3,magicka:GetHeight()},           {TOPLEFT,TOPLEFT,12,0},         FTC.UI:Font(FTC.Vars.FrameFont1,FTC.Vars.FrameFontSize,true), nil, {0,1}, 'Magicka', false )
     magicka.pct     = FTC.UI:Label(     "FTC_PlayerFrame_MagickaPct",       magicka,    {magicka:GetWidth()*1/3,magicka:GetHeight()},           {TOPRIGHT,TOPRIGHT,-12,0},      FTC.UI:Font(FTC.Vars.FrameFont2,FTC.Vars.FrameFontSize,true), nil, {2,1}, 'Pct%', false )
     magicka.hot     = FTC.UI:Texture(   "FTC_PlayerFrame_MagickaHoT",       magicka,    {magicka.bar:GetWidth()/6,magicka.bar:GetWidth()/12},   {LEFT,CENTER,6,0},              FTC.UI.Textures.regenSm, true )
@@ -50,8 +50,8 @@ function FTC.Frames:Controls()
     player.magicka  = magicka
 
     -- Stamina Bar
-    local stamina   = FTC.UI:Backdrop(  "FTC_PlayerFrame_Stamina",          player,     {player:GetWidth(),player:GetHeight()/6},               {TOP,BOTTOM,0,-1,magicka},      {FTC.Vars.FrameStaminaColor[1]/5,FTC.Vars.FrameStaminaColor[2]/5,FTC.Vars.FrameStaminaColor[3]/5,1}, {0,0,0,1}, FTC.UI.Textures.grainy, false )   
-    stamina.bar     = FTC.UI:Statusbar( "FTC_PlayerFrame_StaminaBar",       stamina,    {stamina:GetWidth()-4,stamina:GetHeight()-4},           {TOPLEFT,TOPLEFT,2,2},          {FTC.Vars.FrameStaminaColor[1],FTC.Vars.FrameStaminaColor[2],FTC.Vars.FrameStaminaColor[3],1}, FTC.UI.Textures.grainy, false )    
+    local stamina   = FTC.UI:Backdrop(  "FTC_PlayerFrame_Stamina",          player,     {player:GetWidth(),player:GetHeight()/6},               {TOP,BOTTOM,0,0,magicka},      {FTC.Vars.FrameStaminaColor[1]/5,FTC.Vars.FrameStaminaColor[2]/5,FTC.Vars.FrameStaminaColor[3]/5,1}, {0,0,0,1}, FTC.UI.Textures.grainy, false )   
+    stamina.bar     = FTC.UI:Statusbar( "FTC_PlayerFrame_StaminaBar",       stamina,    {stamina:GetWidth()-6,stamina:GetHeight()-4},           {TOPLEFT,TOPLEFT,3,1},          {FTC.Vars.FrameStaminaColor[1],FTC.Vars.FrameStaminaColor[2],FTC.Vars.FrameStaminaColor[3],1}, FTC.UI.Textures.grainy, false )    
     stamina.current = FTC.UI:Label(     "FTC_PlayerFrame_StaminaCurrent",   stamina,    {stamina:GetWidth()*2/3,stamina:GetHeight()},           {TOPLEFT,TOPLEFT,12,0},         FTC.UI:Font(FTC.Vars.FrameFont1,FTC.Vars.FrameFontSize,true), nil, {0,1}, 'Stamina', false )      
     stamina.pct     = FTC.UI:Label(     "FTC_PlayerFrame_StaminaPct",       stamina,    {stamina:GetWidth()*1/3,stamina:GetHeight()},           {TOPRIGHT,TOPRIGHT,-12,0},      FTC.UI:Font(FTC.Vars.FrameFont2,FTC.Vars.FrameFontSize,true), nil, {2,1}, 'Pct%', false )
     stamina.hot     = FTC.UI:Texture(   "FTC_PlayerFrame_StaminaHoT",       stamina,    {stamina.bar:GetWidth()/6,stamina.bar:GetWidth()/12},   {LEFT,CENTER,6,0},              FTC.UI.Textures.regenSm, true )
@@ -107,7 +107,7 @@ function FTC.Frames:Controls()
     target.execute  = execute
 
     -- Titleplate
-    local lplate    = FTC.UI:Control(   "FTC_TargetFrame_LPlate",           target,     {target:GetWidth(),(target:GetHeight()/6)},             {TOP,BOTTOM,0,0,target.health}, false ) 
+    local lplate    = FTC.UI:Control(   "FTC_TargetFrame_LPlate",           target,     {target:GetWidth(),(target:GetHeight()/6)},             {TOP,BOTTOM,0,6,target.health}, false ) 
     lplate.title    = FTC.UI:Label(     "FTC_TargetFrame_LPlateTitle",      lplate,     {lplate:GetWidth(),30},                                 {RIGHT,RIGHT,-6,0},             FTC.UI:Font(FTC.Vars.FrameFont1,FTC.Vars.FrameFontSize,true), nil, {2,1}, 'Title', false )
     lplate.rank     = FTC.UI:Texture(   "FTC_TargetFrame_LPlateIcon",       lplate,     {30,30},                                                {LEFT,LEFT,0,0},                "/esoui/art/ava/ava_rankicon_sergeant.dds", false )        
     target.lplate   = lplate    

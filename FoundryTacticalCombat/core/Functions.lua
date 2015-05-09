@@ -82,22 +82,6 @@ function FTC:ToggleVisibility( activeLayerIndex )
 	
 	-- Hide the FTC_UI Layer
 	FTC_UI:SetHidden(hidden)
-
-	-- Hide SCT elements
-	if( FTC.init.SCT) then
-		FTC_CombatTextOut:SetHidden( isHidden )
-		FTC_CombatTextIn:SetHidden( isHidden )
-	end
-	
-	--[[ Hide buff elements
-	if( FTC.init.Buffs ) then
-		FTC_PlayerBuffs:SetHidden( isHidden )
-		FTC_PlayerDebuffs:SetHidden( isHidden )
-		FTC_TargetBuffs:SetHidden( isHidden )
-		FTC_TargetDebuffs:SetHidden( isHidden )
-		if ( FTC.Vars.EnableLongBuffs ) then FTC_LongBuffs:SetHidden( isHidden ) end
-	end
-	]]--
 end
 
 --[[ 

@@ -7,12 +7,12 @@ FTC.Frames = {}
 FTC.Frames.Defaults = {
     
     -- Player Frame
-    ["FTC_PlayerFrame"]         = {CENTER,CENTER,-350,350},
+    ["FTC_PlayerFrame"]         = {CENTER,CENTER,-400,300},
     ["EnableNameplate"]         = true,
     ["EnableXPBar"]             = true,
 
     -- Target Frame
-    ["FTC_TargetFrame"]         = {CENTER,CENTER,350,350},
+    ["FTC_TargetFrame"]         = {CENTER,CENTER,400,300},
     ["ExecuteThreshold"]        = 25,
     ["DefaultTargetFrame"]      = false,
 
@@ -211,7 +211,7 @@ end
         local attr   = frame[string.lower(name)]
         
         -- Update bar width
-        attr.bar:SetWidth( (pct / 100) * ( attr:GetWidth()-4 ) )
+        attr.bar:SetWidth( (pct / 100) * ( attr:GetWidth()-6 ) )
 
         -- Update bar labels
         local label = ( powerValue > 100000 ) and math.floor( ( powerValue + 500 ) / 1000 ) .. "k" or CommaValue(powerValue)

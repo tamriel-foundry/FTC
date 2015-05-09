@@ -8,7 +8,9 @@ ZO_CreateStringId("FTC_Name",               "Foundry Tactical Combat")
 ZO_CreateStringId("FTC_ShortInfo",          "Foundry Tactical Combat by Atropos")
 ZO_CreateStringId("FTC_LongInfo",           "You are using Foundry Tactical Combat version " .. FTC.version .. " developed by Atropos from Tamriel Foundry.")
 
--- Options Menu Core Settings
+--[[----------------------------------------------------------
+    MENU CORE
+  ]]----------------------------------------------------------
 ZO_CreateStringId("FTC_Menu_Configure",     "Configure Addon Components")
 ZO_CreateStringId("FTC_Menu_Reload",        "Changing this setting will immediately reload the UI!")
 ZO_CreateStringId("FTC_Menu_NeedReload",    "Changes to this setting will not take affect until you reload your UI!")
@@ -28,7 +30,9 @@ ZO_CreateStringId("FTC_Menu_SCTDesc",       "Enable scrolling combat text compon
 ZO_CreateStringId("FTC_Menu_Hotbar",        "Enable Advanced Hotbar")
 ZO_CreateStringId("FTC_Menu_HotbarDesc",    "Enable advanced tooltips displayed over the default hotbar? [Default: Enabled]")
 
--- Options Menu Unit Frames Settings
+--[[----------------------------------------------------------
+    UNIT FRAMES
+  ]]----------------------------------------------------------
 ZO_CreateStringId("FTC_Menu_FHeader",       "Configure Unit Frames Settings")
 
 ZO_CreateStringId("FTC_Menu_FText",         "Default Unit Frames Text")
@@ -79,5 +83,49 @@ ZO_CreateStringId("FTC_Menu_FStaminaCDesc", "Set the color displayed in the FTC 
 ZO_CreateStringId("FTC_Menu_FShieldC",      "Shield Bar Color")
 ZO_CreateStringId("FTC_Menu_FShieldCDesc",  "Set the color displayed in FTC unit frame Shield bars. [Default: 255,153,0]")
 
-ZO_CreateStringId("FTC_Menu_FReset",        "Reset Frames")
+ZO_CreateStringId("FTC_Menu_FReset",        "Reset Unit Frames")
 ZO_CreateStringId("FTC_Menu_FResetDesc",    "Reset original settings for FTC unit frames component.")
+
+--[[----------------------------------------------------------
+    BUFF TRACKER
+  ]]----------------------------------------------------------
+ZO_CreateStringId("FTC_Menu_BHeader",       "Configure Buff Tracker Settings")
+
+ZO_CreateStringId("FTC_Menu_BAnchor",       "Anchor Buffs")
+ZO_CreateStringId("FTC_Menu_BAnchorDesc",   "Anchor Buffs to Unit Frames? [Default: Enabled]")
+
+ZO_CreateStringId("FTC_Menu_BLong",       	"Display Long Buffs")
+ZO_CreateStringId("FTC_Menu_BLongDesc",   	"Display long duration player buffs? [Default: Enabled]")
+
+ZO_CreateStringId("FTC_BuffFormat0",   		"Disabled")
+ZO_CreateStringId("FTC_BuffFormat1",   		"Horizontal Tiles")
+ZO_CreateStringId("FTC_BuffFormat2",   		"Vertical Tiles")
+ZO_CreateStringId("FTC_BuffFormat3",   		"Descending List")
+ZO_CreateStringId("FTC_BuffFormat4",   		"Ascending List")
+
+ZO_CreateStringId("FTC_Menu_BPBFormat",   	"Player Buff Format")
+ZO_CreateStringId("FTC_Menu_BPBFormatDesc", "Choose desired format for player buffs. [Default: Horizontal Tiles]")
+
+ZO_CreateStringId("FTC_Menu_BPDFormat",   	"Player Debuff Format")
+ZO_CreateStringId("FTC_Menu_BPDFormatDesc", "Choose desired format for player debuffs. [Default: Horizontal Tiles]")
+
+ZO_CreateStringId("FTC_Menu_BLBFormat",   	"Long Buff Format")
+ZO_CreateStringId("FTC_Menu_BLBFormatDesc", "Choose desired format for long buffs. [Default: Vertical Tiles]")
+
+ZO_CreateStringId("FTC_Menu_BTBFormat",   	"Target Buff Format")
+ZO_CreateStringId("FTC_Menu_BTBFormatDesc", "Choose desired format for target buffs. [Default: Horizontal Tiles]")
+
+ZO_CreateStringId("FTC_Menu_BTDFormat",   	"Target Debuff Format")
+ZO_CreateStringId("FTC_Menu_BTDFormatDesc", "Choose desired format for target debuffs. [Default: Horizontal Tiles]")
+
+ZO_CreateStringId("FTC_Menu_BFont1",        "Primary Font")
+ZO_CreateStringId("FTC_Menu_BFont1Desc",    "Change the primary font used in FTC buff tracking. [Default: ESO Bold]")
+
+ZO_CreateStringId("FTC_Menu_BFont2",        "Secondary Font")
+ZO_CreateStringId("FTC_Menu_BFont2Desc",    "Change the secondary font used in FTC buff tracking. [Default: ESO Bold]")
+
+ZO_CreateStringId("FTC_Menu_BFontS",        "Frame Font Size")
+ZO_CreateStringId("FTC_Menu_BFontSDesc",    "Change the base scale of the fonts used in FTC buff trackin. [Default: 18]")
+
+ZO_CreateStringId("FTC_Menu_BReset",        "Reset Buff Tracking")
+ZO_CreateStringId("FTC_Menu_BResetDesc",    "Reset original settings for FTC buff tracking component.")

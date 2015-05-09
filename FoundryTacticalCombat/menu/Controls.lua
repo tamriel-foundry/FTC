@@ -258,32 +258,101 @@ function FTC.Menu:Controls()
       ]]----------------------------------------------------------
     local Extras = {
 
-        -- Buffs Header
-        { 
-            type        = "header", 
-            name        = FTC.L("Buff Tracker Settings"), 
-            width       = "full"
+        -- Buff Tracking Header
+        {   type        = "header", 
+            name        = GetString(FTC_Menu_BHeader),
+            width       = "full" 
         },
 
-        -- Anchor Buffs?
-        { 
-            type        = "checkbox", 
-            name        = FTC.L("Anchor Buffs"), 
-            tooltip     = FTC.L("Anchor buffs to unit frames?"), 
-            getFunc     = function() return FTC.Vars.AnchorBuffs end, 
-            setFunc     = function() FTC.Menu:Toggle( 'AnchorBuffs' , true ) end, 
-            default     = FTC.Defaults.AnchorBuffs
+        -- Player Buff Format
+        {   type        = "dropdown", 
+            name        = GetString(FTC_Menu_BPBFormat),
+            tooltip     = GetString(FTC_Menu_BPBFormatDesc),
+            choices     = { GetString(FTC_BuffFormat1) , GetString(FTC_BuffFormat2) , GetString(FTC_BuffFormat3) , GetString(FTC_BuffFormat4) , GetString(FTC_BuffFormat0) }, 
+            getFunc     = function() return FTC.Menu:GetBuffFormat('PlayerBuffFormat') end, 
+            setFunc     = function( value ) FTC.Menu:UpdateBuffFormat('PlayerBuffFormat',value) end,
+            default     = FTC.Menu:GetBuffFormat('PlayerBuffFormat'), 
         },
-        
-        -- Display Long Buffs?
-        { 
-            type        = "checkbox", 
-            name        = FTC.L("Display Long Buffs"), 
-            tooltip     = FTC.L("Track long duration player buffs?"), 
-            getFunc     = function() return FTC.Vars.EnableLongBuffs end, 
-            setFunc     = function() FTC.Menu:Toggle( 'EnableLongBuffs' ) end, 
-            default     = FTC.Defaults.EnableLongBuffs
+
+        -- Player Debuff Format
+        {   type        = "dropdown", 
+            name        = GetString(FTC_Menu_BPDFormat),
+            tooltip     = GetString(FTC_Menu_BPDFormatDesc),
+            choices     = { GetString(FTC_BuffFormat1) , GetString(FTC_BuffFormat2) , GetString(FTC_BuffFormat3) , GetString(FTC_BuffFormat4) , GetString(FTC_BuffFormat0) }, 
+            getFunc     = function() return FTC.Menu:GetBuffFormat('PlayerDebuffFormat') end, 
+            setFunc     = function( value ) FTC.Menu:UpdateBuffFormat('PlayerDebuffFormat',value) end,
+            default     = FTC.Menu:GetBuffFormat('PlayerDebuffFormat'), 
         },
+
+        -- Long Buff Format
+        {   type        = "dropdown", 
+            name        = GetString(FTC_Menu_BLBFormat),
+            tooltip     = GetString(FTC_Menu_BLBFormatDesc),
+            choices     = { GetString(FTC_BuffFormat1) , GetString(FTC_BuffFormat2) , GetString(FTC_BuffFormat3) , GetString(FTC_BuffFormat4) , GetString(FTC_BuffFormat0) }, 
+            getFunc     = function() return FTC.Menu:GetBuffFormat('LongBuffFormat') end, 
+            setFunc     = function( value ) FTC.Menu:UpdateBuffFormat('LongBuffFormat',value) end,
+            default     = FTC.Menu:GetBuffFormat('LongBuffFormat'), 
+        },
+
+        -- Target Buff Format
+        {   type        = "dropdown", 
+            name        = GetString(FTC_Menu_BTBFormat),
+            tooltip     = GetString(FTC_Menu_BTBFormatDesc),
+            choices     = { GetString(FTC_BuffFormat1) , GetString(FTC_BuffFormat2) , GetString(FTC_BuffFormat3) , GetString(FTC_BuffFormat4) , GetString(FTC_BuffFormat0) }, 
+            getFunc     = function() return FTC.Menu:GetBuffFormat('TargetBuffFormat') end, 
+            setFunc     = function( value ) FTC.Menu:UpdateBuffFormat('TargetBuffFormat',value) end,
+            default     = FTC.Menu:GetBuffFormat('TargetBuffFormat'), 
+        },
+
+        -- Target Debuff Format
+        {   type        = "dropdown", 
+            name        = GetString(FTC_Menu_BTDFormat),
+            tooltip     = GetString(FTC_Menu_BTDFormatDesc),
+            choices     = { GetString(FTC_BuffFormat1) , GetString(FTC_BuffFormat2) , GetString(FTC_BuffFormat3) , GetString(FTC_BuffFormat4) , GetString(FTC_BuffFormat0) }, 
+            getFunc     = function() return FTC.Menu:GetBuffFormat('TargetDebuffFormat') end, 
+            setFunc     = function( value ) FTC.Menu:UpdateBuffFormat('TargetDebuffFormat',value) end,
+            default     = FTC.Menu:GetBuffFormat('TargetDebuffFormat'), 
+        },
+
+        -- Primary Buffs Font
+        {   type        = "dropdown", 
+            name        = GetString(FTC_Menu_BFont1),
+            tooltip     = GetString(FTC_Menu_BFont1Desc),
+            choices     = { "Metamorphous", "ESO Standard" , "ESO Bold" , "Prose Antique" , "Handwritten" , "Trajan Pro" , "Futura Standard" , "Futura Bold" }, 
+            getFunc     = function() return FTC.UI:TranslateFont(FTC.Vars.BuffsFont1) end, 
+            setFunc     = function( value ) FTC.Menu:UpdateBuffs( "BuffsFont1" , FTC.UI:TranslateFont(value) ) end,
+            default     = FTC.Defaults.BuffsFont1, 
+        },
+
+        -- Secondary Buffs Font
+        {   type        = "dropdown", 
+            name        = GetString(FTC_Menu_BFont2),
+            tooltip     = GetString(FTC_Menu_BFont2Desc),
+            choices     = { "Metamorphous", "ESO Standard" , "ESO Bold" , "Prose Antique" , "Handwritten" , "Trajan Pro" , "Futura Standard" , "Futura Bold" }, 
+            getFunc     = function() return FTC.UI:TranslateFont(FTC.Vars.BuffsFont2) end, 
+            setFunc     = function( value ) FTC.Menu:UpdateBuffs( "BuffsFont2" , FTC.UI:TranslateFont(value) ) end,
+            default     = FTC.Defaults.BuffsFont2, 
+        },
+
+        -- Frame Font Size
+        {   type        = "slider", 
+            name        = GetString(FTC_Menu_BFontS),
+            tooltip     = GetString(FTC_Menu_BFontSDesc),
+            min         = 12,
+            max         = 24, 
+            step        = 1, 
+            getFunc     = function() return FTC.Vars.BuffsFontSize end, 
+            setFunc     = function( value ) FTC.Menu:UpdateBuffs( "BuffsFontSize" , value ) end, 
+            default     = FTC.Defaults.BuffsFontSize
+        },
+
+        -- Reset Buffs
+        { 
+            type        = "button", 
+            name        = GetString(FTC_Menu_BReset),
+            tooltip     = GetString(FTC_Menu_BResetDesc),
+            func        = function() FTC.Menu:Reset("Buffs") end,
+        }, 
     }
     if FTC.Vars.EnableBuffs then
         for i = 1 , #Extras do table.insert( FTC.Menu.options , Extras[i] ) end

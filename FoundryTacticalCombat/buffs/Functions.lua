@@ -6,23 +6,32 @@ FTC.Buffs = {}
 FTC.Buffs.Defaults = {
 
     -- Player Buffs
-    ["FTC_PlayerBuffs"]         = {CENTER,CENTER,0,400},
-    ["EnableLongBuffs"]         = true,
+    ["FTC_PlayerBuffs"]         = {CENTER,CENTER,0,400},  
+    ["PlayerBuffFormat"]        = "htiles",
     ["FTC_LongBuffs"]           = {BOTTOMRIGHT,BOTTOMRIGHT,-2,-2},
+    ["LongBuffFormat"]          = "vtiles",
 
     -- Player Debuffs
     ["FTC_PlayerDebuffs"]       = {CENTER,CENTER,0,500},
+    ["PlayerDebuffFormat"]      = "htiles",
 
     -- Target Buffs
     ["FTC_TargetBuffs"]         = {CENTER,CENTER,0,-500},
+    ["TargetBuffFormat"]        = "htiles",
 
     -- Target Debuffs
     ["FTC_TargetDebuffs"]       = {CENTER,CENTER,0,-400},
+    ["TargetDebuffFormat"]      = "htiles",
 
     -- Shared Settings  
-    ["AnchorBuffs"]             = true, 
-    ["MaxBuffs"]                = 10,
-    ["BuffNames"]               = false,
+    ["MaxBuffs"]                = 8,
+    ["AnchorBuffs"]             = true,
+
+    -- Fonts
+    ["BuffsFont1"]              = 'esobold',
+    ["BuffsFont2"]              = 'esobold',
+    ["BuffsFontSize"]           = 18,
+
 }
 FTC:JoinTables(FTC.Defaults,FTC.Buffs.Defaults)
 
@@ -60,7 +69,7 @@ function FTC.Buffs.Initialize()
     -- Register init status
     FTC.init.Buffs = true
 
-    -- Activate uldating
+    -- Activate updating
     EVENT_MANAGER:RegisterForUpdate( "FTC_PlayerBuffs"   , 100 , function() FTC.Buffs:Update('player') end )
     EVENT_MANAGER:RegisterForUpdate( "FTC_TargetDebuffs" , 100 , function() FTC.Buffs:Update('reticleover') end )
 end
@@ -117,7 +126,7 @@ function FTC.Buffs.SetStateCustom( self , state , locked )
         local time = GetGameTimeMilliseconds()
 
         -- Avoid skill failure and spamming
-        if ( FTC.Buffs:HasFailure(slot) or ( time < ( FTC.Player.Abilities[slot].lastCast or 0 ) + 500 ) ) then return retval end
+        if ( FTC.Buffs:HasFailure(slot) or ( time < ( FTC.Buffs.lastCast or 0 ) + 500 ) ) then return retval end
 
         -- Put ground target abilities into the pending queue
         if ( ability.ground ) then 
@@ -132,7 +141,7 @@ function FTC.Buffs.SetStateCustom( self , state , locked )
         if ( ( ability.effects ~= nil ) or ( ability.dur > 0 ) ) then FTC.Buffs:NewEffect( ability ) end
 
         -- Flag the last cast time  
-        FTC.Player.Abilities[slot].lastCast = time
+        FTC.Buffs.lastCast = time
     end
 
     -- Return the original function
@@ -471,61 +480,93 @@ function FTC.Buffs:Update( unitTag )
             end
 
             -- Update labels
+            control:SetHidden(true)
+            control.name:SetHidden(true)
             control.label:SetText(label)
+            control.name:ClearAnchors()
+            control.name:SetAnchor(LEFT,control,RIGHT,10,0)
+            control.name:SetHorizontalAlignment(0)
             control.name:SetText(name)
-            control.name:SetHidden(not FTC.Vars.BuffNames)
 
             -- Long Buffs
-            if ( context == "Player" and isLong ) then
+            if ( context == "Player" and isLong and ( FTC.Vars.LongBuffFormat ~= "disabled" ) ) then
                 local container =  _G["FTC_LongBuffs"]
+
+                -- Determine the anchor
+                local lbAnchor = {}
+                if ( FTC.Vars.LongBuffFormat == "vtiles" ) then      lbAnchor = {BOTTOMRIGHT,container,BOTTOMRIGHT,0,(longCount*-50)}
+                elseif ( FTC.Vars.LongBuffFormat == "htiles" ) then  lbAnchor = {BOTTOMRIGHT,container,BOTTOMRIGHT,(longCount*-50),0}
+                elseif ( FTC.Vars.LongBuffFormat == "dlist" ) then   lbAnchor = {TOPRIGHT,container,TOPRIGHT,0,(longCount*50)}
+                elseif ( FTC.Vars.LongBuffFormat == "alist" ) then   lbAnchor = {BOTTOMRIGHT,container,BOTTOMRIGHT,0,(longCount*-50)} end
 
                 -- Move the control into the container and anchor it
                 control:SetParent(container)
                 control:ClearAnchors()
-                control:SetAnchor(BOTTOMRIGHT,container,BOTTOMRIGHT,0,(longCount*-50))
+                control:SetAnchor(unpack(lbAnchor))
                 control.frame:SetTexture('/esoui/art/actionbar/magechamber_firespelloverlay_down.dds')
+                control.name:ClearAnchors()
+                control.name:SetAnchor(RIGHT,control,LEFT,-10,0)
+                control.name:SetHorizontalAlignment(2)
+                control.name:SetHidden(string.match(FTC.Vars.LongBuffFormat,"list") == nil)
                 control:SetHidden(false)
 
                 -- Update the count
                 longCount = longCount + 1
 
+                -- Update the container height
+                if ( FTC.Vars.LongBuffFormat ~= "htiles" ) then container:SetHeight(longCount*50) end
+
             -- Debuffs
-            elseif buffs[i].debuff then
+            elseif ( buffs[i].debuff and ( FTC.Vars[context.."DebuffFormat"] ~= "disabled" ) ) then
                 local container =  _G["FTC_"..context.."Debuffs"]
 
-                -- Determine the new anchor offset
-                local xoffset =  FTC.Vars.BuffNames and 0 or (debuffCount*50) 
-                local yoffset =  FTC.Vars.BuffNames and ( -1 * (debuffCount*50) ) or 0
+                -- Determine the anchor
+                local dbAnchor = {}
+                if ( FTC.Vars[context.."DebuffFormat"] == "htiles" ) then     dbAnchor = {TOPLEFT,container,TOPLEFT,(debuffCount*50),0}
+                elseif ( FTC.Vars[context.."DebuffFormat"] == "vtiles" ) then dbAnchor = {TOPLEFT,container,TOPLEFT,0,(debuffCount*50)}
+                elseif ( FTC.Vars[context.."DebuffFormat"] == "dlist" ) then  dbAnchor = {TOPLEFT,container,TOPLEFT,0,(debuffCount*50)}
+                elseif ( FTC.Vars[context.."DebuffFormat"] == "alist" ) then  dbAnchor = {BOTTOMLEFT,container,BOTTOMLEFT,0,(debuffCount*-50)} end
 
                 -- Move the control into the container and anchor it
                 control:SetParent(container)
                 control:ClearAnchors()
-                control:SetAnchor(BOTTOMLEFT,container,BOTTOMLEFT,xoffset,yoffset)
+                control:SetAnchor(unpack(dbAnchor))
                 control.frame:SetTexture('/esoui/art/actionbar/debuff_frame.dds')
                 control.cooldown:StartCooldown( ( buffs[i].ends - gameTime ) * 1000 , ( buffs[i].ends - buffs[i].begin ) * 1000 , CD_TYPE_RADIAL, CD_TIME_TYPE_TIME_UNTIL, false )
+                control.name:SetHidden(string.match(FTC.Vars[context.."DebuffFormat"],"list") == nil)
                 control:SetHidden(false)
 
                 -- Update the count
-                debuffCount = debuffCount + 1       
+                debuffCount = debuffCount + 1
+
+                -- Update the container height
+                if ( FTC.Vars[context.."DebuffFormat"] ~= "htiles" ) then container:SetHeight(debuffCount*50) end
 
             -- Buffs
-            else
+            elseif ( not isLong and ( FTC.Vars[context.."BuffFormat"] ~= "disabled" ) ) then
                 local container =  _G["FTC_"..context.."Buffs"]
 
-                -- Determine the new anchor offset
-                local xoffset =  FTC.Vars.BuffNames and 0 or (buffCount*50) 
-                local yoffset =  FTC.Vars.BuffNames and (buffCount*50) or 0
+                -- Determine the anchor
+                local bAnchor = {}
+                if ( FTC.Vars[context.."BuffFormat"] == "htiles" ) then       bAnchor = {TOPLEFT,container,TOPLEFT,(buffCount*50),0}
+                elseif ( FTC.Vars[context.."BuffFormat"] == "vtiles" ) then   bAnchor = {TOPLEFT,container,TOPLEFT,0,(buffCount*50)}
+                elseif ( FTC.Vars[context.."BuffFormat"] == "dlist" ) then    bAnchor = {TOPLEFT,container,TOPLEFT,0,(buffCount*50)}
+                elseif ( FTC.Vars[context.."BuffFormat"] == "alist" ) then    bAnchor = {BOTTOMLEFT,container,BOTTOMLEFT,0,(buffCount*-50)} end
 
                 -- Move the control into the container and anchor it
                 control:SetParent(container)
                 control:ClearAnchors()
-                control:SetAnchor(TOPLEFT,container,TOPLEFT,xoffset,yoffset)
+                control:SetAnchor(unpack(bAnchor))
                 control.frame:SetTexture('/esoui/art/actionbar/buff_frame.dds')
                 control.cooldown:StartCooldown( ( buffs[i].ends - gameTime ) * 1000 , ( buffs[i].ends - buffs[i].begin ) * 1000 , CD_TYPE_RADIAL, CD_TIME_TYPE_TIME_UNTIL, false )
+                control.name:SetHidden(string.match(FTC.Vars[context.."BuffFormat"],"list") == nil)
                 control:SetHidden(false)
 
                 -- Update the count
-                buffCount = buffCount + 1       
+                buffCount = buffCount + 1
+
+                -- Update the container height
+                if ( FTC.Vars[context.."BuffFormat"] ~= "htiles" ) then container:SetHeight(buffCount*50) end  
             end
         end
     end
