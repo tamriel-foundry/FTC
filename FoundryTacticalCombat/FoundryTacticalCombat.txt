@@ -40,6 +40,22 @@
 FoundryTacticalCombat.lua
 bindings.xml
 
+lib/LibStub.lua
+lib/LAM/LibAddonMenu-2.0.lua
+lib/LAM/controls/panel.lua
+lib/LAM/controls/submenu.lua
+lib/LAM/controls/button.lua
+lib/LAM/controls/checkbox.lua
+lib/LAM/controls/colorpicker.lua
+lib/LAM/controls/custom.lua
+lib/LAM/controls/description.lua
+lib/LAM/controls/dropdown.lua 
+lib/LAM/controls/editbox.lua
+lib/LAM/controls/header.lua
+lib/LAM/controls/slider.lua
+lib/LAM/controls/texture.lua
+lib/LMW/LibMsgWin-1.0.lua
+
 core/Functions.lua
 core/UI.lua
 core/Events.lua
@@ -56,6 +72,8 @@ buffs/Controls.lua
 damage/Functions.lua
 damage/Controls.lua
 
+log/Functions.lua
+
 sct/Functions.lua
 sct/Alerts.lua
 sct/Controls.lua
@@ -65,21 +83,6 @@ hotbar/Controls.lua
 
 lang/Localization.lua
 lang/English.lua
-
-lib/LibStub.lua
-lib/LAM/LibAddonMenu-2.0.lua
-lib/LAM/controls/panel.lua
-lib/LAM/controls/submenu.lua
-lib/LAM/controls/button.lua
-lib/LAM/controls/checkbox.lua
-lib/LAM/controls/colorpicker.lua
-lib/LAM/controls/custom.lua
-lib/LAM/controls/description.lua
-lib/LAM/controls/dropdown.lua 
-lib/LAM/controls/editbox.lua
-lib/LAM/controls/header.lua
-lib/LAM/controls/slider.lua
-lib/LAM/controls/texture.lua
 
 menu/Functions.lua
 menu/Controls.lua

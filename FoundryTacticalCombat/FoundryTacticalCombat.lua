@@ -34,6 +34,7 @@ FTC.UI                  = WINDOW_MANAGER:CreateTopLevelWindow( "FTC_UI" )
 FTC.Defaults            = {
     ["EnableFrames"]    = true,
     ["EnableBuffs"]     = true,
+    ["EnableLog"]       = true,
     ["EnableSCT"]       = false,
     ["EnableHotbar"]    = false,
     ["EnableStats"]     = false,
@@ -91,6 +92,9 @@ function FTC.Initialize( eventCode, addOnName )
 
     -- Unit Frames Component
     if ( FTC.Vars.EnableFrames )    then FTC.Frames:Initialize() end
+
+    -- Combat Log Component
+    if ( FTC.Vars.EnableLog )       then FTC.Log:Initialize() end
 
     -- Advanced Hotbar Component
     if ( FTC.Vars.EnableHotbar )    then FTC.Hotbar:Initialize() end
