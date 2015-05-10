@@ -1,4 +1,4 @@
-
+  
 --[[----------------------------------------------------------
     ENGLISH LANGUAGE LOCALIZATION
   ]]----------------------------------------------------------
@@ -6,7 +6,12 @@
 -- General Addon Information
 ZO_CreateStringId("FTC_Name",               "Foundry Tactical Combat")
 ZO_CreateStringId("FTC_ShortInfo",          "Foundry Tactical Combat by Atropos")
-ZO_CreateStringId("FTC_LongInfo",           "You are using Foundry Tactical Combat version " .. FTC.version .. " developed by Atropos from Tamriel Foundry.")
+ZO_CreateStringId("FTC_LongInfo",           "You are using Foundry Tactical Combat version " .. FTC.version .. " developed by Atropos of Tamriel Foundry.")
+
+--[[----------------------------------------------------------
+    KEYBINDINGS
+  ]]----------------------------------------------------------
+ZO_CreateStringId("SI_BINDING_NAME_TOGGLE_COMBAT_LOG", "Toggle Combat Log")
 
 --[[----------------------------------------------------------
     MENU CORE
@@ -20,6 +25,9 @@ ZO_CreateStringId("FTC_Menu_FramesDesc",    "Enable custom unit frames component
 
 ZO_CreateStringId("FTC_Menu_Buffs",         "Enable Buff Tracking")
 ZO_CreateStringId("FTC_Menu_BuffsDesc",     "Enable buff and debuff tracking component? [Default: Enabled]")
+
+ZO_CreateStringId("FTC_Menu_Log",         	"Enable Combat Log")
+ZO_CreateStringId("FTC_Menu_LogDesc",     	"Enable chat-based combat log component? [Default: Enabled]")
 
 ZO_CreateStringId("FTC_Menu_Damage",        "Enable Damage Statistics")
 ZO_CreateStringId("FTC_Menu_DamageDesc",    "Enable tracking and reporting of damage statistics? [Default: Enabled]")
@@ -87,7 +95,7 @@ ZO_CreateStringId("FTC_Menu_FReset",        "Reset Unit Frames")
 ZO_CreateStringId("FTC_Menu_FResetDesc",    "Reset original settings for FTC unit frames component.")
 
 --[[----------------------------------------------------------
-    BUFF TRACKER
+    BUFF TRACKING
   ]]----------------------------------------------------------
 ZO_CreateStringId("FTC_Menu_BHeader",       "Configure Buff Tracker Settings")
 
@@ -97,11 +105,11 @@ ZO_CreateStringId("FTC_Menu_BAnchorDesc",   "Anchor Buffs to Unit Frames? [Defau
 ZO_CreateStringId("FTC_Menu_BLong",       	"Display Long Buffs")
 ZO_CreateStringId("FTC_Menu_BLongDesc",   	"Display long duration player buffs? [Default: Enabled]")
 
-ZO_CreateStringId("FTC_BuffFormat0",   		"Disabled")
-ZO_CreateStringId("FTC_BuffFormat1",   		"Horizontal Tiles")
-ZO_CreateStringId("FTC_BuffFormat2",   		"Vertical Tiles")
-ZO_CreateStringId("FTC_BuffFormat3",   		"Descending List")
-ZO_CreateStringId("FTC_BuffFormat4",   		"Ascending List")
+ZO_CreateStringId("FTC_BuffFormat0",   		  "Disabled")
+ZO_CreateStringId("FTC_BuffFormat1",   		  "Horizontal Tiles")
+ZO_CreateStringId("FTC_BuffFormat2",   		  "Vertical Tiles")
+ZO_CreateStringId("FTC_BuffFormat3",   		  "Descending List")
+ZO_CreateStringId("FTC_BuffFormat4",   		  "Ascending List")
 
 ZO_CreateStringId("FTC_Menu_BPBFormat",   	"Player Buff Format")
 ZO_CreateStringId("FTC_Menu_BPBFormatDesc", "Choose desired format for player buffs. [Default: Horizontal Tiles]")
@@ -125,7 +133,24 @@ ZO_CreateStringId("FTC_Menu_BFont2",        "Secondary Font")
 ZO_CreateStringId("FTC_Menu_BFont2Desc",    "Change the secondary font used in FTC buff tracking. [Default: ESO Bold]")
 
 ZO_CreateStringId("FTC_Menu_BFontS",        "Frame Font Size")
-ZO_CreateStringId("FTC_Menu_BFontSDesc",    "Change the base scale of the fonts used in FTC buff trackin. [Default: 18]")
+ZO_CreateStringId("FTC_Menu_BFontSDesc",    "Change the base scale of the fonts used in FTC buff tracking. [Default: 18]")
 
 ZO_CreateStringId("FTC_Menu_BReset",        "Reset Buff Tracking")
 ZO_CreateStringId("FTC_Menu_BResetDesc",    "Reset original settings for FTC buff tracking component.")
+
+--[[----------------------------------------------------------
+    COMBAT LOG
+  ]]----------------------------------------------------------
+ZO_CreateStringId("FTC_Menu_LHeader",       "Configure Combat Log Settings")
+
+ZO_CreateStringId("FTC_Menu_LAltChat",     	"Alternate With Chat")
+ZO_CreateStringId("FTC_Menu_LAltChatDesc", 	"Alternate Combat Log visibility with primary chat window?")
+
+ZO_CreateStringId("FTC_Menu_LFont",         "Combat Log Font")
+ZO_CreateStringId("FTC_Menu_LFontDesc",     "Change the font used in the FTC combat log. [Default: ESO Standard]")
+
+ZO_CreateStringId("FTC_Menu_LFontS",        "Log Font Size")
+ZO_CreateStringId("FTC_Menu_LFontSDesc",    "Change the font size used in the FTC combat log. [Default: 16]")
+
+ZO_CreateStringId("FTC_Menu_LReset",        "Reset Combat Log")
+ZO_CreateStringId("FTC_Menu_LResetDesc",    "Reset original settings for FTC combat log component.")

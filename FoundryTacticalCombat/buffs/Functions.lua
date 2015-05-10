@@ -51,8 +51,8 @@ function FTC.Buffs.Initialize()
     FTC.Buffs.Player = {}
     FTC.Buffs.Target = {}
 
-    -- Saved effects
-    FTC.Buffs.Saved  = {}
+    -- Register custom effects
+    FTC.Buffs:RegisterEffects()
     
     -- Create the controls
     FTC.Buffs:Controls()
@@ -185,17 +185,21 @@ function FTC.Buffs:GetBuffs( unitTag )
         if ( isValid ) then 
 
             -- Get the remaining duration
-            local duration  = (timeEnding - GetFrameTimeSeconds()) * 1000
+            local duration = (timeEnding - GetFrameTimeSeconds()) * 1000
+            local target   = GetAbilityTargetDescription(ability_id)
 
-            -- Setup the ability object
-            local ability = {
-                ["owner"]   = GetUnitName( unitTag ),
-                ["name"]    = buffName,
-                ["dur"]     = duration, 
-                ["cast"]    = 0,
-                ["debuff"]  = effectType == BUFF_EFFECT_TYPE_DEBUFF,
-                ["toggle"]  = isType,
-                ["tex"]     = iconFilename,
+            -- Populate the slot object
+            local ability  = {
+                ["owner"]  = GetUnitName( unitTag ),
+                ["id"]     = ability_id,
+                ["name"]   = buffName,
+                ["cast"]   = 0,
+                ["dur"]    = duration,
+                ["tex"]    = iconFilename,
+                ["ground"] = ( target == GetAbilityTargetDescription(23182) ),
+                ["area"]   = ( ( target == GetAbilityTargetDescription(23182) ) or ( target == GetAbilityTargetDescription(20919) ) or ( target == GetAbilityTargetDescription(22784) ) ),
+                ["debuff"] = effectType == BUFF_EFFECT_TYPE_DEBUFF,
+                ["toggle"] = isType,
             }
 
             -- Pass it to the buff handler
@@ -215,34 +219,22 @@ function FTC.Buffs:EffectChanged( changeType , unitTag , effectName , endTime , 
     -- Only take action for player and target
     if ( unitTag ~= "player" and unitTag ~= "reticleover" ) then return end
 
-    -- Get the context
-    local context = ( unitTag == 'player' ) and "Player" or "Target"
-    
-    -- Filter the buff
-    isValid, effectName, isType , iconName = FTC:FilterBuffInfo( unitTag , effectName , abilityType , iconName )
+    -- Remove existing effects
+    if ( changeType == 2 ) then
+
+        -- Get the context
+        local context = ( unitTag == 'player' ) and "Player" or "Target"
         
-    -- Remove an existing effect
-    if ( changeType == 2 and isValid ) then
+        -- Filter the buff
+        isValid, effectName, isType , iconName = FTC:FilterBuffInfo( unitTag , effectName , abilityType , iconName )
+
+        -- Remove the buff
         FTC.Buffs[context][effectName] = nil 
         FTC.Buffs:ReleaseUnusedBuffs()
     else
-        
-        -- Get the remaining duration
-        local duration  = (endTime - GetFrameTimeSeconds()) * 1000
 
-        -- Add a new effect
-        local ability = {
-            ["owner"]   = GetUnitName( unitTag ),
-            ["name"]    = effectName,
-            ["dur"]     = duration,
-            ["cast"]    = 0,
-            ["debuff"]  = effectType == BUFF_EFFECT_TYPE_DEBUFF,
-            ["toggle"]  = isType,
-            ["tex"]     = iconName,
-        }
-
-        -- Pass it to the buff handler
-        FTC.Buffs:NewEffect( ability )  
+        -- Otherwise refresh all buffs from API
+        FTC.Buffs:GetBuffs( unitTag )   
     end
 end
 
@@ -266,7 +258,7 @@ function FTC.Buffs:NewEffect( ability )
     -- Setup buff object
     local buffTemplate = {
         ["owner"]   = ability.owner,
-        ["name"]    = ability.name,
+        ["name"]    = zo_strformat("<<!aC:1>>",ability.name),
         ["stacks"]  = 0,
         ["debuff"]  = ability.debuff or false,
         ["area"]    = ability.area   or false,
@@ -376,15 +368,15 @@ end
  * Called by FTC:OnDeath()
  * --------------------------------
  ]]--
-function FTC.Buffs:WipeBuffs( unitTag )
+function FTC.Buffs:WipeBuffs( owner )
 
-    -- Only proceed for player or target deaths
-    if ( unitTag ~= 'player' and unitTag ~= 'reticleover' ) then return end
-    local context = ( unitTag == 'player' ) and "Player" or "Target"
+    -- Determine context
+    local owner   = zo_strformat("<<!aC:1>>",owner)  
+    local context = ( owner ~= FTC.Player.name ) and "Target" or "Player"
     
     -- Wipe out buffs that are specific to the deceased
     for name , buff in pairs( FTC.Buffs[context] ) do
-        if ( buff.owner == GetUnitName( unitTag ) and buff.area == false ) then
+        if ( buff.owner == owner and buff.area == false ) then
             FTC.Buffs.Pool:ReleaseObject(buff.control.id)
             FTC.Buffs[context][name] = nil
         end 

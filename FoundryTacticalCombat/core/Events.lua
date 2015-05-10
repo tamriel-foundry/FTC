@@ -47,7 +47,6 @@
         
         -- Experience Events
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_EXPERIENCE_UPDATE             , FTC.OnXPUpdate )
-        EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_VETERAN_POINTS_UPDATE         , FTC.OnXPUpdate )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ALLIANCE_POINT_UPDATE         , FTC.OnAPUpdate )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_LEVEL_UPDATE                  , FTC.OnLevel )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_VETERAN_RANK_UPDATE           , FTC.OnLevel )
@@ -77,7 +76,14 @@
      ]]--
     function FTC:OnLoad()
         EVENT_MANAGER:UnregisterForEvent( "FTC" , EVENT_PLAYER_ACTIVATED )
-        d("[FTC] " .. GetString(FTC_LongInfo))
+
+        -- Setup Combat Log
+        if ( FTC.init.Log ) then
+            CHAT_SYSTEM:Minimize()
+            FTC.Log:Print( GetString(FTC_LongInfo) , {1,0.8,0} )
+
+        -- Otherwie Print to Chat
+        else d("[FTC] " .. GetString(FTC_LongInfo)) end
     end
 
 
@@ -243,9 +249,9 @@
 
         -- Get the unitTag
         local unitTag = select( 2 , ... )
-        
-        -- Wipe target buffs and debuffs
-        if ( FTC.init.Buffs ) then FTC.Buffs:WipeBuffs( unitTag ) end
+
+        -- Wipe buffs
+        if ( FTC.init.Buffs and unitTag == 'player' ) then FTC.Buffs:WipeBuffs(FTC.Player.name) end
         
         -- Display killspam alerts
         if ( FTC.init.SCT ) then FTC.SCT:Deathspam( ... ) end
@@ -390,49 +396,46 @@
      * Called by EVENT_COMBAT_EVENT
      * --------------------------------
      ]]--
-    function FTC.OnCombatEvent( eventCode , result , isError , abilityName, abilityGraphic, abilityActionSlotType, sourceName, sourceType, targetName, targetType, hitValue, powerType, damageType, log )
+    function FTC.OnCombatEvent( eventCode , result , isError , abilityName , abilityGraphic , abilityActionSlotType , sourceName , sourceType , targetName , targetType , hitValue , powerType , damageType , log )
+
+        -- Ignore errors
+        if ( isError ) then return end
 
         -- Verify it's a valid result type
-        isValid, result , abilityName , sourceType , sourceName , targetName , hitValue = FTC.Damage:Filter( result , abilityName , sourceType , sourceName , targetName , hitValue )
-        if not isValid then return end
+        isValid , result , sourceType , targetName , hitValue = FTC.Damage:Filter( result , sourceType , targetName , hitValue )
 
-        -- Debugging
-        -- d( result .. "||" ..  abilityName  .. "||" .. sourceType  .. "||" .. sourceName  .. "||" .. targetName  .. "||" .. hitValue )
-        
-        -- Determine the context
-        local context = ( sourceType == COMBAT_UNIT_TYPE_PLAYER or sourceType == COMBAT_UNIT_TYPE_PLAYER_PET ) and "Out" or ""
-        if ( sourceType == COMBAT_UNIT_TYPE_NONE ) then context = "In"
-        elseif ( sourceType == COMBAT_UNIT_TYPE_GROUP ) then context = "Group" end
+        -- Stop for invalid actions
+        if ( not isValid ) then return end
 
-        -- Strip parentheses from name
-        abilityName = string.gsub ( abilityName , ' %(.*%)' , "" )
-        
-        -- Localize damage sources
-        abilityName = SanitizeLocalization(abilityName)
-        
         -- Setup a new damage object
         local damage = {
+            ["out"]     = ( sourceType ~= COMBAT_UNIT_TYPE_NONE ),
+            ["result"]  = result,
             ["target"]  = targetName,
             ["source"]  = sourceName,
-            ["name"]    = abilityName,
-            ["result"]  = result,
-            ["dam"]     = hitValue,
-            ["power"]   = powerType,
+            ["ability"] = abilityName,
             ["type"]    = damageType,
+            ["value"]   = hitValue,
+            ["power"]   = powerType,
             ["ms"]      = GetGameTimeMilliseconds(),
             ["crit"]    = ( result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_DOT_TICK_CRITICAL or result == ACTION_RESULT_HOT_TICK_CRITICAL ) and true or false,
             ["heal"]    = ( result == ACTION_RESULT_HEAL or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_HOT_TICK or result == ACTION_RESULT_HOT_TICK_CRITICAL ) and true or false,
-            ["multi"]   = 1,
         }
+
+        -- Pass damage to combat log
+        if ( FTC.init.Log ) then FTC.Log:CombatEvent(damage) end
+
+        -- Wipe buffs for a deceased target
+        if ( FTC.init.Buffs and result == ACTION_RESULT_DIED_XP ) then FTC.Buffs:WipeBuffs(targetName) end
         
         -- Pass damage to scrolling combat text
-        if ( FTC.init.SCT and context ~= "Group" ) then FTC.SCT:NewSCT( damage , context ) end
+        --if ( FTC.init.SCT and context ~= "Group" ) then FTC.SCT:NewSCT( damage , context ) end
         
         -- Pass damage to damage meter tracking
-        if ( FTC.init.Damage ) then FTC.Damage:UpdateMeter( damage , context ) end
+        --if ( FTC.init.Damage ) then FTC.Damage:UpdateMeter( damage , context ) end
         
         -- Pass damage to a callback for extensions to use
-        CALLBACK_MANAGER:FireCallbacks( "FTC_NewDamage" , damage )
+       -- CALLBACK_MANAGER:FireCallbacks( "FTC_NewDamage" , damage )
     end
 
 
@@ -446,19 +449,24 @@
      * Handles Experience Gain
      * --------------------------------
      * Called by EVENT_EXPERIENCE_UPDATE
-     * Called by EVENT_VETERAN_POINTS_UPDATE
      * --------------------------------
      ]]--
-    function FTC.OnXPUpdate( ... )
+    function FTC.OnXPUpdate( eventCode , unitTag , currentExp , maxExp , reason )
+        if ( unitTag ~= 'player' ) then return end
 
         -- Pass experience to scrolling combat text component
-        if ( FTC.init.SCT ) then FTC.SCT:NewExp( ... ) end
+        if ( FTC.init.SCT ) then FTC.SCT:NewExp( eventCode , unitTag , currentExp , maxExp , reason ) end
+
+        -- Log experience gain
+        if ( FTC.init.Log ) then FTC.Log:Exp( currentExp , reason ) end
 
         -- Update the data table
         FTC.Player:GetLevel()
         
         -- Update the experience bar
         if ( FTC.init.Frames ) then FTC.Frames:SetupAltBar() end
+
+
     end
 
     --[[ 

@@ -185,6 +185,7 @@ function FTC.Player:GetActionBar()
             local name          = GetAbilityName(ability_id)
             local cost, cType   = GetSlotAbilityCost(i)
             local channeled, castTime, channelTime = GetAbilityCastInfo(ability_id)
+            local target        = GetAbilityTargetDescription(ability_id)
 
             -- Populate the slot object
             slot = {
@@ -198,9 +199,12 @@ function FTC.Player:GetActionBar()
                 ["chan"]        = channeled and channelTime or 0,
                 ["dur"]         = GetAbilityDuration(ability_id),
                 ["tex"]         = GetSlotTexture(i),
-                ["ground"]      = FTC.Buffs:IsGroundTarget( name ),
-                ["area"]        = ( ( not DoesUnitExist('reticleover') ) and ( not HasTargetFailure(i) ) ) or ( GetAbilityRadius(ability_id) > 0 ),
-                ["effects"]     = FTC.Buffs.Effects[name]
+                ["ground"]      = target == GetAbilityTargetDescription(23182),
+                ["area"]        = ( target == GetAbilityTargetDescription(23182) ) or ( target == GetAbilityTargetDescription(20919) ) or ( target == GetAbilityTargetDescription(22784) ),
+                ["debuff"]      = ( ( target == GetAbilityTargetDescription(3493) ) or ( target == GetAbilityTargetDescription(20919) ) ),
+                ["effects"]     = FTC.Buffs.Effects[name],
+
+                GetAbilityTargetDescription
             }
         end
 
@@ -269,7 +273,19 @@ function FTC:GetAbilityId( abilityName )
     -- Loop over all ability IDs until we find it
     for i = 1, 70000 do
        if ( DoesAbilityExist(i) and ( GetAbilityName(i) == abilityName ) ) then
-            d(i)
+            d(i .. " -- " .. abilityName)
+            return i
+       end
+    end
+end
+
+
+function FTC:GetBlessing()
+
+    -- Loop over all ability IDs until we find it
+    for i = 1, 70000 do
+       if ( DoesAbilityExist(i) and ( string.match(GetAbilityName(i),"Blessing") ~= nil ) ) then
+            d(i .. " -- " .. GetAbilityName(i))
        end
     end
 end

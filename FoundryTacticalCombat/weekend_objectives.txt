@@ -12,20 +12,25 @@ DONE		Move ultimate tracking to advanced hotbar
 			Show quickslots
 			Move potion tracking to advanced hotbar
 
-	Buffs/Debuffs
-		Options			icon and/or text
-		Options			sizing, color, fonts, etc..
-		Localization	make sure buff tracking works with all languages
+		Buffs/Debuffs
+DONE		Options			icon and/or text
+DONE		Options			sizing, color, fonts, etc..
+			Localization	make sure buff tracking works with all languages
 
-	Scrolling Combat Text
-		Options			icon and/or text
-		Options			font size, color, etc...
-		Frames			Show large Mag/Stam +/- next to frames
+
+DONE	Damage Tracking
+DONE		Log				Process all damage events into log
+
+
+		Scrolling Combat Text
+			Options			icon and/or text
+			Options			font size, color, etc...
+			Frames			Show large Mag/Stam +/- next to frames
 		
-	Alerts
-		Expansion		more useful alerts, different positioning
+		Alerts
+			Expansion		more useful alerts, different positioning
 
-	Damage Meter
-		Statistics		more reported statistics, better insight into per/mob
+		Damage Meter
+			Statistics		more reported statistics, better insight into per/mob
 
 DONE 	Default Frames	deprecate default frame text

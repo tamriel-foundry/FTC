@@ -44,6 +44,17 @@ function FTC.Menu:Controls()
             warning     = GetString(FTC_Menu_Reload),
         },
 
+        -- Enable/Disable Buff Tracking
+        {   type        = "checkbox",
+            name        = GetString(FTC_Menu_Log),
+            tooltip     = GetString(FTC_Menu_LogDesc),
+            getFunc     =  function() return FTC.Vars.EnableLog end,
+            setFunc     = function() FTC.Menu:Toggle( 'EnableLog' , true ) end,
+            default     = FTC.Defaults.EnableLog, 
+            warning     = GetString(FTC_Menu_Reload),
+        },
+
+        --[[
         -- Enable/Disable Damage Meter
         {   type        = "checkbox",
             name        = GetString(FTC_Menu_Damage),
@@ -73,6 +84,7 @@ function FTC.Menu:Controls()
             default     = FTC.Defaults.EnableHotbar, 
             warning     = GetString(FTC_Menu_Reload),
         }
+        ]]
     }
 
     --[[----------------------------------------------------------
@@ -256,7 +268,7 @@ function FTC.Menu:Controls()
     --[[----------------------------------------------------------
         BUFF TRACKING
       ]]----------------------------------------------------------
-    local Extras = {
+    local Buffs = {
 
         -- Buff Tracking Header
         {   type        = "header", 
@@ -355,8 +367,64 @@ function FTC.Menu:Controls()
         }, 
     }
     if FTC.Vars.EnableBuffs then
-        for i = 1 , #Extras do table.insert( FTC.Menu.options , Extras[i] ) end
+        for i = 1 , #Buffs do table.insert( FTC.Menu.options , Buffs[i] ) end
     end
+
+
+    --[[----------------------------------------------------------
+        COMBAT LOG
+      ]]----------------------------------------------------------
+    local Log = {
+
+        -- Buff Tracking Header
+        {   type        = "header", 
+            name        = GetString(FTC_Menu_LHeader),
+            width       = "full" 
+        },
+
+        -- Alternate Log with Chat
+        {   type        = "checkbox", 
+            name        = GetString(FTC_Menu_LAltChat),
+            tooltip     = GetString(FTC_Menu_LAltChatDesc),
+            getFunc     = function() return FTC.Vars.AlternateChat end, 
+            setFunc     = function(value) FTC.Menu:UpdateLog( 'AlternateChat' , value ) end, 
+            default     = FTC.Defaults.AlternateChat, 
+        },
+
+        -- Combat Log Font
+        {   type        = "dropdown", 
+            name        = GetString(FTC_Menu_LFont),
+            tooltip     = GetString(FTC_Menu_LFontDesc),
+            choices     = { "Metamorphous", "ESO Standard" , "ESO Bold" , "Prose Antique" , "Handwritten" , "Trajan Pro" , "Futura Standard" , "Futura Bold" }, 
+            getFunc     = function() return FTC.UI:TranslateFont(FTC.Vars.LogFont) end, 
+            setFunc     = function( value ) FTC.Menu:UpdateLog( "LogFont" , FTC.UI:TranslateFont(value) ) end,
+            default     = FTC.Defaults.LogFont, 
+        },
+
+        -- Combat Log Size
+        {   type        = "slider", 
+            name        = GetString(FTC_Menu_LFontS),
+            tooltip     = GetString(FTC_Menu_LFontSDesc),
+            min         = 12,
+            max         = 24, 
+            step        = 1, 
+            getFunc     = function() return FTC.Vars.LogFontSize end, 
+            setFunc     = function( value ) FTC.Menu:UpdateLog( "LogFontSize" , value ) end, 
+            default     = FTC.Defaults.LogFontSize
+        },
+
+        -- Reset Log
+        { 
+            type        = "button", 
+            name        = GetString(FTC_Menu_LReset),
+            tooltip     = GetString(FTC_Menu_LResetDesc),
+            func        = function() FTC.Menu:Reset("Log") end,
+        }, 
+    }
+    if FTC.Vars.EnableLog then
+        for i = 1 , #Log do table.insert( FTC.Menu.options , Log[i] ) end
+    end
+
 
     --[[----------------------------------------------------------
         SCROLLING COMBAT TEXT
