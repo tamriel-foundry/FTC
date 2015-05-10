@@ -2,19 +2,23 @@
 --[[----------------------------------------------------------
     FOUNDRY TACTICAL COMBAT
     ----------------------------------------------------------
-    A robust addon designed to overhaul the Elder Scrolls Online interface to provide 
-    useful and time-sensitive information about combat events. The add-on features
-    several components:
-    
-     (1) Custom Combat-Friendly Unit Frames
-     (2) Active Buff Tracking
-     (3) Scrolling Combat Text
-     (4) Combat Status Alerts
-     (5) Damage Tracking and Data
-     
-    * Version 0.39
-    * atropos@tamrielfoundry.com
-    * 5-4-2015
+    FTC is a user interface overhaul designed the replace the Elder Scrolls Online 
+    interface and provide useful and time-sensitive information about combat events
+    allowing players to better respond and react to evolving game situations.
+
+    The add-on features several components:
+    (1) Unit Frames
+    (2) Buff Tracking
+    (3) Combat Log
+    (4) Scrolling Combat Text
+    (5) Advanced Hotbar
+    (6) Damage Statistics
+    (7) Group Frames
+
+    Author:   Atropos
+    Email:    atropos@tamrielfoundry.com
+    Version:  0.39
+    Updated:  5-10-2015
   ]]--
 
 --[[----------------------------------------------------------
@@ -77,7 +81,7 @@ function FTC.Initialize( eventCode, addOnName )
     EVENT_MANAGER:UnregisterForEvent( "FTC" , EVENT_ADD_ON_LOADED )
     
     -- Load Saved Variables
-    FTC.Vars = ZO_SavedVars:NewAccountWide( 'FTC_VARS' , math.floor( FTC.settings * 100 ) , nil , FTC.Defaults )
+    FTC.Vars = ZO_SavedVars:NewAccountWide( 'FTC_VARS' , (FTC.settings*100) , nil , FTC.Defaults )
     --FTC.Vars = FTC.Defaults
 
     -- Initialize UI Layer

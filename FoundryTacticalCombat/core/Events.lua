@@ -216,13 +216,18 @@
 
         -- Damage Shields
         elseif ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH ) then
-            if ( FTC.init.Frames ) then FTC.Frames:UpdateShield( unitTag , 0 , maxValue ) end
-        end
-        
-        -- Purge any buffs related to damage shielding
-        -- if ( FTC.init.Buffs ) then FTC.Buffs:RemoveVisuals( unitTag , unitAttributeVisual , powerType ) end
-    end 
 
+            -- Verify the shield was removed due to simultaneous damage
+            if ( FTC.Damage.lastIn >= GetGameTimeMilliseconds() - 3 ) then
+
+                -- Remove from Unit Frame
+                if ( FTC.init.Frames ) then FTC.Frames:UpdateShield( unitTag , 0 , maxValue ) end
+
+                -- Remove from Buffs
+                if ( FTC.init.Buffs and unitTag == "player" ) then FTC.Buffs:ClearShields() end
+            end
+        end
+    end 
 
 
 --[[----------------------------------------------------------
@@ -408,7 +413,7 @@
         if ( not isValid ) then return end
 
         -- Setup a new damage object
-        local damage = {
+        local damage    = {
             ["out"]     = ( sourceType ~= COMBAT_UNIT_TYPE_NONE ),
             ["result"]  = result,
             ["target"]  = targetName,

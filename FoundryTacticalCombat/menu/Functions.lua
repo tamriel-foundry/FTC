@@ -79,7 +79,7 @@
 
                 -- Spoof buffs for player and target
                 FTC.Buffs.Target = {}
-                EVENT_MANAGER:RegisterForUpdate( "FTC_MenuBuffs" , 1000 , function() FTC.Menu:FakeBuffs() end )
+                EVENT_MANAGER:RegisterForUpdate( "FTC_MenuBuffs" , 100 , function() FTC.Menu:FakeBuffs() end )
             end
 
             -- Combat Log Display
@@ -337,100 +337,108 @@
         local time = GetFrameTimeSeconds()
 
         -- Fake Player Buff 1
-        local ability = {
-            ["owner"]   = FTC.Player.name,
-            ["name"]    = "Player Buff 1",
-            ["dur"]     = 8000, 
-            ["cast"]    = 0,
-            ["debuff"]  = false,
-            ["tex"]     = '/esoui/art/icons/ability_rogue_006.dds',
-        }
-        if ( FTC.Buffs.Player["Player Buff 1"] == nil ) then FTC.Buffs:NewEffect( ability )
-        elseif ( FTC.Buffs.Player["Player Buff 1"]["ends"] <= time + 1 ) then FTC.Buffs.Player["Player Buff 1"]["ends"] = time + 8 end
+        if ( FTC.Buffs.Player["Player Buff 1"] == nil ) then
+            local ability = {
+                ["owner"]   = FTC.Player.name,
+                ["name"]    = "Player Buff 1",
+                ["dur"]     = 8000, 
+                ["cast"]    = 0,
+                ["debuff"]  = false,
+                ["tex"]     = '/esoui/art/icons/ability_rogue_006.dds',
+            }
+            FTC.Buffs:NewEffect( ability )
+        elseif ( FTC.Buffs.Player["Player Buff 1"]["ends"] <= time + 0.2 ) then FTC.Buffs.Player["Player Buff 1"]["ends"] = time + 8 end
 
         -- Fake Player Buff 2
-        local ability = {
-            ["owner"]   = FTC.Player.name,
-            ["name"]    = "Player Buff 2",
-            ["dur"]     = 12000, 
-            ["cast"]    = 0,
-            ["debuff"]  = false,
-            ["tex"]     = '/esoui/art/icons/ability_rogue_048.dds',
-        }
-        if ( FTC.Buffs.Player["Player Buff 2"] == nil ) then FTC.Buffs:NewEffect( ability )
-        elseif ( FTC.Buffs.Player["Player Buff 2"]["ends"] <= time + 1) then FTC.Buffs.Player["Player Buff 2"]["ends"] = time + 12 end
+        if ( FTC.Buffs.Player["Player Buff 2"] == nil ) then
+            local ability = {
+                ["owner"]   = FTC.Player.name,
+                ["name"]    = "Player Buff 2",
+                ["dur"]     = 12000, 
+                ["cast"]    = 0,
+                ["debuff"]  = false,
+                ["tex"]     = '/esoui/art/icons/ability_rogue_048.dds',
+            }
+            FTC.Buffs:NewEffect( ability )
+        elseif ( FTC.Buffs.Player["Player Buff 2"]["ends"] <= time + 0.2) then FTC.Buffs.Player["Player Buff 2"]["ends"] = time + 12 end
 
         -- Fake Player Debuff 1
-        local ability = {
-            ["owner"]   = FTC.Player.name,
-            ["name"]    = "Player Debuff 1",
-            ["dur"]     = 4000, 
-            ["cast"]    = 0,
-            ["debuff"]  = true,
-            ["tex"]     = '/esoui/art/icons/ability_rogue_007.dds',
-        }
-        if ( FTC.Buffs.Player["Player Debuff 1"] == nil ) then FTC.Buffs:NewEffect( ability )
-        elseif ( FTC.Buffs.Player["Player Debuff 1"]["ends"] <= time + 1 ) then FTC.Buffs.Player["Player Debuff 1"]["ends"] = time + 4 end
+        if ( FTC.Buffs.Player["Player Debuff 1"] == nil ) then
+            local ability = {
+                ["owner"]   = FTC.Player.name,
+                ["name"]    = "Player Debuff 1",
+                ["dur"]     = 4000, 
+                ["cast"]    = 0,
+                ["debuff"]  = true,
+                ["tex"]     = '/esoui/art/icons/ability_rogue_007.dds',
+            }
+            FTC.Buffs:NewEffect( ability )
+        elseif ( FTC.Buffs.Player["Player Debuff 1"]["ends"] <= time + 0.2 ) then FTC.Buffs.Player["Player Debuff 1"]["ends"] = time + 4 end
 
         -- Fake Player Debuff 2
-        local ability = {
-            ["owner"]   = FTC.Player.name,
-            ["name"]    = "Player Debuff 2",
-            ["dur"]     = 6000, 
-            ["cast"]    = 0,
-            ["debuff"]  = true,
-            ["tex"]     = '/esoui/art/icons/ability_rogue_018.dds',
-        }
-        if ( FTC.Buffs.Player["Player Debuff 2"] == nil ) then FTC.Buffs:NewEffect( ability )
-        elseif ( FTC.Buffs.Player["Player Debuff 2"]["ends"] <= time + 1 ) then FTC.Buffs.Player["Player Debuff 2"]["ends"] = time + 6 end
+        if ( FTC.Buffs.Player["Player Debuff 2"] == nil ) then
+            local ability = {
+                ["owner"]   = FTC.Player.name,
+                ["name"]    = "Player Debuff 2",
+                ["dur"]     = 6000, 
+                ["cast"]    = 0,
+                ["debuff"]  = true,
+                ["tex"]     = '/esoui/art/icons/ability_rogue_018.dds',
+            }
+            FTC.Buffs:NewEffect( ability )
+        elseif ( FTC.Buffs.Player["Player Debuff 2"]["ends"] <= time + 0.2 ) then FTC.Buffs.Player["Player Debuff 2"]["ends"] = time + 6 end
 
         -- Fake Target Buff 1
-        local ability = {
-            ["owner"]   = "",
-            ["name"]    = "Target Buff 1",
-            ["dur"]     = 8000, 
-            ["cast"]    = 0,
-            ["debuff"]  = false,
-            ["tex"]     = '/esoui/art/icons/ability_rogue_001.dds',
-        }
-        if ( FTC.Buffs.Target["Target Buff 1"] == nil ) then FTC.Buffs:NewEffect( ability )
-        elseif ( FTC.Buffs.Target["Target Buff 1"]["ends"] <= time + 1 ) then FTC.Buffs.Target["Target Buff 1"]["ends"] = time + 8 end
+        if ( FTC.Buffs.Target["Target Buff 1"] == nil ) then
+            local ability = {
+                ["owner"]   = "",
+                ["name"]    = "Target Buff 1",
+                ["dur"]     = 8000, 
+                ["cast"]    = 0,
+                ["debuff"]  = false,
+                ["tex"]     = '/esoui/art/icons/ability_rogue_001.dds',
+            }
+            FTC.Buffs:NewEffect( ability )
+        elseif ( FTC.Buffs.Target["Target Buff 1"]["ends"] <= time + 0.2 ) then FTC.Buffs.Target["Target Buff 1"]["ends"] = time + 8 end
 
         -- Fake Target Buff 2
-        local ability = {
-            ["owner"]   = "",
-            ["name"]    = "Target Buff 2",
-            ["dur"]     = 12000, 
-            ["cast"]    = 0,
-            ["debuff"]  = false,
-            ["tex"]     = '/esoui/art/icons/ability_rogue_019.dds',
-        }
-        if ( FTC.Buffs.Target["Target Buff 2"] == nil ) then FTC.Buffs:NewEffect( ability )
-        elseif ( FTC.Buffs.Target["Target Buff 2"]["ends"] <= time + 1 ) then FTC.Buffs.Target["Target Buff 2"]["ends"] = time + 12 end
+        if ( FTC.Buffs.Target["Target Buff 2"] == nil ) then
+            local ability = {
+                ["owner"]   = "",
+                ["name"]    = "Target Buff 2",
+                ["dur"]     = 12000, 
+                ["cast"]    = 0,
+                ["debuff"]  = false,
+                ["tex"]     = '/esoui/art/icons/ability_rogue_019.dds',
+            }
+            FTC.Buffs:NewEffect( ability )
+        elseif ( FTC.Buffs.Target["Target Buff 2"]["ends"] <= time + 0.2 ) then FTC.Buffs.Target["Target Buff 2"]["ends"] = time + 12 end
 
         -- Fake Target Debuff 1
-        local ability = {
-            ["owner"]   = "",
-            ["name"]    = "Target Debuff 1",
-            ["dur"]     = 4000, 
-            ["cast"]    = 0,
-            ["debuff"]  = true,
-            ["tex"]     = '/esoui/art/icons/ability_rogue_029.dds',
-        }
-        if ( FTC.Buffs.Target["Target Debuff 1"] == nil ) then FTC.Buffs:NewEffect( ability )
-        elseif ( FTC.Buffs.Target["Target Debuff 1"]["ends"] <= time + 1 ) then FTC.Buffs.Target["Target Debuff 1"]["ends"] = time + 4 end
+        if ( FTC.Buffs.Target["Target Debuff 1"] == nil ) then
+            local ability = {
+                ["owner"]   = "",
+                ["name"]    = "Target Debuff 1",
+                ["dur"]     = 4000, 
+                ["cast"]    = 0,
+                ["debuff"]  = true,
+                ["tex"]     = '/esoui/art/icons/ability_rogue_029.dds',
+            }
+            FTC.Buffs:NewEffect( ability )
+        elseif ( FTC.Buffs.Target["Target Debuff 1"]["ends"] <= time + 0.2 ) then FTC.Buffs.Target["Target Debuff 1"]["ends"] = time + 4 end
 
         -- Fake Target Debuff 2
-        local ability = {
-            ["owner"]   = "",
-            ["name"]    = "Target Debuff 2",
-            ["dur"]     = 9000, 
-            ["cast"]    = 0,
-            ["debuff"]  = true,
-            ["tex"]     = '/esoui/art/icons/ability_rogue_022.dds',
-        }
-        if ( FTC.Buffs.Target["Target Debuff 2"] == nil ) then FTC.Buffs:NewEffect( ability ) 
-        elseif ( FTC.Buffs.Target["Target Debuff 2"]["ends"] <= time + 1 ) then FTC.Buffs.Target["Target Debuff 2"]["ends"] = time + 9 end
+        if ( FTC.Buffs.Target["Target Debuff 2"] == nil ) then
+            local ability = {
+                ["owner"]   = "",
+                ["name"]    = "Target Debuff 2",
+                ["dur"]     = 9000, 
+                ["cast"]    = 0,
+                ["debuff"]  = true,
+                ["tex"]     = '/esoui/art/icons/ability_rogue_022.dds',
+            }
+            FTC.Buffs:NewEffect( ability ) 
+        elseif ( FTC.Buffs.Target["Target Debuff 2"]["ends"] <= time + 0.2 ) then FTC.Buffs.Target["Target Debuff 2"]["ends"] = time + 9 end
     end
 
 

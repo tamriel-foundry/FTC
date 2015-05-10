@@ -258,7 +258,7 @@ function FTC.Buffs:NewEffect( ability )
     -- Setup buff object
     local buffTemplate = {
         ["owner"]   = ability.owner,
-        ["name"]    = zo_strformat("<<!aC:1>>",ability.name),
+        ["name"]    = ability.name,
         ["stacks"]  = 0,
         ["debuff"]  = ability.debuff or false,
         ["area"]    = ability.area   or false,
@@ -429,7 +429,7 @@ function FTC.Buffs:Update( unitTag )
         local label     = buffs[i].toggle or ""
         local control   = buffs[i].control
         local render    = true
-        local duration  = math.floor( ( buffs[i].ends - gameTime ) * 10 ) / 10 
+        local duration  = zo_roundToNearest( buffs[i].ends - gameTime , 0.1 )
         
         -- Skip abilities which have not begun yet
         if ( buffs[i].begin > gameTime ) then render = false end
@@ -478,7 +478,7 @@ function FTC.Buffs:Update( unitTag )
             control.name:ClearAnchors()
             control.name:SetAnchor(LEFT,control,RIGHT,10,0)
             control.name:SetHorizontalAlignment(0)
-            control.name:SetText(name)
+            control.name:SetText(zo_strformat("<<!aC:1>>",name))
 
             -- Long Buffs
             if ( context == "Player" and isLong and ( FTC.Vars.LongBuffFormat ~= "disabled" ) ) then
@@ -591,88 +591,15 @@ end
  * Check the player's buffs for known damage shields, and purge them
  * Called by OnVisualRemoved()
  ]]--
-function FTC.Buffs:RemoveVisuals( unitTag , unitAttributeVisual , powerType )
+function FTC.Buffs:RemoveShield( unitTag )
 
     -- For now, only do this stuff for the player
     if ( unitTag ~= 'player' ) then return end
 
     -- Check for damage shields
-    if ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING ) then
-        for name, buff in pairs( FTC.Buffs.Player ) do
-            if ( FTC.Buffs:IsDamageShield( name ) ) then 
-                FTC.Buffs.Player[name] = nil
-            end     
+    for name, buff in pairs( FTC.Buffs.Player ) do
+        if ( FTC.Buffs:IsDamageShield( name ) ) then 
+            FTC.Buffs.Player[name] = nil
         end     
-    end
-end
-
---[[ 
- * Check for whether a potion has been used
- * Runs OnUpdate - 50 ms buffer
- ]]--
-function FTC.Buffs:CheckPotion()
-
-    -- Get the current potion
-    local current = GetCurrentQuickslot()
-
-    -- Bail if there is no active potion
-    if ( GetSlotName( current ) == "" ) then return end
-    
-    -- Get the cooldown
-    local cd, dur , usable = GetSlotCooldownInfo(current)
-
-    --local upgradeLevel = GetSkillAbilityUpgradeInfo(SKILL_TYPE_TRADESKILL, 1, 3)
-    --g_potionMultiplier = 1.0 + 0.1*upgradeLevel
-    
-    -- Trigger an alert if the potion has just become available
-    if ( usable and not FTC.Buffs.canPotion ) then
-        if ( FTC.init.SCT ) then
-            local newAlert = {
-                ["type"]    = 'potionReady',
-                ["name"]    = 'Potion Ready',
-                ["value"]   = '',
-                ["ms"]      = GetGameTimeMilliseconds(),
-                ["color"]   = 'cffcc00',
-                ["size"]    = 20
-            }
-            FTC.SCT:NewStatus( newAlert )
-        end
-    end
-
-    -- If the potion goes on cooldown, display a new alert
-    if ( FTC.Buffs.canPotion and cd > 5000 ) then
-    
-        -- Make sure it's a potion
-        local name      = string.lower( GetSlotName(current) )
-        local keys      = { "sip" , "tincture" , "dram" , "potion" , "solution" , "elixir" , "panacea" }
-        local isPotion  = false
-        for i = 1 , #keys do
-            if ( string.find( name , keys[i] ) ) then 
-                isPotion = true 
-                break   
-            end
-        end
-        if ( not isPotion ) then return end
-
-        -- Translate the time to seconds
-        local time = cd / 1000
-
-        -- Get the current potion
-        local potion        = {
-            ["slot"]        = current,
-            ["name"]        = name,
-            ["type"]        = 'potion',
-            ["tex"]         = GetSlotTexture( current ),
-            ["effects"]     = { time , 0 , 0 },
-        }
-        
-        -- Submit the effect
-        --FTC.Buffs:NewEffects( potion )
-    end
-
-    -- Update the potion status
-    FTC.Buffs.canPotion = usable
-
-    -- Fire a callback when we know a spell was cast
-    CALLBACK_MANAGER:FireCallbacks( "FTC_PotionUsed" , potion )
+    end     
 end

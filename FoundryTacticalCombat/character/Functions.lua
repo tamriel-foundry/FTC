@@ -16,7 +16,6 @@ function FTC.Player:Initialize()
     FTC.Player.name     = GetUnitName( 'player' )
     FTC.Player.race     = GetUnitRace( 'player' )
     FTC.Player.class    = FTC.Player:GetClass(GetUnitClassId( 'player' ))
-    FTC.Player.nicename = string.gsub( GetUnitName( 'player' ) , "%-", "%%%-")
     FTC.Player:GetLevel()
     
     -- Load starting attributes
@@ -28,12 +27,12 @@ function FTC.Player:Initialize()
     }
     for i = 1 , #stats , 1 do
         local current, maximum, effMax = GetUnitPower( "player" , stats[i].id )
-        FTC.Player[stats[i].name] = { ["current"] = current , ["max"] = maximum , ["pct"] = math.floor( ( current / maximum ) * 100 ) }
+        FTC.Player[stats[i].name] = { ["current"] = current , ["max"] = maximum , ["pct"] = zo_roundToNearest(current/maximum,0.01) }
     end
 
     -- Load starting shield
     local value, maxValue = GetUnitAttributeVisualizerEffectInfo('player',ATTRIBUTE_VISUAL_POWER_SHIELDING,STAT_MITIGATION,ATTRIBUTE_HEALTH,POWERTYPE_HEALTH)
-    FTC.Player.shield = { ["current"] = value or 0 , ["max"] = maxValue or 0 , ["pct"] = math.floor( ( value or 0 / FTC.Player.health.max ) * 100 ) }
+    FTC.Player.shield = { ["current"] = value or 0 , ["max"] = maxValue or 0 , ["pct"] = zo_roundToNearest((value or 0)/(maxValue or 0),0.01) }
 
     -- Load action bar abilities
     FTC.Player.Abilities = {}

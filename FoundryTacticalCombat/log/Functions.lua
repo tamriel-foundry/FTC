@@ -125,7 +125,12 @@ function FTC.Log:CombatEvent( damage )
 
 	-- Death
 	elseif ( damage.result == ACTION_RESULT_DIED_XP ) then
-		FTC.Log:Print( "You killed " .. zo_strformat("<<!aC:1>>",damage.target) , {0.6,0.6,0.6} )	
+		FTC.Log:Print( "You killed " .. zo_strformat("<<!aC:1>>",damage.target) , {0.6,0.6,0.6} )
+
+	-- Shielding
+	elseif ( damage.result == ACTION_RESULT_DAMAGE_SHIELDED ) then
+		local subject = damage.out and zo_strformat("<<!aCg:1>>",damage.target) or "Your"
+		FTC.Log:Print(subject .. " shield absorbed " .. CommaValue(damage.value) .. " damage." , {0.6,0.2,0.6} )
 
 	-- Damage
 	elseif ( damage.value ~= 0 ) then

@@ -7,23 +7,11 @@
   ]]--
   
 FTC.Damage 	= {}
-FTC.Log		= {}
 function FTC.Damage:Initialize()
 
-	-- Reset the meter
-	--FTC.Damage:Reset()
-	
-	-- Create controls
-	--FTC.Damage:Controls()
-	
-	-- Register keybinding
-	--ZO_CreateStringId("SI_BINDING_NAME_DISPLAY_DAMAGE_METER", "Display Damage Meter")
-	--ZO_CreateStringId("SI_BINDING_NAME_POST_DAMAGE_RESULTS", "Post Damage Results")
-	--ZO_CreateStringId("SI_BINDING_NAME_POST_HEALING_RESULTS", "Post Healing Results")
-
-	-- Register init status
-	--FTC.init.Damage = true
-
+	-- Set up initial timestamps
+	FTC.Damage.lastIn 	= 0
+	FTC.Damage.lastOut	= 0
 end
 
 --[[----------------------------------------------------------
@@ -46,13 +34,13 @@ function FTC.Damage:Filter( result , sourceType , targetName , hitValue )
 	-- Outgoing Actions
 	elseif ( sourceType == COMBAT_UNIT_TYPE_PLAYER or sourceType == COMBAT_UNIT_TYPE_PLAYER_PET ) then
 
-		-- Self-Harm
+		-- Reflag Self-Harm
 		if ( ( zo_strformat("<<C:1>>",targetName) == FTC.Player.name ) and ( result ~= ACTION_RESULT_HEAL and result ~= ACTION_RESULT_HOT_TICK and result ~= ACTION_RESULT_HOT_TICK_CRITICAL ) ) then 
  			isValid 	= true
  			sourceType 	= COMBAT_UNIT_TYPE_NONE 
 
-		-- Reduced Damage
-		elseif ( result == ACTION_RESULT_BLOCKED_DAMAGE ) then isValid = true
+		-- Ignore Queue
+		elseif ( result == ACTION_RESULT_QUEUED ) then isValid = false
 	
 		-- Misses
 		elseif ( result == ACTION_RESULT_DODGED or result == ACTION_RESULT_MISS ) then isValid = true
@@ -60,53 +48,61 @@ function FTC.Damage:Filter( result , sourceType , targetName , hitValue )
 		-- Immunities
 		elseif ( result == ACTION_RESULT_IMMUNE ) then isValid = true
 
-		-- Interrupts
-		elseif ( result == ACTION_RESULT_INTERRUPT ) then isValid = true
+		-- Active Avoidance
+		elseif ( result == ACTION_RESULT_INTERRUPT or result == ACTION_RESULT_BLOCKED ) then isValid = true
+
+		-- Crowd Control States
+		elseif ( result == ACTION_RESULT_STUNNED or result == ACTION_RESULT_OFFBALANCE ) then isValid = true
 
 		-- Target Death
 		elseif ( result == ACTION_RESULT_DIED_XP ) then isValid = true
-		
-		-- Ignore zeroes
-		elseif ( hitValue == 0 ) then isValid = false
-		
-		-- Damage
-		elseif ( result == ACTION_RESULT_DAMAGE or result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_DOT_TICK or result == ACTION_RESULT_DOT_TICK_CRITICAL ) then isValid = true
-		
-		-- Healing
-		elseif ( result == ACTION_RESULT_HEAL or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_HOT_TICK or result == ACTION_RESULT_HOT_TICK_CRITICAL ) then isValid = true
 
-		-- Prompt others
-		else d( "Outgoing result " .. result .. " not recognized!") end
+		-- Shielded Damage
+		elseif ( result == ACTION_RESULT_DAMAGE_SHIELDED ) then isValid = true
+			
+		-- Damage Dealt
+		elseif ( result == ACTION_RESULT_DAMAGE or result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_BLOCKED_DAMAGE or result == ACTION_RESULT_DOT_TICK or result == ACTION_RESULT_DOT_TICK_CRITICAL ) then 
+			if ( hitValue > 0 ) then
+				isValid = true
+				FTC.Damage.lastOut = GetGameTimeMilliseconds()
+			end
+		
+		-- Healing Dealt
+		elseif ( hitValue > 0 and ( result == ACTION_RESULT_HEAL or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_HOT_TICK or result == ACTION_RESULT_HOT_TICK_CRITICAL ) ) then isValid = true
+
+		-- Prompt other unrecognized
+		else FTC.Log:Print( "Outgoing result " .. result .. " not recognized! Target: " .. targetName .. " Value: " .. hitValue , {1,1,0} ) end
 	
 	-- Incoming Actions
 	elseif ( sourceType == COMBAT_UNIT_TYPE_NONE and ( zo_strformat("<<C:1>>",targetName) == FTC.Player.name ) ) then 
 
-		-- Reduced Damage
-		if ( result == ACTION_RESULT_BLOCKED_DAMAGE ) then isValid = true
-	
 		-- Misses
-		elseif ( result == ACTION_RESULT_DODGED or result == ACTION_RESULT_MISS ) then isValid = true
+		if ( result == ACTION_RESULT_DODGED or result == ACTION_RESULT_MISS ) then isValid = true
 
-		-- Immunities (ALLOW FOR NOW)
+		-- Immunities
 		elseif ( result == ACTION_RESULT_IMMUNE ) then isValid = true
+
+		-- Shielded Damage
+		elseif ( result == ACTION_RESULT_DAMAGE_SHIELDED ) then isValid = true
+			
+		-- Taken Damage
+		elseif ( result == ACTION_RESULT_DAMAGE or result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_BLOCKED_DAMAGE or result == ACTION_RESULT_DOT_TICK or result == ACTION_RESULT_DOT_TICK_CRITICAL ) then 
+			if ( hitValue > 0 ) then
+				isValid = true
+				FTC.Damage.lastIn = GetGameTimeMilliseconds()
+			end
 		
-		-- Ignore zeroes
-		elseif ( hitValue == 0 ) then isValid = false
-			
-		-- Damage
-		elseif ( result == ACTION_RESULT_DAMAGE or result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_DOT_TICK or result == ACTION_RESULT_DOT_TICK_CRITICAL ) then isValid = true
-			
+		-- Taken Healing
+		elseif ( hitValue > 0 and ( result == ACTION_RESULT_HEAL or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_HOT_TICK or result == ACTION_RESULT_HOT_TICK_CRITICAL ) ) then isValid = true
+
 		-- Falling damage
 		elseif ( result == ACTION_RESULT_FALL_DAMAGE ) then isValid = true
-		
-		-- Healing
-		elseif ( result == ACTION_RESULT_HEAL or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_HOT_TICK or result == ACTION_RESULT_HOT_TICK_CRITICAL ) then isValid = true
 
-		-- Track stuff not to prompt for TEMPORARY
+		-- Resource Drains
 		elseif ( result == ACTION_RESULT_POWER_DRAIN or result == ACTION_RESULT_POWER_ENERGIZE ) then isValid = false
 
-		-- Prompt others
-		else d( "Incoming result " .. result .. " not recognized!") end
+		-- Prompt other unrecognized
+		else FTC.Log:Print( "Incoming result " .. result .. " not recognized! Target: " .. targetName .. " Value: " .. hitValue , {1,1,0} ) end
 	end
 	
 	-- Return results

@@ -82,7 +82,7 @@ function FTC.Frames:SetupPlayer()
     
         -- Configure the nameplate
         if ( FTC.Vars.EnableNameplate ) then
-            local name      = FTC.Player.name
+            local name      = zo_strformat("<<!aC:1>>",FTC.Player.name)
             local level     = FTC.Player.vlevel > 0 and "v" .. FTC.Player.vlevel or FTC.Player.level
             FTC_PlayerFrame_PlateName:SetText( name .. " (" .. level .. ")" )
         end
@@ -119,7 +119,7 @@ end
                     
     -- Load the target's health 
     local current, maximum, effectiveMax = GetUnitPower( 'reticleover' , POWERTYPE_HEALTH )
-    FTC.Target.health = { ["current"] = current , ["max"] = maximum , ["pct"] = math.floor( current * 100 / maximum ) }
+    FTC.Target.health = { ["current"] = current , ["max"] = maximum , ["pct"] = zo_roundToNearest(current/maximum,0.01) }
     FTC.Frames:UpdateAttribute( 'reticleover', POWERTYPE_HEALTH , current, maximum, effectiveMax )
     
     -- Populate custom frames
@@ -129,7 +129,7 @@ end
         local frame     = _G['FTC_TargetFrame']
     
         -- Get data
-        local name      = FTC.Target.name
+        local name      = zo_strformat("<<!aC:1>>",FTC.Target.name)
         local level     = FTC.Target.vlevel > 0 and "v" .. FTC.Target.vlevel or FTC.Target.level
         local icon      = nil
         local title     = nil
@@ -201,7 +201,7 @@ end
     local name  = attrs[powerType]
     
     -- Get the percentage
-    local pct = math.floor( ( powerValue / powerMax ) * 100 )
+    local pct = zo_roundToNearest(powerValue/powerMax,0.01)
     
     -- Update custom frames
     if ( FTC.init.Frames ) then
@@ -211,11 +211,11 @@ end
         local attr   = frame[string.lower(name)]
         
         -- Update bar width
-        attr.bar:SetWidth( (pct / 100) * ( attr:GetWidth()-6 ) )
+        attr.bar:SetWidth( pct * ( attr:GetWidth() - 6 ) )
 
         -- Update bar labels
-        local label = ( powerValue > 100000 ) and math.floor( ( powerValue + 500 ) / 1000 ) .. "k" or CommaValue(powerValue)
-        local pctLabel = pct .. "%"
+        local label = ( powerValue > 100000 ) and zo_roundToNearest(powerValue,1000)/1000 .. "k" or CommaValue(powerValue)
+        local pctLabel = (pct*100) .. "%"
         
         -- Maybe add shielding
         if ( powerType == POWERTYPE_HEALTH ) then
@@ -229,13 +229,13 @@ end
         end
 
         -- Set the label
-        attr.current:SetText( label )
+        attr.current:SetText(label)
         attr.pct:SetText(pctLabel)
 
         -- Maybe prompt for execute
         if ( context == "Target" ) then 
-            frame.execute:SetHidden( not ( pct < FTC.Vars.ExecuteThreshold ) )
-            if ( ( not IsUnitDead(unitTag) ) and ( pct < FTC.Vars.ExecuteThreshold ) and ( FTC.Target.health.pct > FTC.Vars.ExecuteThreshold ) ) then FTC.Frames:Execute() end
+            frame.execute:SetHidden( not ( pct < FTC.Vars.ExecuteThreshold/100 ) )
+            if ( ( not IsUnitDead(unitTag) ) and ( pct < FTC.Vars.ExecuteThreshold/100 ) and ( FTC.Target.health.pct > FTC.Vars.ExecuteThreshold/100 ) ) then FTC.Frames:Execute() end
         end
 
         -- Control frame visibility
@@ -267,14 +267,14 @@ function FTC.Frames:UpdateShield( unitTag , value , maxValue )
     local frame     = _G['FTC_'..context..'Frame']
     
     -- Get the unit's maximum health
-    local shieldVal = value / FTC[context]["health"]["max"]
+    local shieldPct = zo_roundToNearest(value/FTC[context]["health"]["max"],0.01)
 
     -- Strip any existing tooltip
     local tooltip = string.gsub( frame.health.current:GetText() , " %[(.*)%]" , "")
     
     -- Display shield
     if ( value > 0 ) then
-        frame.shield:SetWidth( math.min(shieldVal,1) * frame.health:GetWidth())
+        frame.shield:SetWidth( math.min(shieldPct,1) * frame.health:GetWidth())
         frame.shield.bar:SetWidth(frame.shield:GetWidth()-4)
 
         -- Update the health text
@@ -290,7 +290,7 @@ function FTC.Frames:UpdateShield( unitTag , value , maxValue )
     end
     
     -- Update the database object
-    FTC[context].shield = { ["current"] = value , ["max"] = maxValue , ["pct"] = math.floor( shieldVal * 100 ) }
+    FTC[context].shield = { ["current"] = value , ["max"] = maxValue , ["pct"] = shieldPct }
 end
 
 
