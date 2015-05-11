@@ -121,7 +121,7 @@
         
             -- Health, Magicka, and Stamina
             if ( powerType == POWERTYPE_HEALTH or powerType == POWERTYPE_MAGICKA or powerType == POWERTYPE_STAMINA ) then
-                if ( FTC.init.SCT ) then FTC.SCT:ResourceAlert( unitTag , powerType , powerValue , powerMax ) end
+                -- if ( FTC.init.SCT ) then FTC.SCT:ResourceAlert( unitTag , powerType , powerValue , powerMax ) end
                 FTC.Frames:UpdateAttribute( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
                 
             -- Ultimate
@@ -142,7 +142,7 @@
         
             -- Health
             if ( powerType == POWERTYPE_HEALTH ) then
-                if ( FTC.init.SCT ) then FTC.SCT:ResourceAlert( unitTag , powerType , powerValue , powerMax ) end
+                -- if ( FTC.init.SCT ) then FTC.SCT:ResourceAlert( unitTag , powerType , powerValue , powerMax ) end
                 FTC.Frames:UpdateAttribute( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
             end
         
@@ -241,7 +241,7 @@
      * --------------------------------
      ]]--
     function FTC.OnCombatState( eventCode, inCombat )
-        if ( FTC.init.SCT ) then FTC.SCT:CombatStatus( inCombat ) end
+        --if ( FTC.init.SCT ) then FTC.SCT:CombatStatus( inCombat ) end
     end
 
     --[[ 
@@ -259,7 +259,7 @@
         if ( FTC.init.Buffs and unitTag == 'player' ) then FTC.Buffs:WipeBuffs(FTC.Player.name) end
         
         -- Display killspam alerts
-        if ( FTC.init.SCT ) then FTC.SCT:Deathspam( ... ) end
+       --if ( FTC.init.SCT ) then FTC.SCT:Deathspam( ... ) end
     end
 
     --[[ 
@@ -406,32 +406,9 @@
         -- Ignore errors
         if ( isError ) then return end
 
-        -- Verify it's a valid result type
-        isValid , result , sourceType , targetName , hitValue = FTC.Damage:Filter( result , sourceType , targetName , hitValue )
+        -- Pass damage event to handler
+        FTC.Damage:New( result , abilityName , abilityGraphic , abilityActionSlotType , sourceName , sourceType , targetName , targetType , hitValue , powerType , damageType )
 
-        -- Stop for invalid actions
-        if ( not isValid ) then return end
-
-        -- Setup a new damage object
-        local damage    = {
-            ["out"]     = ( sourceType ~= COMBAT_UNIT_TYPE_NONE ),
-            ["result"]  = result,
-            ["target"]  = targetName,
-            ["source"]  = sourceName,
-            ["ability"] = abilityName,
-            ["type"]    = damageType,
-            ["value"]   = hitValue,
-            ["power"]   = powerType,
-            ["ms"]      = GetGameTimeMilliseconds(),
-            ["crit"]    = ( result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_DOT_TICK_CRITICAL or result == ACTION_RESULT_HOT_TICK_CRITICAL ) and true or false,
-            ["heal"]    = ( result == ACTION_RESULT_HEAL or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_HOT_TICK or result == ACTION_RESULT_HOT_TICK_CRITICAL ) and true or false,
-        }
-
-        -- Pass damage to combat log
-        if ( FTC.init.Log ) then FTC.Log:CombatEvent(damage) end
-
-        -- Wipe buffs for a deceased target
-        if ( FTC.init.Buffs and result == ACTION_RESULT_DIED_XP ) then FTC.Buffs:WipeBuffs(targetName) end
         
         -- Pass damage to scrolling combat text
         --if ( FTC.init.SCT and context ~= "Group" ) then FTC.SCT:NewSCT( damage , context ) end
@@ -460,7 +437,7 @@
         if ( unitTag ~= 'player' ) then return end
 
         -- Pass experience to scrolling combat text component
-        if ( FTC.init.SCT ) then FTC.SCT:NewExp( eventCode , unitTag , currentExp , maxExp , reason ) end
+        --if ( FTC.init.SCT ) then FTC.SCT:NewExp( eventCode , unitTag , currentExp , maxExp , reason ) end
 
         -- Log experience gain
         if ( FTC.init.Log ) then FTC.Log:Exp( currentExp , reason ) end
@@ -481,7 +458,7 @@
      * --------------------------------
      ]]--
     function FTC.OnAPUpdate( ... )
-        if ( FTC.init.SCT ) then FTC.SCT:NewAP( ... ) end
+        --if ( FTC.init.SCT ) then FTC.SCT:NewAP( ... ) end
     end
 
     --[[ 

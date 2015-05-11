@@ -120,11 +120,8 @@ end
  ]]--
 function FTC.Log:CombatEvent( damage )
 
-	-- Ignore some results
-	if ( damage.result == ACTION_RESULT_POWER_DRAIN or damage.result == ACTION_RESULT_POWER_ENERGIZE ) then return
-
 	-- Death
-	elseif ( damage.result == ACTION_RESULT_DIED_XP ) then
+	if ( damage.result == ACTION_RESULT_DIED ) then
 		FTC.Log:Print( "You killed " .. zo_strformat("<<!aC:1>>",damage.target) , {0.6,0.6,0.6} )
 
 	-- Shielding
@@ -149,7 +146,7 @@ function FTC.Log:CombatEvent( damage )
 		local ability	= ( damage.out ) and zo_strformat(" with <<!aC:1>>",damage.ability) or ""
 
 		-- Determine the damage done
-		local dtype		= damage.heal and " Health" or " damage"
+		local dtype		= damage.heal and " health" or " damage"
 		local amount	= " for " .. CommaValue(damage.value) .. dtype .. "."
 
 		-- Ignore Sprinting and Crouching

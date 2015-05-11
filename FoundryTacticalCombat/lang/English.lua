@@ -132,7 +132,7 @@ ZO_CreateStringId("FTC_Menu_BFont1Desc",    "Change the primary font used in FTC
 ZO_CreateStringId("FTC_Menu_BFont2",        "Secondary Font")
 ZO_CreateStringId("FTC_Menu_BFont2Desc",    "Change the secondary font used in FTC buff tracking. [Default: ESO Bold]")
 
-ZO_CreateStringId("FTC_Menu_BFontS",        "Frame Font Size")
+ZO_CreateStringId("FTC_Menu_BFontS",        "Buff Font Size")
 ZO_CreateStringId("FTC_Menu_BFontSDesc",    "Change the base scale of the fonts used in FTC buff tracking. [Default: 18]")
 
 ZO_CreateStringId("FTC_Menu_BReset",        "Reset Buff Tracking")

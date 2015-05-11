@@ -1,19 +1,28 @@
  
- --[[----------------------------------------------------------
-	SCROLLING COMBAT TEXT CONTROLS
-	-----------------------------------------------------------
-	* Creates UI controls for the scrolling combat text component
-	* Runs during FTC.SCT.Initialize()
-  ]]--
-  
+--[[----------------------------------------------------------
+    SCROLLING COMBAT TEXT CONTROLS
+  ]]----------------------------------------------------------
+
+--[[ 
+ * Create Scrolling Combat Text UI
+ * --------------------------------
+ * Called by FTC.SCT:Initialize()
+ * --------------------------------
+ ]]--  
 function FTC.SCT:Controls()
 
 	-- Create outgoing damage container
-	local name		= "FTC_CombatTextOut"
-	local anchor	= FTC.vars[name]
-	local CTO 		= FTC.UI.TopLevelWindow( name , GuiRoot , {FTC.vars.SCTNames and 400 or 150,750} , {anchor[1],anchor[2],anchor[3],anchor[4]} , false )
-	CTO.backdrop 	= FTC.UI.Backdrop( name.."_Backdrop" , CTO , "inherit" , {CENTER,CENTER,0,0} , nil , nil , true )	
-	CTO.label		= FTC.UI.Label( name.."_Label" , CTO , 'inherit' , {CENTER,CENTER,0,0} , FTC.Fonts.meta(16) , nil , {1,1} , "Outgoing Damage" , true )
+	local CTO 		= FTC.UI:Control(   "FTC_SCTOut",           FTC_UI,     {400,900},             	FTC.Vars.FTC_SCTOut,       	false )  
+    CTO.backdrop 	= FTC.UI:Backdrop(  "FTC_SCTOut_BG",        CTO,     	"inherit",              {CENTER,CENTER,0,0},      	{0,0,0,0.4}, {0,0,0,1}, nil, false )
+    CTO.backdrop:SetEdgeTexture("",16,4,4)
+    CTO.label       = FTC.UI:Label(     "FTC_SCTOut_Label",     CTO,        "inherit",              {CENTER,CENTER,0,0},       	FTC.UI:Font("trajan",24,true) , nil , {1,1} , "Outgoing Damage" , false )   
+    CTO:SetDrawLayer(2)
+    CTO:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end)
+
+    -- Define pool for outgoing damage events
+    if ( FTC.SCT.SCTPool == nil ) then FTC.SCT.SCTPool  = ZO_ObjectPool:New( FTC.SCT.CreateSCT , function(object) FTC.SCT:ReleaseSCT(object) end ) end
+
+	--[[
 	
 	-- Create incoming damage container
 	local name		= "FTC_CombatTextIn"
@@ -63,5 +72,41 @@ function FTC.SCT:Controls()
 			sctLabel.align		= align
 		end	
 	end
+	]]--
 	
+end
+
+
+--[[----------------------------------------------------------
+    BUFF POOL FUNCTIONS
+  ]]----------------------------------------------------------
+
+--[[ 
+ * Add New Buff Control to Pool
+ * --------------------------------
+ * Called by FTC.Buffs.Pool
+ * --------------------------------
+ ]]--
+function FTC.SCT:CreateSCT()
+
+    -- Get the pool and counter
+    local pool      = FTC.SCT.SCTPool
+    local counter   = pool:GetNextControlId()
+
+    -- Create buff
+    local control      = FTC.UI:Control( "FTC_SCTOut"..counter,            FTC_UI,  	{400,50},  {CENTER,CENTER,0,0},  true )
+    control.name       = FTC.UI:Label(   "FTC_SCTOut"..counter.."_Name",   control,    	{400,20},  {CENTER,CENTER,0,0},  FTC.UI:Font("standard",18,true) , {1,1,1,1}, {0,1}, "Example SCT", false )
+   
+    -- Return buff to pool
+    return control
+end
+
+--[[ 
+ * Release Control to Pool Callback
+ * --------------------------------
+ * Called by FTC.Buffs.Pool
+ * --------------------------------
+ ]]--
+function FTC.SCT:ReleaseSCT(object)
+    object:SetHidden(true)
 end

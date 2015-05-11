@@ -1,12 +1,30 @@
  
- --[[----------------------------------------------------------
-	SCROLLING COMBAT TEXT FUNCTIONS
-	-----------------------------------------------------------
-	* Relevant functions for the scrolling combat text component
-	* Runs during FTC:Initialize()
-  ]]--
+--[[----------------------------------------------------------
+    SCROLLING COMBAT TEXT COMPONENT
+  ]]----------------------------------------------------------
 
 FTC.SCT = {}
+FTC.SCT.Defaults = {
+	["SCTCount"]                = 20,
+	["SCTSpeed"]                = 3,
+	--["SCTNames"]                = true,
+	--["SCTPath"]                 = 'Arc',
+	["FTC_SCTOut"]       		= {RIGHT,CENTER,-200,-50},
+	--["FTC_SCTIn"]        		= {TOP,FTC_UI,TOP,450,80},
+	--["FTC_SCTStatus"]    		= {TOP,FTC_UI,TOP,0,80},
+}
+FTC:JoinTables(FTC.Defaults,FTC.SCT.Defaults)
+
+--[[----------------------------------------------------------
+    SCT FUNCTIONS
+  ]]----------------------------------------------------------
+
+--[[ 
+ * Initialize SCT Component
+ * --------------------------------
+ * Called by FTC:Initialize()
+ * --------------------------------
+ ]]--
 function FTC.SCT:Initialize()
 
 	-- Setup tables
@@ -15,13 +33,16 @@ function FTC.SCT:Initialize()
 	FTC.SCT.Status	= {}
 	
 	-- Save tiny AP gains
-	FTC.SCT.backAP	= 0
+	--FTC.SCT.backAP	= 0
 	
 	-- Create controls
 	FTC.SCT:Controls()
 	
 	-- Register init status
 	FTC.init.SCT = true
+
+    -- Activate updating
+    EVENT_MANAGER:RegisterForUpdate( "FTC_SCTOut" , 10 , function() FTC.SCT:Update('Out') end )
 end
 
 
@@ -33,11 +54,43 @@ end
  * Process new combat events passed from the combat event handler
  * Called by FTC.Damage:New() if the damage is approved
  ]]--
-function FTC.SCT:NewSCT( newSCT , context )
+function FTC.SCT:New( damage )
+
+	-- Bail if nothing was passed
+	if ( damage == nil ) then return end
+
+	-- Determine context
+	local context = ( damage.out ) and "Out" or "In"
+	local container	= _G["FTC_SCT"..context]
 	
-	-- Get the existing entries
-	local damages	= FTC.SCT[context]
-	if ( #damages == 0 ) then table.insert( FTC.SCT[context] , newSCT) end
+	-- If the table is empty, go ahead and insert the new entry
+	if ( #FTC.SCT[context] == 0 ) then 
+
+		-- Assign SCT to control from pool
+        local control, objectKey = FTC.SCT.SCTPool:AcquireObject()
+        control:ClearAnchors()
+        control:SetParent(container)
+        control.id = objectKey
+
+        -- Add the damage to the table
+        damage.control = control
+		table.insert( FTC.SCT[context] , damage )
+
+	-- Otherwise ALSO insert for now
+	else 
+
+		-- Assign SCT to control from pool
+        local control, objectKey = FTC.SCT.SCTPool:AcquireObject()
+        control:ClearAnchors()
+        control:SetParent(container)
+        control.id = objectKey
+
+        -- Add the damage to the table
+        damage.control = control
+		table.insert( FTC.SCT[context] , damage ) 
+	end
+
+	--[[
 	
 	-- Loop through each existing combat entry
 	local oldest 	= 1
@@ -82,6 +135,7 @@ function FTC.SCT:NewSCT( newSCT , context )
 		-- Purge unused controls
 		else container.damage = {}	end
 	end	
+	]]--
 end
 
 
@@ -95,35 +149,52 @@ end
  ]]--
 function FTC.SCT:Update(context)
 
-	-- Get saved variables
-	local speed		= FTC.vars.SCTSpeed
-	local num		= FTC.vars.SCTCount
-
 	-- Get the SCT UI element
-	local parent = _G["FTC_CombatText"..context]
-
-	-- Get the damage table based on context
-	local damages = FTC.SCT[context]
+	local parent  = _G["FTC_SCT"..context]
+	local Damages = FTC.SCT[context]
 
 	-- Bail if no damage is present
-	if ( #damages == 0 ) then return end
+	if ( #Damages == 0 ) then return end
 	
 	-- Get the game time
-	local gameTime = GetGameTimeMilliseconds()
+	local ms = GetGameTimeMilliseconds()
 	
-	-- Loop through damage controls, modifying the display
-	for i = 1 , FTC.vars.SCTCount do
-	
+	-- Traverse damage table back-to-front
+	for i = #Damages,1,-1 do
+
 		-- Get the control and it's damage value
-		local container = _G["FTC_SCT"..context..i]
-		local damage 	= container.damage
+		local damage	= Damages[i]
+		local control 	= damage.control
+
+		-- Compute the animation duration ( speed = 10 -> 0.5 second, speed = 1 -> 5 seconds )
+		local lifespan	= ( ms - damage.ms ) / 1000
+		local duration	= ( 11 - FTC.Vars.SCTSpeed ) / 2
+
+		-- Purge expired damages
+		if ( lifespan > duration ) then
+            table.remove(FTC.SCT[context],i) 
+            FTC.SCT.SCTPool:ReleaseObject(control.id)
+
+        -- Otherwise go ahead
+    	else 
+
+			-- Get the starting offsets
+			local height	= parent:GetHeight()
+			local width		= parent:GetWidth()
+			local offsetX 	= 0			
+			local offsetY	= ( -1 * height ) * ( lifespan / duration )	
+
+			-- Set the label for now
+			control.name:SetText(zo_strformat("<<!aC:1>>",damage.ability))
+			control:SetHidden(false)
+
+			-- Adjust the position
+			control:SetAnchor(BOTTOM,parent,BOTTOM,offsetX,offsetY)
+
 		
-		-- If there's damage, proceed
-		if ( damage.name ~= nil ) then 	
-		
-			-- Get the animation duration ( speed = 10 -> 0.5 second, speed = 1 -> 5 seconds )
-			local lifespan	= ( gameTime - damage.ms ) / 1000
-			local duration	= ( 11 - speed ) / 2
+		--[[
+
+
 			
 			-- If the animation has finished, hide the container
 			if ( lifespan > duration ) then 
@@ -193,14 +264,6 @@ function FTC.SCT:Update(context)
 				container:SetAlpha( alpha )
 				container:SetText( dam )
 
-				-- Get the starting offsets
-				local offsetX 	= container.offsetX
-				local offsetY 	= container.offsetY
-				local height	= parent:GetHeight()
-				local width		= parent:GetWidth()
-				
-				-- Scroll the vertical position
-				offsetY			= offsetY - height * ( lifespan / duration )
 				
 				-- Horizontal arcing
 				if ( FTC.vars.SCTPath == 'Arc' ) then
@@ -208,10 +271,8 @@ function FTC.SCT:Update(context)
 					offsetX			= 100 * ( ( 4 * ease * ease ) - ( 4 * ease ) + 1 )
 					offsetX			= ( context == "Out" ) and offsetX or -1 * offsetX
 				end
-
-				-- Adjust the position
-				container:SetAnchor(BOTTOM,parent,BOTTOM,offsetX,offsetY)
 			end
+			]]--
 		end
 	end
 end

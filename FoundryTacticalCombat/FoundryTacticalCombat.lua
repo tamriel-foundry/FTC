@@ -39,25 +39,10 @@ FTC.Defaults            = {
     ["EnableFrames"]    = true,
     ["EnableBuffs"]     = true,
     ["EnableLog"]       = true,
-    ["EnableSCT"]       = false,
+    ["EnableSCT"]       = true,
     ["EnableHotbar"]    = false,
     ["EnableStats"]     = false,
 }
-
---[[ Default Saved Variables
-	-- Scrolling Combat Text
-	["SCTCount"]                = 20,
-	["SCTSpeed"]                = 3,
-	["SCTNames"]                = true,
-	["SCTPath"]                 = 'Arc',
-	["FTC_CombatTextOut"]       = {TOP,TOP,-450,80},
-	["FTC_CombatTextIn"]        = {TOP,TOP,450,80},
-	["FTC_CombatTextStatus"]    = {TOP,TOP,0,80},
-
-	-- Damage
-	["FTC_MiniMeter"]           = {TOPLEFT,TOPLEFT,10,10},
-	["DamageTimeout"]           = 5,
-]] --
 
 -- Track component initialization
 FTC.init                = {}
@@ -81,8 +66,8 @@ function FTC.Initialize( eventCode, addOnName )
     EVENT_MANAGER:UnregisterForEvent( "FTC" , EVENT_ADD_ON_LOADED )
     
     -- Load Saved Variables
-    FTC.Vars = ZO_SavedVars:NewAccountWide( 'FTC_VARS' , (FTC.settings*100) , nil , FTC.Defaults )
-    --FTC.Vars = FTC.Defaults
+    --FTC.Vars = ZO_SavedVars:NewAccountWide( 'FTC_VARS' , (FTC.settings*100) , nil , FTC.Defaults )
+    FTC.Vars = FTC.Defaults
 
     -- Initialize UI Layer
     FTC.UI:Initialize()
@@ -97,20 +82,20 @@ function FTC.Initialize( eventCode, addOnName )
     -- Unit Frames Component
     if ( FTC.Vars.EnableFrames )    then FTC.Frames:Initialize() end
 
-    -- Combat Log Component
-    if ( FTC.Vars.EnableLog )       then FTC.Log:Initialize() end
-
-    -- Advanced Hotbar Component
-    if ( FTC.Vars.EnableHotbar )    then FTC.Hotbar:Initialize() end
-    
-    -- Combat Statistics
-    if ( FTC.Vars.EnableStats )     then FTC.Stats:Initialize() end
-    
     -- Active Buffs Component
     if ( FTC.Vars.EnableBuffs )     then FTC.Buffs:Initialize() end
 
+    -- Combat Log Component
+    if ( FTC.Vars.EnableLog )       then FTC.Log:Initialize() end
+
     -- Combat Text Component
     if ( FTC.Vars.EnableSCT )       then FTC.SCT:Initialize() end
+
+    -- Advanced Hotbar Component
+    --if ( FTC.Vars.EnableHotbar )    then FTC.Hotbar:Initialize() end
+    
+    -- Combat Statistics
+    --if ( FTC.Vars.EnableStats )     then FTC.Stats:Initialize() end
     
     -- Menu Component
     FTC.Menu:Initialize()

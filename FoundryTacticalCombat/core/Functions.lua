@@ -108,10 +108,5 @@ end
  * --------------------------------
  ]]--  
 function FTC:Slash( text )
-
-    -- Display info to chat
-    d( GetString(FTC_LongInfo) )
-
-    -- Open the settings panel
     LAM2:OpenToPanel(FTC_Menu)
 end

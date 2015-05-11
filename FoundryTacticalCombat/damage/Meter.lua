@@ -1,3 +1,11 @@
+ --[[ Default Saved Variables
+	-- Damage
+	["FTC_MiniMeter"]           = {TOPLEFT,TOPLEFT,10,10},
+	["DamageTimeout"]           = 5,
+]] --
+
+
+
  --[[ 
  * Process new combat events passed from the combat event handler
  * Called by OnCombatEvent()

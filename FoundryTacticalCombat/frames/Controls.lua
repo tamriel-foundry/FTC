@@ -93,7 +93,7 @@ function FTC.Frames:Controls()
 
     -- Health Bar
     local health    = FTC.UI:Backdrop(  "FTC_TargetFrame_Health",           target,     {target:GetWidth(),target:GetHeight()*2/6},             {TOP,BOTTOM,0,0,target.plate},  {FTC.Vars.FrameHealthColor[1]/5,FTC.Vars.FrameHealthColor[2]/5,FTC.Vars.FrameHealthColor[3]/5,1}, {0,0,0,1}, FTC.UI.Textures.grainy, false ) 
-    health.bar      = FTC.UI:Statusbar( "FTC_TargetFrame_HealthBar",        health,     {health:GetWidth()-4,health:GetHeight()-4},             {TOPLEFT,TOPLEFT,2,2},          {FTC.Vars.FrameHealthColor[1],FTC.Vars.FrameHealthColor[2],FTC.Vars.FrameHealthColor[3],1}, FTC.UI.Textures.grainy, false )   
+    health.bar      = FTC.UI:Statusbar( "FTC_TargetFrame_HealthBar",        health,     {health:GetWidth()-6,health:GetHeight()-4},             {TOPLEFT,TOPLEFT,3,3},          {FTC.Vars.FrameHealthColor[1],FTC.Vars.FrameHealthColor[2],FTC.Vars.FrameHealthColor[3],1}, FTC.UI.Textures.grainy, false )   
     health.current  = FTC.UI:Label(     "FTC_TargetFrame_HealthCurrent",    health,     {health:GetWidth()*2/3,health:GetHeight()},             {TOPLEFT,TOPLEFT,12,0},         FTC.UI:Font(FTC.Vars.FrameFont1,FTC.Vars.FrameFontSize+2,true), nil, {0,1}, 'Health', false )       
     health.pct      = FTC.UI:Label(     "FTC_TargetFrame_HealthPct",        health,     {health:GetWidth()*1/3,health:GetHeight()},             {TOPRIGHT,TOPRIGHT,-12,0},      FTC.UI:Font(FTC.Vars.FrameFont2,FTC.Vars.FrameFontSize+2,true), nil, {2,1}, 'Pct%', false )
     health.hot      = FTC.UI:Texture(   "FTC_TargetFrame_HealthHoT",        health,     {health.bar:GetWidth()/6,health.bar:GetWidth()/12},     {LEFT,CENTER,6,0},              FTC.UI.Textures.regenLg, true )

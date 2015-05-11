@@ -201,7 +201,7 @@ end
     local name  = attrs[powerType]
     
     -- Get the percentage
-    local pct = zo_roundToNearest(powerValue/powerMax,0.01)
+    local pct = math.max(zo_roundToNearest((powerValue or 0)/powerMax,0.01),0)
     
     -- Update custom frames
     if ( FTC.init.Frames ) then
