@@ -94,12 +94,18 @@ function FTC.SCT:CreateSCT()
     local counter   = pool:GetNextControlId()
 
     -- Create buff
-    local control      = FTC.UI:Control( "FTC_SCTOut"..counter,            FTC_UI,  	{400,50},  {CENTER,CENTER,0,0},  true )
-    control.name       = FTC.UI:Label(   "FTC_SCTOut"..counter.."_Name",   control,    	{400,20},  {CENTER,CENTER,0,0},  FTC.UI:Font("standard",18,true) , {1,1,1,1}, {0,1}, "Example SCT", false )
+    local control  	= FTC.UI:Control(  "FTC_SCTOut"..counter,            FTC_UI,  	{400,50},  	{CENTER,CENTER,0,0}, 				false )
+    control.value 	= FTC.UI:Label(    "FTC_SCTOut"..counter.."_Value",  control,  	{90,50},  	{LEFT,LEFT,60,0},  					FTC.UI:Font("esobold",FTC.Vars.SCTFontSize,true) , {1,1,1,1}, {0,1}, "Value", false )
+    control.name   	= FTC.UI:Label(    "FTC_SCTOut"..counter.."_Name",   control,  	{250,50},  	{RIGHT,RIGHT,0,0},  				FTC.UI:Font("esobold",FTC.Vars.SCTFontSize,true) , {1,1,1,1}, {0,1}, "Name", false )
+    control.bg   	= FTC.UI:Backdrop( "FTC_SCTOut"..counter.."_BG",     control,   {48,48},  	{LEFT,LEFT,0,0},  					{0,0,0,0.8}, {0,0,0,0.8}, nil, false )
+    control.icon    = FTC.UI:Texture(  "FTC_SCTOut"..counter.."_Icon",   control,   {40,40},  	{CENTER,CENTER,0,0,control.bg},		'/esoui/art/icons/icon_missing.dds', false )
+    control.frame   = FTC.UI:Texture(  "FTC_SCTOut"..counter.."_Frame",  control,   {44,44},    {CENTER,CENTER,0,0,control.icon}, 	'/esoui/art/actionbar/icon_metal04.dds', false )
    
     -- Return buff to pool
     return control
 end
+
+-- test /script FTC.SCT.SCTPool:AcquireObject()
 
 --[[ 
  * Release Control to Pool Callback

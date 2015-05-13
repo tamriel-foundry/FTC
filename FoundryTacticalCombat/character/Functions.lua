@@ -277,14 +277,3 @@ function FTC:GetAbilityId( abilityName )
        end
     end
 end
-
-
-function FTC:GetBlessing()
-
-    -- Loop over all ability IDs until we find it
-    for i = 1, 70000 do
-       if ( DoesAbilityExist(i) and ( string.match(GetAbilityName(i),"Blessing") ~= nil ) ) then
-            d(i .. " -- " .. GetAbilityName(i))
-       end
-    end
-end

@@ -137,7 +137,7 @@ end
 
         -- Players
         if ( IsUnitPlayer('reticleover') ) then 
-            icon  = "/esoui/art/contacts/social_classicon_" .. FTC.Target.class .. ".dds"
+            icon  = GetClassIcon(GetUnitClassId('reticleover'))
             title = GetUnitTitle( 'reticleover' ) == "" and GetAvARankName( GetUnitGender('reticleover') , GetUnitAvARank('reticleover') ) or GetUnitTitle( 'reticleover' )
             rank  = GetAvARankIcon(GetUnitAvARank('reticleover'))
         

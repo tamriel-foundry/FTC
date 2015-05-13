@@ -29,7 +29,12 @@ FTC.UI.Textures     = {
  * --------------------------------
  ]]-- 
 function FTC.UI:Initialize()
+    
+    -- Create a parent FTC window
     FTC.UI:TopLevelWindow( "FTC_UI" , GuiRoot , {GuiRoot:GetWidth(),GuiRoot:GetHeight()} , {CENTER,CENTER,0,0} , false )
+
+    -- Preload ability icons
+    FTC:GetAbilityIcons()
 end
 
 --[[----------------------------------------------------------
@@ -78,6 +83,37 @@ function FTC.UI:Font( font , size , shadow)
     -- Return font
     return font..'|'..size..shadow
 end
+
+--[[ 
+ * Preload ability icons for all known abilities
+ * --------------------------------
+ * Called by FTC.UI:Initialize()
+ * --------------------------------
+ ]]-- 
+function FTC:GetAbilityIcons()
+
+    -- Iterate over ability categories
+    for c = 1 , 8 do
+
+        -- Iterate over ability lines
+        for l = 1 , 10 do
+
+            -- Iterate over abilities
+            for a = 1 , 10 do
+
+                -- Get ability info
+                local name , texture , rank , actionSlotType , passive , showInSpellbook = GetSkillAbilityInfo(c,l,a)
+
+                -- If it's valid, load the table
+                if ( name ~= "" ) then FTC.UI.Textures[name] = texture end
+            end
+        end
+    end
+end
+
+
+
+
 
 --[[----------------------------------------------------------
     UI CREATION FUNCTIONS

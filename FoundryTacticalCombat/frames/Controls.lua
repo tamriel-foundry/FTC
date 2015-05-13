@@ -20,13 +20,13 @@ function FTC.Frames:Controls()
     local player    = FTC.UI:Control(   "FTC_PlayerFrame",                  FTC_UI,     {FTC.Vars.FrameWidth,FTC.Vars.FrameHeight},             FTC.Vars.FTC_PlayerFrame,       false )  
     player.backdrop = FTC.UI:Backdrop(  "FTC_PlayerFrame_BG",               player,     "inherit",                                              {CENTER,CENTER,0,0},            {0,0,0,0.4}, {0,0,0,1}, nil, true )
     player.backdrop:SetEdgeTexture("",16,4,4)
-    player:SetDrawLayer(2)
+    player:SetDrawTier(DT_HIGH)
     player:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end)
 
     -- Nameplate
     local plate     = FTC.UI:Control(   "FTC_PlayerFrame_Plate",            player,     {player:GetWidth(),player:GetHeight()/6},               {TOP,TOP,0,0}, false ) 
     plate.name      = FTC.UI:Label(     "FTC_PlayerFrame_PlateName",        plate,      {plate:GetWidth()-42,30},                               {BOTTOMLEFT,BOTTOMLEFT,6,0},    FTC.UI:Font(FTC.Vars.FrameFont1,FTC.Vars.FrameFontSize+2,true), nil, {0,1}, "Player Name (Level)", false )   
-    plate.class     = FTC.UI:Texture(   "FTC_PlayerFrame_PlateClass",       plate,      {36,36},                                                {BOTTOMRIGHT,BOTTOMRIGHT,0,2},  "/esoui/art/contacts/social_classicon_" .. FTC.Player.class .. ".dds", false )
+    plate.class     = FTC.UI:Texture(   "FTC_PlayerFrame_PlateClass",       plate,      {36,36},                                                {BOTTOMRIGHT,BOTTOMRIGHT,0,2},  GetClassIcon(GetUnitClassId('player')), false )
     player.plate    = plate
 
     --Health Bar
@@ -63,7 +63,7 @@ function FTC.Frames:Controls()
     local shield    = FTC.UI:Backdrop(  "FTC_PlayerFrame_Shield",           health,     {player:GetWidth(),health:GetHeight()/4},               {BOTTOMLEFT,BOTTOMLEFT,0,0},    {FTC.Vars.FrameShieldColor[1]/5,FTC.Vars.FrameShieldColor[2]/5,FTC.Vars.FrameShieldColor[3]/5,1}, {0,0,0,1}, FTC.UI.Textures.grainy, true )   
     shield.bar      = FTC.UI:Statusbar( "FTC_PlayerFrame_ShieldBar",        shield,     {shield:GetWidth()-4,shield:GetHeight()-4},             {TOPLEFT,TOPLEFT,2,2},          {FTC.Vars.FrameShieldColor[1],FTC.Vars.FrameShieldColor[2],FTC.Vars.FrameShieldColor[3],1}, FTC.UI.Textures.grainy, false )
     player.shield   = shield
-    shield:SetDrawLayer(1)
+    shield:SetDrawLayer(DL_OVERLAY)
       
     -- Alternate Progress Bar
     local alt       = FTC.UI:Control(   "FTC_PlayerFrame_Alt",              player,     {player:GetWidth(),math.min(player:GetHeight()/6,30)},  {TOP,BOTTOM,0,4,stamina},       false ) 
