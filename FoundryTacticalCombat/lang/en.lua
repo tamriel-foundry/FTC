@@ -2,8 +2,6 @@
 --[[----------------------------------------------------------
     ENGLISH LANGUAGE LOCALIZATION
   ]]----------------------------------------------------------
-
--- General Addon Information
 ZO_CreateStringId("FTC_Name",               "Foundry Tactical Combat")
 ZO_CreateStringId("FTC_ShortInfo",          "Foundry Tactical Combat by Atropos")
 ZO_CreateStringId("FTC_LongInfo",           "You are using Foundry Tactical Combat version " .. FTC.version .. " developed by Atropos of Tamriel Foundry.")

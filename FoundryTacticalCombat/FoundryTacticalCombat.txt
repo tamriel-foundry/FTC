@@ -81,8 +81,8 @@ sct/Controls.lua
 hotbar/Functions.lua
 hotbar/Controls.lua
 
-lang/Localization.lua
-lang/English.lua
+lang/en.lua
+lang/$(language).lua
 
 menu/Functions.lua
 menu/Controls.lua
