@@ -92,13 +92,9 @@ end
  ]]-- 
 function FTC:GetAbilityIcons()
 
-    -- Iterate over ability categories
+    -- Iterate over categories, lines, and abilities
     for c = 1 , 8 do
-
-        -- Iterate over ability lines
         for l = 1 , 10 do
-
-            -- Iterate over abilities
             for a = 1 , 10 do
 
                 -- Get ability info
@@ -108,6 +104,40 @@ function FTC:GetAbilityIcons()
                 if ( name ~= "" ) then FTC.UI.Textures[name] = texture end
             end
         end
+    end
+
+    -- Add additional custom icons
+    local custom = {
+
+        -- Status Effects
+        [1339]  = '/esoui/art/icons/ability_dragonknight_004_b.dds',            -- Burning
+        [8041]  = '/esoui/art/icons/death_recap_fire_aoe.dds',                  -- Explosion
+
+        -- Weapon Attacks
+        [4858]  = '/esoui/art/icons/ability_warrior_011.dds',                   -- Bash
+        [60407] = '/esoui/art/icons/ability_warrior_011.dds',                   -- Invigorating Bash
+        [7880]  = '/esoui/art/icons/death_recap_melee_basic.dds',               -- Light Attack
+        [7095]  = '/esoui/art/icons/death_recap_melee_heavy.dds',               -- Heavy Attack
+        [16420] = '/esoui/art/icons/ability_warrior_013.dds',                   -- Heavy Attack (Dual Wield)
+ 
+        -- Weapon Enchantments
+        [5187]  = '/esoui/art/icons/death_recap_poison_melee.dds',              -- Poisoned Weapon   
+        [17895] = '/esoui/art/icons/death_recap_fire_melee.dds',                -- Fiery Weapon
+        [17897] = '/esoui/art/icons/death_recap_cold_melee.dds',                -- Frozen Weapon    
+        [17899] = '/esoui/art/icons/death_recap_shock_melee.dds',               -- Charged Weapon
+        [17904] = '/esoui/art/icons/death_recap_disease_melee.dds',             -- Befouled Weapon
+
+        -- Sorcerer
+        [23682] = '/esoui/art/icons/ability_sorcerer_critical_surge.dds',       -- Critical Surge
+
+        -- Racials
+        [36214] = '/esoui/art/icons/ability_dragonknight_028.dds',              -- Star of the West
+        
+
+
+    } 
+    for k,v in pairs(custom) do
+        FTC.UI.Textures[GetAbilityName(k)] = v
     end
 end
 

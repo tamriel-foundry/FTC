@@ -7,10 +7,16 @@
     FTC.SCT.Defaults = {
         ["SCTCount"]                = 20,
         ["SCTSpeed"]                = 3,
-        --["SCTNames"]                = true,
+        ["SCTNames"]                = true,
+
+
+
         --["SCTPath"]                 = 'Arc',
+
         ["FTC_SCTOut"]              = {RIGHT,CENTER,-200,-50},
-        --["FTC_SCTIn"]             = {TOP,FTC_UI,TOP,450,80},
+        ["FTC_SCTIn"]               = {LEFT,CENTER,200,-50},
+
+        
         --["FTC_SCTStatus"]         = {TOP,FTC_UI,TOP,0,80},
 
         ["SCTFontSize"]             = 20,
@@ -48,6 +54,7 @@
 
         -- Activate updating
         EVENT_MANAGER:RegisterForUpdate( "FTC_SCTOut" , nil , function() FTC.SCT:Update('Out') end )
+        EVENT_MANAGER:RegisterForUpdate( "FTC_SCTIn" , nil , function() FTC.SCT:Update('In') end )
     end
 
 
@@ -77,7 +84,7 @@
 
                 -- Identical damage must have the same name, heal status, crit status, and approximate timestamp
                 local dam = FTC.SCT[context][i]
-                if ( ( damage.ability == dam.ability ) and ( dam.heal == damage.heal ) and ( dam.crit == damage.crit ) and ( math.abs( dam.ms - dam.ms ) <= 250 ) ) then
+                if ( ( damage.ability == dam.ability ) and ( dam.heal == damage.heal ) and ( dam.crit == damage.crit ) and ( math.abs( dam.ms - damage.ms ) <= 500 ) ) then
 
                     -- Add the multiplier
                     local mult = FTC.SCT[context][i].mult + 1
@@ -98,37 +105,51 @@
         if ( isNew ) then
 
             -- Assign SCT to control from pool
-            local control, objectKey = FTC.SCT.SCTPool:AcquireObject()
+            local pool = FTC.SCT[context.."Pool"]
+            local control, objectKey = pool:AcquireObject()
             control:ClearAnchors()
             control:SetParent(container)
             control.id = objectKey
 
             -- Compute starting offsets
             local  offsets = {}
-            if     ( FTC.SCT.count == 1 )   then offsets = {-50,-25} 
-            elseif ( FTC.SCT.count == 2 )   then offsets = {50,25}
-            elseif ( FTC.SCT.count == 3 )   then offsets = {50,-25}
-            elseif ( FTC.SCT.count == 4 )   then offsets = {-50,-25} end
+            if     ( FTC.SCT.count == 1 )   then offsets = {0,-50} 
+            elseif ( FTC.SCT.count == 2 )   then offsets = {100,0}
+            elseif ( FTC.SCT.count == 3 )   then offsets = {0,50}
+            elseif ( FTC.SCT.count == 4 )   then offsets = {-100,0} end
             control.offsetX , control.offsetY = unpack(offsets)
             control:SetDrawTier( FTC.SCT.count % 2 == 0 and DT_MEDIUM or DT_LOW )
             FTC.SCT.count = ( FTC.SCT.count % 4 == 0 ) and 1 or FTC.SCT.count + 1
 
             -- Determine labels
             local value = ( damage.value >= 1000 ) and zo_roundToNearest( damage.value / 1000 , 0.1 ) .. "k" or damage.value
-            local size  = ( damage.crit ) and FTC.Vars.SCTFontSize + 4 or FTC.Vars.SCTFontSize
+            local size  = ( damage.crit ) and FTC.Vars.SCTFontSize + 8 or FTC.Vars.SCTFontSize
             local name  = zo_strformat("<<!aC:1>>",damage.ability)
+
+            -- Determine color
+            local color = {0.8,0,0} 
+            if ( damage.heal ) then color = {0.6,0.8,0.2}
+            elseif ( damage.out ) then color = {0.7,0.5,0.2} end
 
             -- Assign data to the control
             control.value:SetText(value)
-            control.value:SetFont(FTC.UI:Font("esobold",size,true))
+            control.value:SetFont(FTC.UI:Font("esobold",size+2,true))
+            control.value:SetColor(unpack(color))
+
             control.name:SetText(name)
             control.name:SetFont(FTC.UI:Font("esobold",size,true))
+            control.name:SetColor(unpack(color))
+
             control.icon:SetTexture(damage.icon)
             control:SetHidden(false)
+            control:SetAlpha(0)
 
             -- Add the damage to the table
             damage.control = control
             table.insert( FTC.SCT[context] , damage ) 
+
+            -- Start fade animation
+            FTC.SCT:Fade(control)
         end
     end
 
@@ -169,13 +190,11 @@
             -- Purge expired damages
             if ( lifespan > duration ) then
                 table.remove(FTC.SCT[context],i) 
-                FTC.SCT.SCTPool:ReleaseObject(control.id)
+                local pool = FTC.SCT[context.."Pool"]
+                pool:ReleaseObject(control.id)
 
             -- Otherwise go ahead
             else 
-
-                -- Don't animate for the first 25%
-                if ( lifespan < 0.25 * duration ) then lifespan = 0.25 * duration end
 
                 -- Get the starting offsets
                 local height    = parent:GetHeight()

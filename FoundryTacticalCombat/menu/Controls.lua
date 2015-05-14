@@ -44,24 +44,13 @@ function FTC.Menu:Controls()
             warning     = GetString(FTC_Menu_Reload),
         },
 
-        -- Enable/Disable Buff Tracking
+        -- Enable/Disable Combat Log
         {   type        = "checkbox",
             name        = GetString(FTC_Menu_Log),
             tooltip     = GetString(FTC_Menu_LogDesc),
             getFunc     =  function() return FTC.Vars.EnableLog end,
             setFunc     = function() FTC.Menu:Toggle( 'EnableLog' , true ) end,
             default     = FTC.Defaults.EnableLog, 
-            warning     = GetString(FTC_Menu_Reload),
-        },
-
-        --[[
-        -- Enable/Disable Damage Meter
-        {   type        = "checkbox",
-            name        = GetString(FTC_Menu_Damage),
-            tooltip     = GetString(FTC_Menu_DamageDesc),
-            getFunc     = function() return FTC.Vars.EnableDamage end, 
-            setFunc     = function() FTC.Menu:Toggle( 'EnableDamage' , true ) end, 
-            default     = FTC.Defaults.EnableDamage, 
             warning     = GetString(FTC_Menu_Reload),
         },
 
@@ -74,6 +63,20 @@ function FTC.Menu:Controls()
             default     = FTC.Defaults.EnableSCT, 
             warning     = GetString(FTC_Menu_Reload),
         },
+
+
+        --[[
+        -- Enable/Disable Damage Meter
+        {   type        = "checkbox",
+            name        = GetString(FTC_Menu_Damage),
+            tooltip     = GetString(FTC_Menu_DamageDesc),
+            getFunc     = function() return FTC.Vars.EnableDamage end, 
+            setFunc     = function() FTC.Menu:Toggle( 'EnableDamage' , true ) end, 
+            default     = FTC.Defaults.EnableDamage, 
+            warning     = GetString(FTC_Menu_Reload),
+        },
+
+
 
         -- Enable/Disable Ultimate Tracking
         {   type        = "checkbox", 
