@@ -1,4 +1,4 @@
- 
+
 --[[----------------------------------------------------------
     SCROLLING COMBAT TEXT COMPONENT
   ]]----------------------------------------------------------
@@ -13,8 +13,8 @@
 
         --["SCTPath"]                 = 'Arc',
 
-        ["FTC_SCTOut"]              = {RIGHT,CENTER,-200,-50},
-        ["FTC_SCTIn"]               = {LEFT,CENTER,200,-50},
+        ["FTC_SCTOut"]              = {RIGHT,CENTER,-300,-50},
+        ["FTC_SCTIn"]               = {LEFT,CENTER,300,-50},
 
         
         --["FTC_SCTStatus"]         = {TOP,FTC_UI,TOP,0,80},
@@ -101,7 +101,7 @@
             end
         end
 
-        -- Otherwise ALSO insert for now
+        -- Create controls for new damages
         if ( isNew ) then
 
             -- Assign SCT to control from pool
@@ -123,22 +123,27 @@
 
             -- Determine labels
             local value = ( damage.value >= 1000 ) and zo_roundToNearest( damage.value / 1000 , 0.1 ) .. "k" or damage.value
-            local size  = ( damage.crit ) and FTC.Vars.SCTFontSize + 8 or FTC.Vars.SCTFontSize
+            local size  = ( damage.crit ) and FTC.Vars.SCTFontSize + 4 or FTC.Vars.SCTFontSize
             local name  = zo_strformat("<<!aC:1>>",damage.ability)
 
             -- Determine color
-            local color = {0.8,0,0} 
-            if ( damage.heal ) then color = {0.6,0.8,0.2}
+            local color = {206/255,027/255,020/255} 
+            if ( damage.heal ) then color = {080/255,160/255,065/255}
+            elseif ( damage.weapon ) then color = {0.9,0.9,0.9}
+            elseif ( damage.out and damage.type ~= DAMAGE_TYPE_PHYSICAL and damage.type ~= DAMAGE_TYPE_GENERIC and damage.type ~= DAMAGE_TYPE_NONE ) then color = {0.2,0.4,0.6}
             elseif ( damage.out ) then color = {0.7,0.5,0.2} end
 
             -- Assign data to the control
             control.value:SetText(value)
-            control.value:SetFont(FTC.UI:Font("esobold",size+2,true))
+            control.value:SetFont(FTC.UI:Font("esobold",size+8,true))
             control.value:SetColor(unpack(color))
 
-            control.name:SetText(name)
-            control.name:SetFont(FTC.UI:Font("esobold",size,true))
-            control.name:SetColor(unpack(color))
+            -- Maybe display names
+            if ( FTC.Vars.SCTNames ) then 
+                control.name:SetText(name)
+                control.name:SetFont(FTC.UI:Font("esobold",size,true))
+                control.name:SetColor(unpack(color))
+            else control.name:SetText("") end
 
             control.icon:SetTexture(damage.icon)
             control:SetHidden(false)
@@ -185,10 +190,11 @@
 
             -- Compute the animation duration ( speed = 10 -> 0.5 second, speed = 1 -> 5 seconds )
             local lifespan  = ( ms - damage.ms ) / 1000
-            local duration  = ( 11 - FTC.Vars.SCTSpeed ) / 2
+            local speed     = ( ( 11 - FTC.Vars.SCTSpeed ) / 2 )
+            local remaining = ( lifespan + (speed * 0.2 )) / speed
 
             -- Purge expired damages
-            if ( lifespan > duration ) then
+            if ( lifespan > speed * 0.8 ) then
                 table.remove(FTC.SCT[context],i) 
                 local pool = FTC.SCT[context.."Pool"]
                 pool:ReleaseObject(control.id)
@@ -200,12 +206,11 @@
                 local height    = parent:GetHeight()
                 local width     = parent:GetWidth()
                 local offsetX   = control.offsetX           
-                local offsetY   = control.offsetY + ( -1 * height ) * ( lifespan / duration )   
+                local offsetY   = control.offsetY + ( -1 * height ) * remaining
 
                 -- Horizontal arcing
                 if ( true ) then
-                    local ease      = lifespan / duration
-                    local arc       = width * ( ( 4 * ease * ease ) - ( 4 * ease ) + 1 ) 
+                    local arc       = 300 * ( ( 4 * remaining * remaining ) - ( 4 * remaining ) + 1 ) 
                     offsetX         = ( damage.out ) and offsetX + arc or offsetX - arc
                 end
 

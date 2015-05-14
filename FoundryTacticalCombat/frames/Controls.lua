@@ -82,7 +82,7 @@ function FTC.Frames:Controls()
     local target    = FTC.UI:Control(   "FTC_TargetFrame",                  FTC_UI,     {FTC.Vars.FrameWidth,FTC.Vars.FrameHeight},             FTC.Vars.FTC_TargetFrame,       true )
     target.backdrop = FTC.UI:Backdrop(  "FTC_TargetFrame_BG",               target,     "inherit",                                              {CENTER,CENTER,0,0},            {0,0,0,0.4}, {0,0,0,1}, nil, true ) 
     target.backdrop:SetEdgeTexture("",16,4,4)
-    target:SetDrawLayer(2)
+    target:SetDrawTier(DT_HIGH)
     target:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end) 
 
     -- Nameplate

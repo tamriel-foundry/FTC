@@ -152,3 +152,11 @@ ZO_CreateStringId("FTC_Menu_LFontSDesc",    "Change the font size used in the FT
 
 ZO_CreateStringId("FTC_Menu_LReset",        "Reset Combat Log")
 ZO_CreateStringId("FTC_Menu_LResetDesc",    "Reset original settings for FTC combat log component.")
+
+--[[----------------------------------------------------------
+    SCROLLING COMBAT TEXT
+  ]]----------------------------------------------------------
+ZO_CreateStringId("FTC_Menu_SHeader",       "Configure Combat Text Settings")
+
+ZO_CreateStringId("FTC_Menu_SNames",        "Display SCT Names")
+ZO_CreateStringId("FTC_Menu_SNamesDesc",    "Display ability names when possible in scrolling combat text?")

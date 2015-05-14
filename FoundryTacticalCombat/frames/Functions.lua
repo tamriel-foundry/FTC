@@ -20,14 +20,14 @@ FTC.Frames.Defaults = {
     ["FrameWidth"]              = 350,
     ["FrameHeight"]             = 180,  
     ["FrameOpacityIn"]          = 100,
-    ["FrameOpacityOut"]         = 60,    
-    ["FrameFont1"]              = 'trajan',
+    ["FrameOpacityOut"]         = 80,    
+    ["FrameFont1"]              = 'antique',
     ["FrameFont2"]              = 'esobold',
-    ["FrameFontSize"]           = 16,
-    ["FrameHealthColor"]        = {0.6,0.0,0.0},
-    ["FrameMagickaColor"]       = {0.4,0.4,0.8},
-    ["FrameStaminaColor"]       = {0.0,0.4,0.0},
-    ["FrameShieldColor"]        = {1.0,0.4,0.0},
+    ["FrameFontSize"]           = 18,
+    ["FrameHealthColor"]        = {133/255,018/255,013/255},
+    ["FrameMagickaColor"]       = {064/255,064/255,128/255},
+    ["FrameStaminaColor"]       = {038/255,077/255,033/255},
+    ["FrameShieldColor"]        = {255/255,100/255,000/255},
 }
 FTC:JoinTables(FTC.Defaults,FTC.Frames.Defaults)
 

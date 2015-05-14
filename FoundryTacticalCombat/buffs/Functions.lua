@@ -7,9 +7,9 @@ FTC.Buffs.Defaults = {
 
     -- Player Buffs
     ["FTC_PlayerBuffs"]         = {CENTER,CENTER,0,400},  
-    ["PlayerBuffFormat"]        = "htiles",
+    ["PlayerBuffFormat"]        = "dlist",
     ["FTC_LongBuffs"]           = {BOTTOMRIGHT,BOTTOMRIGHT,-2,-2},
-    ["LongBuffFormat"]          = "vtiles",
+    ["LongBuffFormat"]          = "alist",
 
     -- Player Debuffs
     ["FTC_PlayerDebuffs"]       = {CENTER,CENTER,0,500},
@@ -21,7 +21,7 @@ FTC.Buffs.Defaults = {
 
     -- Target Debuffs
     ["FTC_TargetDebuffs"]       = {CENTER,CENTER,0,-400},
-    ["TargetDebuffFormat"]      = "htiles",
+    ["TargetDebuffFormat"]      = "alist",
 
     -- Shared Settings  
     ["MaxBuffs"]                = 8,
@@ -29,7 +29,7 @@ FTC.Buffs.Defaults = {
 
     -- Fonts
     ["BuffsFont1"]              = 'esobold',
-    ["BuffsFont2"]              = 'esobold',
+    ["BuffsFont2"]              = 'antique',
     ["BuffsFontSize"]           = 18,
 
 }

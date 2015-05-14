@@ -22,126 +22,134 @@ FTC.UI.Textures     = {
     ["regenSm"]     = 'FoundryTacticalCombat/lib/textures/regen_sm.dds',
 }
 
---[[ 
- * Initialize FTC UI Layer
- * --------------------------------
- * Called by FTC:Initialize()
- * --------------------------------
- ]]-- 
-function FTC.UI:Initialize()
-    
-    -- Create a parent FTC window
-    FTC.UI:TopLevelWindow( "FTC_UI" , GuiRoot , {GuiRoot:GetWidth(),GuiRoot:GetHeight()} , {CENTER,CENTER,0,0} , false )
+    --[[ 
+     * Initialize FTC UI Layer
+     * --------------------------------
+     * Called by FTC:Initialize()
+     * --------------------------------
+     ]]-- 
+    function FTC.UI:Initialize()
+        
+        -- Create a parent FTC window
+        FTC.UI:TopLevelWindow( "FTC_UI" , GuiRoot , {GuiRoot:GetWidth(),GuiRoot:GetHeight()} , {CENTER,CENTER,0,0} , false )
 
-    -- Preload ability icons
-    FTC:GetAbilityIcons()
-end
+        -- Preload ability icons
+        FTC:GetAbilityIcons()
+    end
 
 --[[----------------------------------------------------------
     FONTS
   ]]----------------------------------------------------------
 
---[[ 
- * Translate between font name and tag
- * --------------------------------
- * Called by FTC.Menu:Controls()
- * --------------------------------
- ]]-- 
-function FTC.UI:TranslateFont( font )
+    --[[ 
+     * Translate between font name and tag
+     * --------------------------------
+     * Called by FTC.Menu:Controls()
+     * --------------------------------
+     ]]-- 
+    function FTC.UI:TranslateFont( font )
 
-    -- Maintain a translation between tags and names
-    local fonts = {
-        ['meta']        = "Metamorphous",
-        ["standard"]    = "ESO Standard",
-        ["esobold"]     = "ESO Bold",
-        ["antique"]     = "Prose Antique",
-        ["handwritten"] = "Handwritten",
-        ["trajan"]      = "Trajan Pro",
-        ["futura"]      = "Futura Standard",
-        ["futurabold"]  = "Futura Bold",
-    }
+        -- Maintain a translation between tags and names
+        local fonts = {
+            ['meta']        = "Metamorphous",
+            ["standard"]    = "ESO Standard",
+            ["esobold"]     = "ESO Bold",
+            ["antique"]     = "Prose Antique",
+            ["handwritten"] = "Handwritten",
+            ["trajan"]      = "Trajan Pro",
+            ["futura"]      = "Futura Standard",
+            ["futurabold"]  = "Futura Bold",
+        }
 
-    -- Iterate through the table matching
-    for k,v in pairs(fonts) do
-        if ( font == k ) then return v
-        elseif ( font == v ) then return k end
-    end
-end
-
---[[ 
- * Retrieve requested font, size, and style
- * --------------------------------
- * Called at control creation
- * --------------------------------
- ]]-- 
-function FTC.UI:Font( font , size , shadow)
-    
-    local font = ( FTC.UI.Fonts[font] ~= nil ) and FTC.UI.Fonts[font] or font
-    local size = size or 14
-    local shadow = shadow and '|soft-shadow-thick' or ''
-
-    -- Return font
-    return font..'|'..size..shadow
-end
-
---[[ 
- * Preload ability icons for all known abilities
- * --------------------------------
- * Called by FTC.UI:Initialize()
- * --------------------------------
- ]]-- 
-function FTC:GetAbilityIcons()
-
-    -- Iterate over categories, lines, and abilities
-    for c = 1 , 8 do
-        for l = 1 , 10 do
-            for a = 1 , 10 do
-
-                -- Get ability info
-                local name , texture , rank , actionSlotType , passive , showInSpellbook = GetSkillAbilityInfo(c,l,a)
-
-                -- If it's valid, load the table
-                if ( name ~= "" ) then FTC.UI.Textures[name] = texture end
-            end
+        -- Iterate through the table matching
+        for k,v in pairs(fonts) do
+            if ( font == k ) then return v
+            elseif ( font == v ) then return k end
         end
     end
 
-    -- Add additional custom icons
-    local custom = {
-
-        -- Status Effects
-        [1339]  = '/esoui/art/icons/ability_dragonknight_004_b.dds',            -- Burning
-        [8041]  = '/esoui/art/icons/death_recap_fire_aoe.dds',                  -- Explosion
-
-        -- Weapon Attacks
-        [4858]  = '/esoui/art/icons/ability_warrior_011.dds',                   -- Bash
-        [60407] = '/esoui/art/icons/ability_warrior_011.dds',                   -- Invigorating Bash
-        [7880]  = '/esoui/art/icons/death_recap_melee_basic.dds',               -- Light Attack
-        [7095]  = '/esoui/art/icons/death_recap_melee_heavy.dds',               -- Heavy Attack
-        [16420] = '/esoui/art/icons/ability_warrior_013.dds',                   -- Heavy Attack (Dual Wield)
- 
-        -- Weapon Enchantments
-        [5187]  = '/esoui/art/icons/death_recap_poison_melee.dds',              -- Poisoned Weapon   
-        [17895] = '/esoui/art/icons/death_recap_fire_melee.dds',                -- Fiery Weapon
-        [17897] = '/esoui/art/icons/death_recap_cold_melee.dds',                -- Frozen Weapon    
-        [17899] = '/esoui/art/icons/death_recap_shock_melee.dds',               -- Charged Weapon
-        [17904] = '/esoui/art/icons/death_recap_disease_melee.dds',             -- Befouled Weapon
-
-        -- Sorcerer
-        [23682] = '/esoui/art/icons/ability_sorcerer_critical_surge.dds',       -- Critical Surge
-
-        -- Racials
-        [36214] = '/esoui/art/icons/ability_dragonknight_028.dds',              -- Star of the West
+    --[[ 
+     * Retrieve requested font, size, and style
+     * --------------------------------
+     * Called at control creation
+     * --------------------------------
+     ]]-- 
+    function FTC.UI:Font( font , size , shadow)
         
+        local font = ( FTC.UI.Fonts[font] ~= nil ) and FTC.UI.Fonts[font] or font
+        local size = size or 14
+        local shadow = shadow and '|soft-shadow-thick' or ''
 
-
-    } 
-    for k,v in pairs(custom) do
-        FTC.UI.Textures[GetAbilityName(k)] = v
+        -- Return font
+        return font..'|'..size..shadow
     end
-end
 
+--[[----------------------------------------------------------
+    ICONS
+  ]]----------------------------------------------------------
 
+    --[[ 
+     * Preload ability icons for all known abilities
+     * --------------------------------
+     * Called by FTC.UI:Initialize()
+     * --------------------------------
+     ]]-- 
+    function FTC:GetAbilityIcons()
+
+        -- Iterate over categories, lines, and abilities
+        for c = 1 , 8 do
+            for l = 1 , 10 do
+                for a = 1 , 10 do
+
+                    -- Get ability info
+                    local name , texture , rank , actionSlotType , passive , showInSpellbook = GetSkillAbilityInfo(c,l,a)
+
+                    -- If it's valid, load the table
+                    if ( name ~= "" ) then FTC.UI.Textures[name] = texture end
+                end
+            end
+        end
+
+        -- Add additional custom icons
+        local custom = {
+
+            -- Status Effects
+            [776]   = '/esoui/art/icons/death_recap_poison_aoe.dds',                -- Poisoned
+            [1339]  = '/esoui/art/icons/ability_dragonknight_004_b.dds',            -- Burning
+            [8041]  = '/esoui/art/icons/death_recap_fire_aoe.dds',                  -- Explosion
+            [58856] = '/esoui/art/icons/death_recap_disease_aoe.dds',               -- Infection
+
+            -- Weapon Attacks
+            [4858]  = '/esoui/art/icons/ability_warrior_011.dds',                   -- Bash
+            [60407] = '/esoui/art/icons/ability_warrior_011.dds',                   -- Invigorating Bash
+            [7880]  = '/esoui/art/icons/death_recap_melee_basic.dds',               -- Light Attack
+            [7095]  = '/esoui/art/icons/death_recap_melee_heavy.dds',               -- Heavy Attack
+            [16420] = '/esoui/art/icons/ability_warrior_013.dds',                   -- Heavy Attack (Dual Wield)
+            [32480] = '/esoui/art/icons/ability_werewolf_002_b.dds',                -- Heavy Attack Werewolf
+     
+            -- Weapon Enchantments
+            [5187]  = '/esoui/art/icons/death_recap_poison_melee.dds',              -- Poisoned Weapon   
+            [17895] = '/esoui/art/icons/death_recap_fire_melee.dds',                -- Fiery Weapon
+            [17897] = '/esoui/art/icons/death_recap_cold_melee.dds',                -- Frozen Weapon    
+            [17899] = '/esoui/art/icons/death_recap_shock_melee.dds',               -- Charged Weapon
+            [17904] = '/esoui/art/icons/death_recap_disease_melee.dds',             -- Befouled Weapon
+
+            -- Sorcerer
+            [23682] = '/esoui/art/icons/ability_sorcerer_critical_surge.dds',       -- Critical Surge
+            [19128] = '/esoui/art/icons/ability_sorcerer_thunder_burst.dds',        -- Mages' Wrath Explosion
+
+            -- Racials
+            [36214] = '/esoui/art/icons/ability_dragonknight_028.dds',              -- Star of the West
+
+            -- Pet Attacks
+            [3757]  = '/esoui/art/icons/ability_sorcerer_unstable_clannfear.dds',   -- Tail Spike
+            [4799]  = '/esoui/art/icons/ability_sorcerer_unstable_clannfear.dds',   -- Tail Spike
+
+        } 
+        for k,v in pairs(custom) do
+            FTC.UI.Textures[GetAbilityName(k)] = v
+        end
+    end
 
 
 
@@ -149,243 +157,243 @@ end
     UI CREATION FUNCTIONS
   ]]----------------------------------------------------------
 
---[[ 
- * Top Level Window
- ]]-- 
-function FTC.UI:TopLevelWindow( name , parent , dims , anchor , hidden )
-    
-    -- Validate arguments
-    if ( name == nil or name == "" ) then return end
-    parent = ( parent == nil ) and GuiRoot or parent
-    if ( #dims ~= 2 ) then return end
-    if ( #anchor ~= 4 and #anchor ~= 5 ) then return end
-    hidden = ( hidden == nil ) and false or hidden
-    
-    -- Create the window
-    local window = _G[name]
-    if ( window == nil ) then window = WINDOW_MANAGER:CreateTopLevelWindow( name ) end
+    --[[ 
+     * Top Level Window
+     ]]-- 
+    function FTC.UI:TopLevelWindow( name , parent , dims , anchor , hidden )
+        
+        -- Validate arguments
+        if ( name == nil or name == "" ) then return end
+        parent = ( parent == nil ) and GuiRoot or parent
+        if ( #dims ~= 2 ) then return end
+        if ( #anchor ~= 4 and #anchor ~= 5 ) then return end
+        hidden = ( hidden == nil ) and false or hidden
+        
+        -- Create the window
+        local window = _G[name]
+        if ( window == nil ) then window = WINDOW_MANAGER:CreateTopLevelWindow( name ) end
 
-    -- Apply properties
-    window = FTC.Chain( window )
-        :SetDimensions( dims[1] , dims[2] )
-        :ClearAnchors()
-        :SetAnchor( anchor[1] , #anchor == 5 and anchor[5] or parent , anchor[2] , anchor[3] , anchor[4] )
-        :SetHidden( hidden )
-    .__END
-    return window
-end
+        -- Apply properties
+        window = FTC.Chain( window )
+            :SetDimensions( dims[1] , dims[2] )
+            :ClearAnchors()
+            :SetAnchor( anchor[1] , #anchor == 5 and anchor[5] or parent , anchor[2] , anchor[3] , anchor[4] )
+            :SetHidden( hidden )
+        .__END
+        return window
+    end
 
---[[ 
- * Control
- ]]-- 
-function FTC.UI:Control( name , parent , dims , anchor , hidden )
-    
-    -- Validate arguments
-    if ( name == nil or name == "" ) then return end
-    parent = ( parent == nil ) and GuiRoot or parent
-    if ( dims == "inherit" or #dims ~= 2 ) then dims = { parent:GetWidth() , parent:GetHeight() } end
-    if ( #anchor ~= 4 and #anchor ~= 5 ) then return end
-    hidden = ( hidden == nil ) and false or hidden
-    
-    -- Create the control
-    local control = _G[name]
-    if ( control == nil ) then control = WINDOW_MANAGER:CreateControl( name , parent , CT_CONTROL ) end
-    
-    -- Apply properties
-    local control = FTC.Chain( control )
-        :SetDimensions( dims[1] , dims[2] )
-        :ClearAnchors()
-        :SetAnchor( anchor[1] , #anchor == 5 and anchor[5] or parent , anchor[2] , anchor[3] , anchor[4] )
-        :SetHidden( hidden )
-    .__END
-    return control
-end
+    --[[ 
+     * Control
+     ]]-- 
+    function FTC.UI:Control( name , parent , dims , anchor , hidden )
+        
+        -- Validate arguments
+        if ( name == nil or name == "" ) then return end
+        parent = ( parent == nil ) and GuiRoot or parent
+        if ( dims == "inherit" or #dims ~= 2 ) then dims = { parent:GetWidth() , parent:GetHeight() } end
+        if ( #anchor ~= 4 and #anchor ~= 5 ) then return end
+        hidden = ( hidden == nil ) and false or hidden
+        
+        -- Create the control
+        local control = _G[name]
+        if ( control == nil ) then control = WINDOW_MANAGER:CreateControl( name , parent , CT_CONTROL ) end
+        
+        -- Apply properties
+        local control = FTC.Chain( control )
+            :SetDimensions( dims[1] , dims[2] )
+            :ClearAnchors()
+            :SetAnchor( anchor[1] , #anchor == 5 and anchor[5] or parent , anchor[2] , anchor[3] , anchor[4] )
+            :SetHidden( hidden )
+        .__END
+        return control
+    end
 
---[[ 
- * Backdrop
- ]]-- 
-function FTC.UI:Backdrop( name , parent , dims , anchor , center , edge , tex , hidden )
-    
-    -- Validate arguments
-    if ( name == nil or name == "" ) then return end
-    parent = ( parent == nil ) and GuiRoot or parent
-    if ( dims == "inherit" or #dims ~= 2 ) then dims = { parent:GetWidth() , parent:GetHeight() } end
-    if ( #anchor ~= 4 and #anchor ~= 5 ) then return end
-    center = ( center ~= nil and #center == 4 ) and center or { 0,0,0,0.4 }
-    edge = ( edge ~= nil and #edge == 4 ) and edge or { 0,0,0,1 }
-    hidden = ( hidden == nil ) and false or hidden
+    --[[ 
+     * Backdrop
+     ]]-- 
+    function FTC.UI:Backdrop( name , parent , dims , anchor , center , edge , tex , hidden )
+        
+        -- Validate arguments
+        if ( name == nil or name == "" ) then return end
+        parent = ( parent == nil ) and GuiRoot or parent
+        if ( dims == "inherit" or #dims ~= 2 ) then dims = { parent:GetWidth() , parent:GetHeight() } end
+        if ( #anchor ~= 4 and #anchor ~= 5 ) then return end
+        center = ( center ~= nil and #center == 4 ) and center or { 0,0,0,0.4 }
+        edge = ( edge ~= nil and #edge == 4 ) and edge or { 0,0,0,1 }
+        hidden = ( hidden == nil ) and false or hidden
 
-    -- Create the backdrop
-    local backdrop = _G[name]
-    if ( backdrop == nil ) then backdrop = WINDOW_MANAGER:CreateControl( name , parent , CT_BACKDROP ) end
-    
-    -- Apply properties
-    local backdrop = FTC.Chain( backdrop )
-        :SetDimensions( dims[1] , dims[2] )
-        :ClearAnchors()
-        :SetAnchor( anchor[1] , #anchor == 5 and anchor[5] or parent , anchor[2] , anchor[3] , anchor[4] )
-        :SetCenterColor( center[1] , center[2] , center[3] , center[4] )
-        :SetEdgeColor( edge[1] , edge[2] , edge[3] , edge[4] )
-        :SetEdgeTexture("",8,2,2)
-        :SetHidden( hidden )
-        :SetCenterTexture( tex )
-    .__END
-    return backdrop
-end
+        -- Create the backdrop
+        local backdrop = _G[name]
+        if ( backdrop == nil ) then backdrop = WINDOW_MANAGER:CreateControl( name , parent , CT_BACKDROP ) end
+        
+        -- Apply properties
+        local backdrop = FTC.Chain( backdrop )
+            :SetDimensions( dims[1] , dims[2] )
+            :ClearAnchors()
+            :SetAnchor( anchor[1] , #anchor == 5 and anchor[5] or parent , anchor[2] , anchor[3] , anchor[4] )
+            :SetCenterColor( center[1] , center[2] , center[3] , center[4] )
+            :SetEdgeColor( edge[1] , edge[2] , edge[3] , edge[4] )
+            :SetEdgeTexture("",8,2,2)
+            :SetHidden( hidden )
+            :SetCenterTexture( tex )
+        .__END
+        return backdrop
+    end
 
---[[ 
- * Label
- ]]-- 
-function FTC.UI:Label( name , parent , dims , anchor , font , color , align , text , hidden )
-    
-    -- Validate arguments
-    if ( name == nil or name == "" ) then return end
-    parent = ( parent == nil ) and GuiRoot or parent
-    if ( dims == "inherit" or #dims ~= 2 ) then dims = { parent:GetWidth() , parent:GetHeight() } end
-    if ( #anchor ~= 4 and #anchor ~= 5 ) then return end
-    font    = ( font == nil ) and "ZoFontGame" or font
-    color   = ( color ~= nil and #color == 4 ) and color or { 1 , 1 , 1 , 1 }
-    align   = ( align ~= nil and #align == 2 ) and align or { 1 , 1 }
-    hidden  = ( hidden == nil ) and false or hidden
-    
-    -- Create the label
-    local label = _G[name]
-    if ( label == nil ) then label = WINDOW_MANAGER:CreateControl( name , parent , CT_LABEL ) end
+    --[[ 
+     * Label
+     ]]-- 
+    function FTC.UI:Label( name , parent , dims , anchor , font , color , align , text , hidden )
+        
+        -- Validate arguments
+        if ( name == nil or name == "" ) then return end
+        parent = ( parent == nil ) and GuiRoot or parent
+        if ( dims == "inherit" or #dims ~= 2 ) then dims = { parent:GetWidth() , parent:GetHeight() } end
+        if ( #anchor ~= 4 and #anchor ~= 5 ) then return end
+        font    = ( font == nil ) and "ZoFontGame" or font
+        color   = ( color ~= nil and #color == 4 ) and color or { 1 , 1 , 1 , 1 }
+        align   = ( align ~= nil and #align == 2 ) and align or { 1 , 1 }
+        hidden  = ( hidden == nil ) and false or hidden
+        
+        -- Create the label
+        local label = _G[name]
+        if ( label == nil ) then label = WINDOW_MANAGER:CreateControl( name , parent , CT_LABEL ) end
 
-    -- Apply properties
-    local label = FTC.Chain( label )
-        :SetDimensions( dims[1] , dims[2] )
-        :ClearAnchors()
-        :SetAnchor( anchor[1] , #anchor == 5 and anchor[5] or parent , anchor[2] , anchor[3] , anchor[4] )
-        :SetFont( font )
-        :SetColor( color[1] , color[2] , color[3] , color[4] )
-        :SetHorizontalAlignment( align[1] )
-        :SetVerticalAlignment( align[2] )
-        :SetText( text )
-        :SetHidden( hidden )
-    .__END
-    return label
-end
+        -- Apply properties
+        local label = FTC.Chain( label )
+            :SetDimensions( dims[1] , dims[2] )
+            :ClearAnchors()
+            :SetAnchor( anchor[1] , #anchor == 5 and anchor[5] or parent , anchor[2] , anchor[3] , anchor[4] )
+            :SetFont( font )
+            :SetColor( color[1] , color[2] , color[3] , color[4] )
+            :SetHorizontalAlignment( align[1] )
+            :SetVerticalAlignment( align[2] )
+            :SetText( text )
+            :SetHidden( hidden )
+        .__END
+        return label
+    end
 
---[[ 
- * Status Bar
- ]]-- 
-function FTC.UI:Statusbar( name , parent , dims , anchor , color , tex , hidden )
-    
-    -- Validate arguments
-    if ( name == nil or name == "" ) then return end
-    parent = ( parent == nil ) and GuiRoot or parent
-    if ( dims == "inherit" or #dims ~= 2 ) then dims = { parent:GetWidth() , parent:GetHeight() } end
-    if ( #anchor ~= 4 and #anchor ~= 5 ) then return end
-    color = ( color ~= nil and #color == 4 ) and color or { 1 , 1 , 1 , 1 }
-    hidden = ( hidden == nil ) and false or hidden
-    
-    -- Create the status bar
-    local bar = _G[name]
-    if ( bar == nil ) then bar = WINDOW_MANAGER:CreateControl( name , parent , CT_STATUSBAR ) end
+    --[[ 
+     * Status Bar
+     ]]-- 
+    function FTC.UI:Statusbar( name , parent , dims , anchor , color , tex , hidden )
+        
+        -- Validate arguments
+        if ( name == nil or name == "" ) then return end
+        parent = ( parent == nil ) and GuiRoot or parent
+        if ( dims == "inherit" or #dims ~= 2 ) then dims = { parent:GetWidth() , parent:GetHeight() } end
+        if ( #anchor ~= 4 and #anchor ~= 5 ) then return end
+        color = ( color ~= nil and #color == 4 ) and color or { 1 , 1 , 1 , 1 }
+        hidden = ( hidden == nil ) and false or hidden
+        
+        -- Create the status bar
+        local bar = _G[name]
+        if ( bar == nil ) then bar = WINDOW_MANAGER:CreateControl( name , parent , CT_STATUSBAR ) end
 
-    -- Apply properties
-    local bar = FTC.Chain( bar )
-        :SetDimensions( dims[1] , dims[2] )
-        :ClearAnchors()
-        :SetAnchor( anchor[1] , #anchor == 5 and anchor[5] or parent , anchor[2] , anchor[3] , anchor[4] )
-        :SetColor( color[1] , color[2] , color[3] , color[4] )
-        :SetHidden( hidden )
-        :SetTexture(tex)
-    .__END
-    return bar
-end
+        -- Apply properties
+        local bar = FTC.Chain( bar )
+            :SetDimensions( dims[1] , dims[2] )
+            :ClearAnchors()
+            :SetAnchor( anchor[1] , #anchor == 5 and anchor[5] or parent , anchor[2] , anchor[3] , anchor[4] )
+            :SetColor( color[1] , color[2] , color[3] , color[4] )
+            :SetHidden( hidden )
+            :SetTexture(tex)
+        .__END
+        return bar
+    end
 
---[[ 
- * Texture
- ]]-- 
-function FTC.UI:Texture( name , parent , dims , anchor , tex , hidden )
-    
-    -- Validate arguments
-    if ( name == nil or name == "" ) then return end
-    parent = ( parent == nil ) and GuiRoot or parent
-    if ( dims == "inherit" or #dims ~= 2 ) then dims = { parent:GetWidth() , parent:GetHeight() } end
-    if ( #anchor ~= 4 and #anchor ~= 5 ) then return end
-    if ( tex == nil ) then tex = '/esoui/art/icons/icon_missing.dds' end
-    hidden = ( hidden == nil ) and false or hidden
-    
-    -- Create the texture
-    local texture = _G[name]
-    if ( texture == nil ) then texture = WINDOW_MANAGER:CreateControl( name , parent , CT_TEXTURE ) end
+    --[[ 
+     * Texture
+     ]]-- 
+    function FTC.UI:Texture( name , parent , dims , anchor , tex , hidden )
+        
+        -- Validate arguments
+        if ( name == nil or name == "" ) then return end
+        parent = ( parent == nil ) and GuiRoot or parent
+        if ( dims == "inherit" or #dims ~= 2 ) then dims = { parent:GetWidth() , parent:GetHeight() } end
+        if ( #anchor ~= 4 and #anchor ~= 5 ) then return end
+        if ( tex == nil ) then tex = '/esoui/art/icons/icon_missing.dds' end
+        hidden = ( hidden == nil ) and false or hidden
+        
+        -- Create the texture
+        local texture = _G[name]
+        if ( texture == nil ) then texture = WINDOW_MANAGER:CreateControl( name , parent , CT_TEXTURE ) end
 
-    -- Apply properties
-    local texture = FTC.Chain( texture )
-        :SetDimensions( dims[1] , dims[2] )
-        :ClearAnchors()
-        :SetAnchor( anchor[1] , #anchor == 5 and anchor[5] or parent , anchor[2] , anchor[3] , anchor[4] )
-        :SetTexture(tex)
-        :SetHidden( hidden )
-    .__END
-    return texture
-end
+        -- Apply properties
+        local texture = FTC.Chain( texture )
+            :SetDimensions( dims[1] , dims[2] )
+            :ClearAnchors()
+            :SetAnchor( anchor[1] , #anchor == 5 and anchor[5] or parent , anchor[2] , anchor[3] , anchor[4] )
+            :SetTexture(tex)
+            :SetHidden( hidden )
+        .__END
+        return texture
+    end
 
---[[ 
- * Cooldown
- ]]-- 
-function FTC.UI:Cooldown( name , parent , dims , anchor , color , hidden )
-    
-    -- Validate arguments
-    if ( name == nil or name == "" ) then return end
-    parent = ( parent == nil ) and GuiRoot or parent
-    if ( dims == "inherit" or #dims ~= 2 ) then dims = { parent:GetWidth() , parent:GetHeight() } end
-    if ( #anchor ~= 4 and #anchor ~= 5 ) then return end
-    color = ( color ~= nil and #color == 4 ) and color or { 1 , 1 , 1 , 1 }
-    hidden = ( hidden == nil ) and false or hidden
-    
-    -- Create the texture
-    local cooldown = _G[name]
-    if ( cooldown == nil ) then cooldown = WINDOW_MANAGER:CreateControl( name , parent , CT_COOLDOWN ) end
+    --[[ 
+     * Cooldown
+     ]]-- 
+    function FTC.UI:Cooldown( name , parent , dims , anchor , color , hidden )
+        
+        -- Validate arguments
+        if ( name == nil or name == "" ) then return end
+        parent = ( parent == nil ) and GuiRoot or parent
+        if ( dims == "inherit" or #dims ~= 2 ) then dims = { parent:GetWidth() , parent:GetHeight() } end
+        if ( #anchor ~= 4 and #anchor ~= 5 ) then return end
+        color = ( color ~= nil and #color == 4 ) and color or { 1 , 1 , 1 , 1 }
+        hidden = ( hidden == nil ) and false or hidden
+        
+        -- Create the texture
+        local cooldown = _G[name]
+        if ( cooldown == nil ) then cooldown = WINDOW_MANAGER:CreateControl( name , parent , CT_COOLDOWN ) end
 
-    -- Apply properties
-    local cooldown = FTC.Chain( cooldown )
-        :SetDimensions( dims[1] , dims[2] )
-        :ClearAnchors()
-        :SetAnchor( anchor[1] , #anchor == 5 and anchor[5] or parent , anchor[2] , anchor[3] , anchor[4] )
-        :SetFillColor( color[1] , color[2] , color[3] , color[4] )
-    .__END
-    return cooldown
-end
+        -- Apply properties
+        local cooldown = FTC.Chain( cooldown )
+            :SetDimensions( dims[1] , dims[2] )
+            :ClearAnchors()
+            :SetAnchor( anchor[1] , #anchor == 5 and anchor[5] or parent , anchor[2] , anchor[3] , anchor[4] )
+            :SetFillColor( color[1] , color[2] , color[3] , color[4] )
+        .__END
+        return cooldown
+    end
 
---[[ 
- * Button
- ]]-- 
-function FTC.UI:Button( name , parent , dims , anchor , state , font , align , normal , pressed , mouseover , hidden )
-    
-    -- Validate arguments
-    if ( name == nil or name == "" ) then return end
-    parent = ( parent == nil ) and GuiRoot or parent
-    if ( dims == "inherit" or #dims ~= 2 ) then dims = { parent:GetWidth() , parent:GetHeight() } end
-    if ( #anchor ~= 4 and #anchor ~= 5 ) then return end
-    state = ( state ~= nil ) and state or BSTATE_NORMAL
-    font = ( font == nil ) and "ZoFontGame" or font
-    align = ( align ~= nil and #align == 2 ) and align or { 1 , 1 }
-    normal = ( normal ~= nil and #normal == 4 ) and normal or { 1 , 1 , 1 , 1 }
-    pressed = ( pressed ~= nil and #pressed == 4 ) and pressed or { 1 , 1 , 1 , 1 }
-    mouseover = ( mouseover ~= nil and #mouseover == 4 ) and mouseover or { 1 , 1 , 1 , 1 }
-    hidden = ( hidden == nil ) and false or hidden
-    
-    -- Create the button
-    local button = _G[name]
-    if ( button == nil ) then button = WINDOW_MANAGER:CreateControl( name , parent , CT_BUTTON ) end
+    --[[ 
+     * Button
+     ]]-- 
+    function FTC.UI:Button( name , parent , dims , anchor , state , font , align , normal , pressed , mouseover , hidden )
+        
+        -- Validate arguments
+        if ( name == nil or name == "" ) then return end
+        parent = ( parent == nil ) and GuiRoot or parent
+        if ( dims == "inherit" or #dims ~= 2 ) then dims = { parent:GetWidth() , parent:GetHeight() } end
+        if ( #anchor ~= 4 and #anchor ~= 5 ) then return end
+        state = ( state ~= nil ) and state or BSTATE_NORMAL
+        font = ( font == nil ) and "ZoFontGame" or font
+        align = ( align ~= nil and #align == 2 ) and align or { 1 , 1 }
+        normal = ( normal ~= nil and #normal == 4 ) and normal or { 1 , 1 , 1 , 1 }
+        pressed = ( pressed ~= nil and #pressed == 4 ) and pressed or { 1 , 1 , 1 , 1 }
+        mouseover = ( mouseover ~= nil and #mouseover == 4 ) and mouseover or { 1 , 1 , 1 , 1 }
+        hidden = ( hidden == nil ) and false or hidden
+        
+        -- Create the button
+        local button = _G[name]
+        if ( button == nil ) then button = WINDOW_MANAGER:CreateControl( name , parent , CT_BUTTON ) end
 
-    -- Apply properties
-    local button = FTC.Chain( button )
-        :SetDimensions( dims[1] , dims[2] )
-        :ClearAnchors()
-        :SetAnchor( anchor[1] , #anchor == 5 and anchor[5] or parent , anchor[2] , anchor[3] , anchor[4] )
-        :SetState( state )
-        :SetFont( font )
-        :SetNormalFontColor( normal[1] , normal[2] , normal[3] , normal[4] )
-        :SetPressedFontColor( pressed[1] , pressed[2] , pressed[3] , pressed[4] )
-        :SetMouseOverFontColor( mouseover[1] , mouseover[2] , mouseover[3] , mouseover[4] )
-        :SetHorizontalAlignment( align[1] )
-        :SetVerticalAlignment( align[2] )
-        :SetHidden( hidden )
-    .__END
-    return button
-end
+        -- Apply properties
+        local button = FTC.Chain( button )
+            :SetDimensions( dims[1] , dims[2] )
+            :ClearAnchors()
+            :SetAnchor( anchor[1] , #anchor == 5 and anchor[5] or parent , anchor[2] , anchor[3] , anchor[4] )
+            :SetState( state )
+            :SetFont( font )
+            :SetNormalFontColor( normal[1] , normal[2] , normal[3] , normal[4] )
+            :SetPressedFontColor( pressed[1] , pressed[2] , pressed[3] , pressed[4] )
+            :SetMouseOverFontColor( mouseover[1] , mouseover[2] , mouseover[3] , mouseover[4] )
+            :SetHorizontalAlignment( align[1] )
+            :SetVerticalAlignment( align[2] )
+            :SetHidden( hidden )
+        .__END
+        return button
+    end

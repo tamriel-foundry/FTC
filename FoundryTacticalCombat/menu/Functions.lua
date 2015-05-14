@@ -262,7 +262,7 @@
      * Called by FTC.Menu:Controls()
      * --------------------------------
      ]]--
-    function FTC.Menu:UpdateBuffs(setting,value,...)
+    function FTC.Menu:UpdateBuffs(setting,value)
 
         -- Maybe apply a new setting
         if ( setting ~= nil and value ~= nil ) then
@@ -275,13 +275,13 @@
         -- Change fonts for active buffs
         for _ , buff in pairs(FTC.Buffs.Pool.m_Active) do 
             buff.label = FTC.UI:Label( "FTC_Buff"..buff.id.."_Label", buff, {50,20},  {BOTTOM,BOTTOM,-1,-4}, FTC.UI:Font(FTC.Vars.BuffsFont1,FTC.Vars.BuffsFontSize,true) , {0.8,1,1,1}, {1,1}, nil, false )
-            buff.name  = FTC.UI:Label( "FTC_Buff"..buff.id.."_Name",  buff, {450,20}, {LEFT,RIGHT,10,0},     FTC.UI:Font(FTC.Vars.BuffsFont2,FTC.Vars.BuffsFontSize,true) , {1,1,1,1}, {0,1}, "Buff Name", false )
+            buff.name  = FTC.UI:Label( "FTC_Buff"..buff.id.."_Name",  buff, {450,20}, {LEFT,RIGHT,10,0},     FTC.UI:Font(FTC.Vars.BuffsFont2,FTC.Vars.BuffsFontSize,true) , {1,1,1,1}, {0,1}, "Buff Name", true )
         end
 
         -- Change fonts for free buffs
         for _ , buff in pairs(FTC.Buffs.Pool.m_Free) do 
             buff.label = FTC.UI:Label( "FTC_Buff"..buff.id.."_Label", buff, {50,20},  {BOTTOM,BOTTOM,-1,-4}, FTC.UI:Font(FTC.Vars.BuffsFont1,FTC.Vars.BuffsFontSize,true) , {0.8,1,1,1}, {1,1}, nil, false )
-            buff.name  = FTC.UI:Label( "FTC_Buff"..buff.id.."_Name",  buff, {450,20}, {LEFT,RIGHT,10,0},     FTC.UI:Font(FTC.Vars.BuffsFont2,FTC.Vars.BuffsFontSize,true) , {1,1,1,1}, {0,1}, "Buff Name", false )
+            buff.name  = FTC.UI:Label( "FTC_Buff"..buff.id.."_Name",  buff, {450,20}, {LEFT,RIGHT,10,0},     FTC.UI:Font(FTC.Vars.BuffsFont2,FTC.Vars.BuffsFontSize,true) , {1,1,1,1}, {0,1}, "Buff Name", true )
         end
 
         -- Position the frame for menu display

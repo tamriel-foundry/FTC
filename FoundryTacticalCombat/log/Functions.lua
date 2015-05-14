@@ -66,6 +66,7 @@ function FTC.Log:SetupChat()
 	else
 		ZO_PreHook(CHAT_SYSTEM, "Minimize", function() return end )
 		ZO_PreHook(CHAT_SYSTEM, "Maximize", function() return end )
+    	FCL:SetHidden(false)
 	end
 end
 
@@ -143,7 +144,10 @@ function FTC.Log:CombatEvent( damage )
 		target 			= ( damage.out and ( target == FTC.Player.name ) ) and " yourself" or " " .. target
 
 		-- Determine the ability used
-		local ability	= ( damage.out ) and zo_strformat(" with <<!aC:1>>",damage.ability) or ""
+		local ability	= ""
+		if ( damage.ability ~= "" ) then
+			ability = ( damage.out ) and zo_strformat(" with <<!aC:1>>",damage.ability) or zo_strformat(" by <<!aC:1>>",damage.ability)
+		end
 
 		-- Determine the damage done
 		local dtype		= damage.heal and " health" or " damage"

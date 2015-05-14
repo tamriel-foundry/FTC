@@ -54,6 +54,7 @@ end
             ["heal"]    = ( result == ACTION_RESULT_HEAL or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_HOT_TICK or result == ACTION_RESULT_HOT_TICK_CRITICAL ) and true or false,
             ["icon"]    = icon,
             ["mult"]    = 1, 
+            ["weapon"]  = FTC.Damage:IsWeaponAttack(abilityName),
         }
 
         -- ACTION_RESULT_DODGED
@@ -142,5 +143,29 @@ end
         end
     end
 
+    --[[ 
+     * Track Whether a Damage Source is a Weapon ATtack
+     * --------------------------------
+     * Called by FTC.Damage:New()
+     * --------------------------------
+     ]]--
+    function FTC.Damage:IsWeaponAttack( abilityName )
+
+        local attacks = {
+            4858,      -- Bash
+            7880,      -- Light Attack
+            7095,      -- Heavy Attack
+            16420,     -- Heavy Attack (Dual Wield)
+            16691,     -- Heavy Attack (Bow)
+            32480,     -- Heavy Attack Werewolf
+        }
+
+        -- Compare each shield ability with the current buffs for purging
+        for i = 1 , #attacks do
+            local name = GetAbilityName(attacks[i])
+            if ( abilityName == name ) then return true end 
+        end
+
+    end
 
 

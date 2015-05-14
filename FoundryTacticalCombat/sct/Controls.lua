@@ -23,7 +23,7 @@
 		local CTI 		= FTC.UI:Control(   "FTC_SCTIn",           FTC_UI,     {400,900},             	FTC.Vars.FTC_SCTIn,       	false )  
 	    CTI.backdrop 	= FTC.UI:Backdrop(  "FTC_SCTIn_BG",        CTI,     	"inherit",              {CENTER,CENTER,0,0},      	{0,0,0,0.4}, {0,0,0,1}, nil, true )
 	    CTI.backdrop:SetEdgeTexture("",16,4,4)
-	    CTI.label       = FTC.UI:Label(     "FTC_SCTIn_Label",     CTI,        "inherit",              {CENTER,CENTER,0,0},       	FTC.UI:Font("trajan",24,true) , nil , {1,1} , "Incoming Damage" , true )   
+	    CTI.label       = FTC.UI:Label(     "FTC_SCTIn_Label",     CTI,        "inherit",               {CENTER,CENTER,0,0},       	FTC.UI:Font("trajan",24,true) , nil , {1,1} , "Incoming Damage" , true )   
 	    CTI:SetDrawLayer(DL_BACKGROUND)
 	    CTI:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end)
 
@@ -58,17 +58,17 @@
 	function FTC.SCT:Fade(control)
 
 	    -- Compute the animation duration
-	    local duration = ( ( 11 - FTC.Vars.SCTSpeed ) / 2 ) * 1000
+	    local duration = ( ( 11 - FTC.Vars.SCTSpeed ) / 2 ) * 0.8 * 1000
 
 	    -- Start with a fade in
 		local animation, timeline = CreateSimpleAnimation(ANIMATION_ALPHA,control,0)
         animation:SetAlphaValues(0,1)
         animation:SetEasingFunction(ZO_EaseInQuadratic)  
-        animation:SetDuration(1000)
+        animation:SetDuration(250)
         control.fadeIn = timeline
 
         -- End with fade out, delayed by the SCT lifespan
-        local fadeOut = timeline:InsertAnimation(ANIMATION_ALPHA,control,duration-1000)
+        local fadeOut = timeline:InsertAnimation(ANIMATION_ALPHA,control,duration-1250)
         fadeOut:SetAlphaValues(1,0)
         fadeOut:SetEasingFunction(ZO_EaseInQuadratic)
         fadeOut:SetDuration(1000)
@@ -96,9 +96,9 @@
 
 	    -- Create buff
 	    local control  	= FTC.UI:Control(  "FTC_SCTOut"..counter,            FTC_UI,  	{400,50},  	{CENTER,CENTER,0,0}, 				false )
-	    control.value 	= FTC.UI:Label(    "FTC_SCTOut"..counter.."_Value",  control,  	{90,50},  	{LEFT,LEFT,60,0},  					FTC.UI:Font("esobold",FTC.Vars.SCTFontSize+2,true) , {1,1,1,1}, {0,1}, "Value", false )
-	    control.name   	= FTC.UI:Label(    "FTC_SCTOut"..counter.."_Name",   control,  	{250,50},  	{LEFT,RIGHT,10,0,control.value}, 	FTC.UI:Font("esobold",FTC.Vars.SCTFontSize,true) , {1,1,1,1}, {0,1}, "Name", false )
-	    control.bg   	= FTC.UI:Backdrop( "FTC_SCTOut"..counter.."_BG",     control,   {48,48},  	{LEFT,LEFT,0,0},  					{0,0,0,0.8}, {0,0,0,0.8}, nil, false )
+	    control.value 	= FTC.UI:Label(    "FTC_SCTOut"..counter.."_Value",  control,  	{90,50},  	{LEFT,LEFT,60,0},  					nil , {1,1,1,1}, {0,1}, "Value", false )
+	    control.name   	= FTC.UI:Label(    "FTC_SCTOut"..counter.."_Name",   control,  	{250,50},  	{LEFT,RIGHT,10,0,control.value}, 	nil , {1,1,1,1}, {0,1}, "Name", false )
+	    control.bg   	= FTC.UI:Backdrop( "FTC_SCTOut"..counter.."_BG",     control,   {48,48},  	{LEFT,LEFT,0,0},  					{0,0,0,0.6}, {0,0,0,0.6}, nil, false )
 	    control.icon    = FTC.UI:Texture(  "FTC_SCTOut"..counter.."_Icon",   control,   {40,40},  	{CENTER,CENTER,0,0,control.bg},		'/esoui/art/icons/icon_missing.dds', false )
 	    control.frame   = FTC.UI:Texture(  "FTC_SCTOut"..counter.."_Frame",  control,   {44,44},    {CENTER,CENTER,0,0,control.icon}, 	'/esoui/art/actionbar/icon_metal04.dds', false )
 	   
@@ -125,8 +125,8 @@
 
 	    -- Create buff
 	    local control  	= FTC.UI:Control(  "FTC_SCTIn"..counter,            FTC_UI,  	{400,50},  	{CENTER,CENTER,0,0}, 				false )
-	    control.value 	= FTC.UI:Label(    "FTC_SCTIn"..counter.."_Value",  control,  	{90,50},  	{RIGHT,RIGHT,-60,0},  				FTC.UI:Font("esobold",FTC.Vars.SCTFontSize+2,true) , {1,1,1,1}, {0,2}, "Value", false )
-	    control.name   	= FTC.UI:Label(    "FTC_SCTIn"..counter.."_Name",   control,  	{250,50},  	{RIGHT,LEFT,-10,0,control.value}, 	FTC.UI:Font("esobold",FTC.Vars.SCTFontSize,true) , {1,1,1,1}, {0,2}, "Name", false )
+	    control.value 	= FTC.UI:Label(    "FTC_SCTIn"..counter.."_Value",  control,  	{90,50},  	{RIGHT,RIGHT,-60,0},  				FTC.UI:Font("antique",FTC.Vars.SCTFontSize+2,true) , {1,1,1,1}, {0,2}, "Value", false )
+	    control.name   	= FTC.UI:Label(    "FTC_SCTIn"..counter.."_Name",   control,  	{250,50},  	{RIGHT,LEFT,-10,0,control.value}, 	FTC.UI:Font("antique",FTC.Vars.SCTFontSize,true) , {1,1,1,1}, {0,2}, "Name", false )
 	    control.bg   	= FTC.UI:Backdrop( "FTC_SCTIn"..counter.."_BG",     control,   	{48,48},  	{RIGHT,RIGHT,0,0},  				{0,0,0,0.8}, {0,0,0,0.8}, nil, false )
 	    control.icon    = FTC.UI:Texture(  "FTC_SCTIn"..counter.."_Icon",   control,   	{40,40},  	{CENTER,CENTER,0,0,control.bg},		'/esoui/art/icons/icon_missing.dds', false )
 	    control.frame   = FTC.UI:Texture(  "FTC_SCTIn"..counter.."_Frame",  control,   	{44,44},    {CENTER,CENTER,0,0,control.icon}, 	'/esoui/art/actionbar/icon_metal04.dds', false )

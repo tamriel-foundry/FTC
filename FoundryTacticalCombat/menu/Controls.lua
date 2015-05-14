@@ -432,15 +432,27 @@ function FTC.Menu:Controls()
     --[[----------------------------------------------------------
         SCROLLING COMBAT TEXT
       ]]----------------------------------------------------------
-    local Extras = {
+    local SCT = {
 
         -- SCT Header
         { 
             type        = "header", 
-            name        = FTC.L("Scrolling Combat Text Settings"), 
+            name        = GetString(FTC_Menu_SHeader),
             width       = "full", 
         },
+
+        -- Display Ability Names?
+        { 
+            type        = "checkbox", 
+            name        = GetString(FTC_Menu_SNames),
+            tooltip     = GetString(FTC_Menu_SNamesDesc),
+            getFunc     = function() return FTC.Vars.SCTNames end, 
+            setFunc     = function() FTC.Menu:Toggle( 'SCTNames' ) end, 
+            default     = FTC.Defaults.SCTNames,
+        },
+
         
+        --[[
         -- SCT Scroll Speed?
         { 
             type        = "slider",
@@ -454,16 +466,6 @@ function FTC.Menu:Controls()
             default     = FTC.Defaults.SCTSpeed,
         },
         
-        -- Display Ability Names?
-        { 
-            type        = "checkbox", 
-            name        = FTC.L("Display Ability Names"), 
-            tooltip     = FTC.L("Display ability names in combat text?"), 
-            getFunc     = function() return FTC.Vars.SCTNames end, 
-            setFunc     = function() FTC.Menu:Toggle( 'SCTNames' , true ) end, 
-            warning     = FTC.L("Reloads UI"), 
-            default     = FTC.Defaults.SCTNames,
-        },
 
         -- Select Scroll Animation?
         { 
@@ -475,14 +477,16 @@ function FTC.Menu:Controls()
             setFunc     = function( value ) FTC.Menu:Update( "SCTPath" , value ) end,
             default     = FTC.Defaults.SCTPath, 
         },
+        ]]
     }
     if FTC.Vars.EnableSCT then
-        for i = 1 , #Extras do table.insert( FTC.Menu.options , Extras[i] ) end
+        for i = 1 , #SCT do table.insert( FTC.Menu.options , SCT[i] ) end
     end
 
     --[[----------------------------------------------------------
         DAMAGE METER
       ]]----------------------------------------------------------
+    --[[
     local Extras = {
         
         -- Damage Tracker Header
@@ -508,10 +512,12 @@ function FTC.Menu:Controls()
     if FTC.Vars.EnableDamage then
         for i = 1 , #Extras do table.insert( FTC.Menu.options , Extras[i] ) end
     end
+    ]]
 
     --[[----------------------------------------------------------
         REPOSITION ELEMENTS
       ]]----------------------------------------------------------
+    --[[
     local Core = {
         
         -- Reposition Header
@@ -545,5 +551,6 @@ function FTC.Menu:Controls()
         }, 
     }
     for i = 1 , #Core do table.insert( FTC.Menu.options , Core[i] ) end
+    ]]
 
 end
