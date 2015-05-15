@@ -34,3 +34,23 @@ DONE		Log				Process all damage events into log
 			Statistics		more reported statistics, better insight into per/mob
 
 DONE 	Default Frames	deprecate default frame text
+
+
+
+
+		Additional Buff/Effect Tracking
+			Burning/Explosion
+			Poisoned
+			Diseased
+			Crystal Frags
+			Might of the Guild
+			Mountain's Blessing
+			Exploitation
+			Shadow Barrier
+			Illuminate
+			Stealthed
+			Search Damage for DoT ticks
+			
+
+
+

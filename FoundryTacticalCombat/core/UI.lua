@@ -125,7 +125,10 @@ FTC.UI.Textures     = {
             [7880]  = '/esoui/art/icons/death_recap_melee_basic.dds',               -- Light Attack
             [7095]  = '/esoui/art/icons/death_recap_melee_heavy.dds',               -- Heavy Attack
             [16420] = '/esoui/art/icons/ability_warrior_013.dds',                   -- Heavy Attack (Dual Wield)
-            [32480] = '/esoui/art/icons/ability_werewolf_002_b.dds',                -- Heavy Attack Werewolf
+
+            -- Weapon Abilities
+            --[] = '/esoui/art/icons/ability_dualwield_001.dds',                    -- Twin Slashes Bleed
+            --[] = '/esoui/art/icons/ability_dualwield_001.dds',                    -- Rending Slashes Bleed
      
             -- Weapon Enchantments
             [5187]  = '/esoui/art/icons/death_recap_poison_melee.dds',              -- Poisoned Weapon   
@@ -133,17 +136,113 @@ FTC.UI.Textures     = {
             [17897] = '/esoui/art/icons/death_recap_cold_melee.dds',                -- Frozen Weapon    
             [17899] = '/esoui/art/icons/death_recap_shock_melee.dds',               -- Charged Weapon
             [17904] = '/esoui/art/icons/death_recap_disease_melee.dds',             -- Befouled Weapon
+            --[] = '/esoui/art/icons/death_recap_cold_ranged.dds',                  -- Frozen Weapon and Hardening
+            --[] = '/esoui/art/icons/death_recap_magic_melee.dds',                  -- Absorb Magicka
+            --[] = '/esoui/art/icons/death_recap_magic_melee.dds',                  -- Absorb Stamina
+            --[] = '/esoui/art/icons/ability_mage_002.dds',                         -- Damage Health
+            --[] = '/esoui/art/icons/ability_healer_031.dds',                       -- Life Drain
 
             -- Sorcerer
             [23682] = '/esoui/art/icons/ability_sorcerer_critical_surge.dds',       -- Critical Surge
+            --[] = '/esoui/art/icons/ability_sorcerer_thunder_burst.dds',           -- Mages' Fury Explosion
             [19128] = '/esoui/art/icons/ability_sorcerer_thunder_burst.dds',        -- Mages' Wrath Explosion
+            --[] = '/esoui/art/icons/ability_sorcerer_thunder_burst.dds',           -- Endless Fury Explosion
+            --[] = '/esoui/art/icons/ability_sorcerer_016.dds',                     -- Overload Light Attack
+            --[] = '/esoui/art/icons/ability_sorcerer_016.dds',                     -- Overload Heavy Attack
+            --[] = '/esoui/art/icons/ability_sorcerer_dark_exchange.dds',           -- Dark Exchange Heal
 
             -- Racials
             [36214] = '/esoui/art/icons/ability_dragonknight_028.dds',              -- Star of the West
 
+            -- Werewolf and Vampire
+            [32480] = '/esoui/art/icons/ability_werewolf_002_b.dds',                -- Heavy Attack Werewolf
+            --[]      = '/esoui/art/icons/ability_vampire_002.dds',                 -- Feed
+
+            -- Synergies 
+            --[[
+            [] = '/esoui/art/icons/ability_mage_029.dds',                           -- Conduit
+            [] = '/esoui/art/icons/ability_rogue_052.dds',                          -- Slip Away
+            [] = '/esoui/art/icons/gear_nord_staff_d.dds',                          -- Blessed Shards
+            [] = '/esoui/art/icons/gear_nord_staff_d.dds',                          -- Luminous Shards
+            [] = '/esoui/art/icons/ability_mage_001.dds',                           -- Impale
+            [] = '/esoui/art/icons/ability_warrior_010.dds',                        -- Radiate
+            [] = '/esoui/art/icons/ability_mage_023.dds',                           -- Shackle
+
+            [] = '/esoui/art/icons/ability_healer_013.dds',                         -- Supernova
+            [] = '/esoui/art/icons/ability_healer_013.dds',                         -- Gravity Crush
+            [] = '/esoui/art/icons/ability_healer_028.dds',                         -- Purify
+            [] = '/esoui/art/icons/ability_mage_057.dds',                           -- Combustion
+            ]]--
+
             -- Pet Attacks
-            [3757]  = '/esoui/art/icons/ability_sorcerer_unstable_clannfear.dds',   -- Tail Spike
+            [3757]  = '/esoui/art/icons/ability_sorcerer_unstable_clannfear.dds',   -- Claw
             [4799]  = '/esoui/art/icons/ability_sorcerer_unstable_clannfear.dds',   -- Tail Spike
+                                                                                    -- Zap
+                                                                                    -- Kick
+                                                                                    -- Familiar Melee
+            --[] = '/esoui/art/icons/ability_sorcerer_storm_atronach.dds',          -- Atronach
+            --[] = '/esoui/art/icons/ability_sorcerer_storm_atronach.dds',          -- Atronach Zap
+
+            -- AvA Damage
+            --[[
+            [] = '/esoui/art/icons/ability_dragonknight_002_a.dds',                 -- Fire
+            [] = '/esoui/art/icons/ability_dragonknight_002_a.dds',                 -- Flaming Oil
+            [] = '/esoui/art/icons/ava_siege_ammo_002.dds',                         -- Ice Damage
+            [] = '/esoui/art/icons/ava_siege_ammo_003.dds',                         -- Meatbag Catapult
+            [] = '/esoui/art/icons/ava_siege_ammo_004.dds',                         -- Stone Trebuchet
+            [] = '/esoui/art/icons/ava_siege_ammo_006.dds',                         -- Ballista Bolt
+            [] = '/esoui/art/icons/ability_templar_031.dds',                        -- Oil Pot
+            [] = '/esoui/art/icons/crafting_forester_weapon_component_005.dds',     -- Door Repair Kit
+            [] = '/esoui/art/icons/crafting_heavy_armor_sp_names_001.dds',          -- Wall Repair Kit
+            --]]
+
+            -- Item Procs
+            --[[
+            [] = '/esoui/art/icons/quest_dungeons_razaks_opus.dds',              -- Dwemer Automation Restore HP
+            [] = '/esoui/art/icons/death_recap_magic_aoe.dds',                   -- Lich Crystal
+            --]]
+
+
+
+            -- Unassigned
+            --[[
+            ['Alliance Points']                 = '/EsoUI/Art/currency/alliancePoints.dds',
+            ['Fall Damage']                     = '/esoui/art/icons/death_recap_fall_damage.dds',
+
+           
+            [L.Effect_Diseased]                 = '/esoui/art/icons/death_recap_disease_aoe.dds',
+            [L.Effect_Bleeding]                 = '/esoui/art/icons/crafting_leather_blood.dds',
+            ["Restore_Health"]                  = '/esoui/art/icons/consumable_potion_001_type_005.dds', -- EN
+            ["Health Potion Lingering Effect"]  = '/esoui/art/icons/consumable_potion_001_type_005.dds', -- EN,?
+         
+            -- Lightning staff specials
+            ['Shock Pulse']                     = '/esoui/art/icons/death_recap_shock_ranged.dds', -- EN
+            ['Shock']                           = '/esoui/art/icons/death_recap_shock_aoe.dds', -- EN
+
+            -- destruction staff skills, that depend on staff type
+            ['Frost Touch']                     = '/esoui/art/icons/ability_destructionstaff_005.dds', -- EN
+            ['Shock Touch']                     = '/esoui/art/icons/ability_destructionstaff_006.dds', -- EN
+            ['Fire Touch']                      = '/esoui/art/icons/ability_destructionstaff_007.dds', -- EN
+            ['Frost Ring']                      = '/esoui/art/icons/ability_destructionstaff_008.dds', -- EN
+            ['Shock Ring']                      = '/esoui/art/icons/ability_destructionstaff_009.dds', -- EN
+            ['Fire Ring']                       = '/esoui/art/icons/ability_destructionstaff_010.dds', -- EN,FR
+            -- DRAGONKNIGHT
+            -- Flame Lash
+            [L.Effect_Flame_Lash_Heal]          = '/esoui/art/icons/ability_dragonknight_001_a.dds',
+            -- Light and Heavy Attack icons
+        
+
+            -- some reflected skills
+            ['Quick Shot']                      = '/esoui/art/icons/death_recap_ranged_basic.dds', -- EN
+            ['Coiled Lash']                     = '/esoui/art/icons/death_recap_ranged_basic.dds', -- EN
+            ['Throw Dagger']                    = '/esoui/art/icons/ability_rogue_026.dds', -- EN
+            ['Flare']                           = '/esoui/art/icons/death_recap_fire_ranged.dds', -- EN
+            ['Ice Arrow']                       = '/esoui/art/icons/death_recap_cold_ranged.dds', -- EN
+            ['Entropic Flare']                  = '/esoui/art/icons/death_recap_magic_ranged.dds', -- EN
+            ['Necrotic Spear']                  = '/esoui/art/icons/death_recap_magic_ranged.dds', -- EN
+            ['Chasten']                         = '/esoui/art/icons/death_recap_magic_ranged.dds', -- EN
+            ['Minor Wound']                     = '/esoui/art/icons/death_recap_magic_ranged.dds', -- EN
+            ]]--
 
         } 
         for k,v in pairs(custom) do
