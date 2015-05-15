@@ -15,7 +15,7 @@ function FTC.Buffs:RegisterEffects()
         -----------------------------------]]
         
         -- Sword and Shield
-        [3493]  = { 0, 15, 0 },             -- Puncture
+        [3493]  = { 0, 15, 0 },         -- Puncture
         [38256] = { 0, 15, 0 },         -- Ransack
         [38250] = { 0, 15, 0 },         -- Pierce Armor
         [28304] = { 0, 9, 0 },          -- Low Slash
@@ -111,9 +111,9 @@ function FTC.Buffs:RegisterEffects()
         [23277] = { 5, 2, 0 },          -- Ball of Lightning
 
         -- Dark Magic
-        [43714] = { 0, 2.4, 1.3 },      -- Crystal Shard
-        [46324] = { 0, 2.4, 1.3 },      -- Crystal Fragments
-        [46331] = { 0, 2.4, 1.3 },      -- Crystal Blast
+        [43714] = { 0, 2.4, 1 },        -- Crystal Shard
+        [46324] = { 0, 2.4, 1 },        -- Crystal Fragments
+        [46331] = { 0, 2.4, 1 },        -- Crystal Blast
         [4737]  = { 0, 5.4, 0 },        -- Encase
         [28311] = { 0, 10.2, 0 },       -- Restraining Prison
         [28308] = { 0, 5.4, 0 },        -- Shattering Prison

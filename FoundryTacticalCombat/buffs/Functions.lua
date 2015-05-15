@@ -253,7 +253,7 @@ function FTC.Buffs:NewEffect( ability )
 
     -- Get ability info
     local effects   = ability.effects
-    local castTime  = ( ability.cast ~= nil ) and ( ability.cast or 0 ) or ( effects[3] or 0 ) * 1000
+    local castTime  = ( effects ~= nil ) and ( ability.cast + (effects[3]*1000) ) or ability.cast
 
     -- Setup buff object
     local buffTemplate = {
@@ -424,11 +424,11 @@ function FTC.Buffs:Update( unitTag )
         if ( isCapped ) then break end
     
         -- Gether data
+        local render    = true
         local name      = buffs[i].name
         local isLong    = ( context == "Player" and buffs[i].toggle ~= nil )
         local label     = buffs[i].toggle or ""
         local control   = buffs[i].control
-        local render    = true
         local duration  = zo_roundToNearest( buffs[i].ends - gameTime , 0.1 )
         
         -- Skip abilities which have not begun yet
@@ -438,9 +438,11 @@ function FTC.Buffs:Update( unitTag )
         if ( duration <= 0 and buffs[i].toggle == nil ) then
             FTC.Buffs[context][name] = nil 
             FTC.Buffs.Pool:ReleaseObject(control.id)
+            render = false
 
         -- Handle single-target buffs belonging to others
         elseif ( buffs[i].owner ~= GetUnitName(unitTag) and not buffs[i].area ) then
+            render = false
         
             -- Purge non-timed abilities
             if ( buffs[i].toggle ~= nil ) then
@@ -451,23 +453,19 @@ function FTC.Buffs:Update( unitTag )
             else control:SetHidden(true) end
 
         -- Otherwise process away!
-        else
+        elseif ( render ) then
             if ( duration > 0 ) then 
 
                 -- Flag long buffs
                 isLong = ( context == "Player" and duration >= 60 ) and true or isLong
                     
-                -- Duration in hours
+                -- Format displayed duration
                 if ( duration > 3600 ) then
                     local hours     = math.floor( duration / 3600 )
                     label           = string.format( "%dh" , hours )
-                
-                -- Duration in minutes
                 elseif ( duration > 60 ) then   
                     local minutes   = math.floor( duration / 60 )
                     label           = string.format( "%dm" , minutes )
-                
-                -- Duration in seconds
                 else label = string.format( "%.1f" , duration ) end
             end
 
