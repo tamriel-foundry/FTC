@@ -5,21 +5,26 @@
 
     FTC.SCT = {}
     FTC.SCT.Defaults = {
-        ["SCTCount"]                = 20,
-        ["SCTSpeed"]                = 3,
+
+        -- Display Options
+        ["SCTIcons"]                = true,
         ["SCTNames"]                = true,
+        ["SCTSpeed"]                = 6,
+        ["SCTArc"]                  = 6,
 
+        -- Fonts
+        ["SCTFont1"]                = 'esobold',
+        ["SCTFont2"]                = 'esobold',
+        ["SCTFontSize"]             = 24,
 
-
-        --["SCTPath"]                 = 'Arc',
-
+        -- Anchors
         ["FTC_SCTOut"]              = {RIGHT,CENTER,-300,-50},
         ["FTC_SCTIn"]               = {LEFT,CENTER,300,-50},
 
         
         --["FTC_SCTStatus"]         = {TOP,FTC_UI,TOP,0,80},
 
-        ["SCTFontSize"]             = 20,
+
     }
     FTC:JoinTables(FTC.Defaults,FTC.SCT.Defaults)
 
@@ -63,12 +68,12 @@
  ]]-----------------------------------------------------------
 
     --[[ 
-     * Process new SCT events
+     * Process new SCT damage events
      * --------------------------------
      * Called by FTC.Damage:New()
      * --------------------------------
      ]]--
-    function FTC.SCT:New( damage )
+    function FTC.SCT:Damage( damage )
 
         -- Bail if nothing was passed
         if ( damage == nil ) then return end
@@ -82,9 +87,9 @@
         if ( #FTC.SCT[context] ~= 0 ) then
             for i = 1, #FTC.SCT[context] do
 
-                -- Identical damage must have the same name, heal status, crit status, and approximate timestamp
+                -- Identical damage must have the same result, name, heal status, crit status, and approximate timestamp
                 local dam = FTC.SCT[context][i]
-                if ( ( damage.ability == dam.ability ) and ( dam.heal == damage.heal ) and ( dam.crit == damage.crit ) and ( math.abs( dam.ms - damage.ms ) <= 500 ) ) then
+                if ( ( damage.result == dam.result ) and ( damage.ability == dam.ability ) and ( dam.heal == damage.heal ) and ( dam.crit == damage.crit ) and ( math.abs( dam.ms - damage.ms ) <= 500 ) ) then
 
                     -- Add the multiplier
                     local mult = FTC.SCT[context][i].mult + 1
@@ -127,25 +132,50 @@
             local name  = zo_strformat("<<!aC:1>>",damage.ability)
 
             -- Determine color
-            local color = {206/255,027/255,020/255} 
+            local color = {206/255,027/255,020/255}
             if ( damage.heal ) then color = {080/255,160/255,065/255}
             elseif ( damage.weapon ) then color = {0.9,0.9,0.9}
             elseif ( damage.out and damage.type ~= DAMAGE_TYPE_PHYSICAL and damage.type ~= DAMAGE_TYPE_GENERIC and damage.type ~= DAMAGE_TYPE_NONE ) then color = {0.2,0.4,0.6}
             elseif ( damage.out ) then color = {0.7,0.5,0.2} end
 
+            -- Override shield absorbs
+            if ( damage.result == ACTION_RESULT_DAMAGE_SHIELDED ) then 
+                name    = zo_strformat("<<!aC:1>>",GetAbilityName(30869))
+                color   = {0.4,0,0.6}
+                damage.icon = FTC.UI.Textures[GetAbilityName(30869)]
+
+            -- Override blocks
+            elseif ( damage.result == ACTION_RESULT_BLOCKED_DAMAGE ) then
+                name    = zo_strformat("<<!aC:1>>",GetAbilityName(2890))
+                color   = {0.6,0.1,0}
+                damage.icon = FTC.UI.Textures[GetAbilityName(2890)]
+
+            -- Override misses and dodges
+            elseif ( damage.result == ACTION_RESULT_DODGED or damage.result == ACTION_RESULT_MISS ) then
+                name    = zo_strformat("<<!aC:1>>",GetAbilityName(30934))
+                color   = {0.2,0.2,0.8}
+                damage.icon = FTC.UI.Textures[GetAbilityName(30934)]
+            end
+
             -- Assign data to the control
             control.value:SetText(value)
-            control.value:SetFont(FTC.UI:Font("esobold",size+8,true))
+            control.value:SetFont(FTC.UI:Font(FTC.Vars.SCTFont1,size+8,true))
             control.value:SetColor(unpack(color))
 
             -- Maybe display names
             if ( FTC.Vars.SCTNames ) then 
                 control.name:SetText(name)
-                control.name:SetFont(FTC.UI:Font("esobold",size,true))
+                control.name:SetFont(FTC.UI:Font(FTC.Vars.SCTFont2,size,true))
                 control.name:SetColor(unpack(color))
             else control.name:SetText("") end
 
+            -- Maybe display icons
             control.icon:SetTexture(damage.icon)
+            control.bg:SetHidden(not FTC.Vars.SCTIcons)
+            control.icon:SetHidden(not FTC.Vars.SCTIcons)
+            control.frame:SetHidden(not FTC.Vars.SCTIcons)
+
+            -- Display the control, but start faded
             control:SetHidden(false)
             control:SetAlpha(0)
 
@@ -157,7 +187,6 @@
             FTC.SCT:Fade(control)
         end
     end
-
 
 --[[----------------------------------------------------------
     UPDATING FUNCTIONS
@@ -188,9 +217,9 @@
             local damage    = Damages[i]
             local control   = damage.control
 
-            -- Compute the animation duration ( speed = 10 -> 0.5 second, speed = 1 -> 5 seconds )
+            -- Compute the animation duration ( speed = 10 -> 1.5 seconds, speed = 1 -> 6 seconds )
             local lifespan  = ( ms - damage.ms ) / 1000
-            local speed     = ( ( 11 - FTC.Vars.SCTSpeed ) / 2 )
+            local speed     = ( ( 11 - FTC.Vars.SCTSpeed ) / 2 ) + 1
             local remaining = ( lifespan + (speed * 0.2 )) / speed
 
             -- Purge expired damages
@@ -208,47 +237,14 @@
                 local offsetX   = control.offsetX           
                 local offsetY   = control.offsetY + ( -1 * height ) * remaining
 
-                -- Horizontal arcing
+                -- Horizontal arcing ( arc = 10 -> 500  arc = 0 -> 0 )
                 if ( true ) then
-                    local arc       = 300 * ( ( 4 * remaining * remaining ) - ( 4 * remaining ) + 1 ) 
+                    local arc       = ( FTC.Vars.SCTArc*50) * ( ( 4 * remaining * remaining ) - ( 4 * remaining ) + 1 ) 
                     offsetX         = ( damage.out ) and offsetX + arc or offsetX - arc
                 end
 
                 -- Adjust the position
                 control:SetAnchor(BOTTOM,parent,BOTTOM,offsetX,offsetY)
-
-            
-            --[[
-                -- Flag blocked damage
-                if ( damage.result == ACTION_RESULT_BLOCKED_DAMAGE ) then
-                    dam     = "|c990000(" .. dam .. ")|"
-                
-                -- Flag damage immunity
-                elseif ( damage.result == ACTION_RESULT_IMMUNE ) then
-                    dam     = "|c990000(Immune)|"
-                    
-                -- Dodges
-                elseif ( damage.result == ACTION_RESULT_DODGED ) then
-                    dam     = "|c990000(Dodge)|"
-                    
-                -- Misses
-                elseif ( damage.result == ACTION_RESULT_MISS ) then
-                    dam     = "|c990000(Miss)|"
-                
-                -- Flag heals
-                elseif( damage.heal == true ) then
-                    dam = "|c99DD93" .. dam .. "|"
-                    if string.match( damage.name , "Potion" ) then damage.name = "Health Potion" end
-                
-                -- Magic damage
-                elseif ( damage.type ~= DAMAGE_TYPE_PHYSICAL    ) then
-                    dam = ( context == "Out" ) and "|c336699" .. dam .. "|" or "|c990000" .. dam .. "|"
-                
-                -- Standard hits
-                else
-                    dam = ( context == "Out" ) and "|cAA9F83" .. dam .. "|" or "|c990000" .. dam .. "|"
-                end 
-                ]]
             end
         end
     end

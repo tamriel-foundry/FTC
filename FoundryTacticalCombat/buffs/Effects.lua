@@ -251,14 +251,14 @@ function FTC.Buffs:RegisterEffects()
         [35721] = { 0, 3.5, 0 },        -- Silver Bolts
         [40300] = { 0, 3.5, 0 },        -- Silver Shards
         [40336] = { 0, 3.5, 0 },        -- Silver Leash
-        [35713] = { 0, 4, 0 },          -- Dawnbreaker
-        [40161] = { 0, 6, 0 },          -- Flawless Dawnbreaker
-        [40158] = { 0, 4, 0 },          -- Dawnbreaker of Smiting
+        [35713] = { 0, 4, 0.5 },          -- Dawnbreaker
+        [40161] = { 0, 6, 0.5 },          -- Flawless Dawnbreaker
+        [40158] = { 0, 4, 0.5 },          -- Dawnbreaker of Smiting
         
         -- Mages Guild
         [8108]  = { 0, 15.6, 0 },       -- Entropy
         [40457] = { 0, 15.6, 0 },       -- Degeneration
-        [40452] = { 15.6, 15.6, 0 },    -- Structured Entropy
+        [40452] = { 14.4, 14.4, 0 },    -- Structured Entropy
         [40465] = { 0, 11.6, 0 },       -- Scalding Rune
         [16536] = { 0, 11.8, 0 },       -- Meteor
         [40489] = { 0, 11.8, 0 },       -- Ice Comet
@@ -395,32 +395,32 @@ end
  * Checks whether an ability is a toggle
  ]]--
 function FTC.Buffs:IsToggle( name )
-    local toggles = { 
-        'Unstable Familiar',
-        'Unstable Clannfear',
-        'Volatile Familiar',
-        'Summon Winged Twilight',
-        'Summon Restoring Twilight',
-        'Summon Twilight Matriarch',
-        'Siphoning Strikes',
-        'Leeching Strikes',
-        'Siphoning Attacks',
-        'Magelight',
-        'Inner Light',
-        'Radiant Magelight',
-        'Bound Armor',
-        'Bound Armaments',
-        'Bound Aegis',
-        'Inferno',
-        'Flames Of Oblivion',
-        'Sea Of Flames',
-        'Repentance',
-        'Guard',
-        'Mystic Guard',
-        'Stalwart Guard'
+    local Toggles = { 
+        23304,          -- Unstable Familiar
+        23319,          -- Unstable Clannfear
+        23316,          -- Volatile Familiar
+        24613,          -- Summon Winged Twilight
+        24636,          -- Summon Restoring Twilight
+        24639,          -- Summon Twilight Matriarch
+        24158,          -- Bound Armor
+        24165,          -- Bound Armaments
+        24163,          -- Bound Aegis
+        33319,          -- Siphoning Strikes
+        36908,          -- Leeching Strikes
+        36935,          -- Siphoning Attacks
+        30920,          -- Magelight
+        40478,          -- Inner Light
+        40483,          -- Radiant Magelight
+        25954,          -- Inferno
+        23853,          -- Flames of Oblivion
+        32881,          -- Sea of Flames
+        3403,           -- Guard
+        61536,          -- Mystic Guard
+        61529,          -- Stalwart Guard
+        14890,          -- Brace (Generic)
     }
-    for i = 1 , #toggles do
-        if ( name == toggles[i] ) then return true end
+    for i = 1 , #Toggles do
+        if ( name == GetAbilityName(Toggles[i]) ) then return true end
     end 
     return false
 end
@@ -431,7 +431,7 @@ end
 function FTC.Buffs:ClearShields()
 
     -- Manually maintain a list of shields
-    local shields = { 
+    local Shields = { 
 
         -- Dragonknight
         29071,      -- Obsidian Shield
@@ -471,10 +471,10 @@ function FTC.Buffs:ClearShields()
     }
 
     -- Compare each shield ability with the current buffs for purging
-    for i = 1 , #shields do
+    for i = 1 , #Shields do
 
         -- Does the named buff exist?
-        local name = GetAbilityName(shields[i])
+        local name = GetAbilityName(Shields[i])
         if ( FTC.Buffs.Player[name] ~= nil ) then 
             local id = FTC.Buffs.Player[name].control.id
             FTC.Buffs.Player[name] = nil 
@@ -492,43 +492,90 @@ function FTC:FilterBuffInfo( unitTag , name ,  abilityType , iconName )
     -- Default to no isType
     local isType    = nil
     local isValid   = true
-    
-    -- Untyped Abilities (0)
-    if ( abilityType == ABILITY_TYPE_NONE ) then
-    
-        -- Summons and Toggles
-        if ( FTC.Buffs:IsToggle( name ) ) then isType = "T" end
-        
-    -- "Bonus" Abilities (5)
-    elseif ( abilityType == ABILITY_TYPE_BONUS ) then
-    
-        -- Mundus Stones
-        if ( string.match( name , "Boon:" ) ) then
-            if ( unitTag == 'player' ) then isType = "P"
-            else isValid = false end
-        
-        -- Exclude Cyrodiil Bonuses on Targets
-        elseif ( string.match( name , "Keep Bonus" ) or string.match( name , "Scroll Bonus" ) or string.match( name , "Emperorship" ) ) then
-            if ( unitTag ~= 'player' ) then isValid = false end
 
-        -- Exclude Medicinal Use
-        elseif ( string.match( name , "Medicinal Use" ) ) then isValid = false
+    -- Toggles
+    if ( FTC.Buffs:IsToggle(name) ) then 
+        isType = "T" 
+        return isValid, name, isType , iconName
+    end
 
-        -- Exclude "Fed on ally"
-        elseif ( string.match( name , "Fed on ally" ) ) then isValid = false
+    -- Boons
+    local Boons = {
+        13940,          -- Boon: The Warrior
+        13943,          -- Boon: The Mage
+        13974,          -- Boon: The Serpent
+        13975,          -- Boon: The Thief
+        13976,          -- Boon: The Lady
+        13977,          -- Boon: The Steed
+        13978,          -- Boon: The Lord
+        13979,          -- Boon: The Apprentice
+        13980,          -- Boon: The Ritual
+        13981,          -- Boon: The Lover
+        13982,          -- Boon: The Atronach
+        13984,          -- Boon: The Shadow
+        13985,          -- Boon: The Tower
+    }
+    for i = 1 , #Boons do 
+        if ( name == GetAbilityName(Boons[i]) ) then 
+            isValid = ( unitTag == 'player' )
+            isType  = "P"
+            return isValid, name, isType , iconName 
+        end
+    end
 
-        -- Catch Defaults
-        else isType = "P" end
+    -- AvA Bonuses
+    local AvA = {
+        15058,          -- Offensive Scroll Bonus I
+        16348,          -- Offensive Scroll Bonus II
+        15060,          -- Defensive Scroll Bonus I
+        16350,          -- Defensive Scroll Bonus I
+        39671,          -- Emperorship Alliance Bonus
+    }    
+    for i = 1 , #AvA do 
+        if ( name == GetAbilityName(AvA[i]) ) then 
+            isValid = ( unitTag == 'player' )
+            isType  = "P"
+            return isValid, name, isType , iconName 
+        end
+    end
+
+    -- Valid Passives
+    local Passives = {
+        35658,          -- Lycanthropy
+        39472,          -- Vampirism
+        61662,          -- Minor Brutality
+        23673,          -- Major Brutality
+        64509,          -- Majory Savagery
+        26795,          -- Major Savagery
+        61666,          -- Minor Savagery
+        45227,          -- Major Sorcery
+        61685,          -- Minor Sorcery  
+        40479,          -- Major Prophecy
+        61688,          -- Minor Prophecy  
+    }
+    for i = 1 , #Passives do 
+        if ( name == GetAbilityName(Passives[i]) ) then 
+            isType  = "P"
+            return isValid, name, isType , iconName 
+        end
+    end
+
+    -- Ignored Passives
+    local Ignored = {
+        29667,          -- Concentration
+        40359,          -- Fed on ally
+        45569,          -- Medicinal Use
+        62760,          -- Spell Shield
+        63601,          -- ESO Plus Member
+    }
+    for i = 1 , #Ignored do 
+        if ( name == GetAbilityName(Ignored[i]) ) then 
+            isValid = false 
+            return isValid, name, isType , iconName
+        end
+    end
         
-    -- Blocking (52)
-    elseif ( ( abilityType == ABILITY_TYPE_BLOCK ) or ( name == "Brace (Generic)" ) ) then
-        name        = "Blocking"
-        isType      = "T"
-
-    -- Change Appearance ( 64 )
-    elseif ( ( abilityType == ABILITY_TYPE_CHANGEAPPEARANCE ) ) then isType = "T" end
-        
-    -- Return the filtered info
+    -- Return other buffs
     return isValid, name, isType , iconName 
 end
 

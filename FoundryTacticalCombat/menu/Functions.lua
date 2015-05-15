@@ -83,8 +83,16 @@
                 EVENT_MANAGER:RegisterForUpdate( "FTC_MenuBuffs" , 100 , function() FTC.Menu:FakeBuffs() end )
             end
 
+            -- Combat Text Display
+            if ( FTC.init.SCT ) then
+                FTC_SCTIn:SetAnchor(LEFT,FTC_UI,CENTER,500,-50)
+                EVENT_MANAGER:RegisterForUpdate( "FTC_MenuSCT" , 1000 , function() FTC.Menu:FakeSCT() end )
+            end
+
             -- Combat Log Display
-            if ( FTC.init.Log ) then FTC_CombatLog:SetHidden(true) end
+            if ( FTC.init.Log ) then 
+                FTC_CombatLog:SetHidden(true) 
+            end
 
             -- Toggle visibility
             FTC.inMenu = true
@@ -120,6 +128,13 @@
                 FTC.Buffs.Player = {}
                 EVENT_MANAGER:UnregisterForUpdate( "FTC_MenuBuffs" )
                 FTC.Buffs:GetBuffs('player')
+            end
+
+            -- Combat Text Display
+            if ( FTC.init.SCT ) then
+                local anchor    = FTC.Vars.FTC_SCTIn
+                FTC_SCTIn:SetAnchor(anchor[1],FTC_UI,anchor[2],anchor[3],anchor[4])
+                EVENT_MANAGER:UnregisterForUpdate( "FTC_MenuSCT" )
             end
 
             -- Combat Log Display
@@ -454,6 +469,53 @@
         FTC.Menu.buffCounter = ( FTC.Menu.buffCounter <= 8 ) and FTC.Menu.buffCounter + 1 or 1
     end
 
+
+--[[----------------------------------------------------------
+    COMBAT TEXT
+  ]]----------------------------------------------------------
+
+    --[[ 
+     * Fake Scrolling Combat Text
+     * --------------------------------
+     * Called by FTC.Menu:Reposition()
+     * --------------------------------
+     ]]--
+    function FTC.Menu:FakeSCT() 
+
+        -- Register a fake SCT damage
+        local damage    = {
+            ["out"]     = false,
+            ["result"]  = ACTION_RESULT_DAMAGE,
+            ["target"]  = "fake",
+            ["source"]  = FTC.Player.name,
+            ["ability"] = "Fake Damage",
+            ["value"]   = 9100,
+            ["ms"]      = GetGameTimeMilliseconds(),
+            ["crit"]    = false,
+            ["heal"]    = false,
+            ["icon"]    = '/esoui/art/icons/ability_rogue_007.dds',
+            ["mult"]    = 1, 
+            ["weapon"]  = false,
+        }
+        FTC.SCT:Damage(damage)
+
+        -- Register a fake SCT heal
+        local heal    = {
+            ["out"]     = false,
+            ["result"]  = ACTION_RESULT_HEAL,
+            ["target"]  = "fake",
+            ["source"]  = FTC.Player.name,
+            ["ability"] = "Fake Heal",
+            ["value"]   = 4300,
+            ["ms"]      = GetGameTimeMilliseconds() + 500,
+            ["crit"]    = true,
+            ["heal"]    = true,
+            ["icon"]    = '/esoui/art/icons/ability_mage_054.dds',
+            ["mult"]    = 1, 
+            ["weapon"]  = false,
+        }
+        FTC.SCT:Damage(heal)
+    end
 
 --[[----------------------------------------------------------
      COMBAT LOG

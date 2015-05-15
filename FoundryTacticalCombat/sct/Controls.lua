@@ -58,7 +58,8 @@
 	function FTC.SCT:Fade(control)
 
 	    -- Compute the animation duration
-	    local duration = ( ( 11 - FTC.Vars.SCTSpeed ) / 2 ) * 0.8 * 1000
+	    local speed    = ( ( 11 - FTC.Vars.SCTSpeed ) / 2 ) + 1
+	    local duration = ( speed ) * 0.8 * 1000
 
 	    -- Start with a fade in
 		local animation, timeline = CreateSimpleAnimation(ANIMATION_ALPHA,control,0)

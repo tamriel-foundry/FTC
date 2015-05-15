@@ -52,18 +52,8 @@ function FTC.Buffs:Controls()
         TARGET BUFFS                    NAME                                PARENT      DIMENSIONS                                              ANCHOR                          EXTRAS
       ]]-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    -- Target Buffs 
-    local tbAnchor  = ( FTC.Vars.AnchorBuffs and FTC.init.Frames ) and {TOPLEFT,BOTTOMLEFT,0,6 - FTC_TargetFrame:GetHeight()*(2/6),FTC_TargetFrame} or FTC.Vars.FTC_TargetBuffs
-    local tbheight  = ( string.match(FTC.Vars.TargetBuffFormat,"list") ~= nil ) and ( FTC.Vars.MaxBuffs * 50 ) or 50
-    local tbwidth   = ( FTC.Vars.TargetBuffFormat == "vtiles" ) and 50 or ( FTC.Vars.MaxBuffs * 50 )
-    local tb        = FTC.UI:Control(   "FTC_TargetBuffs",                  FTC_UI,     {tbwidth,tbheight},                                     tbAnchor,                       false )  
-    tb.backdrop     = FTC.UI:Backdrop(  "FTC_TargetBuffs_BG",               tb,         "inherit",                                              {CENTER,CENTER,0,0},            {0,0,0,0.4}, {0,0,0,1}, nil, true )
-    tb.label        = FTC.UI:Label(     "FTC_TargetBuffs_Label",            tb,         "inherit",                                              {CENTER,CENTER,0,0},            FTC.UI:Font("trajan",24,true) , nil , {1,1} , "Target Buffs" , true )   
-    tb.backdrop:SetEdgeTexture("",16,4,4)
-    tb:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end)
-
     -- Target Debuffs
-    local tdAnchor  = ( FTC.Vars.AnchorBuffs and FTC.init.Frames ) and {BOTTOMLEFT,TOPLEFT,0,-6,FTC_TargetFrame} or FTC.Vars.FTC_TargetDebuffs
+    local tdAnchor  = ( FTC.Vars.AnchorBuffs and FTC.init.Frames ) and {TOPLEFT,BOTTOMLEFT,0,6 - FTC_TargetFrame:GetHeight()*(2/6),FTC_TargetFrame} or FTC.Vars.FTC_TargetDebuffs
     local tdheight  = ( string.match(FTC.Vars.TargetDebuffFormat,"list") ~= nil ) and ( FTC.Vars.MaxBuffs * 50 ) or 50
     local tdwidth   = ( FTC.Vars.TargetDebuffFormat == "vtiles" ) and 50 or ( FTC.Vars.MaxBuffs * 50 )
     local td        = FTC.UI:Control(   "FTC_TargetDebuffs",                FTC_UI,     {tdwidth,tdheight},                                     tdAnchor,                       false )  
@@ -71,6 +61,16 @@ function FTC.Buffs:Controls()
     td.label        = FTC.UI:Label(     "FTC_TargetDebuffs_Label",          td,         "inherit",                                              {CENTER,CENTER,0,0},            FTC.UI:Font("trajan",24,true) , nil , {1,1} , "Target Debuffs" , true )   
     td.backdrop:SetEdgeTexture("",16,4,4)
     td:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end)
+
+    -- Target Buffs 
+    local tbAnchor  = ( FTC.Vars.AnchorBuffs and FTC.init.Frames ) and {BOTTOMLEFT,TOPLEFT,0,-6,FTC_TargetFrame} or FTC.Vars.FTC_TargetBuffs
+    local tbheight  = ( string.match(FTC.Vars.TargetBuffFormat,"list") ~= nil ) and ( FTC.Vars.MaxBuffs * 50 ) or 50
+    local tbwidth   = ( FTC.Vars.TargetBuffFormat == "vtiles" ) and 50 or ( FTC.Vars.MaxBuffs * 50 )
+    local tb        = FTC.UI:Control(   "FTC_TargetBuffs",                  FTC_UI,     {tbwidth,tbheight},                                     tbAnchor,                       false )  
+    tb.backdrop     = FTC.UI:Backdrop(  "FTC_TargetBuffs_BG",               tb,         "inherit",                                              {CENTER,CENTER,0,0},            {0,0,0,0.4}, {0,0,0,1}, nil, true )
+    tb.label        = FTC.UI:Label(     "FTC_TargetBuffs_Label",            tb,         "inherit",                                              {CENTER,CENTER,0,0},            FTC.UI:Font("trajan",24,true) , nil , {1,1} , "Target Buffs" , true )   
+    tb.backdrop:SetEdgeTexture("",16,4,4)
+    tb:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end)
 end
 
 

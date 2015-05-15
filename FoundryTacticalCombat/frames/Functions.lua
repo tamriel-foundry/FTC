@@ -21,7 +21,7 @@ FTC.Frames.Defaults = {
     ["FrameHeight"]             = 180,  
     ["FrameOpacityIn"]          = 100,
     ["FrameOpacityOut"]         = 80,    
-    ["FrameFont1"]              = 'antique',
+    ["FrameFont1"]              = 'esobold',
     ["FrameFont2"]              = 'esobold',
     ["FrameFontSize"]           = 18,
     ["FrameHealthColor"]        = {133/255,018/255,013/255},
@@ -224,7 +224,7 @@ end
 
         -- Override for dead things
         if ( powerType == POWERTYPE_HEALTH and ( IsUnitDead(unitTag) or powerValue == 0 ) ) then 
-            label = "Dead"
+            label = GetString(FTC_Dead)
             pctLabel = ""
         end
 

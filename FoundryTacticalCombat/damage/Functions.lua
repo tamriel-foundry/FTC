@@ -64,47 +64,57 @@ end
         -- ACTION_RESULT_BLOCKED
         -- ACTION_RESULT_OFFBALANCE
         -- ACTION_RESULT_STUNNED
-        -- ACTION_RESULT_FALL_DAMAGE
         -- ACTION_RESULT_POWER_DRAIN
         -- ACTION_RESULT_POWER_ENERGIZE
 
         -- Damage Dealt
-        if ( result == ACTION_RESULT_DAMAGE or result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_BLOCKED_DAMAGE or result == ACTION_RESULT_DOT_TICK or result == ACTION_RESULT_DOT_TICK_CRITICAL ) then 
-            if ( hitValue > 0 ) then
+        if ( hitValue > 0 and ( result == ACTION_RESULT_DAMAGE or result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_BLOCKED_DAMAGE or result == ACTION_RESULT_DOT_TICK or result == ACTION_RESULT_DOT_TICK_CRITICAL ) ) then 
                 
-                -- Flag timestamps
-                if ( damageOut ) then FTC.Damage.lastOut = GetGameTimeMilliseconds() end
-                if ( damageIn )  then FTC.Damage.lastIn  = GetGameTimeMilliseconds() end
+            -- Flag timestamps
+            if ( damageOut )    then FTC.Damage.lastOut = GetGameTimeMilliseconds() end
+            if ( damageIn )     then FTC.Damage.lastIn  = GetGameTimeMilliseconds() end
 
-                -- Print to combat log
-                if ( FTC.init.Log ) then FTC.Log:CombatEvent(damage) end
+            -- Log and SCT
+            if ( FTC.init.Log ) then FTC.Log:CombatEvent(damage) end
+            if ( FTC.init.SCT ) then FTC.SCT:Damage(damage) end
 
-                -- Pass to SCT
-                if ( FTC.init.SCT ) then FTC.SCT:New(damage) end
-            end
+        -- Falling damage
+        elseif ( result == ACTION_RESULT_FALL_DAMAGE ) then
+            damage.ability  = GetString(FTC_Falling)
+            damage.icon     = '/esoui/art/icons/death_recap_fall_damage.dds'
+
+            -- Log and SCT
+            if ( FTC.init.Log ) then FTC.Log:CombatEvent(damage) end
+            if ( FTC.init.SCT ) then FTC.SCT:Damage(damage) end
 
         -- Shielded Damage
         elseif ( result == ACTION_RESULT_DAMAGE_SHIELDED ) then
 
-            -- Print to combat log
+            -- Log and SCT
             if ( FTC.init.Log ) then FTC.Log:CombatEvent(damage) end
-        
+            if ( FTC.init.SCT ) then FTC.SCT:Damage(damage) end
+
+        -- Misses and  Dodges
+        elseif ( result == ACTION_RESULT_DODGED or result == ACTION_RESULT_MISS ) then
+
+            -- Log and SCT
+            if ( FTC.init.Log ) then FTC.Log:CombatEvent(damage) end
+            if ( FTC.init.SCT ) then FTC.SCT:Damage(damage) end
+
         -- Healing Dealt
         elseif ( hitValue > 0 and ( result == ACTION_RESULT_HEAL or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_HOT_TICK or result == ACTION_RESULT_HOT_TICK_CRITICAL ) ) then 
 
-            -- Print to combat log
+            -- Log and SCT
             if ( FTC.init.Log ) then FTC.Log:CombatEvent(damage) end
-
-           -- Pass to SCT
-            if ( FTC.init.SCT ) then FTC.SCT:New(damage) end
+            if ( FTC.init.SCT ) then FTC.SCT:Damage(damage) end
 
         -- Target Death
         elseif ( result == ACTION_RESULD_DIED ) then
 
-            -- Wipe buffs for a deceased target
+            -- Wipe Buffs
             if ( FTC.init.Buffs ) then FTC.Buffs:WipeBuffs(targetName) end
 
-            -- Print to combat log
+            -- Log and SCT
             if ( FTC.init.Log ) then FTC.Log:CombatEvent(damage) end
 
 

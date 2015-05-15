@@ -116,8 +116,16 @@ FTC.UI.Textures     = {
             -- Status Effects
             [776]   = '/esoui/art/icons/death_recap_poison_aoe.dds',                -- Poisoned
             [1339]  = '/esoui/art/icons/ability_dragonknight_004_b.dds',            -- Burning
+            [2445]  = '/esoui/art/icons/death_recap_bleed.dds',                     -- Bleed
+            [6035]  = '/esoui/art/icons/death_recap_bleed.dds',                     -- Bleeding
             [8041]  = '/esoui/art/icons/death_recap_fire_aoe.dds',                  -- Explosion
+            [21925] = '/esoui/art/icons/death_recap_disease_aoe.dds',               -- Diseased
             [58856] = '/esoui/art/icons/death_recap_disease_aoe.dds',               -- Infection
+            
+            -- Defenses
+            [2890]  = '/esoui/art/icons/ability_warrior_030.dds',                   -- Block
+            [30869] = '/esoui/art/icons/ability_mage_058.dds',                      -- Absorb
+            [30934] = '/esoui/art/icons/ability_rogue_037.dds',                     -- Dodge
 
             -- Weapon Attacks
             [4858]  = '/esoui/art/icons/ability_warrior_011.dds',                   -- Bash
@@ -127,9 +135,10 @@ FTC.UI.Textures     = {
             [16420] = '/esoui/art/icons/ability_warrior_013.dds',                   -- Heavy Attack (Dual Wield)
 
             -- Weapon Abilities
-            --[] = '/esoui/art/icons/ability_dualwield_001.dds',                    -- Twin Slashes Bleed
-            --[] = '/esoui/art/icons/ability_dualwield_001.dds',                    -- Rending Slashes Bleed
-     
+            [29293] = '/esoui/art/icons/ability_dualwield_001.dds',                 -- Twin Slashes Bleed
+            [38841] = '/esoui/art/icons/ability_dualwield_001.dds',                 -- Rending Slashes Bleed
+            [38848] = '/esoui/art/icons/ability_dualwield_001.dds',                 -- Blood Craze Bleed
+
             -- Weapon Enchantments
             [5187]  = '/esoui/art/icons/death_recap_poison_melee.dds',              -- Poisoned Weapon   
             [17895] = '/esoui/art/icons/death_recap_fire_melee.dds',                -- Fiery Weapon
@@ -143,20 +152,21 @@ FTC.UI.Textures     = {
             --[] = '/esoui/art/icons/ability_healer_031.dds',                       -- Life Drain
 
             -- Sorcerer
+            [18719] = '/esoui/art/icons/ability_sorcerer_thunder_burst.dds',        -- Mages' Fury Explosion
             [23682] = '/esoui/art/icons/ability_sorcerer_critical_surge.dds',       -- Critical Surge
-            --[] = '/esoui/art/icons/ability_sorcerer_thunder_burst.dds',           -- Mages' Fury Explosion
             [19128] = '/esoui/art/icons/ability_sorcerer_thunder_burst.dds',        -- Mages' Wrath Explosion
-            --[] = '/esoui/art/icons/ability_sorcerer_thunder_burst.dds',           -- Endless Fury Explosion
-            --[] = '/esoui/art/icons/ability_sorcerer_016.dds',                     -- Overload Light Attack
-            --[] = '/esoui/art/icons/ability_sorcerer_016.dds',                     -- Overload Heavy Attack
+            [19120] = '/esoui/art/icons/ability_sorcerer_thunder_burst.dds',        -- Endless Fury Explosion
+            [24792] = '/esoui/art/icons/ability_sorcerer_016.dds',                  -- Overload Light Attack
+            [24794] = '/esoui/art/icons/ability_sorcerer_016.dds',                  -- Overload Heavy Attack
             --[] = '/esoui/art/icons/ability_sorcerer_dark_exchange.dds',           -- Dark Exchange Heal
+            [21493] = '/esoui/art/icons/death_recap_shock_aoe.dds',                 -- Disintegration
 
             -- Racials
             [36214] = '/esoui/art/icons/ability_dragonknight_028.dds',              -- Star of the West
 
             -- Werewolf and Vampire
             [32480] = '/esoui/art/icons/ability_werewolf_002_b.dds',                -- Heavy Attack Werewolf
-            --[]      = '/esoui/art/icons/ability_vampire_002.dds',                 -- Feed
+            [33152] = '/esoui/art/icons/ability_vampire_002.dds',                   -- Feed
 
             -- Synergies 
             --[[
@@ -178,42 +188,30 @@ FTC.UI.Textures     = {
             [3757]  = '/esoui/art/icons/ability_sorcerer_unstable_clannfear.dds',   -- Claw
             [4799]  = '/esoui/art/icons/ability_sorcerer_unstable_clannfear.dds',   -- Tail Spike
                                                                                     -- Zap
-                                                                                    -- Kick
                                                                                     -- Familiar Melee
-            --[] = '/esoui/art/icons/ability_sorcerer_storm_atronach.dds',          -- Atronach
-            --[] = '/esoui/art/icons/ability_sorcerer_storm_atronach.dds',          -- Atronach Zap
+            [23659] = '/esoui/art/icons/ability_sorcerer_storm_atronach.dds',       -- Atronach
+            [23428] = '/esoui/art/icons/ability_sorcerer_storm_atronach.dds',       -- Atronach Zap
+
+            -- Items
+            [9866]  = '/esoui/art/icons/consumable_potion_001_type_005.dds',        -- Restore_Health
 
             -- AvA Damage
-            --[[
-            [] = '/esoui/art/icons/ability_dragonknight_002_a.dds',                 -- Fire
-            [] = '/esoui/art/icons/ability_dragonknight_002_a.dds',                 -- Flaming Oil
-            [] = '/esoui/art/icons/ava_siege_ammo_002.dds',                         -- Ice Damage
-            [] = '/esoui/art/icons/ava_siege_ammo_003.dds',                         -- Meatbag Catapult
-            [] = '/esoui/art/icons/ava_siege_ammo_004.dds',                         -- Stone Trebuchet
-            [] = '/esoui/art/icons/ava_siege_ammo_006.dds',                         -- Ballista Bolt
-            [] = '/esoui/art/icons/ability_templar_031.dds',                        -- Oil Pot
-            [] = '/esoui/art/icons/crafting_forester_weapon_component_005.dds',     -- Door Repair Kit
-            [] = '/esoui/art/icons/crafting_heavy_armor_sp_names_001.dds',          -- Wall Repair Kit
-            --]]
+            [7011]  = '/esoui/art/icons/ava_siege_ammo_006.dds',                    -- Ballista Bolt
+            [13853] = '/esoui/art/icons/crafting_heavy_armor_sp_names_001.dds',     -- Wall Repair Kit
+            [14156] = '/esoui/art/icons/ava_siege_ammo_004.dds',                    -- Stone Trebuchet
+            [14773] = '/esoui/art/icons/ava_siege_ammo_003.dds',                    -- Meatbag Catapult
+            [15774] = '/esoui/art/icons/ava_siege_weapon_002.dds',                  -- Flaming Oil
+            [16723] = '/esoui/art/icons/crafting_forester_weapon_component_005.dds',-- Door Repair Kit
+            [35099] = '/esoui/art/icons/ava_siege_ammo_002.dds',                    -- Ice Damage
+            [35129] = '/esoui/art/icons/ava_siege_weapon_002.dds',                  -- Oil Pot
 
-            -- Item Procs
+            -- Procs
             --[[
             [] = '/esoui/art/icons/quest_dungeons_razaks_opus.dds',              -- Dwemer Automation Restore HP
             [] = '/esoui/art/icons/death_recap_magic_aoe.dds',                   -- Lich Crystal
             --]]
 
-
-
-            -- Unassigned
             --[[
-            ['Alliance Points']                 = '/EsoUI/Art/currency/alliancePoints.dds',
-            ['Fall Damage']                     = '/esoui/art/icons/death_recap_fall_damage.dds',
-
-           
-            [L.Effect_Diseased]                 = '/esoui/art/icons/death_recap_disease_aoe.dds',
-            [L.Effect_Bleeding]                 = '/esoui/art/icons/crafting_leather_blood.dds',
-            ["Restore_Health"]                  = '/esoui/art/icons/consumable_potion_001_type_005.dds', -- EN
-            ["Health Potion Lingering Effect"]  = '/esoui/art/icons/consumable_potion_001_type_005.dds', -- EN,?
          
             -- Lightning staff specials
             ['Shock Pulse']                     = '/esoui/art/icons/death_recap_shock_ranged.dds', -- EN

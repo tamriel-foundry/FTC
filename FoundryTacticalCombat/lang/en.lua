@@ -12,6 +12,12 @@ ZO_CreateStringId("FTC_LongInfo",           "You are using Foundry Tactical Comb
 ZO_CreateStringId("SI_BINDING_NAME_TOGGLE_COMBAT_LOG", "Toggle Combat Log")
 
 --[[----------------------------------------------------------
+    DAMAGE WORDS
+  ]]----------------------------------------------------------
+ZO_CreateStringId("FTC_Falling",            "Falling")
+ZO_CreateStringId("FTC_Dead",               "Dead")
+
+--[[----------------------------------------------------------
     MENU CORE
   ]]----------------------------------------------------------
 ZO_CreateStringId("FTC_Menu_Configure",     "Configure Addon Components")
@@ -158,5 +164,23 @@ ZO_CreateStringId("FTC_Menu_LResetDesc",    "Reset original settings for FTC com
   ]]----------------------------------------------------------
 ZO_CreateStringId("FTC_Menu_SHeader",       "Configure Combat Text Settings")
 
+ZO_CreateStringId("FTC_Menu_SIcons",        "Display SCT Icons")
+ZO_CreateStringId("FTC_Menu_SIconsDesc",    "Display ability icons beside scrolling combat text? [Default: Enabled]")
+
 ZO_CreateStringId("FTC_Menu_SNames",        "Display SCT Names")
-ZO_CreateStringId("FTC_Menu_SNamesDesc",    "Display ability names when possible in scrolling combat text?")
+ZO_CreateStringId("FTC_Menu_SNamesDesc",    "Display ability names when possible in scrolling combat text? [Default: Enabled]")
+
+ZO_CreateStringId("FTC_Menu_SSpeed",        "SCT Scroll Speed")
+ZO_CreateStringId("FTC_Menu_SSpeedDesc",    "Change speed of combat text scrolling, higher is faster. [Default: 6]")
+
+ZO_CreateStringId("FTC_Menu_SArc",          "SCT Arc Intensity")
+ZO_CreateStringId("FTC_Menu_SArcDesc",      "Change the curviture of scrolling combat text, higher values generate more arcing. [Default: 5]")
+
+ZO_CreateStringId("FTC_Menu_SFont1",        "Primary Font")
+ZO_CreateStringId("FTC_Menu_SFont1Desc",    "Change the primary font used for damage values in scrolling combat text. [Default: ESO Bold]")
+
+ZO_CreateStringId("FTC_Menu_SFont2",        "Secondary Font")
+ZO_CreateStringId("FTC_Menu_SFont2Desc",    "Change the secondary font used for ability names in scrolling combat text. [Default: ESO Bold]")
+
+ZO_CreateStringId("FTC_Menu_SFontS",        "SCT Font Size")
+ZO_CreateStringId("FTC_Menu_SFontSDesc",    "Change the font size used in the FTC scrolling combat text. [Default: 20]")

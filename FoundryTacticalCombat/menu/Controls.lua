@@ -441,6 +441,17 @@ function FTC.Menu:Controls()
             width       = "full", 
         },
 
+        -- Display Ability Icons?
+        { 
+            type        = "checkbox", 
+            name        = GetString(FTC_Menu_SIcons),
+            tooltip     = GetString(FTC_Menu_SIconsDesc),
+            getFunc     = function() return FTC.Vars.SCTIcons end, 
+            setFunc     = function() FTC.Menu:Toggle( 'SCTIcons' ) end, 
+            default     = FTC.Defaults.SCTIcons,
+        },
+      
+
         -- Display Ability Names?
         { 
             type        = "checkbox", 
@@ -451,33 +462,63 @@ function FTC.Menu:Controls()
             default     = FTC.Defaults.SCTNames,
         },
 
-        
-        --[[
-        -- SCT Scroll Speed?
-        { 
-            type        = "slider",
-            name        = FTC.L("Combat Text Scroll Speed"), 
-            tooltip     = FTC.L("Adjust combat text scroll speed."), 
-            min         = 1, 
-            max         = 5, 
+        -- SCT Scroll Speed
+        {   type        = "slider", 
+            name        = GetString(FTC_Menu_SSpeed),
+            tooltip     = GetString(FTC_Menu_SSpeedDesc),
+            min         = 0,
+            max         = 10, 
             step        = 1, 
             getFunc     = function() return FTC.Vars.SCTSpeed end, 
             setFunc     = function( value ) FTC.Menu:Update( "SCTSpeed" , value ) end, 
-            default     = FTC.Defaults.SCTSpeed,
+            default     = FTC.Defaults.SCTSpeed
+        },
+
+        -- SCT Arc Intensity
+        {   type        = "slider", 
+            name        = GetString(FTC_Menu_SArc),
+            tooltip     = GetString(FTC_Menu_SArcDesc),
+            min         = 0,
+            max         = 10, 
+            step        = 1, 
+            getFunc     = function() return FTC.Vars.SCTArc end, 
+            setFunc     = function( value ) FTC.Menu:Update( "SCTArc" , value ) end, 
+            default     = FTC.Defaults.SCTArc
+        },
+
+        -- Primary SCT Font
+        {   type        = "dropdown", 
+            name        = GetString(FTC_Menu_SFont1),
+            tooltip     = GetString(FTC_Menu_SFont1Desc),
+            choices     = { "Metamorphous", "ESO Standard" , "ESO Bold" , "Prose Antique" , "Handwritten" , "Trajan Pro" , "Futura Standard" , "Futura Bold" }, 
+            getFunc     = function() return FTC.UI:TranslateFont(FTC.Vars.SCTFont1) end, 
+            setFunc     = function( value ) FTC.Menu:UpdateFrames( "SCTFont1" , FTC.UI:TranslateFont(value) ) end,
+            default     = FTC.Defaults.SCTFont1, 
+        },
+
+        -- Secondary SCT Font
+        {   type        = "dropdown", 
+            name        = GetString(FTC_Menu_SFont2),
+            tooltip     = GetString(FTC_Menu_SFont2Desc),
+            choices     = { "Metamorphous", "ESO Standard" , "ESO Bold" , "Prose Antique" , "Handwritten" , "Trajan Pro" , "Futura Standard" , "Futura Bold" }, 
+            getFunc     = function() return FTC.UI:TranslateFont(FTC.Vars.SCTFont2) end, 
+            setFunc     = function( value ) FTC.Menu:UpdateFrames( "SCTFont2" , FTC.UI:TranslateFont(value) ) end,
+            default     = FTC.Defaults.SCTFont2, 
+        },
+
+        -- SCT Font Size
+        {   type        = "slider", 
+            name        = GetString(FTC_Menu_SFontS),
+            tooltip     = GetString(FTC_Menu_SFontSDesc),
+            min         = 16,
+            max         = 36, 
+            step        = 1, 
+            getFunc     = function() return FTC.Vars.SCTFontSize end, 
+            setFunc     = function( value ) FTC.Menu:UpdateFrames( "SCTFontSize" , value ) end, 
+            default     = FTC.Defaults.SCTFontSize
         },
         
 
-        -- Select Scroll Animation?
-        { 
-            type        = "dropdown", 
-            name        = FTC.L("Scroll Path Animation"), 
-            tooltip     = FTC.L("Choose scroll animation."), 
-            choices     = { "Arc", "Line" }, 
-            getFunc     = function() return FTC.Vars.SCTPath end, 
-            setFunc     = function( value ) FTC.Menu:Update( "SCTPath" , value ) end,
-            default     = FTC.Defaults.SCTPath, 
-        },
-        ]]
     }
     if FTC.Vars.EnableSCT then
         for i = 1 , #SCT do table.insert( FTC.Menu.options , SCT[i] ) end

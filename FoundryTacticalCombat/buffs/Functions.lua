@@ -9,7 +9,7 @@ FTC.Buffs.Defaults = {
     ["FTC_PlayerBuffs"]         = {CENTER,CENTER,0,400},  
     ["PlayerBuffFormat"]        = "dlist",
     ["FTC_LongBuffs"]           = {BOTTOMRIGHT,BOTTOMRIGHT,-2,-2},
-    ["LongBuffFormat"]          = "alist",
+    ["LongBuffFormat"]          = "vtiles",
 
     -- Player Debuffs
     ["FTC_PlayerDebuffs"]       = {CENTER,CENTER,0,500},
@@ -21,7 +21,7 @@ FTC.Buffs.Defaults = {
 
     -- Target Debuffs
     ["FTC_TargetDebuffs"]       = {CENTER,CENTER,0,-400},
-    ["TargetDebuffFormat"]      = "alist",
+    ["TargetDebuffFormat"]      = "dlist",
 
     -- Shared Settings  
     ["MaxBuffs"]                = 8,
@@ -29,7 +29,7 @@ FTC.Buffs.Defaults = {
 
     -- Fonts
     ["BuffsFont1"]              = 'esobold',
-    ["BuffsFont2"]              = 'antique',
+    ["BuffsFont2"]              = 'esobold',
     ["BuffsFontSize"]           = 18,
 
 }
@@ -256,7 +256,7 @@ function FTC.Buffs:NewEffect( ability )
     local castTime  = ( effects ~= nil ) and ( ability.cast + (effects[3]*1000) ) or ability.cast
 
     -- Setup buff object
-    local buffTemplate = {
+    local newBuff = {
         ["owner"]   = ability.owner,
         ["name"]    = ability.name,
         ["stacks"]  = 0,
@@ -273,12 +273,38 @@ function FTC.Buffs:NewEffect( ability )
     -- Custom tracked effects
     if ( effects ~= nil ) then
 
+        -- Custom debuffs
+        if ( effects[2] > 0 ) then
+
+            -- Make a copy of the table
+            local newDebuff = {}
+            for k,v in pairs(newBuff) do newDebuff[k] = v end
+
+            -- Add buff data
+            newDebuff.owner   = DoesUnitExist('reticleover') and GetUnitName('reticleover') or FTC.Target.name
+            newDebuff.ends    = ( ( ms + castTime ) / 1000 ) + effects[2]
+            newDebuff.debuff  = true
+
+            -- Assign buff to pooled control
+            local control, objectKey = FTC.Buffs.Pool:AcquireObject()
+            control.id      = objectKey
+            control.icon:SetTexture(newBuff.icon)
+            control.frame:SetDrawLayer(DL_BACKGROUND)
+            control.backdrop:SetDrawLayer(DL_BACKGROUND)
+            control.cooldown:SetDrawLayer(DL_CONTROLS)
+            control.icon:SetDrawLayer(DL_CONTROLS) 
+            newDebuff.control = control
+
+            -- Add debuff to timed table
+            FTC.Buffs.Target[ability.name] = newDebuff
+        end
+
         -- Custom buffs
         if ( effects[1] > 0 ) then
 
             -- Add buff data
-            local newBuff   = buffTemplate
             newBuff.ends    = ( ( ms + castTime ) / 1000 ) + effects[1]
+            newBuff.debuff  = false
 
             -- Assign buff to pooled control
             local control, objectKey = FTC.Buffs.Pool:AcquireObject()
@@ -291,37 +317,13 @@ function FTC.Buffs:NewEffect( ability )
             newBuff.control = control
 
             -- Add buff to timed table
-            FTC.Buffs[context][ability.name] = newBuff
-        end
-
-        -- Custom debuffs
-        if ( effects[2] > 0 ) then
-
-            -- Add buff data
-            local newBuff   = buffTemplate
-            newBuff.owner   = DoesUnitExist('reticleover') and GetUnitName('reticleover') or FTC.Target.name
-            newBuff.ends    = ( ( ms + castTime ) / 1000 ) + effects[2]
-            newBuff.debuff  = true
-
-            -- Assign buff to pooled control
-            local control, objectKey = FTC.Buffs.Pool:AcquireObject()
-            control.id      = objectKey
-            control.icon:SetTexture(newBuff.icon)
-            control.frame:SetDrawLayer(DL_BACKGROUND)
-            control.backdrop:SetDrawLayer(DL_BACKGROUND)
-            control.cooldown:SetDrawLayer(DL_CONTROLS)
-            control.icon:SetDrawLayer(DL_CONTROLS) 
-            newBuff.control = control
-
-            -- Add debuff to timed table
-            FTC.Buffs.Target[ability.name] = newBuff
+            FTC.Buffs.Player[ability.name] = newBuff
         end
 
     -- API timed effects
     elseif ( ability.dur > 0 ) then
 
         -- Add buff data
-        local newBuff       = buffTemplate
         newBuff.ends        = ( ms + ability.cast + ability.dur ) / 1000
 
         -- Assign buff to pooled control
@@ -341,7 +343,6 @@ function FTC.Buffs:NewEffect( ability )
     elseif ( ability.toggle ~= nil ) then
 
         -- Add buff data
-        local newBuff       = buffTemplate
         newBuff.ends        = 0
         
         -- Assign buff to pooled control
@@ -471,7 +472,7 @@ function FTC.Buffs:Update( unitTag )
 
             -- Update labels
             control:SetHidden(true)
-            control.name:SetHidden(true)
+            control.cooldown:SetHidden(false)
             control.label:SetText(label)
             control.name:ClearAnchors()
             control.name:SetAnchor(LEFT,control,RIGHT,10,0)
@@ -498,6 +499,7 @@ function FTC.Buffs:Update( unitTag )
                 control.name:SetAnchor(RIGHT,control,LEFT,-10,0)
                 control.name:SetHorizontalAlignment(2)
                 control.name:SetHidden(string.match(FTC.Vars.LongBuffFormat,"list") == nil)
+                control.cooldown:SetHidden(true)
                 control:SetHidden(false)
 
                 -- Update the count

@@ -38,7 +38,7 @@ function FTC.Log:Initialize()
 	
 	-- Change the styling
 	FCL.buffer = _G["FTC_CombatLogBuffer"]
-	FCL.buffer:SetFont(FTC.UI:Font(FTC.Vars.LogFont,FTC.Vars.LogFontSize,false))
+	FCL.buffer:SetFont(FTC.UI:Font(FTC.Vars.LogFont,FTC.Vars.LogFontSize,true))
 	FCL.buffer:SetMaxHistoryLines(1000)
 	FTC_CombatLogLabel:SetFont(FTC.UI:Font(FTC.Vars.LogFont,FTC.Vars.LogFontSize+2,true))
 
@@ -130,6 +130,18 @@ function FTC.Log:CombatEvent( damage )
 		local subject = damage.out and zo_strformat("<<!aCg:1>>",damage.target) or "Your"
 		FTC.Log:Print(subject .. " shield absorbed " .. CommaValue(damage.value) .. " damage." , {0.6,0.2,0.6} )
 
+    -- Blocks
+    elseif ( damage.result == ACTION_RESULT_BLOCKED_DAMAGE ) then
+        local subject = damage.out and zo_strformat("<<!aCg:1>>",damage.target) or "You"
+		local ability = damage.out and zo_strformat("<<!aC:1>> ",damage.ability) or ""
+        FTC.Log:Print(subject .. " blocked " .. ability .. "taking " .. CommaValue(damage.value) .. " damage." , {0.6,0.1,0} )
+
+    -- Dodges
+    elseif ( damage.result == ACTION_RESULT_DODGED or damage.result == ACTION_RESULT_MISS ) then
+        local subject = damage.out and zo_strformat("<<!aCg:1>>",damage.target) or "You"
+		local ability = damage.out and zo_strformat("<<!aC:1>> ",damage.ability) or ""
+        FTC.Log:Print(subject .. " dodged " .. ability .. "taking no damage." , {0.4,0.4,1.0} )
+
 	-- Damage
 	elseif ( damage.value ~= 0 ) then
 
@@ -137,11 +149,11 @@ function FTC.Log:CombatEvent( damage )
 		local subject 	= "You "
 		local verb		= damage.heal and "healed" or "hit"
 		verb			= damage.crit and "critically " .. verb or verb
-		verb			= ( not damage.out ) and "were "..verb or verb
+		verb			= ( not damage.out ) and "were " .. verb or verb
 
 		-- Determine the target
-		local target	= ( damage.out ) and zo_strformat("<<!aC:1>>",damage.target) or ""
-		target 			= ( damage.out and ( target == FTC.Player.name ) ) and " yourself" or " " .. target
+		local target	= ( damage.out and damage.target ~= "" ) and zo_strformat(" <<!aC:1>>",damage.target) or ""
+		target 			= ( damage.out and ( target == FTC.Player.name ) ) and " yourself" or target
 
 		-- Determine the ability used
 		local ability	= ""
