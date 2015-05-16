@@ -138,6 +138,16 @@ FTC.UI.Textures     = {
             [29293] = '/esoui/art/icons/ability_dualwield_001.dds',                 -- Twin Slashes Bleed
             [38841] = '/esoui/art/icons/ability_dualwield_001.dds',                 -- Rending Slashes Bleed
             [38848] = '/esoui/art/icons/ability_dualwield_001.dds',                 -- Blood Craze Bleed
+            --[[
+                                                                                    -- Rapid Regeneration Dummy
+            [] = '/esoui/art/icons/ability_destructionstaff_005.dds',               -- Frost Touch
+            [] = '/esoui/art/icons/ability_destructionstaff_006.dds',               -- Shock Touch
+            [] = '/esoui/art/icons/ability_destructionstaff_007.dds',               -- Fire Touch
+            [] = '/esoui/art/icons/ability_destructionstaff_008.dds',               -- Frost Ring
+            [] = '/esoui/art/icons/ability_destructionstaff_009.dds',               -- Shock Ring
+            [] = '/esoui/art/icons/ability_destructionstaff_010.dds',               -- Fire Ring
+            ]]--
+
 
             -- Weapon Enchantments
             [5187]  = '/esoui/art/icons/death_recap_poison_melee.dds',              -- Poisoned Weapon   
@@ -150,6 +160,7 @@ FTC.UI.Textures     = {
             --[] = '/esoui/art/icons/death_recap_magic_melee.dds',                  -- Absorb Stamina
             --[] = '/esoui/art/icons/ability_mage_002.dds',                         -- Damage Health
             --[] = '/esoui/art/icons/ability_healer_031.dds',                       -- Life Drain
+                                                                                    -- Prismatic Weapon
 
             -- Sorcerer
             [18719] = '/esoui/art/icons/ability_sorcerer_thunder_burst.dds',        -- Mages' Fury Explosion
@@ -160,6 +171,9 @@ FTC.UI.Textures     = {
             [24794] = '/esoui/art/icons/ability_sorcerer_016.dds',                  -- Overload Heavy Attack
             --[] = '/esoui/art/icons/ability_sorcerer_dark_exchange.dds',           -- Dark Exchange Heal
             [21493] = '/esoui/art/icons/death_recap_shock_aoe.dds',                 -- Disintegration
+
+            -- Nightblade
+            --[] =                                                                  -- Gloom Bolt (Shade Summon)
 
             -- Racials
             [36214] = '/esoui/art/icons/ability_dragonknight_028.dds',              -- Star of the West
@@ -218,12 +232,7 @@ FTC.UI.Textures     = {
             ['Shock']                           = '/esoui/art/icons/death_recap_shock_aoe.dds', -- EN
 
             -- destruction staff skills, that depend on staff type
-            ['Frost Touch']                     = '/esoui/art/icons/ability_destructionstaff_005.dds', -- EN
-            ['Shock Touch']                     = '/esoui/art/icons/ability_destructionstaff_006.dds', -- EN
-            ['Fire Touch']                      = '/esoui/art/icons/ability_destructionstaff_007.dds', -- EN
-            ['Frost Ring']                      = '/esoui/art/icons/ability_destructionstaff_008.dds', -- EN
-            ['Shock Ring']                      = '/esoui/art/icons/ability_destructionstaff_009.dds', -- EN
-            ['Fire Ring']                       = '/esoui/art/icons/ability_destructionstaff_010.dds', -- EN,FR
+
             -- DRAGONKNIGHT
             -- Flame Lash
             [L.Effect_Flame_Lash_Heal]          = '/esoui/art/icons/ability_dragonknight_001_a.dds',

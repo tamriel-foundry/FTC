@@ -20,6 +20,7 @@ DONE		Options			sizing, color, fonts, etc..
 
 DONE	Damage Tracking
 DONE		Log				Process all damage events into log
+			Options			Add opacity option for combat log background
 
 
 		Scrolling Combat Text
