@@ -544,13 +544,13 @@ function FTC:FilterBuffInfo( unitTag , name ,  abilityType , iconName )
         35658,          -- Lycanthropy
         39472,          -- Vampirism
         61662,          -- Minor Brutality
-        23673,          -- Major Brutality
+        --23673,          -- Major Brutality
         64509,          -- Majory Savagery
         26795,          -- Major Savagery
         61666,          -- Minor Savagery
         45227,          -- Major Sorcery
         61685,          -- Minor Sorcery  
-        40479,          -- Major Prophecy
+        --40479,          -- Major Prophecy
         61688,          -- Minor Prophecy  
     }
     for i = 1 , #Passives do 
@@ -567,6 +567,8 @@ function FTC:FilterBuffInfo( unitTag , name ,  abilityType , iconName )
         45569,          -- Medicinal Use
         62760,          -- Spell Shield
         63601,          -- ESO Plus Member
+        23673,          -- Major Brutality
+        40479,          -- Major Prophecy
     }
     for i = 1 , #Ignored do 
         if ( name == GetAbilityName(Ignored[i]) ) then 

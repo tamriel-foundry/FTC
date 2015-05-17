@@ -10,24 +10,34 @@ FTC.Frames.Defaults = {
     ["FTC_PlayerFrame"]         = {CENTER,CENTER,-400,300},
     ["EnableNameplate"]         = true,
     ["EnableXPBar"]             = true,
+    ["FrameWidth"]              = 350,
+    ["FrameHeight"]             = 180,  
 
     -- Target Frame
     ["FTC_TargetFrame"]         = {CENTER,CENTER,400,300},
     ["ExecuteThreshold"]        = 25,
     ["DefaultTargetFrame"]      = false,
 
-    -- Shared Settings
-    ["FrameWidth"]              = 350,
-    ["FrameHeight"]             = 180,  
-    ["FrameOpacityIn"]          = 100,
-    ["FrameOpacityOut"]         = 80,    
-    ["FrameFont1"]              = 'esobold',
-    ["FrameFont2"]              = 'esobold',
     ["FrameFontSize"]           = 18,
     ["FrameHealthColor"]        = {133/255,018/255,013/255},
     ["FrameMagickaColor"]       = {064/255,064/255,128/255},
     ["FrameStaminaColor"]       = {038/255,077/255,033/255},
     ["FrameShieldColor"]        = {255/255,100/255,000/255},
+
+    -- Group Frame
+    ["FTC_GroupFrame"]          = {LEFT,LEFT,6,-200},
+    ["GroupWidth"]              = 240,
+    ["GroupHeight"]             = 400,  
+    ["GroupFontSize"]           = 18,
+    ["FrameTankColor"]          = {133/255,018/255,013/255},
+    ["FrameHealerColor"]        = {117/255,077/255,135/255},
+    ["FrameDPSColor"]           = {255/255,208/255,100/255},
+
+    -- Shared Settings
+    ["FrameOpacityIn"]          = 100,
+    ["FrameOpacityOut"]         = 60,    
+    ["FrameFont1"]              = 'esobold',
+    ["FrameFont2"]              = 'esobold',
 }
 FTC:JoinTables(FTC.Defaults,FTC.Frames.Defaults)
 
@@ -53,6 +63,9 @@ function FTC.Frames:Initialize()
         EVENT_MANAGER:UnregisterForUpdate("ZO_PlayerAttribute"..frames[i].."FadeUpdate")
         frame:SetHidden(true)       
     end
+
+    -- Hide default group frame
+    ZO_UnitFramesGroups:SetHidden(true)    
     
     -- Hide the default target frame
     if ( not FTC.Vars.DefaultTargetFrame ) then ZO_TargetUnitFramereticleover:SetHidden(true) end
@@ -66,6 +79,10 @@ function FTC.Frames:Initialize()
     -- Populate initial frames
     FTC.Frames:SetupPlayer()
     FTC.Frames:SetupTarget()
+    FTC.Frames:SetupGroup()
+
+    -- Activate safety check
+    EVENT_MANAGER:RegisterForUpdate( "FTC_PlayerFrame" , 5000 , function() FTC.Frames:SafetyCheck() end )
 end
 
   --[[ 
@@ -93,12 +110,12 @@ function FTC.Frames:SetupPlayer()
     end
 
     -- Populate attributes
-    FTC.Frames:UpdateAttribute( 'player', POWERTYPE_HEALTH,     FTC.Player.health.current,  FTC.Player.health.max,  FTC.Player.health.max )
-    FTC.Frames:UpdateAttribute( 'player', POWERTYPE_MAGICKA,    FTC.Player.magicka.current, FTC.Player.magicka.max, FTC.Player.magicka.max )
-    FTC.Frames:UpdateAttribute( 'player', POWERTYPE_STAMINA,    FTC.Player.stamina.current, FTC.Player.stamina.max, FTC.Player.stamina.max )
+    FTC.Frames:UpdateAttribute( 'player', POWERTYPE_HEALTH, nil )
+    FTC.Frames:UpdateAttribute( 'player', POWERTYPE_MAGICKA, nil )
+    FTC.Frames:UpdateAttribute( 'player', POWERTYPE_STAMINA, nil )
 
     -- Populate shield
-    FTC.Frames:UpdateShield( 'player', FTC.Player.shield.current , FTC.Player.shield.max )
+    FTC.Frames:UpdateShield(    'player' , nil , nil )
 end
  
  --[[ 
@@ -116,11 +133,6 @@ end
         if ( FTC.init.Frames ) then FTC_TargetFrame:SetHidden(true) end
         return 
     end
-                    
-    -- Load the target's health 
-    local current, maximum, effectiveMax = GetUnitPower( 'reticleover' , POWERTYPE_HEALTH )
-    FTC.Target.health = { ["current"] = current , ["max"] = maximum , ["pct"] = zo_roundToNearest(current/maximum,0.01) }
-    FTC.Frames:UpdateAttribute( 'reticleover', POWERTYPE_HEALTH , current, maximum, effectiveMax )
     
     -- Populate custom frames
     if ( FTC.init.Frames ) then 
@@ -156,28 +168,124 @@ end
             title = GetUnitCaption( 'reticleover' )
         end
 
-        -- Populate name
+        -- Populate name plate
         frame.plate.name:SetText( name .. " (" .. level .. ")" )
-
-        -- Populate class icon
         frame.plate.class:SetTexture( icon )
         frame.plate.class:SetHidden( icon == nil )
-
-        -- Populate title
         frame.lplate.title:SetText(title)
         
         -- Populate rank icon
         frame.lplate.rank:SetTexture( rank )
         frame.lplate.rank:SetHidden( rank == nil )
+
+        -- Populate health
+        FTC.Frames:UpdateAttribute( 'reticleover', POWERTYPE_HEALTH , nil )
         
         -- Populate shield
-        local value, maxValue = GetUnitAttributeVisualizerEffectInfo('reticleover',ATTRIBUTE_VISUAL_POWER_SHIELDING,STAT_MITIGATION,ATTRIBUTE_HEALTH,POWERTYPE_HEALTH)
-        FTC.Frames:UpdateShield( 'reticleover' , ( value ~= nil and value > 0 ) and value or 0 , FTC.Target.health.max )
+        FTC.Frames:UpdateShield( 'reticleover' , nil )
 
         -- Display the frame
         frame:SetHidden(false)
     end
 end
+
+ 
+ --[[ 
+ * Set Up Group Frame
+ * --------------------------------
+ * Called by FTC.Frames:Initialize()
+ * --------------------------------
+ ]]--
+function FTC.Frames:SetupGroup()
+
+    -- If the player is in a small group
+    if ( IsUnitGrouped('player') and GetGroupSize() <= 4 ) then
+
+        -- Iterate over members
+        for i = 1 , 4 do
+            local frame = _G["FTC_GroupFrame"..i]
+
+            -- Only proceed for members which exist
+            if ( DoesUnitExist('group'..i) ) then
+
+                -- Configure the nameplate
+                local name      = zo_strformat("<<!aC:1>>",GetUnitName('group'..i))
+                local level     = GetUnitVeteranRank('group'..i) > 0 and "v" .. GetUnitVeteranRank('group'..i) or GetUnitLevel('group'..i)
+
+                -- Get player roles
+                local isDps , isHealer , isTank = GetGroupMemberRoles('group'..i)
+                local color = FTC.Vars.FrameTankColor
+                if isHealer then color = FTC.Vars.FrameHealerColor
+                elseif isDps then color = FTC.Vars.FrameDPSColor end
+
+                -- Color bar by role
+                frame.health:SetCenterColor(color[1]/5,color[2]/5,color[3]/5,1)
+                frame.health.bar:SetColor(color[1],color[2],color[3] ,1)
+
+                -- Populate nameplate
+                local classIcon = GetClassIcon(GetUnitClassId('group'..i)) or nil
+                frame.plate.name:SetText(name .. " (" .. level .. ")")
+                frame.plate.class:SetTexture(classIcon)
+                frame.plate.class:SetHidden(classIcon==nil)
+                frame.plate.icon:SetWidth(IsUnitGroupLeader('group'..i) and 24 or 0)
+
+                -- Populate health bar
+                FTC.Frames:UpdateAttribute( 'group'..i , POWERTYPE_HEALTH , nil )
+
+                -- Override for offline members
+                if ( not IsUnitOnline('group'..i ) ) then 
+                    frame.health.current:SetText(GetString(FTC_Offline))
+                    frame.health.pct:SetText("")
+                    frame.health.bar:SetWidth(0)
+                end
+
+                -- Change the bar color
+                FTC.Frames:GroupRange( 'group'..i , nil )
+
+                -- Display the frame
+                frame:SetHidden(false)
+                frame:SetHeight(FTC.Vars.GroupHeight/4)
+
+            -- Otherwise hide the frame
+            else 
+                frame:SetHidden(true) 
+                frame:SetHeight(0)
+            end
+        end
+        FTC_GroupFrame:SetHidden(false)
+
+    -- Otherwise hide the small group frame
+    else FTC_GroupFrame:SetHidden(true) end
+end
+
+
+ --[[ 
+ * Set Up Group Frame
+ * --------------------------------
+ * Called by FTC.Frames:Initialize()
+ * --------------------------------
+ ]]--
+function FTC.Frames:GroupRange( unitTag , inRange )
+    if ( unitTag == nil ) then return end
+
+    -- If a range status was not passed, retrieve it
+    if ( inRange == nil ) then inRange = IsUnitInGroupSupportRange(unitTag) end
+
+    -- Retrieve the frame
+    local i = tonumber(string.sub(unitTag,-1))
+    local frame = _G["FTC_GroupFrame"..i]
+
+    -- Get player roles
+    local isDps , isHealer , isTank = GetGroupMemberRoles(unitTag)
+    local baseColor = FTC.Vars.FrameHealthColor
+    if isHealer then baseColor = FTC.Vars.FrameMagickaColor
+    elseif isDps then baseColor = FTC.Vars.FrameStaminaColor end
+
+    -- Darken the color of the bar
+    local newColor  = inRange and baseColor or { baseColor[1]/2 , baseColor[2]/2 , baseColor[3]/2 }
+    frame.health.bar:SetColor(unpack(newColor))
+end
+
 
 --[[----------------------------------------------------------
     ATTRIBUTES
@@ -193,12 +301,38 @@ end
  ]]--
  function FTC.Frames:UpdateAttribute( unitTag , powerType ,  powerValue , powerMax , powerEffectiveMax )
  
-    -- Get the context
-    local context = ( unitTag == 'player' ) and "Player" or "Target"
+    -- Setup placeholders
+    local data  = nil
+    local frame = nil
+
+    -- Player Frame
+    if ( unitTag == 'player' ) then
+        data    = FTC.Player
+        frame   = _G["FTC_PlayerFrame"]
     
-    -- Get the attribute
-    local attrs = { [POWERTYPE_HEALTH] = "Health", [POWERTYPE_MAGICKA] = "Magicka", [POWERTYPE_STAMINA] = "Stamina" }
-    local name  = attrs[powerType]
+    -- Target Frame
+    elseif ( unitTag == 'reticleover' ) then
+        data    = FTC.Target
+        frame   = _G["FTC_TargetFrame"]
+
+    -- Small Group Frame
+    elseif ( string.find(unitTag,"group") > 0 and GetGroupSize() <= 4 ) then
+        local i = tonumber(string.sub(unitTag,-1))
+        data    = FTC.Group[i]
+        frame   = _G["FTC_GroupFrame" .. i]
+        FTC.Frames:Fade(unitTag,frame) 
+
+    -- Otherwise bail out
+    else return end
+    
+    -- Translate the attribute
+    local attrs = { [POWERTYPE_HEALTH] = "health", [POWERTYPE_MAGICKA] = "magicka", [POWERTYPE_STAMINA] = "stamina" }
+    local power = attrs[powerType]
+
+    -- Get the value if it was not provided
+    if ( powerValue == nil ) then
+        powerValue, powerMax, powerEffectiveMax = GetUnitPower( unitTag , powerType )
+    end
     
     -- Get the percentage
     local pct = math.max(zo_roundToNearest((powerValue or 0)/powerMax,0.01),0)
@@ -206,11 +340,8 @@ end
     -- Update custom frames
     if ( FTC.init.Frames ) then
     
-        -- Get the unit frame container
-        local frame  = _G["FTC_" .. context .. "Frame"]
-        local attr   = frame[string.lower(name)]
-        
         -- Update bar width
+        local attr = frame[power]
         attr.bar:SetWidth( pct * ( attr:GetWidth() - 6 ) )
 
         -- Update bar labels
@@ -219,7 +350,7 @@ end
         
         -- Maybe add shielding
         if ( powerType == POWERTYPE_HEALTH ) then
-            label = ( FTC[context]["shield"]["current"] ~= nil and FTC[context]["shield"]["current"] > 0 ) and label .. " [" .. CommaValue(FTC[context]["shield"]["current"]) .. "]" or label
+            label = ( data.shield.current ~= nil and data.shield.current > 0 ) and label .. " [" .. CommaValue(data.shield.current) .. "]" or label
         end
 
         -- Override for dead things
@@ -233,17 +364,14 @@ end
         attr.pct:SetText(pctLabel)
 
         -- Maybe prompt for execute
-        if ( context == "Target" ) then 
+        if ( unitTag == 'reticleover' ) then 
             frame.execute:SetHidden( not ( pct < FTC.Vars.ExecuteThreshold/100 ) )
             if ( ( not IsUnitDead(unitTag) ) and ( pct < FTC.Vars.ExecuteThreshold/100 ) and ( FTC.Target.health.pct > FTC.Vars.ExecuteThreshold/100 ) ) then FTC.Frames:Execute() end
         end
-
-        -- Control frame visibility
-        FTC.Frames:Fade(unitTag)
     end
     
     -- Update the database object
-    FTC[context][string.lower(name)] = { ["current"] = powerValue , ["max"] = powerMax , ["pct"] = pct }
+    data[power] = { ["current"] = powerValue , ["max"] = powerMax , ["pct"] = pct }
  end
  
 --[[----------------------------------------------------------
@@ -262,12 +390,37 @@ end
  ]]--
 function FTC.Frames:UpdateShield( unitTag , value , maxValue )
 
-    -- Get the context
-    local context   = ( unitTag == 'player' ) and "Player" or "Target"
-    local frame     = _G['FTC_'..context..'Frame']
+    -- Setup placeholders
+    local data  = nil
+    local frame = nil
+
+    -- Player Frame
+    if ( unitTag == 'player' ) then
+        data    = FTC.Player
+        frame   = _G["FTC_PlayerFrame"]
+    
+    -- Target Frame
+    elseif ( unitTag == 'reticleover' ) then
+        data    = FTC.Target
+        frame   = _G["FTC_TargetFrame"]
+
+    -- Small Group Frame
+    elseif ( string.find(unitTag,"group") > 0 and GetGroupSize() <= 4 ) then
+        local i = tonumber(string.sub(unitTag,-1))
+        data    = FTC.Group[i]
+        frame   = _G["FTC_GroupFrame" .. i]
+        FTC.Frames:Fade(unitTag,frame) 
+
+    -- Otherwise bail out
+    else return end
+
+    -- If no data was passed, get new data
+    if ( value == nil ) then 
+        value = GetUnitAttributeVisualizerEffectInfo(unitTag,ATTRIBUTE_VISUAL_POWER_SHIELDING,STAT_MITIGATION,ATTRIBUTE_HEALTH,POWERTYPE_HEALTH) or 0
+    end
     
     -- Get the unit's maximum health
-    local shieldPct = zo_roundToNearest(value/FTC[context]["health"]["max"],0.01)
+    local shieldPct = zo_roundToNearest(value/data["health"]["max"],0.01)
 
     -- Strip any existing tooltip
     local tooltip = string.gsub( frame.health.current:GetText() , " %[(.*)%]" , "")
@@ -288,9 +441,12 @@ function FTC.Frames:UpdateShield( unitTag , value , maxValue )
         frame.health.current:SetText(tooltip)
         frame.shield:SetHidden(true)
     end
+
+    -- Control fade
+    if ( unitTag ~= 'reticleover' ) then FTC.Frames:Fade(unitTag,frame) end
     
     -- Update the database object
-    FTC[context].shield = { ["current"] = value , ["max"] = maxValue , ["pct"] = shieldPct }
+    data.shield = { ["current"] = value , ["max"] = maxValue , ["pct"] = shieldPct }
 end
 
 
@@ -451,4 +607,37 @@ function FTC.Frames:UpdateWerewolf( powerValue , powerMax , powerEffectiveMax )
     
     -- Change the bar width
     parent.bar:SetWidth( ( powerValue / powerEffectiveMax ) * ( parent:GetWidth() - 2 ) )
+end
+
+
+--[[----------------------------------------------------------
+    UPDATING
+  ]]----------------------------------------------------------
+
+ --[[ 
+ * Safety Check Function to Ensure Accuracy
+ * --------------------------------
+ * Called by FTC.Frames:Initialize()
+ * --------------------------------
+ ]]--
+function FTC.Frames:SafetyCheck()
+
+    -- Don't update the player in combat
+    if ( not IsUnitInCombat('player') ) then
+
+        -- Make sure attributes are up to date
+        FTC.Frames:UpdateAttribute( 'player',POWERTYPE_HEALTH,nil,nil,nil  )
+        FTC.Frames:UpdateAttribute( 'player',POWERTYPE_MAGICKA,nil,nil,nil )
+        FTC.Frames:UpdateAttribute( 'player',POWERTYPE_STAMINA,nil,nil,nil )
+        FTC.Frames:UpdateShield( 'player',nil,nil )
+
+        -- Make sure fade is correct
+        FTC.Frames:Fade('player',FTC_PlayerFrame)
+    end
+
+    -- Fade group frames
+    if ( IsUnitGrouped('player') ) then
+        local context = GetGroupSize() <= 4 and "Group" or "Raid"
+        for i = 1 , GetGroupSize() do FTC.Frames:Fade('group'..i,_G["FTC_"..context.."Frame"..i]) end
+    end
 end

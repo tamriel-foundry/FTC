@@ -61,7 +61,6 @@ function FTC.Target:Initialize()
         ["level"]           = 0,
         ["class"]           = "",
         ["vlevel"]          = 0,
-        ["clevel"]          = 0,
         ["health"]          = { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
         ["magicka"]         = { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
         ["stamina"]         = { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
@@ -111,7 +110,21 @@ function FTC.Target:Update()
 
     -- Hide invalid targets
     if ( FTC.init.Frames ) then FTC_TargetFrame:SetHidden( ignore ) end
+end
 
+--[[----------------------------------------------------------
+    GROUP DATA COMPONENT
+  ]]----------------------------------------------------------
+FTC.Group = {}
+function FTC.Group:Initialize()
+    for i = 1 , 24 do 
+        FTC.Group[i] = {
+            ["health"]          = { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
+            ["magicka"]         = { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
+            ["stamina"]         = { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
+            ["shield"]          = { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
+        }
+    end
 end
 
 --[[----------------------------------------------------------

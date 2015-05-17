@@ -16,6 +16,7 @@ ZO_CreateStringId("SI_BINDING_NAME_TOGGLE_COMBAT_LOG", "Toggle Combat Log")
   ]]----------------------------------------------------------
 ZO_CreateStringId("FTC_Falling",            "Falling")
 ZO_CreateStringId("FTC_Dead",               "Dead")
+ZO_CreateStringId("FTC_Offline",            "Offline")
 
 --[[----------------------------------------------------------
     MENU CORE

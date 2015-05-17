@@ -34,7 +34,11 @@ DONE		Log				Process all damage events into log
 		Damage Meter
 			Statistics		more reported statistics, better insight into per/mob
 
-DONE 	Default Frames	deprecate default frame text
+DONE 	Default Frames		deprecate default frame text
+
+		Group Frames
+			Options			role colors, etc...
+			Sorting			sort frames by role
 
 
 

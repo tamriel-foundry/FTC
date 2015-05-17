@@ -62,13 +62,11 @@
                 FTC_PlayerFrame:ClearAnchors()
                 FTC_PlayerFrame:SetAnchor(BOTTOMLEFT,FTC_UI,CENTER,25,-200)
                 FTC_PlayerFrame:SetHidden(false)
-                FTC_PlayerFrame:SetAlpha(1)
 
                 -- Show the target frame
                 FTC_TargetFrame:ClearAnchors()
                 FTC_TargetFrame:SetAnchor(TOPLEFT,FTC_UI,CENTER,25,200)
                 FTC_TargetFrame:SetHidden(false)
-                FTC_TargetFrame:SetAlpha(1)
 
                 -- Spoof a shield on the player frame
                 FTC.Frames:UpdateShield( 'player', math.floor(FTC.Player.health.max*.75) ,  FTC.Player.health.max )
@@ -258,8 +256,12 @@
         -- Rebuild the frames dynamically
         FTC.Frames:Controls()
 
+        -- Reset the fade animation
+        FTC.Frames.resetAnim = true
+
         -- Re-populate the frames
         FTC.Frames:SetupPlayer()
+        FTC.Frames:SetupGroup()
 
         -- Position the frame for menu display
         FTC.Menu:Reposition(FTC_Menu)

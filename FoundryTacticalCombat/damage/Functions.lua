@@ -35,9 +35,14 @@ end
         -- Ignore certain results
         if ( FTC.Damage:Filter( result ) ) then return end
 
+        -- Compute some flags
+        local isCrit    = result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_DOT_TICK_CRITICAL or result == ACTION_RESULT_HOT_TICK_CRITICAL
+        local isHeal    = result == ACTION_RESULT_HEAL or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_HOT_TICK or result == ACTION_RESULT_HOT_TICK_CRITICAL
+
         -- Get the icon
         local icon = FTC.UI.Textures[abilityName] or '/esoui/art/icons/icon_missing.dds'
-        if ( abilityName == "" and not damageOut ) then icon = '/esoui/art/icons/death_recap_ranged_heavy.dds' end
+        if ( abilityName == "" and ( not damageOut ) and isHeal ) then icon = '/esoui/art/icons/ability_healer_017.dds'
+        elseif ( abilityName == "" and not damageOut ) then icon = '/esoui/art/icons/death_recap_ranged_heavy.dds' end
 
         -- Setup the damage object
         local damage    = {
@@ -50,8 +55,8 @@ end
             ["value"]   = hitValue,
             ["power"]   = powerType,
             ["ms"]      = GetGameTimeMilliseconds(),
-            ["crit"]    = ( result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_DOT_TICK_CRITICAL or result == ACTION_RESULT_HOT_TICK_CRITICAL ) and true or false,
-            ["heal"]    = ( result == ACTION_RESULT_HEAL or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_HOT_TICK or result == ACTION_RESULT_HOT_TICK_CRITICAL ) and true or false,
+            ["crit"]    = isCrit,
+            ["heal"]    = isHeal,
             ["icon"]    = icon,
             ["mult"]    = 1, 
             ["weapon"]  = FTC.Damage:IsWeaponAttack(abilityName),
@@ -71,8 +76,8 @@ end
         if ( hitValue > 0 and ( result == ACTION_RESULT_DAMAGE or result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_BLOCKED_DAMAGE or result == ACTION_RESULT_DOT_TICK or result == ACTION_RESULT_DOT_TICK_CRITICAL ) ) then 
                 
             -- Flag timestamps
-            if ( damageOut )    then FTC.Damage.lastOut = GetGameTimeMilliseconds() end
-            if ( damageIn )     then FTC.Damage.lastIn  = GetGameTimeMilliseconds() end
+            if ( damageOut )    then FTC.Damage.lastOut = GetGameTimeMilliseconds()
+            else                     FTC.Damage.lastIn  = GetGameTimeMilliseconds() end
 
             -- Log and SCT
             if ( FTC.init.Log ) then FTC.Log:CombatEvent(damage) end

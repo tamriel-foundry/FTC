@@ -29,8 +29,8 @@
 FTC                     = {}
 FTC.name                = "FoundryTacticalCombat"
 FTC.tag                 = "FTC"
-FTC.version             = 0.39
-FTC.settings            = 0.39
+FTC.version             = 0.40
+FTC.settings            = 0.40
 FTC.language            = GetCVar("language.2")
 FTC.UI                  = WINDOW_MANAGER:CreateTopLevelWindow( "FTC_UI" )
 
@@ -75,6 +75,7 @@ function FTC.Initialize( eventCode, addOnName )
     -- Setup Character Management
     FTC.Player:Initialize()
     FTC.Target:Initialize()
+    FTC.Group:Initialize()
 
     -- Setup Damage Management
     FTC.Damage:Initialize()

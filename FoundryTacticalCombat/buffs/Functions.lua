@@ -107,6 +107,9 @@ function FTC.Buffs.SetStateCustom( self , state , locked )
     -- Get the pressed slot
     local slot = self.slotNum
 
+    -- Bail if the slot is unused
+    if ( not IsSlotUsed(slot) ) then return retval end
+
     -- Get the used ability
     local ability = FTC.Player.Abilities[slot]
 

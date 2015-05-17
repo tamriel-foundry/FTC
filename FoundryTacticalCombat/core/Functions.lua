@@ -42,33 +42,6 @@ function FTC:JoinTables(t1,t2)
 end
 
  --[[ 
- * A buffering function useful for remembering the last time an OnUpdate script ran
- * Minimizes the number of cycles needed for updating if a refresh is not required every frame
- ]]-- 
-FTC.buffers = {}
-function FTC:BufferScript( bufferKey , bufferTime )
-	
-	-- Make sure a function is passed and exists
-	if not bufferKey then return end
-	
-	-- Set a default buffer threshold
-	bufferTime = bufferTime or 3
-	
-	-- Get the current time	
-	local currentTime = GetFrameTimeMilliseconds()
-	
-	-- Check the buffer table to make sure the function is eligible
-	if not FTC.buffers[bufferKey] then FTC.buffers[bufferKey] = currentTime end
-	if ( currentTime - FTC.buffers[bufferKey] >= bufferTime ) then
-		FTC.buffers[bufferKey] = currentTime
-		return true
-	else
-		return false
-	end
-end
-
-
- --[[ 
  * Toggles the visibility of add-on elements
  * Called by OnReticleHidden()
  ]]-- 
@@ -90,15 +63,6 @@ end
 function CommaValue(number)
 	local left,num,right = string.match(number,'^([^%d]*%d)(%d*)(.-)$')
 	return left..(num:reverse():gsub('(%d%d%d)','%1,'):reverse())..right
-end
-
---[[ 
- * Sanitizes a localized string, removing characters like ^m
- ]]--
-function SanitizeLocalization( localString )
-	if ( localString == nil ) then return "" end
-	local a,b = string.find( localString , "%^" )
-	return ( a ~= nil ) and string.sub( localString , 1 , a - 1 ) or ""
 end
 
 --[[ 

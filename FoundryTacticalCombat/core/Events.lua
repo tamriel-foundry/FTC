@@ -26,6 +26,7 @@
 
         -- Player State Events
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_PLAYER_COMBAT_STATE           , FTC.OnCombatState )
+        EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_STEALTH_STATE_CHANGED         , FTC.OnStealthState )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_DEATH_STATE_CHANGED      , FTC.OnDeath )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_WEREWOLF_STATE_CHANGED        , FTC.OnWerewolf )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_BEGIN_SIEGE_CONTROL           , FTC.OnSiege )
@@ -44,6 +45,15 @@
         
         -- Combat Events
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_COMBAT_EVENT                  , FTC.OnCombatEvent )
+
+        -- Group Events
+        EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_CREATED                  , FTC.OnUnitCreated )
+      --EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_GROUP_MEMBER_JOINED           , FTC.OnGroupChanged )
+        EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_GROUP_MEMBER_LEFT             , FTC.OnGroupChanged )
+        EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_LEADER_UPDATE                 , FTC.OnGroupChanged )
+        EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_GROUP_MEMBER_CONNECTED_STATUS , FTC.OnGroupChanged )
+        EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_GROUP_MEMBER_ROLES_CHANGED    , FTC.OnGroupChanged )
+        EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_GROUP_SUPPORT_RANGE_UPDATE    , FTC.OnGroupRange )
         
         -- Experience Events
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_EXPERIENCE_UPDATE             , FTC.OnXPUpdate )
@@ -153,6 +163,16 @@
             if ( powerType == POWERTYPE_HEALTH ) then
                 if ( FTC.init.Frames ) then FTC.Frames:UpdateSiege( powerValue , powerMax , powerEffectiveMax ) end
             end
+
+        -- Group Updates
+        elseif ( IsUnitGrouped('player') and string.find(unitTag,"group") ) then
+
+            -- Health
+            if ( powerType == POWERTYPE_HEALTH ) then
+                if ( FTC.init.Frames ) then 
+                    FTC.Frames:UpdateAttribute( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
+                end
+            end
         end
     end
 
@@ -164,8 +184,8 @@
      ]]--
     function FTC.OnVisualAdded( eventCode , unitTag, unitAttributeVisual, statType, attributeType, powerType, value, maxValue )
 
-        -- We only care about player and reticletarget
-        if ( unitTag ~= "player" and unitTag ~= "reticleover" ) then return end
+        -- Track Player, Target, and Group
+        if ( unitTag ~= "player" and unitTag ~= "reticleover" and string.match(unitTag,"group") == nil ) then return end
 
         -- Attribute Regeneration
         if ( unitAttributeVisual == ATTRIBUTE_VISUAL_INCREASED_REGEN_POWER or unitAttributeVisual == ATTRIBUTE_VISUAL_DECREASED_REGEN_POWER ) then
@@ -185,8 +205,8 @@
      ]]--             
     function FTC.OnVisualUpdate( eventCode , unitTag, unitAttributeVisual, statType, attributeType, powerType, oldValue, newValue, oldMaxValue, newMaxValue )
 
-        -- We only care about player and reticletarget
-        if ( unitTag ~= "player" and unitTag ~= "reticleover" ) then return end
+        -- Track Player, Target, and Group
+        if ( unitTag ~= "player" and unitTag ~= "reticleover" and string.match(unitTag,"group") == nil ) then return end
 
         -- Attribute Regeneration
         if ( unitAttributeVisual == ATTRIBUTE_VISUAL_INCREASED_REGEN_POWER or unitAttributeVisual == ATTRIBUTE_VISUAL_DECREASED_REGEN_POWER ) then
@@ -207,8 +227,8 @@
      ]]--  
     function FTC.OnVisualRemoved( eventCode , unitTag, unitAttributeVisual, statType, attributeType, powerType, value, maxValue )
 
-        -- We only care about player and reticletarget
-        if ( unitTag ~= "player" and unitTag ~= "reticleover" ) then return end
+        -- Track Player, Target, and Group
+        if ( unitTag ~= "player" and unitTag ~= "reticleover" and string.match(unitTag,"group") == nil ) then return end
         
         -- Attribute Regeneration
         if ( unitAttributeVisual == ATTRIBUTE_VISUAL_INCREASED_REGEN_POWER or unitAttributeVisual == ATTRIBUTE_VISUAL_DECREASED_REGEN_POWER ) then
@@ -217,13 +237,11 @@
         -- Damage Shields
         elseif ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH ) then
 
+            -- Remove from Unit Frame
+            if ( FTC.init.Frames ) then FTC.Frames:UpdateShield( unitTag , 0 , maxValue ) end
+
             -- Verify the shield was removed due to simultaneous damage
-            if ( FTC.Damage.lastIn >= GetGameTimeMilliseconds() - 3 ) then
-
-                -- Remove from Unit Frame
-                if ( FTC.init.Frames ) then FTC.Frames:UpdateShield( unitTag , 0 , maxValue ) end
-
-                -- Remove from Buffs
+            if ( FTC.Damage.lastIn >= GetGameTimeMilliseconds() - 5 ) then
                 if ( FTC.init.Buffs and unitTag == "player" ) then FTC.Buffs:ClearShields() end
             end
         end
@@ -242,6 +260,48 @@
      ]]--
     function FTC.OnCombatState( eventCode, inCombat )
         --if ( FTC.init.SCT ) then FTC.SCT:CombatStatus( inCombat ) end
+
+        -- Control frame visibility
+        if ( FTC.init.Frames ) then FTC.Frames:Fade('player',FTC_PlayerFrame) end
+    end
+
+    --[[ 
+     * Handles Stealth State Changes
+     * --------------------------------
+     * Called by EVENT_STEALTH_STATE_CHANGED
+     * --------------------------------
+     ]]--
+    function FTC.OnStealthState( eventCode, unitTag , stealthState )
+
+        -- Stealth buff
+        if ( FTC.init.Buffs ) then 
+
+            -- Entered stealth
+            local hidden        = GetAbilityName(20309)
+            if ( stealthState == STEALTH_STATE_HIDDEN or stealthState == STEALTH_STATE_HIDDEN_ALMOST_DETECTED or stealthState == STEALTH_STATE_STEALTH or stealthState == STEALTH_STATE_STEALTH_ALMOST_DETECTED ) then
+
+                -- Setup buff object
+                local ability  = {
+                    ["owner"]  = FTC.Player.name,
+                    ["id"]     = 20309,
+                    ["name"]   = hidden,
+                    ["cast"]   = 0,
+                    ["dur"]    = 0,
+                    ["tex"]    = FTC.UI.Textures[hidden],
+                    ["ground"] = false,
+                    ["area"]   = false,
+                    ["debuff"] = false,
+                    ["toggle"] = "T"
+                }
+                FTC.Buffs:NewEffect( ability )
+
+            -- Remove stealth buff
+            elseif ( FTC.Buffs.Player[hidden] ~= nil ) then
+                local buff = FTC.Buffs.Player[hidden]
+                FTC.Buffs.Pool:ReleaseObject(buff.control.id)
+                FTC.Buffs.Player[hidden] = nil 
+            end
+        end
     end
 
     --[[ 
@@ -409,18 +469,38 @@
         -- Pass damage event to handler
         FTC.Damage:New( result , abilityName , abilityGraphic , abilityActionSlotType , sourceName , sourceType , targetName , targetType , hitValue , powerType , damageType )
 
-        
-        -- Pass damage to scrolling combat text
-        --if ( FTC.init.SCT and context ~= "Group" ) then FTC.SCT:NewSCT( damage , context ) end
-        
-        -- Pass damage to damage meter tracking
-        --if ( FTC.init.Damage ) then FTC.Damage:UpdateMeter( damage , context ) end
-        
         -- Pass damage to a callback for extensions to use
        -- CALLBACK_MANAGER:FireCallbacks( "FTC_NewDamage" , damage )
     end
 
 
+--[[----------------------------------------------------------
+    GROUP EVENTS
+  ]]----------------------------------------------------------
+
+    --[[ 
+     * Handles Group Composition Changes
+     * --------------------------------
+     * Called by EVENT_GROUP_MEMBER_JOINED
+     * Called by EVENT_GROUP_MEMBER_LEFT
+     * --------------------------------
+     ]]--
+    function FTC:OnGroupChanged()
+        if ( FTC.init.Frames ) then FTC.Frames:SetupGroup() end    end
+
+    function FTC:OnUnitCreated( unitTag )
+        if ( string.find(unitTag,"group") > 0 and FTC.init.Frames ) then FTC.Frames:SetupGroup() end
+    end
+
+    --[[ 
+     * Handles Group Member Range Changes
+     * --------------------------------
+     * Called by EVENT_GROUP_SUPPORT_RANGE_UPDATE
+     * --------------------------------
+     ]]--
+    function FTC.OnGroupRange( eventCode , unitTag , inRange )
+        if ( FTC.init.Frames ) then FTC.Frames:GroupRange( unitTag , inRange ) end
+    end
 
 
 --[[----------------------------------------------------------

@@ -133,7 +133,7 @@ function FTC.Menu:Controls()
             max         = 100, 
             step        = 10, 
             getFunc     = function() return FTC.Vars.FrameOpacityIn end, 
-            setFunc     = function( value ) FTC.Menu:Update( "FrameOpacityIn" , value ) end, 
+            setFunc     = function( value ) FTC.Menu:UpdateFrames( "FrameOpacityIn" , value ) end, 
             default     = FTC.Defaults.OpacityIn
         },
            
@@ -145,7 +145,7 @@ function FTC.Menu:Controls()
             max         = 100, 
             step        = 10,
             getFunc     = function() return FTC.Vars.FrameOpacityOut end, 
-            setFunc     = function( value ) FTC.Menu:Update( "FrameOpacityOut" , value ) end, 
+            setFunc     = function( value ) FTC.Menu:UpdateFrames( "FrameOpacityOut" , value ) end, 
             default     = FTC.Defaults.OpacityOut
         },
 
