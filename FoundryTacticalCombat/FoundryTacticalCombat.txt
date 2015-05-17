@@ -81,11 +81,11 @@ sct/Controls.lua
 hotbar/Functions.lua
 hotbar/Controls.lua
 
-lang/en.lua
-lang/$(language).lua
-
 menu/Functions.lua
 menu/Controls.lua
+
+lang/en.lua
+lang/$(language).lua
 
 #extensions/Sorcerer.lua
 #extensions/Weapons.lua

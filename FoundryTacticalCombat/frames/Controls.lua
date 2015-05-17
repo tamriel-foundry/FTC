@@ -21,7 +21,7 @@ function FTC.Frames:Controls()
     player.backdrop = FTC.UI:Backdrop(  "FTC_PlayerFrame_BG",               player,     "inherit",                                              {CENTER,CENTER,0,0},            {0,0,0,0.4}, {0,0,0,1}, nil, true )
     player.backdrop:SetEdgeTexture("",16,4,4)
     player:SetDrawTier(DT_HIGH)
-    player:SetAlpha(FTC.Vars.FrameOpacityOut)
+    player:SetAlpha(FTC.Vars.FrameOpacityOut/100)
     player:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end)
 
     -- Nameplate
@@ -85,7 +85,7 @@ function FTC.Frames:Controls()
     target.backdrop = FTC.UI:Backdrop(  "FTC_TargetFrame_BG",               target,     "inherit",                                              {CENTER,CENTER,0,0},            {0,0,0,0.4}, {0,0,0,1}, nil, true ) 
     target.backdrop:SetEdgeTexture("",16,4,4)
     target:SetDrawTier(DT_HIGH)
-    target:SetAlpha(FTC.Vars.FrameOpacityOut)
+    target:SetAlpha(FTC.Vars.FrameOpacityIn/100)
     target:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end) 
 
     -- Nameplate
@@ -126,7 +126,7 @@ function FTC.Frames:Controls()
       ]]-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
     -- Create the group frame container  
-    local group     = FTC.UI:Control(   "FTC_GroupFrame",                   FTC_UI,     {FTC.Vars.GroupWidth,FTC.Vars.GroupHeight},             FTC.Vars.FTC_GroupFrame,        false )
+    local group     = FTC.UI:Control(   "FTC_GroupFrame",                   FTC_UI,     {FTC.Vars.GroupWidth,FTC.Vars.GroupHeight},             FTC.Vars.FTC_GroupFrame,        true )
     group.backdrop  = FTC.UI:Backdrop(  "FTC_GroupFrame_BG",                group,      "inherit",                                              {CENTER,CENTER,0,0},            {0,0,0,0.4}, {0,0,0,1}, nil, true ) 
     group.backdrop:SetEdgeTexture("",16,4,4)
     group:SetDrawTier(DT_HIGH)
@@ -136,7 +136,7 @@ function FTC.Frames:Controls()
     local anchor    = {TOP,TOP,0,0,group}
     for i = 1 , 4 do
     local member    = FTC.UI:Control(   "FTC_GroupFrame"..i,                group,      {FTC.Vars.GroupWidth,FTC.Vars.GroupHeight/4},           anchor,                         false )
-    member:SetAlpha(FTC.Vars.FrameOpacityOut)
+    member:SetAlpha(FTC.Vars.FrameOpacityOut/100)
 
     -- Nameplate
     local plate     = FTC.UI:Control(   "FTC_GroupFrame"..i.."_Plate",      member,     {member:GetWidth(),member:GetHeight()/3},               {TOP,TOP,0,0}, false ) 
@@ -181,7 +181,7 @@ function FTC.Frames:Fade(unitTag,frame)
         if ( frame == nil ) then return end
 
         -- Determine display status
-        local displayFrame = FTC.inMenu or IsUnitInCombat(unitTag)
+        local displayFrame = IsUnitInCombat(unitTag)
 
         -- Create a fade in animation
         if ( frame.fadeIn == nil or FTC.Frames.resetAnim ) then

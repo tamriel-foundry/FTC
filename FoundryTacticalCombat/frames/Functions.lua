@@ -25,13 +25,16 @@ FTC.Frames.Defaults = {
     ["FrameShieldColor"]        = {255/255,100/255,000/255},
 
     -- Group Frame
+    ["EnableGroupFrames"]       = true,
     ["FTC_GroupFrame"]          = {LEFT,LEFT,6,-200},
-    ["GroupWidth"]              = 240,
+    ["GroupWidth"]              = 250,
     ["GroupHeight"]             = 400,  
+    ["GroupHidePlayer"]         = false,
     ["GroupFontSize"]           = 18,
+    ["ColorRoles"]              = true,
     ["FrameTankColor"]          = {133/255,018/255,013/255},
     ["FrameHealerColor"]        = {117/255,077/255,135/255},
-    ["FrameDPSColor"]           = {255/255,208/255,100/255},
+    ["FrameDamageColor"]        = {255/255,196/255,128/255},
 
     -- Shared Settings
     ["FrameOpacityIn"]          = 100,
@@ -63,12 +66,6 @@ function FTC.Frames:Initialize()
         EVENT_MANAGER:UnregisterForUpdate("ZO_PlayerAttribute"..frames[i].."FadeUpdate")
         frame:SetHidden(true)       
     end
-
-    -- Hide default group frame
-    ZO_UnitFramesGroups:SetHidden(true)    
-    
-    -- Hide the default target frame
-    if ( not FTC.Vars.DefaultTargetFrame ) then ZO_TargetUnitFramereticleover:SetHidden(true) end
 
     -- Create unit frame UI elements
     FTC.Frames:Controls()
@@ -127,6 +124,9 @@ end
  * --------------------------------
  ]]--
  function FTC.Frames:SetupTarget()
+
+    -- Ensure the default frame stays hidden
+    if ( not FTC.Vars.DefaultTargetFrame ) then ZO_TargetUnitFramereticleover:SetHidden(true) end
 
     -- Bail out if we don't have a target
     if ( not DoesUnitExist('reticleover') ) then 
@@ -198,8 +198,17 @@ end
  ]]--
 function FTC.Frames:SetupGroup()
 
+    -- Bail out of group frames are disabled
+    if ( not FTC.Vars.EnableGroupFrames ) then 
+        ZO_UnitFramesGroups:SetHidden(false)
+        return 
+    end
+
     -- If the player is in a small group
     if ( IsUnitGrouped('player') and GetGroupSize() <= 4 ) then
+
+        -- Hide default frames
+        ZO_UnitFramesGroups:SetHidden(true)
 
         -- Iterate over members
         for i = 1 , 4 do
@@ -214,9 +223,13 @@ function FTC.Frames:SetupGroup()
 
                 -- Get player roles
                 local isDps , isHealer , isTank = GetGroupMemberRoles('group'..i)
-                local color = FTC.Vars.FrameTankColor
-                if isHealer then color = FTC.Vars.FrameHealerColor
-                elseif isDps then color = FTC.Vars.FrameDPSColor end
+                local role      = "Damage"
+                if isTank       then role = "Tank"
+                elseif isHealer then role = "Healer" end
+                FTC.Group[i].role = role
+
+                -- Determine bar color
+                local color =( FTC.Vars.ColorRoles ) and FTC.Vars["Frame"..role.."Color"] or FTC.Vars.FrameHealthColor
 
                 -- Color bar by role
                 frame.health:SetCenterColor(color[1]/5,color[2]/5,color[3]/5,1)
@@ -246,12 +259,20 @@ function FTC.Frames:SetupGroup()
                 frame:SetHidden(false)
                 frame:SetHeight(FTC.Vars.GroupHeight/4)
 
+                -- Maybe hide the player
+                if ( FTC.Vars.GroupHidePlayer and i == GetGroupIndexByUnitTag('player') ) then
+                    frame:SetHidden(true) 
+                    frame:SetHeight(0)
+                end
+
             -- Otherwise hide the frame
             else 
                 frame:SetHidden(true) 
                 frame:SetHeight(0)
             end
         end
+
+        -- Display custom frames
         FTC_GroupFrame:SetHidden(false)
 
     -- Otherwise hide the small group frame
@@ -276,13 +297,16 @@ function FTC.Frames:GroupRange( unitTag , inRange )
     local frame = _G["FTC_GroupFrame"..i]
 
     -- Get player roles
-    local isDps , isHealer , isTank = GetGroupMemberRoles(unitTag)
-    local baseColor = FTC.Vars.FrameHealthColor
-    if isHealer then baseColor = FTC.Vars.FrameMagickaColor
-    elseif isDps then baseColor = FTC.Vars.FrameStaminaColor end
+    local color = FTC.Vars.FrameHealthColor
+    if ( FTC.Vars.ColorRoles ) then
+        local isDps , isHealer , isTank = GetGroupMemberRoles('group'..i)
+        if isTank       then color = FTC.Vars.FrameTankColor
+        elseif isHealer then color = FTC.Vars.FrameHealerColor
+        elseif isDps    then color = FTC.Vars.FrameDamageColor end
+    end
 
     -- Darken the color of the bar
-    local newColor  = inRange and baseColor or { baseColor[1]/2 , baseColor[2]/2 , baseColor[3]/2 }
+    local newColor  = inRange and color or { color[1]/2 , color[2]/2 , color[3]/2 }
     frame.health.bar:SetColor(unpack(newColor))
 end
 
@@ -441,9 +465,6 @@ function FTC.Frames:UpdateShield( unitTag , value , maxValue )
         frame.health.current:SetText(tooltip)
         frame.shield:SetHidden(true)
     end
-
-    -- Control fade
-    if ( unitTag ~= 'reticleover' ) then FTC.Frames:Fade(unitTag,frame) end
     
     -- Update the database object
     data.shield = { ["current"] = value , ["max"] = maxValue , ["pct"] = shieldPct }
@@ -626,10 +647,12 @@ function FTC.Frames:SafetyCheck()
     if ( not IsUnitInCombat('player') ) then
 
         -- Make sure attributes are up to date
-        FTC.Frames:UpdateAttribute( 'player',POWERTYPE_HEALTH,nil,nil,nil  )
-        FTC.Frames:UpdateAttribute( 'player',POWERTYPE_MAGICKA,nil,nil,nil )
-        FTC.Frames:UpdateAttribute( 'player',POWERTYPE_STAMINA,nil,nil,nil )
-        FTC.Frames:UpdateShield( 'player',nil,nil )
+        if ( not FTC.inMenu ) then
+            FTC.Frames:UpdateAttribute( 'player',POWERTYPE_HEALTH,nil,nil,nil  )
+            FTC.Frames:UpdateAttribute( 'player',POWERTYPE_MAGICKA,nil,nil,nil )
+            FTC.Frames:UpdateAttribute( 'player',POWERTYPE_STAMINA,nil,nil,nil )
+            FTC.Frames:UpdateShield( 'player',nil,nil )
+        end
 
         -- Make sure fade is correct
         FTC.Frames:Fade('player',FTC_PlayerFrame)

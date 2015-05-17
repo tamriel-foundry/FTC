@@ -228,6 +228,10 @@
             FTC.Menu:UpdateLog()            
 
         -- Reset combat text
+        elseif ( context == "SCT" ) then
+            for var , value in pairs( FTC.SCT.Defaults ) do
+                FTC.Vars[var] = value   
+            end
 
         -- Reset hotbar
 
@@ -311,10 +315,7 @@
      * Called by FTC.Menu:Controls()
      * --------------------------------
      ]]--
-    function FTC.Menu:GetBuffFormat(setting)
-
-        -- Get the stored value
-        local value = FTC.Vars[setting]
+    function FTC.Menu:GetBuffFormat(value)
 
         -- Return the translated string
         if ( value == "disabled" )   then return GetString(FTC_BuffFormat0)

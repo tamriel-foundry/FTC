@@ -256,6 +256,99 @@ function FTC.Menu:Controls()
             default     = FTC.Vars.FrameShieldColor,
         },
 
+        -- Use Small Group Frame?
+        {   type        = "checkbox", 
+            name        = GetString(FTC_Menu_FGroup),
+            tooltip     = GetString(FTC_Menu_FGroupDesc),
+            getFunc     = function() return FTC.Vars.EnableGroupFrames end, 
+            setFunc     = function(value) FTC.Menu:UpdateFrames( 'EnableGroupFrames' , value ) end,
+            default     = FTC.Defaults.EnableGroupFrames
+        },
+
+        -- Group Frame Width
+        {   type        = "slider", 
+            name        = GetString(FTC_Menu_FGWidth),
+            tooltip     = GetString(FTC_Menu_FGWidthDesc),
+            min         = 150, 
+            max         = 350, 
+            step        = 50, 
+            getFunc     = function() return FTC.Vars.GroupWidth end, 
+            setFunc     = function( value ) FTC.Menu:UpdateFrames( "GroupWidth" , value ) end, 
+            default     = FTC.Defaults.GroupWidth,
+        },
+
+        -- Group Frame Height
+        {   type        = "slider", 
+            name        = GetString(FTC_Menu_FGHeight),
+            tooltip     = GetString(FTC_Menu_FGHeightDesc),
+            min         = 300, 
+            max         = 500, 
+            step        = 50, 
+            getFunc     = function() return FTC.Vars.GroupHeight end, 
+            setFunc     = function( value ) FTC.Menu:UpdateFrames( "GroupHeight" , value ) end, 
+            default     = FTC.Defaults.GroupHeight,
+        },
+
+        -- Group Frame Font Size
+        {   type        = "slider", 
+            name        = GetString(FTC_Menu_FGFontS),
+            tooltip     = GetString(FTC_Menu_FGFontSDesc),
+            min         = 12,
+            max         = 24, 
+            step        = 1, 
+            getFunc     = function() return FTC.Vars.GroupFontSize end, 
+            setFunc     = function( value ) FTC.Menu:UpdateFrames( "GroupFontSize" , value ) end, 
+            default     = FTC.Defaults.GroupFontSize
+        },
+
+        -- Show Player in Group Frame?
+        {   type        = "checkbox", 
+            name        = GetString(FTC_Menu_FGHideP),
+            tooltip     = GetString(FTC_Menu_FGHidePDesc),
+            getFunc     = function() return FTC.Vars.GroupHidePlayer end, 
+            setFunc     = function(value) FTC.Menu:UpdateFrames( 'GroupHidePlayer' , value ) end,
+            default     = FTC.Defaults.GroupHidePlayer
+        },
+
+        -- Colorize Roles?
+        {   type        = "checkbox", 
+            name        = GetString(FTC_Menu_FColorR),
+            tooltip     = GetString(FTC_Menu_FColorRDesc),
+            getFunc     = function() return FTC.Vars.ColorRoles end, 
+            setFunc     = function(value) FTC.Menu:UpdateFrames( 'ColorRoles' , value ) end,
+            default     = FTC.Defaults.ColorRoles
+        },
+
+        -- Tank Role Color
+        {   type        = "colorpicker", 
+            name        = GetString(FTC_Menu_FTankC),
+            tooltip     = GetString(FTC_Menu_FTankCDesc),
+            getFunc     = function() return unpack(FTC.Vars.FrameTankColor) end, 
+            setFunc     = function(r,g,b,a) FTC.Menu:UpdateFrames('FrameTankColor', { math.floor(r*100)/100 , math.floor(g*100)/100 , math.floor(b*100)/100 }) end,
+            default     = FTC.Vars.FrameTankColor,
+        },
+
+        -- Healer Role Color
+        {   type        = "colorpicker", 
+            name        = GetString(FTC_Menu_FHealerC),
+            tooltip     = GetString(FTC_Menu_FHealerCDesc),
+            getFunc     = function() return unpack(FTC.Vars.FrameHealerColor) end, 
+            setFunc     = function(r,g,b,a) FTC.Menu:UpdateFrames('FrameHealerColor', { math.floor(r*100)/100 , math.floor(g*100)/100 , math.floor(b*100)/100 }) end,
+            default     = FTC.Vars.FrameHealerColor,
+        },
+
+        -- DPS Role Color
+        {   type        = "colorpicker", 
+            name        = GetString(FTC_Menu_FDamageC),
+            tooltip     = GetString(FTC_Menu_FDamageCDesc),
+            getFunc     = function() return unpack(FTC.Vars.FrameDamageColor) end, 
+            setFunc     = function(r,g,b,a) FTC.Menu:UpdateFrames('FrameDamageColor', { math.floor(r*100)/100 , math.floor(g*100)/100 , math.floor(b*100)/100 }) end,
+            default     = FTC.Vars.FrameDamageColor,
+        },
+
+
+
+
         -- Reset Unit Frames
         { 
             type        = "button", 
@@ -284,9 +377,9 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_BPBFormat),
             tooltip     = GetString(FTC_Menu_BPBFormatDesc),
             choices     = { GetString(FTC_BuffFormat1) , GetString(FTC_BuffFormat2) , GetString(FTC_BuffFormat3) , GetString(FTC_BuffFormat4) , GetString(FTC_BuffFormat0) }, 
-            getFunc     = function() return FTC.Menu:GetBuffFormat('PlayerBuffFormat') end, 
+            getFunc     = function() return FTC.Menu:GetBuffFormat(FTC.Vars.PlayerBuffFormat) end, 
             setFunc     = function( value ) FTC.Menu:UpdateBuffFormat('PlayerBuffFormat',value) end,
-            default     = FTC.Menu:GetBuffFormat('PlayerBuffFormat'), 
+            default     = FTC.Menu:GetBuffFormat(FTC.Defaults.PlayerBuffFormat), 
         },
 
         -- Player Debuff Format
@@ -294,9 +387,9 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_BPDFormat),
             tooltip     = GetString(FTC_Menu_BPDFormatDesc),
             choices     = { GetString(FTC_BuffFormat1) , GetString(FTC_BuffFormat2) , GetString(FTC_BuffFormat3) , GetString(FTC_BuffFormat4) , GetString(FTC_BuffFormat0) }, 
-            getFunc     = function() return FTC.Menu:GetBuffFormat('PlayerDebuffFormat') end, 
+            getFunc     = function() return FTC.Menu:GetBuffFormat(FTC.Vars.PlayerDebuffFormat) end, 
             setFunc     = function( value ) FTC.Menu:UpdateBuffFormat('PlayerDebuffFormat',value) end,
-            default     = FTC.Menu:GetBuffFormat('PlayerDebuffFormat'), 
+            default     = FTC.Menu:GetBuffFormat(FTC.Defaults.PlayerDebuffFormat), 
         },
 
         -- Long Buff Format
@@ -304,9 +397,9 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_BLBFormat),
             tooltip     = GetString(FTC_Menu_BLBFormatDesc),
             choices     = { GetString(FTC_BuffFormat1) , GetString(FTC_BuffFormat2) , GetString(FTC_BuffFormat3) , GetString(FTC_BuffFormat4) , GetString(FTC_BuffFormat0) }, 
-            getFunc     = function() return FTC.Menu:GetBuffFormat('LongBuffFormat') end, 
+            getFunc     = function() return FTC.Menu:GetBuffFormat(FTC.Vars.LongBuffFormat) end, 
             setFunc     = function( value ) FTC.Menu:UpdateBuffFormat('LongBuffFormat',value) end,
-            default     = FTC.Menu:GetBuffFormat('LongBuffFormat'), 
+            default     = FTC.Menu:GetBuffFormat(FTC.Defaults.LongBuffFormat),
         },
 
         -- Target Buff Format
@@ -314,9 +407,9 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_BTBFormat),
             tooltip     = GetString(FTC_Menu_BTBFormatDesc),
             choices     = { GetString(FTC_BuffFormat1) , GetString(FTC_BuffFormat2) , GetString(FTC_BuffFormat3) , GetString(FTC_BuffFormat4) , GetString(FTC_BuffFormat0) }, 
-            getFunc     = function() return FTC.Menu:GetBuffFormat('TargetBuffFormat') end, 
+            getFunc     = function() return FTC.Menu:GetBuffFormat(FTC.Vars.TargetBuffFormat) end, 
             setFunc     = function( value ) FTC.Menu:UpdateBuffFormat('TargetBuffFormat',value) end,
-            default     = FTC.Menu:GetBuffFormat('TargetBuffFormat'), 
+            default     = FTC.Menu:GetBuffFormat(FTC.Defaults.TargetBuffFormat),
         },
 
         -- Target Debuff Format
@@ -324,9 +417,9 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_BTDFormat),
             tooltip     = GetString(FTC_Menu_BTDFormatDesc),
             choices     = { GetString(FTC_BuffFormat1) , GetString(FTC_BuffFormat2) , GetString(FTC_BuffFormat3) , GetString(FTC_BuffFormat4) , GetString(FTC_BuffFormat0) }, 
-            getFunc     = function() return FTC.Menu:GetBuffFormat('TargetDebuffFormat') end, 
+            getFunc     = function() return FTC.Menu:GetBuffFormat(FTC.Defaults.TargetDebuffFormat) end, 
             setFunc     = function( value ) FTC.Menu:UpdateBuffFormat('TargetDebuffFormat',value) end,
-            default     = FTC.Menu:GetBuffFormat('TargetDebuffFormat'), 
+            default     = FTC.Menu:GetBuffFormat(FTC.Defaults.TargetDebuffFormat),
         },
 
         -- Primary Buffs Font
@@ -517,8 +610,14 @@ function FTC.Menu:Controls()
             setFunc     = function( value ) FTC.Menu:UpdateFrames( "SCTFontSize" , value ) end, 
             default     = FTC.Defaults.SCTFontSize
         },
-        
 
+        -- Reset SCT
+        { 
+            type        = "button", 
+            name        = GetString(FTC_Menu_SCTReset),
+            tooltip     = GetString(FTC_Menu_SCTResetDesc),
+            func        = function() FTC.Menu:Reset("SCT") end,
+        },
     }
     if FTC.Vars.EnableSCT then
         for i = 1 , #SCT do table.insert( FTC.Menu.options , SCT[i] ) end

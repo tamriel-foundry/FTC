@@ -8,6 +8,8 @@ FTC.Buffs.Defaults = {
     -- Player Buffs
     ["FTC_PlayerBuffs"]         = {CENTER,CENTER,0,400},  
     ["PlayerBuffFormat"]        = "dlist",
+
+    -- Long Buffs
     ["FTC_LongBuffs"]           = {BOTTOMRIGHT,BOTTOMRIGHT,-2,-2},
     ["LongBuffFormat"]          = "vtiles",
 
@@ -24,7 +26,6 @@ FTC.Buffs.Defaults = {
     ["TargetDebuffFormat"]      = "dlist",
 
     -- Shared Settings  
-    ["MaxBuffs"]                = 8,
     ["AnchorBuffs"]             = true,
 
     -- Fonts
