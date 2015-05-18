@@ -60,13 +60,8 @@
 
                 -- Show the player frame
                 FTC_PlayerFrame:ClearAnchors()
-                FTC_PlayerFrame:SetAnchor(BOTTOMLEFT,FTC_UI,CENTER,25,-200)
+                FTC_PlayerFrame:SetAnchor(LEFT,FTC_UI,CENTER,25,0)
                 FTC_PlayerFrame:SetHidden(false)
-
-                -- Show the target frame
-                FTC_TargetFrame:ClearAnchors()
-                FTC_TargetFrame:SetAnchor(TOPLEFT,FTC_UI,CENTER,25,200)
-                FTC_TargetFrame:SetHidden(false)
 
                 -- Spoof a shield on the player frame
                 FTC.Frames:UpdateShield( 'player', math.floor(FTC.Player.health.max*.75) ,  FTC.Player.health.max )
@@ -75,7 +70,14 @@
             -- Buff Tracking Display
             if ( FTC.init.Buffs ) then 
 
-                -- Spoof buffs for player and target
+                -- Move buffs
+                local offsetY = ( FTC.Vars.FrameHeight ~= nil ) and ( FTC.Vars.FrameHeight / 2 ) + 6 or 106
+                FTC_PlayerBuffs:ClearAnchors()
+                FTC_PlayerBuffs:SetAnchor(TOPLEFT,FTC_UI,CENTER,25,offsetY)
+                FTC_PlayerDebuffs:ClearAnchors()
+                FTC_PlayerDebuffs:SetAnchor(BOTTOMLEFT,FTC_UI,CENTER,25,-1 * offsetY)
+
+                -- Spoof player buffs
                 FTC.Buffs.Target = {}
                 FTC.Menu.buffCounter = 1
                 EVENT_MANAGER:RegisterForUpdate( "FTC_MenuBuffs" , 100 , function() FTC.Menu:FakeBuffs() end )
@@ -110,19 +112,20 @@
                 -- Restore the correct shield
                 local value, maxValue = GetUnitAttributeVisualizerEffectInfo('player',ATTRIBUTE_VISUAL_POWER_SHIELDING,STAT_MITIGATION,ATTRIBUTE_HEALTH,POWERTYPE_HEALTH)
                 FTC.Frames:UpdateShield( 'player', value or 0 , maxValue or 0)
-
-                -- Reset the target frame
-                FTC_TargetFrame:ClearAnchors()
-                local anchor = FTC.Vars.FTC_TargetFrame
-                FTC_TargetFrame:SetAnchor(anchor[1],FTC_UI,anchor[2],anchor[3],anchor[4])
-                FTC.Frames:SetupTarget()
             end
 
             -- Buff Tracking Display
             if ( FTC.init.Buffs ) then 
 
+                -- Move buffs
+                FTC_PlayerBuffs:ClearAnchors()
+                local anchor = FTC.Vars.FTC_PlayerBuffs
+                FTC_PlayerBuffs:SetAnchor(anchor[1],FTC_UI,anchor[2],anchor[3],anchor[4])
+                FTC_PlayerDebuffs:ClearAnchors()
+                local anchor = FTC.Vars.FTC_PlayerDebuffs
+                FTC_PlayerDebuffs:SetAnchor(anchor[1],FTC_UI,anchor[2],anchor[3],anchor[4])
+
                 -- Restore buffs for player
-                FTC.Buffs.Target = {}
                 FTC.Buffs.Player = {}
                 EVENT_MANAGER:UnregisterForUpdate( "FTC_MenuBuffs" )
                 FTC.Buffs:GetBuffs('player')
@@ -176,21 +179,6 @@
     end
 
     --[[ 
-     * Update Saved Element Position
-     * --------------------------------
-     * Called by OnMouseUp() on movable elements
-     * --------------------------------
-     ]]--
-    function FTC.Menu:SaveAnchor( control )
-        
-        -- Get the new position
-        local isValidAnchor, point, relativeTo, relativePoint, offsetX, offsetY = control:GetAnchor()
-        
-        -- Save the anchors
-        if ( isValidAnchor ) then FTC.Vars[control:GetName()] = {point,relativeTo,relativePoint,offsetX,offsetY} end
-    end
-
-    --[[ 
      * Reset Settings to Default
      * --------------------------------
      * Called by FTC.Menu:Controls()
@@ -218,7 +206,6 @@
                 FTC.Vars[var] = value   
             end
             FTC.Menu:UpdateBuffs()
-
 
         -- Reset combat log
         elseif ( context == "Log" ) then
@@ -410,66 +397,10 @@
                 }
                 FTC.Buffs:NewEffect( ability )
             elseif ( FTC.Buffs.Player["Player Debuff 2"]["ends"] <= time + 1 ) then FTC.Buffs.Player["Player Debuff 2"]["ends"] = time + 6 end
-
-        -- Fake Target Buff 1
-        elseif ( FTC.Menu.buffCounter == 5 ) then
-            if ( FTC.Buffs.Target["Target Buff 1"] == nil ) then
-                local ability = {
-                    ["owner"]   = "",
-                    ["name"]    = "Target Buff 1",
-                    ["dur"]     = 8000, 
-                    ["cast"]    = 0,
-                    ["debuff"]  = false,
-                    ["tex"]     = '/esoui/art/icons/ability_rogue_001.dds',
-                }
-                FTC.Buffs:NewEffect( ability )
-            elseif ( FTC.Buffs.Target["Target Buff 1"]["ends"] <= time + 1 ) then FTC.Buffs.Target["Target Buff 1"]["ends"] = time + 8 end
-
-        -- Fake Target Buff 2
-        elseif ( FTC.Menu.buffCounter == 6 ) then
-            if ( FTC.Buffs.Target["Target Buff 2"] == nil ) then
-                local ability = {
-                    ["owner"]   = "",
-                    ["name"]    = "Target Buff 2",
-                    ["dur"]     = 12000, 
-                    ["cast"]    = 0,
-                    ["debuff"]  = false,
-                    ["tex"]     = '/esoui/art/icons/ability_rogue_019.dds',
-                }
-                FTC.Buffs:NewEffect( ability )
-            elseif ( FTC.Buffs.Target["Target Buff 2"]["ends"] <= time + 1 ) then FTC.Buffs.Target["Target Buff 2"]["ends"] = time + 12 end
-
-        -- Fake Target Debuff 1
-        elseif ( FTC.Menu.buffCounter == 7 ) then
-            if ( FTC.Buffs.Target["Target Debuff 1"] == nil ) then
-                local ability = {
-                    ["owner"]   = "",
-                    ["name"]    = "Target Debuff 1",
-                    ["dur"]     = 7000, 
-                    ["cast"]    = 0,
-                    ["debuff"]  = true,
-                    ["tex"]     = '/esoui/art/icons/ability_rogue_029.dds',
-                }
-                FTC.Buffs:NewEffect( ability )
-            elseif ( FTC.Buffs.Target["Target Debuff 1"]["ends"] <= time + 1 ) then FTC.Buffs.Target["Target Debuff 1"]["ends"] = time + 7 end
-
-        -- Fake Target Debuff 2
-        elseif ( FTC.Menu.buffCounter == 8 ) then
-            if ( FTC.Buffs.Target["Target Debuff 2"] == nil ) then
-                local ability = {
-                    ["owner"]   = "",
-                    ["name"]    = "Target Debuff 2",
-                    ["dur"]     = 9000, 
-                    ["cast"]    = 0,
-                    ["debuff"]  = true,
-                    ["tex"]     = '/esoui/art/icons/ability_rogue_022.dds',
-                }
-                FTC.Buffs:NewEffect( ability ) 
-            elseif ( FTC.Buffs.Target["Target Debuff 2"]["ends"] <= time + 1 ) then FTC.Buffs.Target["Target Debuff 2"]["ends"] = time + 9 end
         end
 
         -- Increment the counter
-        FTC.Menu.buffCounter = ( FTC.Menu.buffCounter <= 8 ) and FTC.Menu.buffCounter + 1 or 1
+        FTC.Menu.buffCounter = ( FTC.Menu.buffCounter <= 4 ) and FTC.Menu.buffCounter + 1 or 1
     end
 
 
@@ -525,6 +456,27 @@
   ]]----------------------------------------------------------
 
     --[[ 
+     * Update Combat Log Size and Position
+     * --------------------------------
+     * Called by FTC.Menu:Controls()
+     * --------------------------------
+     ]]--
+    function FTC.Menu:MoveLog()
+
+        -- Get the log
+        local log = FTC_CombatLog
+        
+        -- Get the new position and dimensions
+        local isValidAnchor, point, relativeTo, relativePoint, offsetX, offsetY = log:GetAnchor()
+        local width , height = log:GetDimensions()
+
+        -- Save the new settings
+        if ( isValidAnchor ) then FTC.Vars[log:GetName()] = {point,relativeTo,relativePoint,offsetX,offsetY} end
+        FTC.Vars.LogWidth = width
+        FTC.Vars.LogHeight = height
+    end
+
+    --[[ 
      * Live Combat Log
      * --------------------------------
      * Called by FTC.Menu:Controls()
@@ -542,93 +494,84 @@
     end
 
 
+--[[----------------------------------------------------------
+     REPOSITION ELEMENTS
+  ]]----------------------------------------------------------
 
+    --[[ 
+     * Enable Re-Positioning Unit Frames
+     * --------------------------------
+     * Called by FTC.Menu:Controls()
+     * --------------------------------
+     ]]--
+    function FTC.Menu:MoveFrames()
 
+        -- Get the current move status
+        local move = not FTC.move
 
-
-
-
-
-
-
-
---[[ 
- * Enable Re-Positioning Unit Frames
- * --------------------------------
- * Called by FTC.Menu:Controls()
- * --------------------------------
- ]]--
-function FTC.Menu:MoveFrames()
-
-    -- Get the current move status
-    local move = not FTC.move
-    
-    -- Display frames
-    if ( FTC.init.Frames ) then
-        FTC_PlayerFrame:SetHidden( false )
-        FTC_PlayerFrame:SetMouseEnabled( move )
-        FTC_PlayerFrame:SetMovable( move )
+        -- Start by returning to the normal UI
+        SCENE_MANAGER:SetInUIMode(false)
         
-        FTC_TargetFrame:SetHidden( not move )
-        FTC_TargetFrame:SetMouseEnabled( move )
-        FTC_TargetFrame:SetMovable( move )
-    end
-    
-    -- Display buffs
-    if ( FTC.init.Buffs ) then
-        FTC_PlayerBuffsBackdrop:SetHidden( not move )
-        FTC_PlayerBuffsLabel:SetHidden( not move )
-        
-        FTC_PlayerDebuffsBackdrop:SetHidden( not move )
-        FTC_PlayerDebuffsLabel:SetHidden( not move )
-    
-        FTC_TargetBuffsBackdrop:SetHidden( not move )
-        FTC_TargetBuffsLabel:SetHidden( not move )
-        
-        FTC_TargetDebuffsBackdrop:SetHidden( not move )
-        FTC_TargetDebuffsLabel:SetHidden( not move )
-    
-        FTC_LongBuffs:SetHidden( false )
-        FTC_LongBuffs:SetMouseEnabled( move )
-        FTC_LongBuffs:SetMovable( move )
-        
-        if ( not FTC.Vars.AnchorBuffs ) then
-            FTC_PlayerBuffs:SetMouseEnabled( move )
-            FTC_PlayerBuffs:SetMovable( move )      
-            FTC_PlayerDebuffs:SetMouseEnabled( move )
-            FTC_PlayerDebuffs:SetMovable( move )
-        
-            FTC_TargetBuffs:SetMouseEnabled( move )
-            FTC_TargetBuffs:SetMovable( move )
-            FTC_TargetDebuffs:SetMouseEnabled( move )
-            FTC_TargetDebuffs:SetMovable( move )
+        -- Unit Frames
+        if ( FTC.init.Frames ) then
+            local frames = { FTC_PlayerFrame , FTC_TargetFrame , FTC_GroupFrame }
+            for _ , frame in pairs(frames) do
+                frame:SetMouseEnabled( move )
+                frame:SetHidden( false )
+                frame:SetAlpha(1)
+                if ( frame.backdrop ~= nil ) then frame.backdrop:SetHidden(not move) end
+                if ( frame.label ~= nil ) then frame.label:SetHidden(not move) end
+            end
+
+            -- If we are done moving, make sure frame visibility is correct
+            if ( not move ) then FTC.Frames:SetupTarget() end
+            if ( not move ) then FTC.Frames:SetupGroup() end
         end
-    end
-    
-    -- Display SCT
-    if ( FTC.init.SCT ) then
-        FTC_CombatTextOut:SetHidden(false)
-        FTC_CombatTextOut:SetMouseEnabled( move )
-        FTC_CombatTextOut:SetMovable( move )
-        FTC_CombatTextOut_Backdrop:SetHidden( not move )
-        FTC_CombatTextOut_Label:SetHidden( not move )
+        
+        -- Buff Tracking
+        if ( FTC.init.Buffs ) then
+            local frames = { FTC_PlayerBuffs , FTC_PlayerDebuffs , FTC_LongBuffs , FTC_TargetBuffs , FTC_TargetDebuffs }
+            for _ , frame in pairs(frames) do
+                frame:SetMouseEnabled( move )
+                frame:SetHidden( false )
+                frame:SetAlpha(1)
+                if ( frame.backdrop ~= nil ) then frame.backdrop:SetHidden(not move) end
+                if ( frame.label ~= nil ) then frame.label:SetHidden(not move) end
+            end
+        end
 
-        FTC_CombatTextIn:SetHidden(false)
-        FTC_CombatTextIn:SetMouseEnabled( move )
-        FTC_CombatTextIn:SetMovable( move )     
-        FTC_CombatTextIn_Backdrop:SetHidden( not move )
-        FTC_CombatTextIn_Label:SetHidden( not move )    
+        -- Combat Log
+        if ( FTC.init.Log ) then
+            FTC_CombatLog:SetMouseEnabled( move )
+        end
+      
+        -- Display SCT
+        if ( FTC.init.SCT ) then
+            local frames = { FTC_SCTOut , FTC_SCTIn }
+            for _ , frame in pairs(frames) do
+                frame:SetMouseEnabled( move )
+                frame:SetHidden( false )
+                frame:SetAlpha(1)
+                if ( frame.backdrop ~= nil ) then frame.backdrop:SetHidden(not move) end
+                if ( frame.label ~= nil ) then frame.label:SetHidden(not move) end
+            end            
+        end
 
-        FTC_CombatTextStatus:SetHidden(false)       
-        FTC_CombatTextStatus:SetMouseEnabled( move )
-        FTC_CombatTextStatus:SetMovable( move )
-        FTC_CombatTextStatus_Backdrop:SetHidden( not move )
-        FTC_CombatTextStatus_Label:SetHidden( not move )    
+        -- Toggle the move status
+        FTC.move = move
     end
-    
-    -- Toggle the move status
-    FTC.move = move
-    
-    -- Display a message
-    local message = move and "FTC frames are now movable, drag them to re-position!" or "FTC frames are now locked!"
-end
+
+    --[[ 
+     * Update Saved Element Position
+     * --------------------------------
+     * Called by OnMouseUp() on movable elements
+     * --------------------------------
+     ]]--
+    function FTC.Menu:SaveAnchor( control )
+        
+        -- Get the new position
+        local isValidAnchor, point, relativeTo, relativePoint, offsetX, offsetY = control:GetAnchor()
+
+        -- Save the anchors
+        if ( isValidAnchor ) then FTC.Vars[control:GetName()] = {point,relativePoint,offsetX,offsetY,relativeTo} end
+    end

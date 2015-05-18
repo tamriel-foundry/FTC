@@ -5,7 +5,9 @@
 
 FTC.Log		= {}
 FTC.Log.Defaults = {
-    ["FTC_CombatLog"]         	= {BOTTOMLEFT,FTC_UI,BOTTOMLEFT,30,-6},
+    ["FTC_CombatLog"]         	= {BOTTOMLEFT,FTC_UI,BOTTOMLEFT,24,-6},
+    ["LogWidth"]         		= 460,
+    ["LogHeight"]         		= 300,
     ["AlternateChat"]         	= true,
     ["LogFont"]         		= "standard",
     ["LogFontSize"]         	= 16,
@@ -29,12 +31,13 @@ function FTC.Log:Initialize()
 
 	-- Maybe create the log
 	if ( FTC_CombatLog == nil ) then FCL = LMW:CreateMsgWindow("FTC_CombatLog", "Combat Log", nil , nil ) end
-	FCL:SetDimensions(500,300)
+	FCL:SetDimensions(FTC.Vars.LogWidth,FTC.Vars.LogHeight)
 	FCL:SetParent(FTC_UI)
 	FCL:ClearAnchors()
 	FCL:SetAnchor(unpack(FTC.Vars.FTC_CombatLog))
 	FCL:SetClampedToScreen(false)
-    FCL:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end)
+	FCL:SetMouseEnabled(false)
+    FCL:SetHandler( "OnMouseUp", function() FTC.Menu:MoveLog() end )
 	
 	-- Change the styling
 	FCL.buffer = _G["FTC_CombatLogBuffer"]
@@ -45,8 +48,10 @@ function FTC.Log:Initialize()
 	-- Save initialization status
 	FTC.init.Log = true
 
-	-- Setup chat system
-	FTC.Log:SetupChat()
+	-- Hook into chat system
+	ZO_PreHook(CHAT_SYSTEM, "Minimize", function() FTC.Log:SetupChat( false ) end)
+	ZO_PreHook(CHAT_SYSTEM, "Maximize", function() FTC.Log:SetupChat( true ) end)
+	
 end
 
 --[[ 
@@ -55,19 +60,13 @@ end
  * Called by FTC.Log:Initialize()
  * --------------------------------
  ]]--
-function FTC.Log:SetupChat()
+function FTC.Log:SetupChat( chatShown )
 
 	-- Toggle visibility with chat
-	if ( FTC.Vars.AlternateChat ) then 
-		ZO_PreHook(CHAT_SYSTEM, "Minimize", function() FTC_CombatLog:SetHidden( false ) end)
-		ZO_PreHook(CHAT_SYSTEM, "Maximize", function() FTC_CombatLog:SetHidden( true ) end)
-	
-	-- Don't Toggle
-	else
-		ZO_PreHook(CHAT_SYSTEM, "Minimize", function() return end )
-		ZO_PreHook(CHAT_SYSTEM, "Maximize", function() return end )
-    	FCL:SetHidden(false)
-	end
+	if ( FTC.Vars.AlternateChat ) then FTC_CombatLog:SetHidden( chatShown ) end
+
+	-- Always show in move mode
+	if ( FTC.move ) then FTC_CombatLog:SetHidden(false) end
 end
 
 

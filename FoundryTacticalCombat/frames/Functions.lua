@@ -7,14 +7,14 @@ FTC.Frames = {}
 FTC.Frames.Defaults = {
     
     -- Player Frame
-    ["FTC_PlayerFrame"]         = {CENTER,CENTER,-400,300},
+    ["FTC_PlayerFrame"]         = {TOPRIGHT,CENTER,-250,180},
     ["EnableNameplate"]         = true,
     ["EnableXPBar"]             = true,
     ["FrameWidth"]              = 350,
     ["FrameHeight"]             = 180,  
 
     -- Target Frame
-    ["FTC_TargetFrame"]         = {CENTER,CENTER,400,300},
+    ["FTC_TargetFrame"]         = {TOPLEFT,CENTER,250,180},
     ["ExecuteThreshold"]        = 25,
     ["DefaultTargetFrame"]      = false,
 
@@ -128,7 +128,7 @@ end
     -- Ensure the default frame stays hidden
     if ( not FTC.Vars.DefaultTargetFrame ) then ZO_TargetUnitFramereticleover:SetHidden(true) end
 
-    -- Bail out if we don't have a target
+    -- Bail out if we don't have a target and we are not in move mode
     if ( not DoesUnitExist('reticleover') ) then 
         if ( FTC.init.Frames ) then FTC_TargetFrame:SetHidden(true) end
         return 

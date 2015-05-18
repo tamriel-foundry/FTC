@@ -5,28 +5,28 @@
 FTC.Buffs = {}
 FTC.Buffs.Defaults = {
 
+    -- Player Debuffs
+    ["FTC_PlayerDebuffs"]       = {BOTTOMRIGHT,CENTER,-250,174}, 
+    ["PlayerDebuffFormat"]      = "htiles",
+
     -- Player Buffs
-    ["FTC_PlayerBuffs"]         = {CENTER,CENTER,0,400},  
+    ["FTC_PlayerBuffs"]         = {TOPRIGHT,CENTER,-250,366},  
     ["PlayerBuffFormat"]        = "dlist",
 
     -- Long Buffs
     ["FTC_LongBuffs"]           = {BOTTOMRIGHT,BOTTOMRIGHT,-2,-2},
     ["LongBuffFormat"]          = "vtiles",
 
-    -- Player Debuffs
-    ["FTC_PlayerDebuffs"]       = {CENTER,CENTER,0,500},
-    ["PlayerDebuffFormat"]      = "htiles",
-
     -- Target Buffs
-    ["FTC_TargetBuffs"]         = {CENTER,CENTER,0,-500},
+    ["FTC_TargetBuffs"]         = {BOTTOMLEFT,CENTER,250,174}, 
     ["TargetBuffFormat"]        = "htiles",
 
     -- Target Debuffs
-    ["FTC_TargetDebuffs"]       = {CENTER,CENTER,0,-400},
+    ["FTC_TargetDebuffs"]       = {TOPLEFT,CENTER,250,306},  
     ["TargetDebuffFormat"]      = "dlist",
 
     -- Shared Settings  
-    ["AnchorBuffs"]             = true,
+    ["MaxBuffs"]                = 7,
 
     -- Fonts
     ["BuffsFont1"]              = 'esobold',
@@ -509,9 +509,6 @@ function FTC.Buffs:Update( unitTag )
                 -- Update the count
                 longCount = longCount + 1
 
-                -- Update the container height
-                if ( FTC.Vars.LongBuffFormat ~= "htiles" ) then container:SetHeight(longCount*50) end
-
             -- Debuffs
             elseif ( buffs[i].debuff and ( FTC.Vars[context.."DebuffFormat"] ~= "disabled" ) ) then
                 local container =  _G["FTC_"..context.."Debuffs"]
@@ -535,9 +532,6 @@ function FTC.Buffs:Update( unitTag )
                 -- Update the count
                 debuffCount = debuffCount + 1
 
-                -- Update the container height
-                if ( FTC.Vars[context.."DebuffFormat"] ~= "htiles" ) then container:SetHeight(debuffCount*50) end
-
             -- Buffs
             elseif ( not isLong and ( FTC.Vars[context.."BuffFormat"] ~= "disabled" ) ) then
                 local container =  _G["FTC_"..context.."Buffs"]
@@ -560,9 +554,6 @@ function FTC.Buffs:Update( unitTag )
 
                 -- Update the count
                 buffCount = buffCount + 1
-
-                -- Update the container height
-                if ( FTC.Vars[context.."BuffFormat"] ~= "htiles" ) then container:SetHeight(buffCount*50) end  
             end
         end
     end

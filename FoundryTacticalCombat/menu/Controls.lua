@@ -76,8 +76,6 @@ function FTC.Menu:Controls()
             warning     = GetString(FTC_Menu_Reload),
         },
 
-
-
         -- Enable/Disable Ultimate Tracking
         {   type        = "checkbox", 
             name        = GetString(FTC_Menu_Hotbar),
@@ -88,6 +86,15 @@ function FTC.Menu:Controls()
             warning     = GetString(FTC_Menu_Reload),
         }
         ]]
+
+        -- Reposition Elements?
+        { 
+            type        = "button", 
+            name        = GetString(FTC_Menu_Move),
+            tooltip     = GetString(FTC_Menu_MoveDesc),
+            func        = function() FTC.Menu:MoveFrames() end,
+        }, 
+
     }
 
     --[[----------------------------------------------------------
@@ -652,45 +659,6 @@ function FTC.Menu:Controls()
     if FTC.Vars.EnableDamage then
         for i = 1 , #Extras do table.insert( FTC.Menu.options , Extras[i] ) end
     end
-    ]]
-
-    --[[----------------------------------------------------------
-        REPOSITION ELEMENTS
-      ]]----------------------------------------------------------
-    --[[
-    local Core = {
-        
-        -- Reposition Header
-        { 
-            type        = "header", 
-            name        = FTC.L("Reposition FTC Elements"),
-            width       = "full" 
-        },
-    
-        -- Augment Default Frames?
-        { 
-            type        = "button", 
-            name        = FTC.L("Lock Positions"),
-            tooltip     = FTC.L("Modify FTC frame positions?"), 
-            func        = function() FTC.Menu:MoveFrames() end,
-        }, 
-
-        -- Restore Defaults?
-        { 
-            type        = "header", 
-            name        = FTC.L("Reset Settings"),
-            width       = "full" 
-        },
-
-        { 
-            type        = "button", 
-            name        = FTC.L("Restore Defaults"),
-            tooltip     = FTC.L("Restore FTC to default settings."),
-            func        = function() FTC.Menu:Reset() end,
-            warning     = FTC.L("Reloads UI")
-        }, 
-    }
-    for i = 1 , #Core do table.insert( FTC.Menu.options , Core[i] ) end
     ]]
 
 end

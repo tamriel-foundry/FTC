@@ -49,6 +49,9 @@ local default = ( FTC.Defaults.EnableHotbar ) and "Enabled" or "Disabled"
 ZO_CreateStringId("FTC_Menu_Hotbar",        "Enable Advanced Hotbar")
 ZO_CreateStringId("FTC_Menu_HotbarDesc",    "Enable advanced tooltips displayed over the default hotbar? [Default: "..default.."]")
 
+ZO_CreateStringId("FTC_Menu_Move",          "Unlock Positions")
+ZO_CreateStringId("FTC_Menu_MoveDesc",      "Modify the position of FTC interface elements.")
+
 --[[----------------------------------------------------------
     UNIT FRAMES
   ]]----------------------------------------------------------

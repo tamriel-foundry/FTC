@@ -14,17 +14,19 @@
 		-- Create outgoing damage container
 		local CTO 		= FTC.UI:Control(   "FTC_SCTOut",           FTC_UI,     {400,900},             	FTC.Vars.FTC_SCTOut,       	false )  
 	    CTO.backdrop 	= FTC.UI:Backdrop(  "FTC_SCTOut_BG",        CTO,     	"inherit",              {CENTER,CENTER,0,0},      	{0,0,0,0.4}, {0,0,0,1}, nil, true )
-	    CTO.backdrop:SetEdgeTexture("",16,4,4)
 	    CTO.label       = FTC.UI:Label(     "FTC_SCTOut_Label",     CTO,        "inherit",              {CENTER,CENTER,0,0},       	FTC.UI:Font("trajan",24,true) , nil , {1,1} , "Outgoing Damage" , true )   
+	    CTO.backdrop:SetEdgeTexture("",16,4,4)	    
 	    CTO:SetDrawLayer(DL_BACKGROUND)
+	    CTO:SetMovable(true)
 	    CTO:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end)
 
 		-- Create incoming damage container
-		local CTI 		= FTC.UI:Control(   "FTC_SCTIn",           FTC_UI,     {400,900},             	FTC.Vars.FTC_SCTIn,       	false )  
+		local CTI 		= FTC.UI:Control(   "FTC_SCTIn",           FTC_UI,     	{400,900},             	FTC.Vars.FTC_SCTIn,       	false )  
 	    CTI.backdrop 	= FTC.UI:Backdrop(  "FTC_SCTIn_BG",        CTI,     	"inherit",              {CENTER,CENTER,0,0},      	{0,0,0,0.4}, {0,0,0,1}, nil, true )
-	    CTI.backdrop:SetEdgeTexture("",16,4,4)
-	    CTI.label       = FTC.UI:Label(     "FTC_SCTIn_Label",     CTI,        "inherit",               {CENTER,CENTER,0,0},       	FTC.UI:Font("trajan",24,true) , nil , {1,1} , "Incoming Damage" , true )   
+	    CTI.label       = FTC.UI:Label(     "FTC_SCTIn_Label",     CTI,        	"inherit",              {CENTER,CENTER,0,0},       	FTC.UI:Font("trajan",24,true) , nil , {1,1} , "Incoming Damage" , true )  
+	    CTI.backdrop:SetEdgeTexture("",16,4,4) 
 	    CTI:SetDrawLayer(DL_BACKGROUND)
+	    CTI:SetMovable(true)
 	    CTI:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end)
 
 	    -- Define pool for damage events
@@ -32,20 +34,13 @@
 	    if ( FTC.SCT.InPool == nil )  then FTC.SCT.InPool  = ZO_ObjectPool:New( FTC.SCT.CreateSCTIn  , function(object) FTC.SCT:ReleaseSCT(object) end ) end
 
 		--[[
-		
 		-- Create status alerts container
 		local name		= "FTC_CombatTextStatus"
 		local anchor	= FTC.vars[name]
 		local CTS 		= FTC.UI.TopLevelWindow( name , GuiRoot , {500,400} , {anchor[1],anchor[2],anchor[3],anchor[4]} , false )
 		CTS.backdrop 	= FTC.UI.Backdrop( name.."_Backdrop" , CTS , "inherit" , {CENTER,CENTER,0,0} , nil , nil , true )	
 		CTS.label		= FTC.UI.Label( name.."_Label" , CTS , 'inherit' , {CENTER,CENTER,0,0} , FTC.Fonts.meta(16) , nil , {1,1} , "Status Alerts" , true )
-		
-		-- Register movement handlers
-		CTO:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end )
-		CTI:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end )
-		CTS:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end )
-		]]--
-		
+		]]--	
 	end
 
 

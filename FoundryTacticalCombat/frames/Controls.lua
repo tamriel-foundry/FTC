@@ -19,9 +19,11 @@ function FTC.Frames:Controls()
     -- Create the player frame container    
     local player    = FTC.UI:Control(   "FTC_PlayerFrame",                  FTC_UI,     {FTC.Vars.FrameWidth,FTC.Vars.FrameHeight},             FTC.Vars.FTC_PlayerFrame,       false )  
     player.backdrop = FTC.UI:Backdrop(  "FTC_PlayerFrame_BG",               player,     "inherit",                                              {CENTER,CENTER,0,0},            {0,0,0,0.4}, {0,0,0,1}, nil, true )
+    player.label    = FTC.UI:Label(     "FTC_PlayerFrame_Label",            player,     "inherit",                                              {CENTER,CENTER,0,0},            FTC.UI:Font("trajan",24,true) , nil , {1,1} , "Player Frame" , true )   
     player.backdrop:SetEdgeTexture("",16,4,4)
     player:SetDrawTier(DT_HIGH)
     player:SetAlpha(FTC.Vars.FrameOpacityOut/100)
+    player:SetMovable(true)
     player:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end)
 
     -- Nameplate
@@ -81,21 +83,23 @@ function FTC.Frames:Controls()
       ]]-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         
     -- Create the target frame container  
-    local target    = FTC.UI:Control(   "FTC_TargetFrame",                  FTC_UI,     {FTC.Vars.FrameWidth,FTC.Vars.FrameHeight},             FTC.Vars.FTC_TargetFrame,       true )
+    local target    = FTC.UI:Control(   "FTC_TargetFrame",                  FTC_UI,     {FTC.Vars.FrameWidth,FTC.Vars.FrameHeight*(4/6)},       FTC.Vars.FTC_TargetFrame,       true )
     target.backdrop = FTC.UI:Backdrop(  "FTC_TargetFrame_BG",               target,     "inherit",                                              {CENTER,CENTER,0,0},            {0,0,0,0.4}, {0,0,0,1}, nil, true ) 
+    target.label    = FTC.UI:Label(     "FTC_TargetFrame_Label",            target,     "inherit",                                              {CENTER,CENTER,0,0},            FTC.UI:Font("trajan",24,true) , nil , {1,1} , "Target Frame" , true )   
     target.backdrop:SetEdgeTexture("",16,4,4)
     target:SetDrawTier(DT_HIGH)
     target:SetAlpha(FTC.Vars.FrameOpacityIn/100)
+    target:SetMovable(true)
     target:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end) 
 
     -- Nameplate
-    local plate     = FTC.UI:Control(   "FTC_TargetFrame_Plate",            target,     {target:GetWidth(),(target:GetHeight()/6)},             {TOP,TOP,0,0}, false ) 
+    local plate     = FTC.UI:Control(   "FTC_TargetFrame_Plate",            target,     {target:GetWidth(),(target:GetHeight()/4)},             {TOP,TOP,0,0}, false ) 
     plate.name      = FTC.UI:Label(     "FTC_TargetFrame_PlateName",        plate ,     {plate:GetWidth()-42,30},                               {BOTTOMLEFT,BOTTOMLEFT,6,0},    FTC.UI:Font(FTC.Vars.FrameFont1,FTC.Vars.FrameFontSize+2,true), nil, {0,1}, "Target Name (Level)", false ) 
     plate.class     = FTC.UI:Texture(   "FTC_TargetFrame_PlateClass",       plate ,     {36,36},                                                {BOTTOMRIGHT,BOTTOMRIGHT,0,2},  "/esoui/art/contacts/social_classicon_" .. FTC.Player.class .. ".dds", false )
     target.plate    = plate
 
     -- Health Bar
-    local health    = FTC.UI:Backdrop(  "FTC_TargetFrame_Health",           target,     {target:GetWidth(),target:GetHeight()*2/6},             {TOP,BOTTOM,0,0,target.plate},  {FTC.Vars.FrameHealthColor[1]/5,FTC.Vars.FrameHealthColor[2]/5,FTC.Vars.FrameHealthColor[3]/5,1}, {0,0,0,1}, FTC.UI.Textures.grainy, false ) 
+    local health    = FTC.UI:Backdrop(  "FTC_TargetFrame_Health",           target,     {target:GetWidth(),target:GetHeight()/2},               {TOP,BOTTOM,0,0,target.plate},  {FTC.Vars.FrameHealthColor[1]/5,FTC.Vars.FrameHealthColor[2]/5,FTC.Vars.FrameHealthColor[3]/5,1}, {0,0,0,1}, FTC.UI.Textures.grainy, false ) 
     health.bar      = FTC.UI:Statusbar( "FTC_TargetFrame_HealthBar",        health,     {health:GetWidth()-6,health:GetHeight()-4},             {LEFT,LEFT,3,0},                {FTC.Vars.FrameHealthColor[1],FTC.Vars.FrameHealthColor[2],FTC.Vars.FrameHealthColor[3],1}, FTC.UI.Textures.grainy, false )   
     health.current  = FTC.UI:Label(     "FTC_TargetFrame_HealthCurrent",    health,     {health:GetWidth()*2/3,health:GetHeight()},             {LEFT,LEFT,12,0},               FTC.UI:Font(FTC.Vars.FrameFont1,FTC.Vars.FrameFontSize+2,true), nil, {0,1}, 'Health', false )       
     health.pct      = FTC.UI:Label(     "FTC_TargetFrame_HealthPct",        health,     {health:GetWidth()*1/3,health:GetHeight()},             {RIGHT,RIGHT,-12,0},            FTC.UI:Font(FTC.Vars.FrameFont2,FTC.Vars.FrameFontSize+2,true), nil, {2,1}, 'Pct%', false )
@@ -110,7 +114,7 @@ function FTC.Frames:Controls()
     target.execute  = execute
 
     -- Titleplate
-    local lplate    = FTC.UI:Control(   "FTC_TargetFrame_LPlate",           target,     {target:GetWidth(),(target:GetHeight()/6)},             {TOP,BOTTOM,0,6,target.health}, false ) 
+    local lplate    = FTC.UI:Control(   "FTC_TargetFrame_LPlate",           target,     {target:GetWidth(),(target:GetHeight()/4)},             {TOP,BOTTOM,0,6,target.health}, false ) 
     lplate.title    = FTC.UI:Label(     "FTC_TargetFrame_LPlateTitle",      lplate,     {lplate:GetWidth(),30},                                 {RIGHT,RIGHT,-6,0},             FTC.UI:Font(FTC.Vars.FrameFont1,FTC.Vars.FrameFontSize,true), nil, {2,1}, 'Title', false )
     lplate.rank     = FTC.UI:Texture(   "FTC_TargetFrame_LPlateIcon",       lplate,     {30,30},                                                {LEFT,LEFT,0,0},                "/esoui/art/ava/ava_rankicon_sergeant.dds", false )        
     target.lplate   = lplate    
@@ -128,15 +132,17 @@ function FTC.Frames:Controls()
     -- Create the group frame container  
     local group     = FTC.UI:Control(   "FTC_GroupFrame",                   FTC_UI,     {FTC.Vars.GroupWidth,FTC.Vars.GroupHeight},             FTC.Vars.FTC_GroupFrame,        true )
     group.backdrop  = FTC.UI:Backdrop(  "FTC_GroupFrame_BG",                group,      "inherit",                                              {CENTER,CENTER,0,0},            {0,0,0,0.4}, {0,0,0,1}, nil, true ) 
+    group.label     = FTC.UI:Label(     "FTC_GroupFrame_Label",             group,      "inherit",                                              {CENTER,CENTER,0,0},            FTC.UI:Font("trajan",24,true) , nil , {1,1} , "Small Group Frame" , true )   
     group.backdrop:SetEdgeTexture("",16,4,4)
     group:SetDrawTier(DT_HIGH)
+    group:SetMovable(true)
     group:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end)    
 
     -- Iterate over four group members
     local anchor    = {TOP,TOP,0,0,group}
     for i = 1 , 4 do
     local member    = FTC.UI:Control(   "FTC_GroupFrame"..i,                group,      {FTC.Vars.GroupWidth,FTC.Vars.GroupHeight/4},           anchor,                         false )
-    member:SetAlpha(FTC.Vars.FrameOpacityOut/100)
+    member:SetAlpha(FTC.Vars.FrameOpacityIn/100)
 
     -- Nameplate
     local plate     = FTC.UI:Control(   "FTC_GroupFrame"..i.."_Plate",      member,     {member:GetWidth(),member:GetHeight()/3},               {TOP,TOP,0,0}, false ) 
@@ -177,8 +183,7 @@ FTC.Frames.resetAnim = false
 function FTC.Frames:Fade(unitTag,frame)
 
         -- Bail for invalid frames
-        if ( not FTC.init.Frames ) then return end
-        if ( frame == nil ) then return end
+        if ( not FTC.init.Frames or frame == nil or FTC.move ) then return end
 
         -- Determine display status
         local displayFrame = IsUnitInCombat(unitTag)
