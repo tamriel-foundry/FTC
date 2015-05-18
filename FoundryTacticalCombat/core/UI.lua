@@ -149,20 +149,18 @@ FTC.UI.Textures     = {
             [39145] = '/esoui/art/icons/ability_destructionstaff_010.dds',          -- Fire Ring
             [39146] = '/esoui/art/icons/ability_destructionstaff_008.dds',          -- Frost Ring
             [39147] = '/esoui/art/icons/ability_destructionstaff_009.dds',          -- Shock Ring
-
                                                                                     -- Wall of Elements
-
             -- Weapon Enchantments
             [5187]  = '/esoui/art/icons/death_recap_poison_melee.dds',              -- Poisoned Weapon   
             [17895] = '/esoui/art/icons/death_recap_fire_melee.dds',                -- Fiery Weapon
             [17897] = '/esoui/art/icons/death_recap_cold_melee.dds',                -- Frozen Weapon    
             [17899] = '/esoui/art/icons/death_recap_shock_melee.dds',               -- Charged Weapon
             [17904] = '/esoui/art/icons/death_recap_disease_melee.dds',             -- Befouled Weapon
-            --[] = '/esoui/art/icons/death_recap_cold_ranged.dds',                  -- Frozen Weapon and Hardening
-            --[] = '/esoui/art/icons/death_recap_magic_melee.dds',                  -- Absorb Magicka
-            --[] = '/esoui/art/icons/death_recap_magic_melee.dds',                  -- Absorb Stamina
-            --[] = '/esoui/art/icons/ability_mage_002.dds',                         -- Damage Health
-            --[] = '/esoui/art/icons/ability_healer_031.dds',                       -- Life Drain
+            [47405] = '/esoui/art/icons/death_recap_cold_ranged.dds',               -- Frozen Weapon and Hardening
+            [46743] = '/esoui/art/icons/death_recap_magic_melee.dds',               -- Absorb Magicka
+            [46746] = '/esoui/art/icons/death_recap_magic_melee.dds',               -- Absorb Stamina
+            [46215] = '/esoui/art/icons/ability_mage_002.dds',                      -- Damage Health
+            [28919] = '/esoui/art/icons/ability_healer_031.dds',                    -- Life Drain
             [40337] = '/esoui/art/icons/ability_rogue_008.dds',                     -- Prismatic Weapon
 
             -- Dragonknight

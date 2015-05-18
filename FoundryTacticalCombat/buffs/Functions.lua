@@ -66,6 +66,7 @@ function FTC.Buffs.Initialize()
     
     -- Setup status flags
     FTC.Buffs.lastCast  = 0
+    FTC.Buffs.pending   = {}
     
     -- Register init status
     FTC.init.Buffs = true
@@ -263,12 +264,14 @@ function FTC.Buffs:NewEffect( ability )
     local newBuff = {
         ["owner"]   = ability.owner,
         ["name"]    = ability.name,
+        ["id"]      = ability.id,
         ["stacks"]  = 0,
         ["debuff"]  = ability.debuff or false,
         ["area"]    = ability.area   or false,
         ["toggle"]  = ability.toggle,        
         ["icon"]    = ability.tex,
         ["begin"]   = ( ms + castTime ) / 1000,
+        ["pending"] = ability.pending or false,
     }
 
     -- Arbitrate context
@@ -291,7 +294,7 @@ function FTC.Buffs:NewEffect( ability )
 
             -- Assign buff to pooled control
             local control, objectKey = FTC.Buffs.Pool:AcquireObject()
-            control.id      = objectKey
+            control.id = objectKey
             control.icon:SetTexture(newBuff.icon)
             control.frame:SetDrawLayer(DL_BACKGROUND)
             control.backdrop:SetDrawLayer(DL_BACKGROUND)
@@ -299,6 +302,9 @@ function FTC.Buffs:NewEffect( ability )
             control.icon:SetDrawLayer(DL_CONTROLS) 
             newDebuff.control = control
 
+            -- Set a pending flag for "Enemy" and "Cone" abilities
+            if ( newDebuff.pending ) then FTC.Buffs.pending = newDebuff end
+            
             -- Add debuff to timed table
             FTC.Buffs.Target[ability.name] = newDebuff
         end
@@ -312,7 +318,7 @@ function FTC.Buffs:NewEffect( ability )
 
             -- Assign buff to pooled control
             local control, objectKey = FTC.Buffs.Pool:AcquireObject()
-            control.id      = objectKey
+            control.id = objectKey
             control.icon:SetTexture(newBuff.icon)
             control.frame:SetDrawLayer(DL_BACKGROUND)
             control.backdrop:SetDrawLayer(DL_BACKGROUND)
@@ -328,17 +334,17 @@ function FTC.Buffs:NewEffect( ability )
     elseif ( ability.dur > 0 ) then
 
         -- Add buff data
-        newBuff.ends        = ( ms + ability.cast + ability.dur ) / 1000
+        newBuff.ends = ( ms + ability.cast + ability.dur ) / 1000
 
         -- Assign buff to pooled control
         local control, objectKey = FTC.Buffs.Pool:AcquireObject()
-        control.id          = objectKey
+        control.id = objectKey
         control.icon:SetTexture(newBuff.icon)
         control.frame:SetDrawLayer(DL_BACKGROUND)
         control.backdrop:SetDrawLayer(DL_BACKGROUND)
         control.cooldown:SetDrawLayer(DL_CONTROLS)
         control.icon:SetDrawLayer(DL_CONTROLS) 
-        newBuff.control     = control
+        newBuff.control = control
 
         -- Add buff to timed table
         FTC.Buffs[context][ability.name] = newBuff
@@ -347,11 +353,11 @@ function FTC.Buffs:NewEffect( ability )
     elseif ( ability.toggle ~= nil ) then
 
         -- Add buff data
-        newBuff.ends        = 0
+        newBuff.ends = 0
         
         -- Assign buff to pooled control
         local control, objectKey = FTC.Buffs.Pool:AcquireObject()
-        control.id       = objectKey
+        control.id = objectKey
         control.icon:SetTexture(newBuff.icon)
         control.frame:SetDrawLayer(DL_BACKGROUND)
         control.backdrop:SetDrawLayer(DL_BACKGROUND)
@@ -365,6 +371,18 @@ function FTC.Buffs:NewEffect( ability )
 
     -- Release any unused objects
     FTC.Buffs:ReleaseUnusedBuffs()
+end
+
+
+function FTC.Buffs:Pending( damage ) 
+
+    -- Compare the damage to the contents of the pending queue
+    local pending = FTC.Buffs.pending
+    if ( GetAbilityName(pending.id) == damage.ability ) then 
+        FTC.Buffs.Target[damage.ability].pending = false
+        FTC.Buffs.pending = {}
+    end
+
 end
 
  --[[ 
@@ -428,7 +446,7 @@ function FTC.Buffs:Update( unitTag )
         local isCapped  = ( buffCount > FTC.Vars.MaxBuffs ) and ( debuffCount > FTC.Vars.MaxBuffs ) and ( ( context == "Player" and longCount > FTC.Vars.MaxBuffs ) or context == "Target" )
         if ( isCapped ) then break end
     
-        -- Gether data
+        -- Gather data
         local render    = true
         local name      = buffs[i].name
         local isLong    = ( context == "Player" and buffs[i].toggle ~= nil )
@@ -438,6 +456,9 @@ function FTC.Buffs:Update( unitTag )
         
         -- Skip abilities which have not begun yet
         if ( buffs[i].begin > gameTime ) then render = false end
+
+        -- Skip pending abilities which require damage confirmation
+        if ( buffs[i].pending ) then render = false end
 
         -- Purge expired abilities
         if ( duration <= 0 and buffs[i].toggle == nil ) then

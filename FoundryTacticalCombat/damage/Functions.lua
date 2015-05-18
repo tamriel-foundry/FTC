@@ -76,12 +76,15 @@ end
         if ( hitValue > 0 and ( result == ACTION_RESULT_DAMAGE or result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_BLOCKED_DAMAGE or result == ACTION_RESULT_DOT_TICK or result == ACTION_RESULT_DOT_TICK_CRITICAL ) ) then 
                 
             -- Flag timestamps
-            if ( damageOut )    then FTC.Damage.lastOut = GetGameTimeMilliseconds()
-            else                     FTC.Damage.lastIn  = GetGameTimeMilliseconds() end
+            if ( damageOut ) then FTC.Damage.lastOut = GetGameTimeMilliseconds()
+            else FTC.Damage.lastIn  = GetGameTimeMilliseconds() end
 
             -- Log and SCT
             if ( FTC.init.Log ) then FTC.Log:CombatEvent(damage) end
             if ( FTC.init.SCT ) then FTC.SCT:Damage(damage) end
+
+            -- Fire Pending Debuffs
+            if ( FTC.init.Buffs and damageOut ) then FTC.Buffs:Pending(damage) end
 
         -- Falling damage
         elseif ( result == ACTION_RESULT_FALL_DAMAGE ) then
@@ -114,7 +117,7 @@ end
             if ( FTC.init.SCT ) then FTC.SCT:Damage(damage) end
 
         -- Target Death
-        elseif ( result == ACTION_RESULD_DIED ) then
+        elseif ( result == ACTION_RESULD_DIED or result == ACTION_RESULT_DIED_XP ) then
 
             -- Wipe Buffs
             if ( FTC.init.Buffs ) then FTC.Buffs:WipeBuffs(targetName) end
@@ -149,7 +152,6 @@ end
         -- Keep a list of ignored actions
         local results = {
             ACTION_RESULT_QUEUED,
-            ACTION_RESULT_DIED_XP,
         }
 
         -- Check actions

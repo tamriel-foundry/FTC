@@ -315,7 +315,7 @@
         -- Get the unitTag
         local unitTag = select( 2 , ... )
 
-        -- Wipe buffs
+        -- Wipe player buffs
         if ( FTC.init.Buffs and unitTag == 'player' ) then FTC.Buffs:WipeBuffs(FTC.Player.name) end
         
         -- Display killspam alerts
