@@ -198,7 +198,7 @@ FTC:JoinTables(FTC.Defaults,FTC.Log.Defaults)
 		local label = ""
 		if ( reason == PROGRESS_REASON_KILL ) then label = " kill "
 		elseif ( reason == PROGRESS_REASON_QUEST ) then label = " quest "
-		else label = " miscellaneous (" .. reason .. ") " end
+		else label = " bonus " end
 
 		-- Print to log
 		FTC.Log:Print( "You earned " .. CommaValue(diff) .. label .. "experience." , {0,0.6,0.6} )	

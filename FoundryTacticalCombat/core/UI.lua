@@ -140,6 +140,7 @@ FTC.UI.Textures     = {
             [38841] = '/esoui/art/icons/ability_dualwield_001.dds',                 -- Rending Slashes Bleed
             [38848] = '/esoui/art/icons/ability_dualwield_001.dds',                 -- Blood Craze Bleed
 
+         -- []      =                                                               -- Grand Healing
             [8205]  = '/esoui/art/icons/ability_restorationstaff_002.dds',          -- Regeneration
             [57466] = '/esoui/art/icons/ability_restorationstaff_002.dds',          -- Rapid Regeneration Dummy
 
@@ -190,6 +191,7 @@ FTC.UI.Textures     = {
             [22304] = '/esoui/art/icons/ability_templar_cleansing_ritual.dds',      -- Healing Ritual
             [26824] = '/esoui/art/icons/ability_templar_restoring_sigil.dds',       -- Repentance Heal
             [26879] = '/esoui/art/icons/ability_templarsun_thrust.dds',             -- Blazing Spear Pulse
+          --[] = ,                                                                  -- Radiant Destruction
 
             -- Racials
             [36214] = '/esoui/art/icons/ability_dragonknight_028.dds',              -- Star of the West
@@ -245,6 +247,7 @@ FTC.UI.Textures     = {
             [16723] = '/esoui/art/icons/crafting_forester_weapon_component_005.dds',-- Door Repair Kit
             [35099] = '/esoui/art/icons/ava_siege_ammo_002.dds',                    -- Ice Damage
             [35129] = '/esoui/art/icons/ava_siege_weapon_002.dds',                  -- Oil Pot
+            --[] =                                                                  -- Destroy Siege Weapon
 
             -- Procs
             --[[
