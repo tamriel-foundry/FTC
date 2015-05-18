@@ -214,7 +214,6 @@ function FTC.Player:GetActionBar()
                 ["ground"]      = target == GetAbilityTargetDescription(23182),
                 ["area"]        = ( target == GetAbilityTargetDescription(23182) ) or ( target == GetAbilityTargetDescription(20919) ) or ( target == GetAbilityTargetDescription(22784) ),
                 ["debuff"]      = ( ( target == GetAbilityTargetDescription(3493) ) or ( target == GetAbilityTargetDescription(20919) ) ),
-                ["pending"]     = ( ( target == GetAbilityTargetDescription(3493) ) or ( target == GetAbilityTargetDescription(20919) ) ),
                 ["effects"]     = FTC.Buffs.Effects[name],
 
                 GetAbilityTargetDescription

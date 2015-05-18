@@ -53,8 +53,9 @@ DONE 	Default Frames		deprecate default frame text
 			Exploitation
 			Shadow Barrier
 			Illuminate
-			Stealthed
-			Search Damage for DoT ticks
+			Purge runes/mines on damage
+			Break sorc bubble on damage
+			Add DoTs on damage for Agony / Fossilize
 			
 
 

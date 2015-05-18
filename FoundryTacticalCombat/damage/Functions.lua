@@ -83,8 +83,8 @@ end
             if ( FTC.init.Log ) then FTC.Log:CombatEvent(damage) end
             if ( FTC.init.SCT ) then FTC.SCT:Damage(damage) end
 
-            -- Fire Pending Debuffs
-            if ( FTC.init.Buffs and damageOut ) then FTC.Buffs:Pending(damage) end
+            -- Modify Buffs on Damage
+            if ( FTC.init.Buffs and damageOut ) then FTC.Buffs:Damage(damage) end
 
         -- Falling damage
         elseif ( result == ACTION_RESULT_FALL_DAMAGE ) then
@@ -102,6 +102,9 @@ end
             if ( FTC.init.Log ) then FTC.Log:CombatEvent(damage) end
             if ( FTC.init.SCT ) then FTC.SCT:Damage(damage) end
 
+            -- Modify Buffs on Damage
+            if ( FTC.init.Buffs and damageOut ) then FTC.Buffs:Damage(damage) end
+
         -- Misses and  Dodges
         elseif ( result == ACTION_RESULT_DODGED or result == ACTION_RESULT_MISS ) then
 
@@ -115,6 +118,9 @@ end
             -- Log and SCT
             if ( FTC.init.Log ) then FTC.Log:CombatEvent(damage) end
             if ( FTC.init.SCT ) then FTC.SCT:Damage(damage) end
+
+            -- Modify Buffs on Damage
+            if ( FTC.init.Buffs and damageOut ) then FTC.Buffs:Damage(damage) end
 
         -- Target Death
         elseif ( result == ACTION_RESULD_DIED or result == ACTION_RESULT_DIED_XP ) then

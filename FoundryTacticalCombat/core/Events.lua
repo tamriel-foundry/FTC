@@ -274,7 +274,7 @@
     function FTC.OnStealthState( eventCode, unitTag , stealthState )
 
         -- Stealth buff
-        if ( FTC.init.Buffs ) then 
+        if ( FTC.init.Buffs and unitTag == 'player' ) then 
 
             -- Entered stealth
             local hidden        = GetAbilityName(20309)
