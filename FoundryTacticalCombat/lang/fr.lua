@@ -1,184 +1,187 @@
   
 --[[----------------------------------------------------------
-    ENGLISH LANGUAGE LOCALIZATION
+    French LANGUAGE LOCALIZATION
   ]]----------------------------------------------------------
---ZO_CreateStringId("FTC_Name",               "Foundry Tactical Combat")
---ZO_CreateStringId("FTC_ShortInfo",          "Foundry Tactical Combat by Atropos")
---ZO_CreateStringId("FTC_LongInfo",           "You are using Foundry Tactical Combat version " .. FTC.version .. " developed by Atropos of Tamriel Foundry.")
+ZO_CreateStringId("FTC_Name",               "Foundry Tactical Combat")
+ZO_CreateStringId("FTC_ShortInfo",          "Foundry Tactical Combat par Atropos")
+ZO_CreateStringId("FTC_LongInfo",           "Vous utilisez la version " .. FTC.version .. " de Foundry Tactical Combat développée par Atropos de Tamriel Foundry.")
 
 --[[----------------------------------------------------------
     KEYBINDINGS
   ]]----------------------------------------------------------
---ZO_CreateStringId("SI_BINDING_NAME_TOGGLE_COMBAT_LOG", "Toggle Combat Log")
+ZO_CreateStringId("SI_BINDING_NAME_TOGGLE_COMBAT_LOG", "Activer/Désactiver le Log de Combat")
 
 --[[----------------------------------------------------------
     DAMAGE WORDS
   ]]----------------------------------------------------------
---ZO_CreateStringId("FTC_Falling",            "Falling")
---ZO_CreateStringId("FTC_Dead",               "Dead")
---ZO_CreateStringId("FTC_Offline",            "Offline")
+ZO_CreateStringId("FTC_Falling",            "Chute")
+ZO_CreateStringId("FTC_Dead",               "Mort")
+ZO_CreateStringId("FTC_Offline",            "Hors-Ligne")
 
 --[[----------------------------------------------------------
     MENU CORE
   ]]----------------------------------------------------------
---ZO_CreateStringId("FTC_Menu_Configure",     "Configure Addon Components")
---ZO_CreateStringId("FTC_Menu_Reload",        "Changing this setting will immediately reload the UI!")
---ZO_CreateStringId("FTC_Menu_NeedReload",    "Changes to this setting will not take affect until you reload your UI!")
+ZO_CreateStringId("FTC_Menu_Configure",     "Configurer les composants de l'extension")
+ZO_CreateStringId("FTC_Menu_Reload",        "Modifier ce réglage rechargera immédiatement votre IU!")
+ZO_CreateStringId("FTC_Menu_NeedReload",    "Les modifications ne prendront effet après que vous ayez rechargé l'IU!")
 
---local default = ( FTC.Defaults.EnableFrames ) and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_Frames",        "Enable Unit Frames")
---ZO_CreateStringId("FTC_Menu_FramesDesc",    "Enable custom unit frames component? [Default: "..default.."]")
+local default = ( FTC.Defaults.EnableFrames ) and "Activé" or "Désactivé"
+ZO_CreateStringId("FTC_Menu_Frames",        "Activer les Cadres Unitaires")
+ZO_CreateStringId("FTC_Menu_FramesDesc",    "Activer le composant de cadres unitaires customisés? [Défaut: "..default.."]")
 
---local default = ( FTC.Defaults.EnableBuffs ) and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_Buffs",         "Enable Buff Tracking")
---ZO_CreateStringId("FTC_Menu_BuffsDesc",     "Enable buff and debuff tracking component? [Default: "..default.."]")
+local default = ( FTC.Defaults.EnableBuffs ) and "Activé" or "Désactivé"
+ZO_CreateStringId("FTC_Menu_Buffs",         "Activer le Suivi de Buffs"
+ZO_CreateStringId("FTC_Menu_BuffsDesc",     "Activer le composant de suivi de Buffs et Débuffs? [Défaut: "..default.."]")
 
---local default = ( FTC.Defaults.EnableLog ) and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_Log",         	"Enable Combat Log")
---ZO_CreateStringId("FTC_Menu_LogDesc",     	"Enable chat-based combat log component? [Default: "..default.."]")
+local default = ( FTC.Defaults.EnableLog ) and "Activé" or "Désactivé"
+ZO_CreateStringId("FTC_Menu_Log",           "Activer la Journalisation du Combat")
+ZO_CreateStringId("FTC_Menu_LogDesc",       "Activer le composant de journalisation du combat du chat? [Défaut: "..default.."]")
 
---local default = ( FTC.Defaults.EnableSCT ) and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_SCT",           "Enable Combat Text")
---ZO_CreateStringId("FTC_Menu_SCTDesc",       "Enable scrolling combat text component? [Default: "..default.."]")
+local default = ( FTC.Defaults.EnableSCT ) and "Activé" or "Désactivé"
+ZO_CreateStringId("FTC_Menu_SCT",           "Activer le Texte de Combat")
+ZO_CreateStringId("FTC_Menu_SCTDesc",       "Activer le composant de défilement du texte de combat? [Défaut: "..default.."]")
 
---local default = ( FTC.Defaults.EnableMeter ) and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_Damage",        "Enable Damage Statistics")
---ZO_CreateStringId("FTC_Menu_DamageDesc",    "Enable tracking and reporting of damage statistics? [Default: "..default.."]")
+local default = ( FTC.Defaults.EnableMeter ) and "Activé" or "Désactivé"
+ZO_CreateStringId("FTC_Menu_Damage",        "Activer les Statistiques de Dégats")
+ZO_CreateStringId("FTC_Menu_DamageDesc",    "Activer le suivi et reporting des statistiques de dégats? [Défaut: "..default.."]")
 
---local default = ( FTC.Defaults.EnableHotbar ) and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_Hotbar",        "Enable Advanced Hotbar")
---ZO_CreateStringId("FTC_Menu_HotbarDesc",    "Enable advanced tooltips displayed over the default hotbar? [Default: "..default.."]")
+local default = ( FTC.Defaults.EnableHotbar ) and "Activé" or "Désactivé"
+ZO_CreateStringId("FTC_Menu_Hotbar",        "Activer la Barre de Raccourcis Avancée")
+ZO_CreateStringId("FTC_Menu_HotbarDesc",    "Activer info-bulles avancées affichées sur la barre de raccourcis par défaut? [Défaut: "..default.."]")
+
+--ZO_CreateStringId("FTC_Menu_Move",          "Unlock Positions")
+--ZO_CreateStringId("FTC_Menu_MoveDesc",      "Modify the position of FTC interface elements.")
 
 --[[----------------------------------------------------------
     UNIT FRAMES
   ]]----------------------------------------------------------
---ZO_CreateStringId("FTC_Menu_FHeader",       "Configure Unit Frames Settings")
+ZO_CreateStringId("FTC_Menu_FHeader",       "Configurer les Paramètres des Cadres Unitaires")
 
---ZO_CreateStringId("FTC_Menu_FWidth",        "Unit Frames Width")
---ZO_CreateStringId("FTC_Menu_FWidthDesc",    "Set the width of FTC unit frames. [Default: "..FTC.Defaults.FrameWidth.."]")
+ZO_CreateStringId("FTC_Menu_FWidth",        "Largeur des Cadres")
+ZO_CreateStringId("FTC_Menu_FWidthDesc",    "Régler la larger des cadres unitaires de FTC. [Défaut: "..FTC.Defaults.FrameWidth.."]")
 
---ZO_CreateStringId("FTC_Menu_FHeight",       "Unit Frames Height")
---ZO_CreateStringId("FTC_Menu_FHeightDesc",   "Set the height of FTC unit frames. [Default: "..FTC.Defaults.FrameHeight.."]")
+ZO_CreateStringId("FTC_Menu_FHeight",       "Hauteur des Cadres")
+ZO_CreateStringId("FTC_Menu_FHeightDesc",   "Régler la hauteur des cadres unitaires de FTC. [Défaut: "..FTC.Defaults.FrameHeight.."]")
 
---ZO_CreateStringId("FTC_Menu_FOpacIn",       "Combat Opacity")
---ZO_CreateStringId("FTC_Menu_FOpacInDesc",   "Adjust the in-combat opacity of FTC unit frames. Lower settings are more transparent. [Default: "..FTC.Defaults.FrameOpacityIn.."]")
+ZO_CreateStringId("FTC_Menu_FOpacIn",       "Opcaité en Combat")
+ZO_CreateStringId("FTC_Menu_FOpacInDesc",   "Ajuster l'opacité des cadres unitaires de FTC pendant le combat. Les valeurs faibles sont plus transparentes. [Défaut: "..FTC.Defaults.FrameOpacityIn.."]")
 
---ZO_CreateStringId("FTC_Menu_FOpacOut",      "Non-Combat Opacity")
---ZO_CreateStringId("FTC_Menu_FOpacOutDesc",  "Adjust the out-of-combat opacity of FTC unit frames. Lower settings are more transparent. [Default: "..FTC.Defaults.FrameOpacityOut.."]")
+ZO_CreateStringId("FTC_Menu_FOpacOut",      "Opcacité Hors-Combat")
+ZO_CreateStringId("FTC_Menu_FOpacOutDesc",  "Ajuster l'opacité Hord-Combat des cadres unitaires de FTC. Les valeurs faibles sont plus transparents. [Défaut: "..FTC.Defaults.FrameOpacityOut.."]")
 
---ZO_CreateStringId("FTC_Menu_FFont1",        "Primary Font")
---ZO_CreateStringId("FTC_Menu_FFont1Desc",    "Change the primary font used in FTC unit frames. [Default: "..FTC.UI:TranslateFont(FTC.Defaults.FrameFont1).."]")
+ZO_CreateStringId("FTC_Menu_FFont1",        "Police Primaire")
+ZO_CreateStringId("FTC_Menu_FFont1Desc",    "Changer la police primaire utilisée dans les cadres unitaires de FTC.[Défaut: "..FTC.UI:TranslateFont(FTC.Defaults.FrameFont1).."]")
 
---ZO_CreateStringId("FTC_Menu_FFont2",        "Secondary Font")
---ZO_CreateStringId("FTC_Menu_FFont2Desc",    "Change the secondary font used in FTC unit frames. [Default: "..FTC.UI:TranslateFont(FTC.Defaults.FrameFont2).."]")
+ZO_CreateStringId("FTC_Menu_FFont2",        "Police Secondaire")
+ZO_CreateStringId("FTC_Menu_FFont2Desc",    "Changer la police secondaire utilisée dans les cadres unitaires de FTC. [Défaut: "..FTC.UI:TranslateFont(FTC.Defaults.FrameFont2).."]")
 
---ZO_CreateStringId("FTC_Menu_FFontS",        "Frame Font Size")
---ZO_CreateStringId("FTC_Menu_FFontSDesc",    "Change the base scale of the fonts used in FTC unit frames. [Default: "..FTC.Defaults.FrameFontSize.."]")
+ZO_CreateStringId("FTC_Menu_FFontS",        "Taille de la Police du Cadre Unitaire") --you can also use "Taille de la Police" which would translate to Font Size
+ZO_CreateStringId("FTC_Menu_FFontSDesc",    "Changer l'échelle de base de la police utilisée dans les cadres unitaires de FTC. [Défaut: "..FTC.Defaults.FrameFontSize.."]")
 
---ZO_CreateStringId("FTC_Menu_Exceute",       "Execute Threshold")
---ZO_CreateStringId("FTC_Menu_ExecuteDesc",   "Set your desired excute threshold health percentage for frames and text alerts. [Default: "..FTC.Defaults.ExecuteThreshold.."]")
+ZO_CreateStringId("FTC_Menu_Exceute",       "Seuil d'Exécution")
+ZO_CreateStringId("FTC_Menu_ExecuteDesc",   "Déterminez le pourcentage de santé correspondant au seuil d'exécution pour les cadres et les textes d'alerte. [Défaut: "..FTC.Defaults.ExecuteThreshold.."]")
 
---local default = ( FTC.Defaults.DefaultTargetFrame ) and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_FShowDef",      "Default Target Frame")
---ZO_CreateStringId("FTC_Menu_FShowDefDesc",  "Continue displaying the default ESO target frame? [Default: "..default.."]")
+local default = ( FTC.Defaults.DefaultTargetFrame ) and "Activé" or "Désactivé"
+ZO_CreateStringId("FTC_Menu_FShowDef",      "Cadre de la Cible par Défaut")
+ZO_CreateStringId("FTC_Menu_FShowDefDesc",  "Continuer à afficher le cadre de Cible par défaut de ESO? [Défaut: "..default.."]")
 
---local default = ( FTC.Defaults.EnableNameplate ) and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_FShowName",     "Show Player Nameplate")
---ZO_CreateStringId("FTC_Menu_FShowNameDesc", "Display your own characters nameplate above FTC unit frames? [Default: "..default.."]")
+local default = ( FTC.Defaults.EnableNameplate ) and "Activé" or "Désactivé"
+ZO_CreateStringId("FTC_Menu_FShowName",     "Montrer la Plaque du Joueur")
+ZO_CreateStringId("FTC_Menu_FShowNameDesc", "Montrer la plaque de votre propre personnage au dessus du cadre du joueur de FTC? [Défaut: "..default.."]")
 
---local default = ( FTC.Defaults.EnableXPBar ) and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_FShowXP",       "Enable Mini Experience Bar")
---ZO_CreateStringId("FTC_Menu_FShowXPDesc",   "Show your experience bar beneath the FTC player frame? [Default: "..default.."]")
+local default = ( FTC.Defaults.EnableXPBar ) and "Activé" or "Désactivé"
+ZO_CreateStringId("FTC_Menu_FShowXP",       "Activer la Mini-Barre d'Expérience")
+ZO_CreateStringId("FTC_Menu_FShowXPDesc",   "Montrer votre barre d'expérience en dessous du cadre du joueur de FTC? [Défaut: "..default.."]")
 
---local default = math.floor(FTC.Defaults.FrameHealthColor[1]*255)..","..math.floor(FTC.Defaults.FrameHealthColor[2]*255)..","..math.floor(FTC.Defaults.FrameHealthColor[3]*255)
---ZO_CreateStringId("FTC_Menu_FHealthC",      "Health Bar Color")
---ZO_CreateStringId("FTC_Menu_FHealthCDesc",  "Set the color displayed in FTC unit frame Health bars. [Default: "..default.."]")
+local default = math.floor(FTC.Defaults.FrameHealthColor[1]*255)..","..math.floor(FTC.Defaults.FrameHealthColor[2]*255)..","..math.floor(FTC.Defaults.FrameHealthColor[3]*255)
+ZO_CreateStringId("FTC_Menu_FHealthC",      "Couleur Barre Santé")
+ZO_CreateStringId("FTC_Menu_FHealthCDesc",  "Régler la couleur affichée dans les barres de santé du cadre FTC. [Défaut: "..default.."]")
 
---local default = math.floor(FTC.Defaults.FrameMagickaColor[1]*255)..","..math.floor(FTC.Defaults.FrameMagickaColor[2]*255)..","..math.floor(FTC.Defaults.FrameMagickaColor[3]*255)
---ZO_CreateStringId("FTC_Menu_FMagickaC",     "Magicka Bar Color")
---ZO_CreateStringId("FTC_Menu_FMagickaCDesc", "Set the color displayed in the FTC player frame Magicka bar. [Default: "..default.."]")
+local default = math.floor(FTC.Defaults.FrameMagickaColor[1]*255)..","..math.floor(FTC.Defaults.FrameMagickaColor[2]*255)..","..math.floor(FTC.Defaults.FrameMagickaColor[3]*255)
+ZO_CreateStringId("FTC_Menu_FMagickaC",     "Couleur Barre Magie")
+ZO_CreateStringId("FTC_Menu_FMagickaCDesc", "Régler la couleur affichée dans les barres de magie du cadre FTC. [Défaut: "..default.."]")
 
---local default = math.floor(FTC.Defaults.FrameStaminaColor[1]*255)..","..math.floor(FTC.Defaults.FrameStaminaColor[2]*255)..","..math.floor(FTC.Defaults.FrameStaminaColor[3]*255)
---ZO_CreateStringId("FTC_Menu_FStaminaC",     "Stamina Bar Color")
---ZO_CreateStringId("FTC_Menu_FStaminaCDesc", "Set the color displayed in the FTC player frame Stamina bar. [Default: "..default.."]")
+local default = math.floor(FTC.Defaults.FrameStaminaColor[1]*255)..","..math.floor(FTC.Defaults.FrameStaminaColor[2]*255)..","..math.floor(FTC.Defaults.FrameStaminaColor[3]*255)
+ZO_CreateStringId("FTC_Menu_FStaminaC",     "Couleur Barre Vigueur")
+ZO_CreateStringId("FTC_Menu_FStaminaCDesc", "Régler la couleur affichée dans les barres de vigueur du cadre FTC. [Défaut: "..default.."]")
 
---local default = math.floor(FTC.Defaults.FrameShieldColor[1]*255)..","..math.floor(FTC.Defaults.FrameShieldColor[2]*255)..","..math.floor(FTC.Defaults.FrameShieldColor[3]*255)
---ZO_CreateStringId("FTC_Menu_FShieldC",      "Shield Bar Color")
---ZO_CreateStringId("FTC_Menu_FShieldCDesc",  "Set the color displayed in FTC unit frame Shield bars. [Default: "..default.."]")
+local default = math.floor(FTC.Defaults.FrameShieldColor[1]*255)..","..math.floor(FTC.Defaults.FrameShieldColor[2]*255)..","..math.floor(FTC.Defaults.FrameShieldColor[3]*255)
+ZO_CreateStringId("FTC_Menu_FShieldC",      "Couleur Barre Bouclier")
+ZO_CreateStringId("FTC_Menu_FShieldCDesc",  "Régler la couleur affichée dans la barre de bouclier du cadre FTC. [Défaut: "..default.."]")
 
---local default = ( FTC.Defaults.EnableGroupFrames ) and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_FGroup",        "Enable Small Group Frames")
---ZO_CreateStringId("FTC_Menu_FGroupDesc",    "Use custom group unit frames when in a group of size 4 or less. [Default: "..default.."]")
+local default = ( FTC.Defaults.EnableGroupFrames ) and "Activé" or "Désactivé"
+ZO_CreateStringId("FTC_Menu_FGroup",        "Activer Cadre de Petit Groupe")
+ZO_CreateStringId("FTC_Menu_FGroupDesc",    "Utiliser le cadre de groupe personnalisé quand vous êtes dans un groupe de 4 ou moins. [Défaut: "..default.."]")
 
---ZO_CreateStringId("FTC_Menu_FGWidth",       "Group Frames Width")
---ZO_CreateStringId("FTC_Menu_FGWidthDesc",   "Set the width of FTC small group frames. [Default: "..FTC.Defaults.GroupWidth.."]")
+ZO_CreateStringId("FTC_Menu_FGWidth",       "Largeur du Cadre de Groupe")
+ZO_CreateStringId("FTC_Menu_FGWidthDesc",   "Régler la larger des cadres de petits groupes de FTC. [Défaut: "..FTC.Defaults.GroupWidth.."]")
 
---ZO_CreateStringId("FTC_Menu_FGHeight",      "Group Frames Height")
---ZO_CreateStringId("FTC_Menu_FGHeightDesc",  "Set the height of FTC small group frames. [Default: "..FTC.Defaults.GroupHeight.."]")
+ZO_CreateStringId("FTC_Menu_FGHeight",      "Hauteur du Cadre de Groupe")
+ZO_CreateStringId("FTC_Menu_FGHeightDesc",  "Régler la hauteur des cadres de petits groupes de FTC. [Défaut: "..FTC.Defaults.GroupHeight.."]")
 
---ZO_CreateStringId("FTC_Menu_FGFontS",       "Group Frame Font Size")
---ZO_CreateStringId("FTC_Menu_FGFontSDesc",   "Change the scale of the fonts used in FTC small group frames. [Default: "..FTC.Defaults.GroupFontSize.."]")
+ZO_CreateStringId("FTC_Menu_FGFontS",       "Taille de Police du Cadre de Groupe")
+ZO_CreateStringId("FTC_Menu_FGFontSDesc",   "Changer l'échelle de base de la police utilisée dans les cadres de petits groupes de FTC. [Défaut: "..FTC.Defaults.GroupFontSize.."]")
 
---local default = ( FTC.Defaults.GroupHidePlayer ) and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_FGHideP",       "Hide Player in Group Frame")
---ZO_CreateStringId("FTC_Menu_FGHidePDesc",   "Do not show your own health bar in small group frame? [Default: " .. default .."]")
+local default = ( FTC.Defaults.GroupHidePlayer ) and "Activé" or "Désactivé"
+ZO_CreateStringId("FTC_Menu_FGHideP",       "Cacher le joueur dans le cadre du groupe")
+ZO_CreateStringId("FTC_Menu_FGHidePDesc",   "Ne pas montrer votre propre barre de santé dans un cadre de petit groupe? [Défaut: " .. default .."]")
 
---local default = ( FTC.Defaults.ColorRoles ) and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_FColorR",       "Color Frames by Role")
---ZO_CreateStringId("FTC_Menu_FColorRDesc",   "Use different colors for each combat role in FTC group and raid frames? [Default: "..default.."]")
+local default = ( FTC.Defaults.ColorRoles ) and "Activé" or "Désactivé"
+ZO_CreateStringId("FTC_Menu_FColorR",       "Cadres de Couleur par Rôle")
+ZO_CreateStringId("FTC_Menu_FColorRDesc",   "utiliser différentes couleurs pour chaque rôle dans les cadres de groupe et raid de FTC? [Défaut: "..default.."]")
 
---local default = math.floor(FTC.Defaults.FrameTankColor[1]*255)..","..math.floor(FTC.Defaults.FrameTankColor[2]*255)..","..math.floor(FTC.Defaults.FrameTankColor[3]*255)
---ZO_CreateStringId("FTC_Menu_FTankC",        "Tank Role Color")
---ZO_CreateStringId("FTC_Menu_FTankCDesc",    "Set the color displayed for tanks in FTC group and raid frames. [Default: "..default.."]")
+local default = math.floor(FTC.Defaults.FrameTankColor[1]*255)..","..math.floor(FTC.Defaults.FrameTankColor[2]*255)..","..math.floor(FTC.Defaults.FrameTankColor[3]*255)
+ZO_CreateStringId("FTC_Menu_FTankC",        "Couleur du Tank")
+ZO_CreateStringId("FTC_Menu_FTankCDesc",    "Régler la couleur affichée pour les tanks dans les cadres de groupe et raid de FTC. [Défaut: "..default.."]")
 
---local default = math.floor(FTC.Defaults.FrameHealerColor[1]*255)..","..math.floor(FTC.Defaults.FrameHealerColor[2]*255)..","..math.floor(FTC.Defaults.FrameHealerColor[3]*255)
---ZO_CreateStringId("FTC_Menu_FHealerC",      "Healer Role Color")
---ZO_CreateStringId("FTC_Menu_FHealerCDesc",  "Set the color displayed for healers in FTC group and raid frames. [Default: "..default.."]")
+local default = math.floor(FTC.Defaults.FrameHealerColor[1]*255)..","..math.floor(FTC.Defaults.FrameHealerColor[2]*255)..","..math.floor(FTC.Defaults.FrameHealerColor[3]*255)
+ZO_CreateStringId("FTC_Menu_FHealerC",      "Couleur du Guérisseur")
+ZO_CreateStringId("FTC_Menu_FHealerCDesc",  "Régler la couleur affichée pour les guérisseurs dans les cadres de groupe et raid de FTC. [Défaut: "..default.."]")
 
---local default = math.floor(FTC.Defaults.FrameDamageColor[1]*255)..","..math.floor(FTC.Defaults.FrameDamageColor[2]*255)..","..math.floor(FTC.Defaults.FrameDamageColor[3]*255)
---ZO_CreateStringId("FTC_Menu_FDamageC",      "Damage Role Color")
---ZO_CreateStringId("FTC_Menu_FDamageCDesc",  "Set the color displayed for DPS in FTC group and raid frames. [Default: "..default.."]")
+local default = math.floor(FTC.Defaults.FrameDamageColor[1]*255)..","..math.floor(FTC.Defaults.FrameDamageColor[2]*255)..","..math.floor(FTC.Defaults.FrameDamageColor[3]*255)
+ZO_CreateStringId("FTC_Menu_FDamageC",      "Couleur du DPS")
+ZO_CreateStringId("FTC_Menu_FDamageCDesc",  "Régler la couleur affichée pour les DPS dans les cadres de groupe et raid de FTC [Défaut: "..default.."]")
 
---ZO_CreateStringId("FTC_Menu_FReset",        "Reset Unit Frames")
---ZO_CreateStringId("FTC_Menu_FResetDesc",    "Reset original settings for FTC unit frames component.")
+ZO_CreateStringId("FTC_Menu_FReset",        "Rénitialiser les Cadres Unitaires")
+ZO_CreateStringId("FTC_Menu_FResetDesc",    "Réinitialiser les paramètres originaux pour la composante de cadres unitaires de FTC.")
 
 --[[----------------------------------------------------------
     BUFF TRACKING
   ]]----------------------------------------------------------
---ZO_CreateStringId("FTC_Menu_BHeader",       "Configure Buff Tracker Settings")
+ZO_CreateStringId("FTC_Menu_BHeader",       "Modifier les paramètres de suivi de Buffs")
 
---ZO_CreateStringId("FTC_BuffFormat0",   		  "Disabled")
---ZO_CreateStringId("FTC_BuffFormat1",   		  "Horizontal Tiles")
---ZO_CreateStringId("FTC_BuffFormat2",   		  "Vertical Tiles")
---ZO_CreateStringId("FTC_BuffFormat3",   		  "Descending List")
---ZO_CreateStringId("FTC_BuffFormat4",   		  "Ascending List")
+ZO_CreateStringId("FTC_BuffFormat0",        "Désactivé")
+ZO_CreateStringId("FTC_BuffFormat1",        "Tuiles Horizontales")
+ZO_CreateStringId("FTC_BuffFormat2",        "Tuiles Verticales")
+ZO_CreateStringId("FTC_BuffFormat3",        "Liste Descendante")
+ZO_CreateStringId("FTC_BuffFormat4",        "Liste Croissante")
 
---ZO_CreateStringId("FTC_Menu_BPBFormat",   	"Player Buff Format")
---ZO_CreateStringId("FTC_Menu_BPBFormatDesc", "Choose desired format for player buffs. [Default: "..FTC.Menu:GetBuffFormat(FTC.Defaults.PlayerBuffFormat).."]")
+ZO_CreateStringId("FTC_Menu_BPBFormat",     "Format du Buff de joueur")
+ZO_CreateStringId("FTC_Menu_BPBFormatDesc", "Choisir le format désiré pour les buffs du joueur. [Défaut:: "..FTC.Menu:GetBuffFormat(FTC.Defaults.PlayerBuffFormat).."]")
 
---ZO_CreateStringId("FTC_Menu_BPDFormat",   	"Player Debuff Format")
---ZO_CreateStringId("FTC_Menu_BPDFormatDesc", "Choose desired format for player debuffs. [Default: "..FTC.Menu:GetBuffFormat(FTC.Defaults.PlayerDebuffFormat).."]")
+ZO_CreateStringId("FTC_Menu_BPDFormat",     "Format du Debuff du joueur")
+ZO_CreateStringId("FTC_Menu_BPDFormatDesc", "Choisir le format désiré pour les debuffs du joueur. [Défaut: "..FTC.Menu:GetBuffFormat(FTC.Defaults.PlayerDebuffFormat).."]")
 
---ZO_CreateStringId("FTC_Menu_BLBFormat",   	"Long Buff Format")
---ZO_CreateStringId("FTC_Menu_BLBFormatDesc", "Choose desired format for long buffs. [Default: "..FTC.Menu:GetBuffFormat(FTC.Defaults.LongBuffFormat).."]")
+ZO_CreateStringId("FTC_Menu_BLBFormat",     "Format de Long Buff")
+ZO_CreateStringId("FTC_Menu_BLBFormatDesc", "Choisir le format désiré pour les longs buffs. [Défaut: "..FTC.Menu:GetBuffFormat(FTC.Defaults.LongBuffFormat).."]")
 
---ZO_CreateStringId("FTC_Menu_BTBFormat",   	"Target Buff Format")
---ZO_CreateStringId("FTC_Menu_BTBFormatDesc", "Choose desired format for target buffs. [Default: "..FTC.Menu:GetBuffFormat(FTC.Defaults.TargetBuffFormat).."]")
+ZO_CreateStringId("FTC_Menu_BTBFormat",     "Format Buff de Cible")
+ZO_CreateStringId("FTC_Menu_BTBFormatDesc", "Choisir le format désiré pour les buffs de la cible. [Défaut: "..FTC.Menu:GetBuffFormat(FTC.Defaults.TargetBuffFormat).."]")
 
---ZO_CreateStringId("FTC_Menu_BTDFormat",   	"Target Debuff Format")
---ZO_CreateStringId("FTC_Menu_BTDFormatDesc", "Choose desired format for target debuffs. [Default: "..FTC.Menu:GetBuffFormat(FTC.Defaults.TargetDebuffFormat).."]")
+ZO_CreateStringId("FTC_Menu_BTDFormat",     "Format Debuff de Cible")
+ZO_CreateStringId("FTC_Menu_BTDFormatDesc", "Choisir le format désiré pour les debuffs de la cible. [Défaut: "..FTC.Menu:GetBuffFormat(FTC.Defaults.TargetDebuffFormat).."]")
 
---ZO_CreateStringId("FTC_Menu_BFont1",        "Primary Font")
---ZO_CreateStringId("FTC_Menu_BFont1Desc",    "Change the primary font used in FTC buff tracking. [Default: "..FTC.UI:TranslateFont(FTC.Defaults.BuffsFont1).."]")
+ZO_CreateStringId("FTC_Menu_BFont1",        "Police Primaire")
+ZO_CreateStringId("FTC_Menu_BFont1Desc",    "Changer la police primaire utilisée pour le suivi des buffs de FTC. [Défaut: "..FTC.UI:TranslateFont(FTC.Defaults.BuffsFont1).."]")
 
---ZO_CreateStringId("FTC_Menu_BFont2",        "Secondary Font")
---ZO_CreateStringId("FTC_Menu_BFont2Desc",    "Change the secondary font used in FTC buff tracking. [Default: "..FTC.UI:TranslateFont(FTC.Defaults.BuffsFont2).."]")
+ZO_CreateStringId("FTC_Menu_BFont2",        "Police Secondaire")
+ZO_CreateStringId("FTC_Menu_BFont2Desc",    "Changer la police secondaire utilisée pour le suivi des buffs de FTC. [Défaut: "..FTC.UI:TranslateFont(FTC.Defaults.BuffsFont2).."]")
 
---ZO_CreateStringId("FTC_Menu_BFontS",        "Buff Font Size")
---ZO_CreateStringId("FTC_Menu_BFontSDesc",    "Change the base scale of the fonts used in FTC buff tracking. [Default: "..FTC.Defaults.BuffsFontSize.."]")
+ZO_CreateStringId("FTC_Menu_BFontS",        "Police des Buff")
+ZO_CreateStringId("FTC_Menu_BFontSDesc",    "Changer la taille de base des polices utilisées pour le suivi des buffs de FTC. [Défaut: "..FTC.Defaults.BuffsFontSize.."]")
 
---ZO_CreateStringId("FTC_Menu_BReset",        "Reset Buff Tracking")
---ZO_CreateStringId("FTC_Menu_BResetDesc",    "Reset original settings for FTC buff tracking component.")
+ZO_CreateStringId("FTC_Menu_BReset",        "Rénitialiser le Suivi de Buffs")
+ZO_CreateStringId("FTC_Menu_BResetDesc",    "Réinitialiser les paramètres originaux pour la composante de suivi des Buffs de FTC.")
 
 --[[----------------------------------------------------------
     COMBAT LOG
@@ -186,8 +189,8 @@
 --ZO_CreateStringId("FTC_Menu_LHeader",       "Configure Combat Log Settings")
 
 --local default = FTC.Defaults.AlternateChat and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_LAltChat",     	"Alternate With Chat")
---ZO_CreateStringId("FTC_Menu_LAltChatDesc", 	"Alternate Combat Log visibility with primary chat window? [Default: "..default.."]")
+--ZO_CreateStringId("FTC_Menu_LAltChat",      "Alternate With Chat")
+--ZO_CreateStringId("FTC_Menu_LAltChatDesc",  "Alternate Combat Log visibility with primary chat window? [Default: "..default.."]")
 
 --ZO_CreateStringId("FTC_Menu_LFont",         "Combat Log Font")
 --ZO_CreateStringId("FTC_Menu_LFontDesc",     "Change the font used in the FTC combat log. [Default: "..FTC.UI:TranslateFont(FTC.Defaults.LogFont).."]")

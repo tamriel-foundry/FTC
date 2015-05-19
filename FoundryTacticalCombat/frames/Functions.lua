@@ -198,7 +198,7 @@ end
  ]]--
 function FTC.Frames:SetupGroup()
 
-    -- Bail out of group frames are disabled
+    -- Bail out if group frames are disabled
     if ( not FTC.Vars.EnableGroupFrames ) then 
         ZO_UnitFramesGroups:SetHidden(false)
         return 
@@ -287,7 +287,12 @@ end
  * --------------------------------
  ]]--
 function FTC.Frames:GroupRange( unitTag , inRange )
-    if ( unitTag == nil ) then return end
+
+    -- Bail out if group frames are disabled
+    if ( not FTC.Vars.EnableGroupFrames ) then 
+        ZO_UnitFramesGroups:SetHidden(false)
+        return 
+    end
 
     -- If a range status was not passed, retrieve it
     if ( inRange == nil ) then inRange = IsUnitInGroupSupportRange(unitTag) end

@@ -151,6 +151,9 @@ function FTC.Buffs:RegisterEffects()
         [29037] = { 0,    20,   0,    true },       -- Petrify
         [32685] = { 0,    20,   0,    true },       -- Fossilize
         [32678] = { 0,    20,   0,    true },       -- Shattering Rocks
+      --[xxxxx] = { 0,    14.4  0,    false },      -- Ash Cloud
+      --[xxxxx] = { 0,    18,   0,    false },      -- Cinder Storm
+      --[xxxxx] = { 0,    18,   0,    false },      -- Eruption
 
         -- Draconic Power
         [20245] = { 0,    4,    0,    true },       -- Dark Talons
