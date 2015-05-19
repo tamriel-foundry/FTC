@@ -317,6 +317,9 @@
 
         -- Wipe player buffs
         if ( FTC.init.Buffs and unitTag == 'player' ) then FTC.Buffs:WipeBuffs(FTC.Player.name) end
+
+        -- Reset the group frames
+        if ( FTC.init.Frames ) then FTC.Frames:SetupGroup() end
         
         -- Display killspam alerts
        --if ( FTC.init.SCT ) then FTC.SCT:Deathspam( ... ) end

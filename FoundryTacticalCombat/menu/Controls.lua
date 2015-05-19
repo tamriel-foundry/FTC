@@ -610,7 +610,7 @@ function FTC.Menu:Controls()
         {   type        = "slider", 
             name        = GetString(FTC_Menu_SFontS),
             tooltip     = GetString(FTC_Menu_SFontSDesc),
-            min         = 16,
+            min         = 12,
             max         = 36, 
             step        = 1, 
             getFunc     = function() return FTC.Vars.SCTFontSize end, 

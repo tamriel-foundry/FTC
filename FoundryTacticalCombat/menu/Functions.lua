@@ -510,7 +510,7 @@
         local move = not FTC.move
 
         -- Start by returning to the normal UI
-        SCENE_MANAGER:SetInUIMode(false)
+        if ( SCENE_MANAGER:IsInUIMode() and SCENE_MANAGER.currentScene.name ~= "market" ) then SCENE_MANAGER:SetInUIMode(false) end
         
         -- Unit Frames
         if ( FTC.init.Frames ) then

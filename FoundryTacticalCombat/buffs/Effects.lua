@@ -215,7 +215,7 @@ function FTC.Buffs:RegisterEffects()
         [22161] = { 0,    3,    0,    true },       -- Explosive Charge
         [15540] = { 0,    2.4,  0,    true },       -- Toppling Charge
         [22138] = { 0,    6,    0,    true },       -- Radial Sweep
-        [22144] = { 0,    8,    0,    true },       -- Empowering Sweep
+        [22144] = { 6,    8,    0,    true },       -- Empowering Sweep
         [22139] = { 0,    6,    0,    true },       -- Crescent Sweep
         
         -- Dawn's Wrath

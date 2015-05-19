@@ -1,4 +1,5 @@
 
+
 --[[----------------------------------------------------------
     INITIALIZE UI ASSETS
   ]]----------------------------------------------------------
@@ -101,10 +102,8 @@ FTC.UI.Textures     = {
             for l = 1 , 10 do
                 for a = 1 , 10 do
 
-                    -- Get ability info
+                    -- Load ability info into table
                     local name , texture , rank , actionSlotType , passive , showInSpellbook = GetSkillAbilityInfo(c,l,a)
-
-                    -- If it's valid, load the table
                     if ( name ~= "" ) then FTC.UI.Textures[name] = texture end
                 end
             end
@@ -140,7 +139,7 @@ FTC.UI.Textures     = {
             [38841] = '/esoui/art/icons/ability_dualwield_001.dds',                 -- Rending Slashes Bleed
             [38848] = '/esoui/art/icons/ability_dualwield_001.dds',                 -- Blood Craze Bleed
 
-         -- []      =                                                               -- Grand Healing
+            [28385] = '/esoui/art/icons/ability_restorationstaff_004.dds',          -- Grand Healing
             [8205]  = '/esoui/art/icons/ability_restorationstaff_002.dds',          -- Regeneration
             [57466] = '/esoui/art/icons/ability_restorationstaff_002.dds',          -- Rapid Regeneration Dummy
 
@@ -191,7 +190,7 @@ FTC.UI.Textures     = {
             [22304] = '/esoui/art/icons/ability_templar_cleansing_ritual.dds',      -- Healing Ritual
             [26824] = '/esoui/art/icons/ability_templar_restoring_sigil.dds',       -- Repentance Heal
             [26879] = '/esoui/art/icons/ability_templarsun_thrust.dds',             -- Blazing Spear Pulse
-          --[] = ,                                                                  -- Radiant Destruction
+            [63029] = '/esoui/art/icons/ability_templar_over_exposure.dds',         -- Radiant Destruction
 
             -- Racials
             [36214] = '/esoui/art/icons/ability_dragonknight_028.dds',              -- Star of the West
@@ -233,9 +232,9 @@ FTC.UI.Textures     = {
             [9866]  = '/esoui/art/icons/consumable_potion_001_type_005.dds',        -- Restore_Health
 
             -- AvA Damage
-            [7011]  = '/esoui/art/icons/ava_siege_ammo_006.dds',                    -- Ballista Bolt
-            [14361] = '/esoui/art/icons/ava_siege_ammo_006.dds',                    -- Fire Ballista Bolt
-            [66239] = '/esoui/art/icons/ava_siege_ammo_006.dds',                    -- Cold Fire Ballista Bolt
+            [7011]  = '/esoui/art/icons/ava_siege_ui_001.dds',                      -- Ballista Bolt
+            [14361] = '/esoui/art/icons/ava_siege_ui_001.dds',                      -- Fire Ballista Bolt
+            [66239] = '/esoui/art/icons/ava_siege_ui_001.dds',                      -- Cold Fire Ballista Bolt
             [13853] = '/esoui/art/icons/crafting_heavy_armor_sp_names_001.dds',     -- Wall Repair Kit
             [14156] = '/esoui/art/icons/ava_siege_ammo_004.dds',                    -- Stone Trebuchet
             [7007]  = '/esoui/art/icons/ava_siege_ammo_004.dds',                    -- Firepot Trebuchet
@@ -247,22 +246,14 @@ FTC.UI.Textures     = {
             [16723] = '/esoui/art/icons/crafting_forester_weapon_component_005.dds',-- Door Repair Kit
             [35099] = '/esoui/art/icons/ava_siege_ammo_002.dds',                    -- Ice Damage
             [35129] = '/esoui/art/icons/ava_siege_weapon_002.dds',                  -- Oil Pot
-            --[] =                                                                  -- Destroy Siege Weapon
+            [12355] = '/esoui/art/icons/ava_siege_ui_002.dds',                      -- Destroy Siege Weapon
 
-            -- Procs
+            -- Item Procs
+            [16536] = '/esoui/art/icons/ability_mageguild_005.dds',                 -- Meteor
+            [59541] = '/esoui/art/icons/quest_dungeons_razaks_opus.dds',            -- Dwemer Automation Restore HP
+            [59593] = '/esoui/art/icons/ability_mage_020.dds',                      -- Lich Crystal
+
             --[[
-            [] = '/esoui/art/icons/quest_dungeons_razaks_opus.dds',              -- Dwemer Automation Restore HP
-            [] = '/esoui/art/icons/death_recap_magic_aoe.dds',                   -- Lich Crystal
-            --]]
-
-            --[[
-         
-            -- Lightning staff specials
-            ['Shock Pulse']                     = '/esoui/art/icons/death_recap_shock_ranged.dds', -- EN
-            ['Shock']                           = '/esoui/art/icons/death_recap_shock_aoe.dds', -- EN
-
-            -- destruction staff skills, that depend on staff type        
-
             -- some reflected skills
             ['Quick Shot']                      = '/esoui/art/icons/death_recap_ranged_basic.dds', -- EN
             ['Coiled Lash']                     = '/esoui/art/icons/death_recap_ranged_basic.dds', -- EN
