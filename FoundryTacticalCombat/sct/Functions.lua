@@ -15,8 +15,8 @@
         -- Fonts
         ["SCTFont1"]                = 'esobold',
         ["SCTFont2"]                = 'esobold',
-        ["SCTFontSize"]             = 24,
-        ["SCTIconSize"]             = 48,
+        ["SCTFontSize"]             = 20,
+        ["SCTIconSize"]             = 36,
 
         -- Anchors
         ["FTC_SCTOut"]              = {RIGHT,CENTER,-300,-50},

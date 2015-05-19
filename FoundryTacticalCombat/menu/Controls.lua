@@ -623,7 +623,7 @@ function FTC.Menu:Controls()
             tooltip     = GetString(FTC_Menu_SIconSDesc),
             min         = 24,
             max         = 64, 
-            step        = 8, 
+            step        = 4, 
             getFunc     = function() return FTC.Vars.SCTIconSize end, 
             setFunc     = function( value ) FTC.Menu:Update( "SCTIconSize" , value ) end, 
             default     = FTC.Defaults.SCTIconSize
