@@ -140,8 +140,8 @@ function FTC.Frames:Controls()
 
     -- Iterate over four group members
     local anchor    = {TOP,TOP,0,0,group}
-    for i = 1 , 4 do
-    local member    = FTC.UI:Control(   "FTC_GroupFrame"..i,                group,      {FTC.Vars.GroupWidth,FTC.Vars.GroupHeight/4},           anchor,                         false )
+    for i = 1 , 24 do
+    local member    = FTC.UI:Control(   "FTC_GroupFrame"..i,                group,      {FTC.Vars.GroupWidth,FTC.Vars.GroupHeight/4},           anchor,                         true )
     member:SetAlpha(FTC.Vars.FrameOpacityIn/100)
 
     -- Nameplate

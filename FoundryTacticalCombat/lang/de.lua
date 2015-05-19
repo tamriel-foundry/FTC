@@ -226,5 +226,8 @@ ZO_CreateStringId("FTC_Menu_LResetDesc",    "Setzt die FTC Kampflog Einstellunge
 --ZO_CreateStringId("FTC_Menu_SFontS",        "SCT Font Size")
 --ZO_CreateStringId("FTC_Menu_SFontSDesc",    "Change the font size used in the FTC scrolling combat text. [Default: "..FTC.Defaults.SCTFontSize.."]")
 
+--ZO_CreateStringId("FTC_Menu_SIconS",        "SCT Icon Size")
+--ZO_CreateStringId("FTC_Menu_SIconSDesc",    "Change the size of icons displayed in FTC scrolling combat text. [Default: "..FTC.Defaults.SCTIconSize.."]")
+
 --ZO_CreateStringId("FTC_Menu_SCTReset",      "Reset SCT")
 --ZO_CreateStringId("FTC_Menu_SCTResetDesc",  "Reset original settings for FTC scrolling combat text component.")

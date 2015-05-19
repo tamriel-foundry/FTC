@@ -213,16 +213,17 @@ function FTC.Frames:SetupGroup()
         -- Iterate over members
         for i = 1 , 4 do
             local frame = _G["FTC_GroupFrame"..i]
+            local unitTag = GetGroupUnitTagByIndex(i)
 
             -- Only proceed for members which exist
-            if ( DoesUnitExist('group'..i) ) then
+            if ( DoesUnitExist(unitTag) ) then
 
                 -- Configure the nameplate
-                local name      = zo_strformat("<<!aC:1>>",GetUnitName('group'..i))
-                local level     = GetUnitVeteranRank('group'..i) > 0 and "v" .. GetUnitVeteranRank('group'..i) or GetUnitLevel('group'..i)
+                local name      = zo_strformat("<<!aC:1>>",GetUnitName(unitTag))
+                local level     = GetUnitVeteranRank(unitTag) > 0 and "v" .. GetUnitVeteranRank(unitTag) or GetUnitLevel(unitTag)
 
                 -- Get player roles
-                local isDps , isHealer , isTank = GetGroupMemberRoles('group'..i)
+                local isDps , isHealer , isTank = GetGroupMemberRoles(unitTag)
                 local role      = "Damage"
                 if isTank       then role = "Tank"
                 elseif isHealer then role = "Healer" end
@@ -236,17 +237,17 @@ function FTC.Frames:SetupGroup()
                 frame.health.bar:SetColor(color[1],color[2],color[3] ,1)
 
                 -- Populate nameplate
-                local classIcon = GetClassIcon(GetUnitClassId('group'..i)) or nil
+                local classIcon = GetClassIcon(GetUnitClassId(unitTag)) or nil
                 frame.plate.name:SetText(name .. " (" .. level .. ")")
                 frame.plate.class:SetTexture(classIcon)
                 frame.plate.class:SetHidden(classIcon==nil)
-                frame.plate.icon:SetWidth(IsUnitGroupLeader('group'..i) and 24 or 0)
+                frame.plate.icon:SetWidth(IsUnitGroupLeader(unitTag) and 24 or 0)
 
                 -- Populate health bar
-                FTC.Frames:UpdateAttribute( 'group'..i , POWERTYPE_HEALTH , nil )
+                FTC.Frames:UpdateAttribute( unitTag , POWERTYPE_HEALTH , nil )
 
                 -- Override for offline members
-                if ( not IsUnitOnline('group'..i ) ) then 
+                if ( not IsUnitOnline(unitTag) ) then 
                     frame.health.current:SetText(GetString(FTC_Offline))
                     frame.health.pct:SetText("")
                     frame.health.bar:SetWidth(0)
@@ -289,7 +290,7 @@ end
 function FTC.Frames:GroupRange( unitTag , inRange )
 
     -- Bail out if group frames are disabled
-    if ( not FTC.Vars.EnableGroupFrames ) then 
+    if ( not FTC.Vars.EnableGroupFrames or GetGroupSize() > 4 ) then 
         ZO_UnitFramesGroups:SetHidden(false)
         return 
     end

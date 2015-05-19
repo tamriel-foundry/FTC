@@ -551,7 +551,6 @@ function FTC.Menu:Controls()
             default     = FTC.Defaults.SCTIcons,
         },
       
-
         -- Display Ability Names?
         { 
             type        = "checkbox", 
@@ -616,6 +615,18 @@ function FTC.Menu:Controls()
             getFunc     = function() return FTC.Vars.SCTFontSize end, 
             setFunc     = function( value ) FTC.Menu:UpdateFrames( "SCTFontSize" , value ) end, 
             default     = FTC.Defaults.SCTFontSize
+        },
+
+        -- SCT Icon Size
+        {   type        = "slider", 
+            name        = GetString(FTC_Menu_SIconS),
+            tooltip     = GetString(FTC_Menu_SIconSDesc),
+            min         = 24,
+            max         = 64, 
+            step        = 8, 
+            getFunc     = function() return FTC.Vars.SCTIconSize end, 
+            setFunc     = function( value ) FTC.Menu:Update( "SCTIconSize" , value ) end, 
+            default     = FTC.Defaults.SCTIconSize
         },
 
         -- Reset SCT
