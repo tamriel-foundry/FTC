@@ -371,7 +371,7 @@ end
     
         -- Update bar width
         local attr = frame[power]
-        attr.bar:SetWidth( pct * ( attr:GetWidth() - 6 ) )
+        attr.bar:SetWidth( pct * (attr:GetWidth()-4) )
 
         -- Update bar labels
         local label = ( powerValue > 100000 ) and zo_roundToNearest(powerValue,1000)/1000 .. "k" or CommaValue(powerValue)

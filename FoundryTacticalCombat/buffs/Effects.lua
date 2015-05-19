@@ -21,9 +21,9 @@ function FTC.Buffs:RegisterEffects()
         [28304] = { 0,    9,    0,    true },       -- Low Slash
         [38268] = { 0,    12,   0,    true },       -- Deep Slash
         [38264] = { 0,    12,   0,    true },       -- Heroic Slash 
-        [28719] = { 0,    2,    0.25, true },       -- Shield Charge
-        [38405] = { 0,    3,    0.25, true },       -- Invasion
-        [38401] = { 6,    2,    0.25, true },       -- Shielded Assault
+        [28719] = { 0,    2,    0,    true },       -- Shield Charge
+        [38405] = { 0,    3,    0,    true },       -- Invasion
+        [38401] = { 6,    2,    0,    true },       -- Shielded Assault
         [28365] = { 0,    15,   0,    true },       -- Power Bash
         [38452] = { 0,    15,   0,    true },       -- Power Slam
         [38455] = { 0,    10,   0,    true },       -- Reverberating Bash
@@ -32,7 +32,7 @@ function FTC.Buffs:RegisterEffects()
         [28379] = { 0,    9,    0,    true },       -- Twin Slashes
         [10735] = { 9,    9,    0,    true },       -- Blood Craze
         [38839] = { 0,    9,    0,    true },       -- Rending Slashes
-        [38857] = { 6,    0,    1.3,  true },       -- Rapid Strikes
+        [38857] = { 6,    0,    0,    true },       -- Rapid Strikes
         [38891] = { 10,   0,    0,    true },       -- Whirling Blades
         [21157] = { 0,    6,    0,    true },       -- Hidden Blade
         [38910] = { 0,    6,    0,    true },       -- Flying Blade
@@ -42,10 +42,10 @@ function FTC.Buffs:RegisterEffects()
         [20919] = { 0,    10,   0,    true },       -- Cleave
         [5798]  = { 8,    10,   0,    true },       -- Brawler
         [38745] = { 0,    10,   0,    true },       -- Carve
-        [21055] = { 0,    8,    0.25, true },       -- Stampede
-        [24648] = { 0,    3.5,  0.8,  true },       -- Uppercut
-        [38807] = { 0,    3.5,  0.8,  true },       -- Wrecking Blow
-        [38814] = { 0,    7.5,  0.8,  true },       -- Dizzying Swing
+        [21055] = { 0,    8,    0,    true },       -- Stampede
+        [24648] = { 0,    3.5,  0,    true },       -- Uppercut
+        [38807] = { 0,    3.5,  0,    true },       -- Wrecking Blow
+        [38814] = { 0,    7.5,  0,    true },       -- Dizzying Swing
         
         -- Bow
         [28869] = { 0,    10,   0,    true },       -- Poison Arrow
@@ -60,8 +60,8 @@ function FTC.Buffs:RegisterEffects()
         [31271] = { 0,    5,    0,    true },       -- Arrow Spray
         [38705] = { 0,    5,    0,    true },       -- Bombard
         [38701] = { 0,    5,    0,    true },       -- Acid Spray
-        [38685] = { 0,    10,   1.25, true },       -- Lethal Arrow
-        [38687] = { 0,    10,   1.25, true },       -- Focused Aim
+        [38685] = { 0,    10,   0,    true },       -- Lethal Arrow
+        [38687] = { 0,    10,   0,    true },       -- Focused Aim
 
         -- Restoration Staff
         [37243] = { 8,    0,    0,    false },      -- Blessing of Protection
@@ -113,9 +113,9 @@ function FTC.Buffs:RegisterEffects()
         [23277] = { 5,    2,    0,    false },      -- Ball of Lightning
 
         -- Dark Magic
-        [43714] = { 0,    2.4,  1,    true },       -- Crystal Shard
-        [46324] = { 0,    2.4,  1,    true },       -- Crystal Fragments
-        [46331] = { 0,    2.4,  1,    true },       -- Crystal Blast
+        [43714] = { 0,    2.4,  0,    true },       -- Crystal Shard
+        [46324] = { 0,    2.4,  0,    true },       -- Crystal Fragments
+        [46331] = { 0,    2.4,  0,    true },       -- Crystal Blast
         [4737]  = { 0,    5.4,  0,    false },      -- Encase
         [28311] = { 0,    10.2, 0,    false },      -- Restraining Prison
         [28308] = { 0,    5.4,  0,    false },      -- Shattering Prison
@@ -145,9 +145,9 @@ function FTC.Buffs:RegisterEffects()
         [20930] = { 0,    10,   0,    true },       -- Engulfing Flames
         
         -- Earthen Heart
-        [29032] = { 0,    3.6,  0.25, true },       -- Stonefist
-        [31816] = { 15,   3.6,  0.25, true },       -- Stone Giant
-        [31820] = { 0,    3.6,  0.25, true },       -- Obsidian Shard
+        [29032] = { 0,    3.6,  0,    true },       -- Stonefist
+        [31816] = { 15,   3.6,  0,    true },       -- Stone Giant
+        [31820] = { 0,    3.6,  0,    true },       -- Obsidian Shard
         [29037] = { 0,    20,   0,    true },       -- Petrify
         [32685] = { 0,    20,   0,    true },       -- Fossilize
         [32678] = { 0,    20,   0,    true },       -- Shattering Rocks
@@ -170,9 +170,9 @@ function FTC.Buffs:RegisterEffects()
         
         -- Assassination
         [34843] = { 2,    0,    0,    true },       -- Killer's Blade
-        [18342] = { 0,    1.5,  0.25, true },       -- Teleport Strike
-        [7271]  = { 0,    1.5,  0.25, true },       -- Ambush
-        [25493] = { 0,    6,    0.25, true },       -- Lotus Fan
+        [18342] = { 0,    1.5,  0,    true },       -- Teleport Strike
+        [7271]  = { 0,    1.5,  0,    true },       -- Ambush
+        [25493] = { 0,    6,    0,    true },       -- Lotus Fan
         [33357] = { 0,    20,   0,    false },      -- Mark Target
         [36968] = { 0,    20,   0,    false },      -- Piercing Mark
         [36967] = { 0,    20,   0,    false },      -- Reaper's Mark    
@@ -210,19 +210,19 @@ function FTC.Buffs:RegisterEffects()
         -----------------------------------]]
         
         -- Aedric Spear
-        [26804] = { 0,    3,    0.25, true },       -- Binding Javelin
-        [13538] = { 0,    3,    0.5,  true },       -- Focused Charge
-        [22161] = { 0,    3,    0.5,  true },       -- Explosive Charge
-        [15540] = { 0,    2.4,  0.5,  true },       -- Toppling Charge
+        [26804] = { 0,    3,    0,    true },       -- Binding Javelin
+        [13538] = { 0,    3,    0,    true },       -- Focused Charge
+        [22161] = { 0,    3,    0,    true },       -- Explosive Charge
+        [15540] = { 0,    2.4,  0,    true },       -- Toppling Charge
         [22138] = { 0,    6,    0,    true },       -- Radial Sweep
         [22144] = { 0,    8,    0,    true },       -- Empowering Sweep
         [22139] = { 0,    6,    0,    true },       -- Crescent Sweep
         
         -- Dawn's Wrath
-        [21726] = { 0,    6,    0.5,  true },       -- Sun Fire
-        [21732] = { 0,    6,    0.5,  true },       -- Reflective Light
-        [21729] = { 0,    8.4,  0.5,  true },       -- Vampire's Bane
-        [22110] = { 0,    7.2,  1.25, true },       -- Dark Flare
+        [21726] = { 0,    6,    0,    true },       -- Sun Fire
+        [21732] = { 0,    6,    0,    true },       -- Reflective Light
+        [21729] = { 0,    8.4,  0,    true },       -- Vampire's Bane
+        [22110] = { 0,    7.2,  0,    true },       -- Dark Flare
         [21776] = { 0,    6,    0,    false },      -- Eclipse
         [22006] = { 0,    6,    0,    false },      -- Total Dark
         [22004] = { 0,    6,    0,    false },      -- Unstable Core
@@ -260,9 +260,9 @@ function FTC.Buffs:RegisterEffects()
         [35750] = { 0,    30,   3,    false },      -- Trap Beast
         [40372] = { 0,    30,   3,    false },      -- Lightweight Beast Trap
         [40382] = { 0,    30,   3,    false },      -- Rearming Trap
-        [35713] = { 0,    4,    0.5,  true },       -- Dawnbreaker
-        [40161] = { 0,    6,    0.5,  true },       -- Flawless Dawnbreaker
-        [40158] = { 0,    4,    0.5,  true },       -- Dawnbreaker of Smiting
+        [35713] = { 0,    4,    0,    true },       -- Dawnbreaker
+        [40161] = { 0,    6,    0,    true },       -- Flawless Dawnbreaker
+        [40158] = { 0,    4,    0,    true },       -- Dawnbreaker of Smiting
         
         -- Mages Guild
         [8108]  = { 0,    15.6, 0,    true },       -- Entropy

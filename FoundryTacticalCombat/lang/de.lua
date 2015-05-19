@@ -14,10 +14,10 @@ ZO_CreateStringId("SI_BINDING_NAME_TOGGLE_COMBAT_LOG", "Aktiviere den Kampflog")
 --[[----------------------------------------------------------
     DAMAGE WORDS
   ]]----------------------------------------------------------
---ZO_CreateStringId("FTC_Falling",            "Falling")
---ZO_CreateStringId("FTC_Dead",               "Dead")
---ZO_CreateStringId("FTC_Offline",            "Offline")
- 
+ZO_CreateStringId("FTC_Falling",            "Fallschaden")
+ZO_CreateStringId("FTC_Dead",               "Dead")
+ZO_CreateStringId("FTC_Offline",            "Offline")
+
 --[[----------------------------------------------------------
     MENU CORE
   ]]----------------------------------------------------------

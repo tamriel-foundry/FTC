@@ -212,11 +212,10 @@ function FTC.Player:GetActionBar()
                 ["dur"]         = GetAbilityDuration(ability_id),
                 ["tex"]         = GetSlotTexture(i),
                 ["ground"]      = target == GetAbilityTargetDescription(23182),
-                ["area"]        = ( target == GetAbilityTargetDescription(23182) ) or ( target == GetAbilityTargetDescription(20919) ) or ( target == GetAbilityTargetDescription(22784) ),
+                ["area"]        = ( target == GetAbilityTargetDescription(23182) ) or ( target == GetAbilityTargetDescription(22784) ),
                 ["debuff"]      = ( ( target == GetAbilityTargetDescription(3493) ) or ( target == GetAbilityTargetDescription(20919) ) ),
                 ["effects"]     = FTC.Buffs.Effects[name],
-
-                GetAbilityTargetDescription
+                ["pending"]     = ( FTC.Buffs.Effects[name] ~= nil ) and FTC.Buffs.Effects[name][4] or false
             }
         end
 

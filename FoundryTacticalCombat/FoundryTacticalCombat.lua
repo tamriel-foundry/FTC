@@ -71,6 +71,9 @@ function FTC.Initialize( eventCode, addOnName )
 
     -- Initialize UI Layer
     FTC.UI:Initialize()
+
+    -- Register custom effects
+    FTC.Buffs:RegisterEffects()
     
     -- Setup Character Management
     FTC.Player:Initialize()

@@ -51,9 +51,6 @@
         -- Setup displayed buff tables
         FTC.Buffs.Player = {}
         FTC.Buffs.Target = {}
-
-        -- Register custom effects
-        FTC.Buffs:RegisterEffects()
         
         -- Create the controls
         FTC.Buffs:Controls()
@@ -66,7 +63,7 @@
         
         -- Setup status flags
         FTC.Buffs.lastCast  = 0
-        FTC.Buffs.pending   = {}
+        FTC.Buffs.pending = {}
         
         -- Register init status
         FTC.init.Buffs = true
@@ -133,6 +130,14 @@
             -- Avoid skill failure and spamming
             if ( FTC.Buffs:HasFailure(slot) or ( time < ( FTC.Buffs.lastCast or 0 ) + 500 ) ) then return retval end
 
+            -- Send debuffs which require damage confirmation to the pending queue
+            if ( ability.effects ~= nil and ability.effects[4] == true ) then 
+                ability.owner       = GetUnitName('reticleover')
+                FTC.Buffs.pending   = ability
+
+            -- Register abilities with durations or custom effects
+            elseif ( ( ability.effects ~= nil ) or ( ability.dur > 0 ) ) then FTC.Buffs:NewEffect( ability ) end
+
             -- Put ground target abilities into the pending queue
             if ( ability.ground ) then 
                 FTC.Buffs.pendingGT = ability
@@ -141,9 +146,6 @@
             
             -- Fire a callback to hook extensions
             CALLBACK_MANAGER:FireCallbacks( "FTC_SpellCast" , ability )
-
-            -- Register abilities with durations or custom effects
-            if ( ( ability.effects ~= nil ) or ( ability.dur > 0 ) ) then FTC.Buffs:NewEffect( ability ) end
 
             -- Flag the last cast time  
             FTC.Buffs.lastCast = time
@@ -258,7 +260,7 @@
 
         -- Get ability info
         local effects   = ability.effects
-        local castTime  = ( effects ~= nil ) and ( ability.cast + (effects[3]*1000) ) or ability.cast
+        local castTime  = ( effects ~= nil ) and ( effects[3]*1000 ) or ability.cast
 
         -- Setup buff object
         local newBuff = {
@@ -271,6 +273,7 @@
             ["toggle"]  = ability.toggle,        
             ["icon"]    = ability.tex,
             ["begin"]   = ( ms + castTime ) / 1000,
+            ["pending"] = ability.pending or false,
         }
 
         -- Arbitrate context
@@ -287,7 +290,7 @@
                 for k,v in pairs(newBuff) do newDebuff[k] = v end
 
                 -- Add buff data
-                newDebuff.owner   = DoesUnitExist('reticleover') and GetUnitName('reticleover') or FTC.Target.name
+                newDebuff.owner   = ( newBuff.pending ) and newDebuff.owner or ( DoesUnitExist('reticleover') and GetUnitName('reticleover') or FTC.Target.name ) 
                 newDebuff.ends    = ( ( ms + castTime ) / 1000 ) + effects[2]
                 newDebuff.debuff  = true
 
@@ -300,9 +303,6 @@
                 control.cooldown:SetDrawLayer(DL_CONTROLS)
                 control.icon:SetDrawLayer(DL_CONTROLS) 
                 newDebuff.control = control
-
-                -- Set a pending flag for abilities which require damage validation
-                if ( effects[4] ) then FTC.Buffs.pending = newDebuff end
                 
                 -- Add debuff to timed table
                 FTC.Buffs.Target[ability.name] = newDebuff
@@ -382,11 +382,7 @@
 
         -- Activate buffs and debuffs from the pending queue
         local pending = FTC.Buffs.pending
-        if ( pending ~= nil and GetAbilityName(pending.id) == damage.ability ) then 
-            if ( FTC.Buffs.Target[damage.ability] ~= nil ) then FTC.Buffs.Target[damage.ability].pending = false end
-            if ( FTC.Buffs.Player[damage.ability] ~= nil ) then FTC.Buffs.Player[damage.ability].pending = false end
-            FTC.Buffs.pending = {}
-        end
+        if ( pending ~= nil and pending.name == damage.ability ) then FTC.Buffs:NewEffect( pending ) end
 
         -- Modify buffs that change on damage
         FTC.Buffs:DamageEffect( damage.ability )
@@ -407,7 +403,7 @@
         
         -- Wipe out buffs that are specific to the deceased
         for name , buff in pairs( FTC.Buffs[context] ) do
-            if ( buff.owner == owner and buff.area == false ) then
+            if ( buff.owner == owner and ( buff.area == false or buff.pending == true ) ) then
                 FTC.Buffs.Pool:ReleaseObject(buff.control.id)
                 FTC.Buffs[context][name] = nil
             end 
@@ -464,9 +460,6 @@
             
             -- Skip abilities which have not begun yet
             if ( buffs[i].begin > gameTime ) then render = false end
-
-            -- Skip pending abilities which require damage confirmation
-            if ( buffs[i].pending ) then render = false end
 
             -- Purge expired abilities
             if ( duration <= 0 and buffs[i].toggle == nil ) then
