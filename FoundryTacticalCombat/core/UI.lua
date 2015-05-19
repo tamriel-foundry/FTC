@@ -120,6 +120,7 @@ FTC.UI.Textures     = {
             [8041]  = '/esoui/art/icons/death_recap_fire_aoe.dds',                  -- Explosion
             [21925] = '/esoui/art/icons/death_recap_disease_aoe.dds',               -- Diseased
             [58856] = '/esoui/art/icons/death_recap_disease_aoe.dds',               -- Infection
+            [5139]  = '/esoui/art/icons/death_recap_environmental.dds',             -- Lava
             
             -- Defenses
             [2890]  = '/esoui/art/icons/ability_warrior_030.dds',                   -- Block

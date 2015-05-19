@@ -299,17 +299,12 @@ function FTC.Frames:GroupRange( unitTag , inRange )
     if ( inRange == nil ) then inRange = IsUnitInGroupSupportRange(unitTag) end
 
     -- Retrieve the frame
-    local i = tonumber(string.sub(unitTag,-1))
+    local i = GetGroupIndexByUnitTag(unitTag)
     local frame = _G["FTC_GroupFrame"..i]
 
     -- Get player roles
-    local color = FTC.Vars.FrameHealthColor
-    if ( FTC.Vars.ColorRoles ) then
-        local isDps , isHealer , isTank = GetGroupMemberRoles('group'..i)
-        if isTank       then color = FTC.Vars.FrameTankColor
-        elseif isHealer then color = FTC.Vars.FrameHealerColor
-        elseif isDps    then color = FTC.Vars.FrameDamageColor end
-    end
+    local role = FTC.Group[i].role
+    local color = ( FTC.Vars.ColorRoles and role ~= nil ) and FTC.Vars["Frame"..role.."Color"] or FTC.Vars.FrameHealthColor
 
     -- Darken the color of the bar
     local newColor  = inRange and color or { color[1]/2 , color[2]/2 , color[3]/2 }
@@ -347,7 +342,7 @@ end
 
     -- Small Group Frame
     elseif ( string.find(unitTag,"group") > 0 and GetGroupSize() <= 4 ) then
-        local i = tonumber(string.sub(unitTag,-1))
+        local i = GetGroupIndexByUnitTag(unitTag)
         data    = FTC.Group[i]
         frame   = _G["FTC_GroupFrame" .. i]
         FTC.Frames:Fade(unitTag,frame) 
@@ -436,7 +431,7 @@ function FTC.Frames:UpdateShield( unitTag , value , maxValue )
 
     -- Small Group Frame
     elseif ( string.find(unitTag,"group") > 0 and GetGroupSize() <= 4 ) then
-        local i = tonumber(string.sub(unitTag,-1))
+        local i = GetGroupIndexByUnitTag(unitTag)
         data    = FTC.Group[i]
         frame   = _G["FTC_GroupFrame" .. i]
         FTC.Frames:Fade(unitTag,frame) 
