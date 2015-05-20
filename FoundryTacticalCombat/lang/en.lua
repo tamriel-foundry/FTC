@@ -238,3 +238,11 @@ ZO_CreateStringId("FTC_Menu_SIconSDesc",    "Change the size of icons displayed 
 
 ZO_CreateStringId("FTC_Menu_SCTReset",      "Reset SCT")
 ZO_CreateStringId("FTC_Menu_SCTResetDesc",  "Reset original settings for FTC scrolling combat text component.")
+
+--[[----------------------------------------------------------
+    SCT ALERTS
+  ]]----------------------------------------------------------
+ZO_CreateStringId("FTC_LowHealth",          "Low Health")
+ZO_CreateStringId("FTC_LowMagicka",         "Low Magicka")
+ZO_CreateStringId("FTC_LowStamina",         "Low Stamina")
+ZO_CreateStringId("FTC_Experience",         "Experience")

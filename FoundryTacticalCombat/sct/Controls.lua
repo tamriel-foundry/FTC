@@ -29,18 +29,19 @@
 	    CTI:SetMovable(true)
 	    CTI:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end)
 
-	    -- Define pool for damage events
-	    if ( FTC.SCT.OutPool == nil ) then FTC.SCT.OutPool = ZO_ObjectPool:New( FTC.SCT.CreateSCTOut , function(object) FTC.SCT:ReleaseSCT(object) end ) end
-	    if ( FTC.SCT.InPool == nil )  then FTC.SCT.InPool  = ZO_ObjectPool:New( FTC.SCT.CreateSCTIn  , function(object) FTC.SCT:ReleaseSCT(object) end ) end
+		-- Create alerts container
+		local CTA 		= FTC.UI:Control(   "FTC_SCTAlerts",       FTC_UI,     	{400,500},             	FTC.Vars.FTC_SCTAlerts,     false )  
+	    CTA.backdrop 	= FTC.UI:Backdrop(  "FTC_SCTAlerts_BG",    CTA,     	"inherit",              {CENTER,CENTER,0,0},      	{0,0,0,0.4}, {0,0,0,1}, nil, true )
+	    CTA.label       = FTC.UI:Label(     "FTC_SCTAlerts_Label", CTA,        	"inherit",              {CENTER,CENTER,0,0},       	FTC.UI:Font("trajan",24,true) , nil , {1,1} , "Combat Alerts" , true )  
+	    CTA.backdrop:SetEdgeTexture("",16,4,4) 
+	    CTA:SetDrawLayer(DL_BACKGROUND)
+	    CTA:SetMovable(true)
+	    CTA:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end)
 
-		--[[
-		-- Create status alerts container
-		local name		= "FTC_CombatTextStatus"
-		local anchor	= FTC.vars[name]
-		local CTS 		= FTC.UI.TopLevelWindow( name , GuiRoot , {500,400} , {anchor[1],anchor[2],anchor[3],anchor[4]} , false )
-		CTS.backdrop 	= FTC.UI.Backdrop( name.."_Backdrop" , CTS , "inherit" , {CENTER,CENTER,0,0} , nil , nil , true )	
-		CTS.label		= FTC.UI.Label( name.."_Label" , CTS , 'inherit' , {CENTER,CENTER,0,0} , FTC.Fonts.meta(16) , nil , {1,1} , "Status Alerts" , true )
-		]]--	
+	    -- Define pool for damage events
+	    if ( FTC.SCT.OutPool == nil ) then FTC.SCT.OutPool 		 = ZO_ObjectPool:New( FTC.SCT.CreateSCTOut , function(object) FTC.SCT:ReleaseSCT(object) end ) end
+	    if ( FTC.SCT.InPool == nil )  then FTC.SCT.InPool  		 = ZO_ObjectPool:New( FTC.SCT.CreateSCTIn  , function(object) FTC.SCT:ReleaseSCT(object) end ) end
+	    if ( FTC.SCT.AlertPool == nil )  then FTC.SCT.AlertPool  = ZO_ObjectPool:New( FTC.SCT.CreateSCTAlert , function(object) FTC.SCT:ReleaseSCT(object) end ) end
 	end
 
 
@@ -123,8 +124,8 @@
 	    -- Create buff
 	    local size		= FTC.Vars.SCTIconSize
 	    local control  	= FTC.UI:Control(  "FTC_SCTIn"..counter,            FTC_UI,  	{400,50},  			{CENTER,CENTER,0,0}, 				false )
-	    control.value 	= FTC.UI:Label(    "FTC_SCTIn"..counter.."_Value",  control,  	{90,50},  			{RIGHT,RIGHT,-60,0},  				FTC.UI:Font("antique",FTC.Vars.SCTFontSize+2,true) , {1,1,1,1}, {0,2}, "Value", false )
-	    control.name   	= FTC.UI:Label(    "FTC_SCTIn"..counter.."_Name",   control,  	{250,50},  			{RIGHT,LEFT,-10,0,control.value}, 	FTC.UI:Font("antique",FTC.Vars.SCTFontSize,true) , {1,1,1,1}, {0,2}, "Name", false )
+	    control.value 	= FTC.UI:Label(    "FTC_SCTIn"..counter.."_Value",  control,  	{90,50},  			{RIGHT,RIGHT,-60,0},  				nil , {1,1,1,1}, {0,1}, "Value", false )
+	    control.name   	= FTC.UI:Label(    "FTC_SCTIn"..counter.."_Name",   control,  	{250,50},  			{RIGHT,LEFT,-10,0,control.value}, 	nil , {1,1,1,1}, {0,1}, "Name", false )
 	    control.bg   	= FTC.UI:Backdrop( "FTC_SCTIn"..counter.."_BG",     control,   	{size,size},  		{RIGHT,RIGHT,0,0},  				{0,0,0,0.8}, {0,0,0,0.8}, nil, false )
 	    control.icon    = FTC.UI:Texture(  "FTC_SCTIn"..counter.."_Icon",   control,   	{size-8,size-8},  	{CENTER,CENTER,0,0,control.bg},		'/esoui/art/icons/icon_missing.dds', false )
 	    control.frame   = FTC.UI:Texture(  "FTC_SCTIn"..counter.."_Frame",  control,   	{size-4,size-4},    {CENTER,CENTER,0,0,control.icon}, 	'/esoui/art/actionbar/icon_metal04.dds', false )
@@ -132,6 +133,27 @@
 	   -- Apply some options
 	   control.value:SetResizeToFitDescendents(true)
 	   control.name:SetResizeToFitDescendents(true)
+
+	    -- Return buff to pool
+	    return control
+	end
+
+	--[[ 
+	 * Add Alert SCT to Pool
+	 * --------------------------------
+	 * Called by FTC.Buffs.Pool
+	 * --------------------------------
+	 ]]--
+	function FTC.SCT:CreateSCTAlert()
+
+	    -- Get the pool and counter
+	    local pool 		= FTC.SCT.AlertPool
+	    local counter   = pool:GetNextControlId()
+
+	    -- Create buff
+	    local size		= FTC.Vars.SCTIconSize
+	    local control  	= FTC.UI:Control(  "FTC_SCTAlert"..counter,            FTC_SCTAlerts,   {400,50},  {CENTER,CENTER,0,0},  false )
+	    control.label   = FTC.UI:Label(    "FTC_SCTAlert"..counter.."_Label",  control, 		{250,50},  {CENTER,CENTER,0,0},  nil , {1,1,1,1}, {0,1}, "Alert", false )
 
 	    -- Return buff to pool
 	    return control

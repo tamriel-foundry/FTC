@@ -131,7 +131,7 @@
         
             -- Health, Magicka, and Stamina
             if ( powerType == POWERTYPE_HEALTH or powerType == POWERTYPE_MAGICKA or powerType == POWERTYPE_STAMINA ) then
-                -- if ( FTC.init.SCT ) then FTC.SCT:ResourceAlert( unitTag , powerType , powerValue , powerMax ) end
+                if ( FTC.init.SCT ) then FTC.SCT:ResourceAlert( unitTag , powerType , powerValue , powerMax ) end
                 FTC.Frames:UpdateAttribute( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
                 
             -- Ultimate
@@ -152,7 +152,6 @@
         
             -- Health
             if ( powerType == POWERTYPE_HEALTH ) then
-                -- if ( FTC.init.SCT ) then FTC.SCT:ResourceAlert( unitTag , powerType , powerValue , powerMax ) end
                 FTC.Frames:UpdateAttribute( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
             end
         
@@ -519,8 +518,8 @@
     function FTC.OnXPUpdate( eventCode , unitTag , currentExp , maxExp , reason )
         if ( unitTag ~= 'player' ) then return end
 
-        -- Pass experience to scrolling combat text component
-        --if ( FTC.init.SCT ) then FTC.SCT:NewExp( eventCode , unitTag , currentExp , maxExp , reason ) end
+        -- Generate SCT Alert
+        if ( FTC.init.SCT ) then FTC.SCT:NewExp( currentExp , maxExp , reason ) end
 
         -- Log experience gain
         if ( FTC.init.Log ) then FTC.Log:Exp( currentExp , reason ) end
@@ -530,8 +529,6 @@
         
         -- Update the experience bar
         if ( FTC.init.Frames ) then FTC.Frames:SetupAltBar() end
-
-
     end
 
     --[[ 
@@ -554,6 +551,9 @@
     function FTC:OnLevel( ... )
 
         -- Update character level on unit frames
-        if ( FTC.init.Frames ) then FTC.Frames:SetupPlayer() end
+        if ( FTC.init.Frames ) then 
+            FTC.Frames:SetupPlayer() 
+            FTC.Frames:SetupGroup()
+        end
     end
 

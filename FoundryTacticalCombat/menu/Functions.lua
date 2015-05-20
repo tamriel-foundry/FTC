@@ -539,7 +539,7 @@
       
         -- Display SCT
         if ( FTC.init.SCT ) then
-            local frames = { FTC_SCTOut , FTC_SCTIn }
+            local frames = { FTC_SCTOut , FTC_SCTIn , FTC_SCTAlerts }
             for _ , frame in pairs(frames) do
                 frame:SetMouseEnabled( move )
                 frame:SetHidden( false )

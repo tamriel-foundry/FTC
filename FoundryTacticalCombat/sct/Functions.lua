@@ -22,11 +22,7 @@
         -- Anchors
         ["FTC_SCTOut"]              = {RIGHT,CENTER,-300,-50},
         ["FTC_SCTIn"]               = {LEFT,CENTER,300,-50},
-
-        
-        --["FTC_SCTStatus"]         = {TOP,FTC_UI,TOP,0,80},
-
-
+        ["FTC_SCTAlerts"]           = {BOTTOM,CENTER,0,-100},
     }
     FTC:JoinTables(FTC.Defaults,FTC.SCT.Defaults)
 
@@ -45,10 +41,12 @@
         -- Setup tables
         FTC.SCT.In      = {}
         FTC.SCT.Out     = {}
-        FTC.SCT.Status  = {}
+        FTC.SCT.Alerts  = {}
 
         -- Alterante objects
-        FTC.SCT.count   = 1
+        FTC.SCT.countIn = 1
+        FTC.SCT.countOut = 1
+        FTC.SCT.countAlert = 1
         
         -- Save tiny AP gains
         --FTC.SCT.backAP    = 0
@@ -60,8 +58,9 @@
         FTC.init.SCT = true
 
         -- Activate updating
-        EVENT_MANAGER:RegisterForUpdate( "FTC_SCTOut" , nil , function() FTC.SCT:Update('Out') end )
-        EVENT_MANAGER:RegisterForUpdate( "FTC_SCTIn"  , nil , function() FTC.SCT:Update('In') end )
+        EVENT_MANAGER:RegisterForUpdate( "FTC_SCTOut"    , nil , function() FTC.SCT:Update('Out')  end )
+        EVENT_MANAGER:RegisterForUpdate( "FTC_SCTIn"     , nil , function() FTC.SCT:Update('In')   end )
+        EVENT_MANAGER:RegisterForUpdate( "FTC_SCTAlerts" , nil , function() FTC.SCT:UpdateAlerts() end )
     end
 
 
@@ -120,13 +119,13 @@
 
             -- Compute starting offsets
             local  offsets = {}
-            if     ( FTC.SCT.count == 1 )   then offsets = {0,-50} 
-            elseif ( FTC.SCT.count == 2 )   then offsets = {100,0}
-            elseif ( FTC.SCT.count == 3 )   then offsets = {0,50}
-            elseif ( FTC.SCT.count == 4 )   then offsets = {-100,0} end
+            if     ( FTC.SCT["count"..context] == 1 )   then offsets = {0,-50} 
+            elseif ( FTC.SCT["count"..context] == 2 )   then offsets = {100,0}
+            elseif ( FTC.SCT["count"..context] == 3 )   then offsets = {0,50}
+            elseif ( FTC.SCT["count"..context] == 4 )   then offsets = {-100,0} end
             control.offsetX , control.offsetY = unpack(offsets)
-            control:SetDrawTier( FTC.SCT.count % 2 == 0 and DT_MEDIUM or DT_LOW )
-            FTC.SCT.count = ( FTC.SCT.count % 4 == 0 ) and 1 or FTC.SCT.count + 1
+            control:SetDrawTier( FTC.SCT["count"..context] % 2 == 0 and DT_MEDIUM or DT_LOW )
+            FTC.SCT["count"..context] = ( FTC.SCT["count"..context] % 4 == 0 ) and 1 or FTC.SCT["count"..context] + 1
 
             -- Determine labels
             local value = ( FTC.Vars.SCTRound ) and ( ( damage.value >= 1000 ) and zo_roundToNearest( damage.value / 1000 , 0.1 ) .. "k" or damage.value ) or CommaValue(damage.value)

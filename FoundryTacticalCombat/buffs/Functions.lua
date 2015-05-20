@@ -135,13 +135,14 @@
                 ability.owner       = GetUnitName('reticleover')
                 FTC.Buffs.pending   = ability
 
-            -- Register abilities with durations or custom effects
-            elseif ( ( ability.effects ~= nil ) or ( ability.dur > 0 ) ) then FTC.Buffs:NewEffect( ability ) end
-
             -- Put ground target abilities into the pending queue
-            if ( ability.ground ) then 
-                FTC.Buffs.pendingGT = ability
-                return retval
+            elseif ( ability.ground ) then FTC.Buffs.pendingGT = ability
+
+            -- Register abilities with durations or custom effects
+            elseif ( ( ability.effects ~= nil ) or ( ability.dur > 0 ) ) then 
+                FTC.Buffs:NewEffect( ability ) 
+                FTC.Buffs.pending = nil
+                FTC.Buffs.pendingGT = nil
             end
             
             -- Fire a callback to hook extensions
@@ -313,6 +314,7 @@
 
                 -- Add buff data
                 newBuff.ends    = ( ( ms + castTime ) / 1000 ) + effects[1]
+                newBuff.owner   = FTC.Player.name
                 newBuff.debuff  = false
 
                 -- Assign buff to pooled control
