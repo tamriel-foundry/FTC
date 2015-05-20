@@ -173,12 +173,12 @@
 
             -- Maybe display icons
             if ( FTC.Vars.SCTIcons ) then 
-                local size = FTC.Vars.SCTIconSize
+                local size = ( damage.crit ) and FTC.Vars.SCTIconSize + 8 or FTC.Vars.SCTIconSize
                 control.bg:SetDimensions(size,size)
                 control.frame:SetDimensions(size-4,size-4)
                 control.icon:SetTexture(damage.icon)
                 control.icon:SetDimensions(size-8,size-8)
-                local anchor = damage.out and {LEFT,control,LEFT,FTC.Vars.SCTIconSize*1.2,0} or {RIGHT,control,RIGHT,-1*(FTC.Vars.SCTIconSize*1.2),0}
+                local anchor = damage.out and {LEFT,control,LEFT,size*1.2,0} or {RIGHT,control,RIGHT,-1*(size*1.2),0}
                 control.value:SetAnchor(unpack(anchor))
             end
             control.bg:SetHidden(not FTC.Vars.SCTIcons)
