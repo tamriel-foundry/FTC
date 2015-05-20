@@ -64,13 +64,8 @@ end
             ["weapon"]  = FTC.Damage:IsWeaponAttack(abilityName),
         }
 
-        -- ACTION_RESULT_DODGED
-        -- ACTION_RESULT_MISS
         -- ACTION_RESULT_IMMUNE
-        -- ACTION_RESULT_INTERRUPT
         -- ACTION_RESULT_BLOCKED
-        -- ACTION_RESULT_OFFBALANCE
-        -- ACTION_RESULT_STUNNED
         -- ACTION_RESULT_POWER_DRAIN
         -- ACTION_RESULT_POWER_ENERGIZE
 
@@ -113,6 +108,12 @@ end
             -- Log and SCT
             if ( FTC.init.Log ) then FTC.Log:CombatEvent(damage) end
             if ( FTC.init.SCT ) then FTC.SCT:Damage(damage) end
+
+        -- Crowd Controls
+        elseif ( result == ACTION_RESULT_INTERRUPT or result == ACTION_RESULT_STUNNED or result == ACTION_RESULT_OFFBALANCE or result == ACTION_RESULT_DISORIENTED or result == ACTION_RESULT_STAGGERED or result == ACTION_RESULT_FEARED or result == ACTION_RESULT_SILENCED ) then
+
+            -- Fire SCT Alert
+            if ( FTC.init.SCT ) then FTC.SCT:NewCC( result , damageOut ) end
 
         -- Healing Dealt
         elseif ( hitValue > 0 and ( result == ACTION_RESULT_HEAL or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_HOT_TICK or result == ACTION_RESULT_HOT_TICK_CRITICAL ) ) then 
