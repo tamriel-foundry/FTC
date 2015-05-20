@@ -30,7 +30,7 @@ ZO_CreateStringId("FTC_Menu_Frames",        "Activer les Cadres Unitaires")
 ZO_CreateStringId("FTC_Menu_FramesDesc",    "Activer le composant de cadres unitaires customisés? [Défaut: "..default.."]")
 
 local default = ( FTC.Defaults.EnableBuffs ) and "Activé" or "Désactivé"
-ZO_CreateStringId("FTC_Menu_Buffs",         "Activer le Suivi de Buffs"
+ZO_CreateStringId("FTC_Menu_Buffs",         "Activer le Suivi de Buffs")
 ZO_CreateStringId("FTC_Menu_BuffsDesc",     "Activer le composant de suivi de Buffs et Débuffs? [Défaut: "..default.."]")
 
 local default = ( FTC.Defaults.EnableLog ) and "Activé" or "Désactivé"
