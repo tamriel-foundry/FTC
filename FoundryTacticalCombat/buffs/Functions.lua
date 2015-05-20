@@ -382,7 +382,10 @@
 
         -- Activate buffs and debuffs from the pending queue
         local pending = FTC.Buffs.pending
-        if ( pending ~= nil and pending.name == damage.ability ) then FTC.Buffs:NewEffect( pending ) end
+        if ( pending ~= nil and pending.name == damage.ability ) then 
+            FTC.Buffs:NewEffect( pending ) 
+            FTC.Buffs.pending = nil
+        end
 
         -- Modify buffs that change on damage
         FTC.Buffs:DamageEffect( damage.ability )

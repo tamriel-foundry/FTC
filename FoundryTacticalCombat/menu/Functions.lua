@@ -504,10 +504,7 @@
      * Called by FTC.Menu:Controls()
      * --------------------------------
      ]]--
-    function FTC.Menu:MoveFrames()
-
-        -- Get the current move status
-        local move = not FTC.move
+    function FTC.Menu:MoveFrames( move )
 
         -- Start by returning to the normal UI
         if ( SCENE_MANAGER:IsInUIMode() and not WINDOW_MANAGER:IsSecureRenderModeEnabled() ) then SCENE_MANAGER:SetInUIMode(false) end
@@ -538,11 +535,6 @@
                 if ( frame.backdrop ~= nil ) then frame.backdrop:SetHidden(not move) end
                 if ( frame.label ~= nil ) then frame.label:SetHidden(not move) end
             end
-        end
-
-        -- Combat Log
-        if ( FTC.init.Log ) then
-            FTC_CombatLog:SetMouseEnabled( move )
         end
       
         -- Display SCT

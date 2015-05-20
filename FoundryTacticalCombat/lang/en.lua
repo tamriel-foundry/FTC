@@ -79,7 +79,7 @@ ZO_CreateStringId("FTC_Menu_FFontS",        "Frame Font Size")
 ZO_CreateStringId("FTC_Menu_FFontSDesc",    "Change the base scale of the fonts used in FTC unit frames. [Default: "..FTC.Defaults.FrameFontSize.."]")
 
 ZO_CreateStringId("FTC_Menu_Exceute",       "Execute Threshold")
-ZO_CreateStringId("FTC_Menu_ExecuteDesc",   "Set your desired excute threshold health percentage for frames and text alerts. [Default: "..FTC.Defaults.ExecuteThreshold.."]")
+ZO_CreateStringId("FTC_Menu_ExecuteDesc",   "Set your desired excute threshold health percentage for frames and text alerts. Setting to zero will disable alerts. [Default: "..FTC.Defaults.ExecuteThreshold.."]")
 
 local default = ( FTC.Defaults.DefaultTargetFrame ) and "Enabled" or "Disabled"
 ZO_CreateStringId("FTC_Menu_FShowDef",      "Default Target Frame")

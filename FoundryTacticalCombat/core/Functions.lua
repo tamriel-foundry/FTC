@@ -54,8 +54,7 @@ function FTC:ToggleVisibility( activeLayerIndex )
 	local hidden = activeLayerIndex > 2 and not FTC.move and not FTC.inMenu
 
 	-- If we were leaving move mode
-	if ( FTC.move and activeLayerIndex > 2 ) then FTC.Menu:MoveFrames() end
-	--d(activeLayerIndex)
+	if ( FTC.move and activeLayerIndex > 2 ) then FTC.Menu:MoveFrames( false ) end
 	
 	-- Hide the FTC_UI Layer
 	FTC_UI:SetHidden(hidden)

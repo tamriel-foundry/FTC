@@ -36,7 +36,6 @@ FTC:JoinTables(FTC.Defaults,FTC.Log.Defaults)
 		FCL:ClearAnchors()
 		FCL:SetAnchor(unpack(FTC.Vars.FTC_CombatLog))
 		FCL:SetClampedToScreen(false)
-		FCL:SetMouseEnabled(false)
 	    FCL:SetHandler( "OnMouseUp", function() FTC.Menu:MoveLog() end )
 		
 		-- Change the styling
