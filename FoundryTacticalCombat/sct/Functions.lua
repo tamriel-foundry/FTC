@@ -17,6 +17,7 @@
         ["SCTFont2"]                = 'esobold',
         ["SCTFontSize"]             = 20,
         ["SCTIconSize"]             = 36,
+        ["SCTRound"]                = true,
 
         -- Anchors
         ["FTC_SCTOut"]              = {RIGHT,CENTER,-300,-50},
@@ -60,7 +61,7 @@
 
         -- Activate updating
         EVENT_MANAGER:RegisterForUpdate( "FTC_SCTOut" , nil , function() FTC.SCT:Update('Out') end )
-        EVENT_MANAGER:RegisterForUpdate( "FTC_SCTIn" , nil , function() FTC.SCT:Update('In') end )
+        EVENT_MANAGER:RegisterForUpdate( "FTC_SCTIn"  , nil , function() FTC.SCT:Update('In') end )
     end
 
 
@@ -128,7 +129,7 @@
             FTC.SCT.count = ( FTC.SCT.count % 4 == 0 ) and 1 or FTC.SCT.count + 1
 
             -- Determine labels
-            local value = ( damage.value >= 1000 ) and zo_roundToNearest( damage.value / 1000 , 0.1 ) .. "k" or damage.value
+            local value = ( FTC.Vars.SCTRound ) and ( ( damage.value >= 1000 ) and zo_roundToNearest( damage.value / 1000 , 0.1 ) .. "k" or damage.value ) or CommaValue(damage.value)
             local size  = ( damage.crit ) and FTC.Vars.SCTFontSize + 4 or FTC.Vars.SCTFontSize
             local name  = zo_strformat("<<!aC:1>>",damage.ability)
 

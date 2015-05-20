@@ -26,11 +26,11 @@ end
         -- Determine context
         local damageOut = false
         if ( sourceType == COMBAT_UNIT_TYPE_PLAYER or sourceType == COMBAT_UNIT_TYPE_PLAYER_PET ) then damageOut = true
-        elseif ( sourceType == COMBAT_UNIT_TYPE_NONE and ( zo_strformat("<<C:1>>",targetName) == FTC.Player.name ) ) then damageOut = false
+        elseif ( sourceType == COMBAT_UNIT_TYPE_NONE and ( targetName == FTC.Player.name ) ) then damageOut = false
         else return end
 
         -- Reflag self-targetted as incoming
-        if ( damageOut and ( zo_strformat("<<C:1>>",targetName) == FTC.Player.name ) ) then damageOut = false end
+        if ( damageOut and ( targetName == FTC.Player.name ) ) then damageOut = false end
 
         -- Ignore certain results
         if ( FTC.Damage:Filter( result ) ) then return end

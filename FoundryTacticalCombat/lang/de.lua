@@ -49,6 +49,9 @@ ZO_CreateStringId("FTC_Menu_DamageDesc",    "Aktiviere die Anzeige der Schadenss
 --ZO_CreateStringId("FTC_Menu_Hotbar",        "Enable Advanced Hotbar")
 --ZO_CreateStringId("FTC_Menu_HotbarDesc",    "Enable advanced tooltips displayed over the default hotbar? [Default: "..default.."]")
 
+--ZO_CreateStringId("FTC_Menu_Move",          "Unlock Positions")
+--ZO_CreateStringId("FTC_Menu_MoveDesc",      "Modify the position of FTC interface elements.")
+
 --[[----------------------------------------------------------
     UNIT FRAMES
   ]]----------------------------------------------------------
@@ -210,6 +213,10 @@ ZO_CreateStringId("FTC_Menu_LResetDesc",    "Setzt die FTC Kampflog Einstellunge
 --local default = FTC.Defaults.SCTNames and "Enabled" or "Disabled"
 --ZO_CreateStringId("FTC_Menu_SNames",        "Display SCT Names")
 --ZO_CreateStringId("FTC_Menu_SNamesDesc",    "Display ability names when possible in scrolling combat text? [Default: "..default.."]")
+
+--local default = FTC.Defaults.SCTRound and "Enabled" or "Disabled"
+--ZO_CreateStringId("FTC_Menu_SRound",        "Shorten Numbers")
+--ZO_CreateStringId("FTC_Menu_SRoundDesc",    "Round damage numbers to the nearest hundred; for example 9,543 becomes 9.5k. [Default: "..default.."]")
 
 --ZO_CreateStringId("FTC_Menu_SSpeed",        "SCT Scroll Speed")
 --ZO_CreateStringId("FTC_Menu_SSpeedDesc",    "Change speed of combat text scrolling, higher is faster. [Default: "..FTC.Defaults.SCTSpeed.."]")

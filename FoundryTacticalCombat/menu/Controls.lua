@@ -561,6 +561,16 @@ function FTC.Menu:Controls()
             default     = FTC.Defaults.SCTNames,
         },
 
+        -- Round Values?
+        { 
+            type        = "checkbox", 
+            name        = GetString(FTC_Menu_SRound),
+            tooltip     = GetString(FTC_Menu_SRoundDesc),
+            getFunc     = function() return FTC.Vars.SCTRound end, 
+            setFunc     = function() FTC.Menu:Toggle( 'SCTRound' ) end, 
+            default     = FTC.Defaults.SCTRound,
+        },
+
         -- SCT Scroll Speed
         {   type        = "slider", 
             name        = GetString(FTC_Menu_SSpeed),

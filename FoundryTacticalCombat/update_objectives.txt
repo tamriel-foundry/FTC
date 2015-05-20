@@ -6,16 +6,16 @@ DONE		Options 		sizing, color, font, etc...
 DONE		Shielding		better representation of shielded health
 DONE		Visualizations	regen/DoT/execute/etc..
 
-DONE	Advanced Hotbar
+		Advanced Hotbar
 			Show global cooldown
-DONE		Move ultimate tracking to advanced hotbar
+			Move ultimate tracking to advanced hotbar
 			Show quickslots
 			Move potion tracking to advanced hotbar
 
-		Buffs/Debuffs
+DONE	Buffs/Debuffs
 DONE		Options			icon and/or text
 DONE		Options			sizing, color, fonts, etc..
-			Localization	make sure buff tracking works with all languages
+DONE		Localization	make sure buff tracking works with all languages
 
 
 DONE	Damage Tracking
@@ -23,9 +23,10 @@ DONE		Log				Process all damage events into log
 			Options			Add opacity option for combat log background
 
 
-		Scrolling Combat Text
-			Options			icon and/or text
-			Options			font size, color, etc...
+DONE	Scrolling Combat Text
+DONE		Options			icon and/or text
+DONE		Options			font size, color, etc...
+			Options			show rounded or complete numbers
 			Frames			Show large Mag/Stam +/- next to frames
 		
 		Alerts
@@ -36,9 +37,11 @@ DONE		Log				Process all damage events into log
 
 DONE 	Default Frames		deprecate default frame text
 
-		Group Frames
-			Options			role colors, etc...
+DONE	Group Frames
+DONE		Options			role colors, etc...
 			Sorting			sort frames by role
+
+		Raid Frames
 
 
 
