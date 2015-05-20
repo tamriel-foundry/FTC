@@ -35,7 +35,7 @@ end
         if ( damageOut and ( target == player ) ) then damageOut = false end
 
         -- Ignore certain results
-        if ( FTC.Damage:Filter( result ) ) then return end
+        if ( FTC.Damage:Filter( result , abilityName ) ) then return end
 
         -- Compute some flags
         local isCrit    = result == ACTION_RESULT_CRITICAL_DAMAGE or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_DOT_TICK_CRITICAL or result == ACTION_RESULT_HOT_TICK_CRITICAL
@@ -141,7 +141,6 @@ end
             -- Prompt other unrecognized
             local direction = damageIn and "Incoming" or "Outgoing"
             -- FTC.Log:Print( direction .. " result " .. result .. " not recognized! Target: " .. targetName .. " Value: " .. hitValue , {1,1,0} )
-
         end
     end
 
@@ -156,7 +155,7 @@ end
      * Called by FTC.Damage:New()
      * --------------------------------
      ]]--
-    function FTC.Damage:Filter( result )
+    function FTC.Damage:Filter( result , abilityName )
 
         -- Keep a list of ignored actions
         local results = {
@@ -166,6 +165,14 @@ end
         -- Check actions
         for i = 1 , #results do
             if ( result == results[i] ) then return true end
+        end
+
+        -- Keep a list of ignored abilities
+        local abilities = {
+            36010,          -- Mount Up
+        }
+        for i = 1 , #abilities do
+            if ( abilityName == GetAbilityName(abilities[i]) ) then return true end
         end
     end
 
