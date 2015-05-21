@@ -354,6 +354,51 @@ function FTC.Menu:Controls()
         },
 
 
+        -- Use Raid Frame?
+        {   type        = "checkbox", 
+            name        = GetString(FTC_Menu_FRaid),
+            tooltip     = GetString(FTC_Menu_FRaidDesc),
+            getFunc     = function() return FTC.Vars.EnableRaidFrames end, 
+            setFunc     = function(value) FTC.Menu:UpdateFrames( 'EnableRaidFrames' , value ) end,
+            default     = FTC.Defaults.EnableRaidFrames
+        },
+
+        -- Raid Frame Width
+        {   type        = "slider", 
+            name        = GetString(FTC_Menu_FRWidth),
+            tooltip     = GetString(FTC_Menu_FRWidthDesc),
+            min         = 90, 
+            max         = 180, 
+            step        = 30, 
+            getFunc     = function() return FTC.Vars.RaidWidth end, 
+            setFunc     = function( value ) FTC.Menu:UpdateFrames( "RaidWidth" , value ) end, 
+            default     = FTC.Defaults.RaidWidth,
+        },
+
+        -- Raid Frame Height
+        {   type        = "slider", 
+            name        = GetString(FTC_Menu_FRHeight),
+            tooltip     = GetString(FTC_Menu_FRHeightDesc),
+            min         = 30, 
+            max         = 60, 
+            step        = 10, 
+            getFunc     = function() return FTC.Vars.RaidHeight end, 
+            setFunc     = function( value ) FTC.Menu:UpdateFrames( "RaidHeight" , value ) end, 
+            default     = FTC.Defaults.RaidHeight,
+        },
+
+
+        -- Raid Frame Font Size
+        {   type        = "slider", 
+            name        = GetString(FTC_Menu_FRFontS),
+            tooltip     = GetString(FTC_Menu_FRFontSDesc),
+            min         = 10,
+            max         = 18, 
+            step        = 1, 
+            getFunc     = function() return FTC.Vars.RaidFontSize end, 
+            setFunc     = function( value ) FTC.Menu:UpdateFrames( "RaidFontSize" , value ) end, 
+            default     = FTC.Defaults.RaidFontSize
+        },
 
 
         -- Reset Unit Frames

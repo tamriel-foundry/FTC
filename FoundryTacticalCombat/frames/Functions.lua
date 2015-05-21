@@ -39,10 +39,10 @@ FTC.Frames.Defaults = {
     -- Raid Frame
     ["EnableRaidFrames"]        = true,
     ["FTC_RaidFrame"]           = {LEFT,LEFT,6,-200},
-    ["RaidWidth"]               = 150,
-    ["RaidHeight"]              = 60,  
-    ["RaidColumnSize"]          = 6,
-    ["GroupFontSize"]           = 14,
+    ["RaidWidth"]               = 120,
+    ["RaidHeight"]              = 50,  
+    ["RaidColumnSize"]          = 12,
+    ["RaidFontSize"]            = 14,
 
     -- Shared Settings
     ["FrameOpacityIn"]          = 100,

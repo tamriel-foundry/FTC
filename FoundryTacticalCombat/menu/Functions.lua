@@ -511,7 +511,7 @@
         
         -- Unit Frames
         if ( FTC.init.Frames ) then
-            local frames = { FTC_PlayerFrame , FTC_TargetFrame , FTC_GroupFrame }
+            local frames = { FTC_PlayerFrame , FTC_TargetFrame , FTC_GroupFrame , FTC_RaidFrame }
             for _ , frame in pairs(frames) do
                 frame:SetMouseEnabled( move )
                 frame:SetHidden( false )

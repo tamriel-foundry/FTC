@@ -142,6 +142,19 @@ local default = math.floor(FTC.Defaults.FrameDamageColor[1]*255)..","..math.floo
 ZO_CreateStringId("FTC_Menu_FDamageC",      "Damage Role Color")
 ZO_CreateStringId("FTC_Menu_FDamageCDesc",  "Set the color displayed for DPS in FTC group and raid frames. [Default: "..default.."]")
 
+local default = ( FTC.Defaults.EnableRaidFrames ) and "Enabled" or "Disabled"
+ZO_CreateStringId("FTC_Menu_FRaid",         "Enable Raid Frames")
+ZO_CreateStringId("FTC_Menu_FRaidDesc",     "Use custom unit frames for groups of size 4 or more? [Default: "..default.."]")
+
+ZO_CreateStringId("FTC_Menu_FRWidth",       "Raid Frames Width")
+ZO_CreateStringId("FTC_Menu_FRWidthDesc",   "Set the width of FTC raid frames. [Default: "..FTC.Defaults.RaidWidth.."]")
+
+ZO_CreateStringId("FTC_Menu_FRHeight",      "Raid Frames Height")
+ZO_CreateStringId("FTC_Menu_FRHeightDesc",  "Set the height of FTC raid frames. [Default: "..FTC.Defaults.RaidHeight.."]")
+
+ZO_CreateStringId("FTC_Menu_FRFontS",       "Raid Frame Font Size")
+ZO_CreateStringId("FTC_Menu_FRFontSDesc",   "Change the scale of the fonts used in FTC raid frames. [Default: "..FTC.Defaults.RaidFontSize.."]")
+
 ZO_CreateStringId("FTC_Menu_FReset",        "Reset Unit Frames")
 ZO_CreateStringId("FTC_Menu_FResetDesc",    "Reset original settings for FTC unit frames component.")
 

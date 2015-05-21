@@ -209,7 +209,7 @@ function FTC.Frames:Controls()
 
     -- Extra settings
     raid["member"..i] = member
-    anchor          = ( i % 6 == 0 ) and {TOPLEFT,TOPRIGHT,-2,0,_G["FTC_RaidFrame"..(i-5)]} or {TOP,BOTTOM,0,-2,member}
+    anchor          = ( i % col == 0 ) and {TOPLEFT,TOPRIGHT,-2,0,_G["FTC_RaidFrame"..(i-col+1)]} or {TOP,BOTTOM,0,-2,member}
     end
 end
 
