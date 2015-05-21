@@ -139,6 +139,8 @@ FTC.UI.Textures     = {
             [29293] = '/esoui/art/icons/ability_dualwield_001.dds',                 -- Twin Slashes Bleed
             [38841] = '/esoui/art/icons/ability_dualwield_001.dds',                 -- Rending Slashes Bleed
             [38848] = '/esoui/art/icons/ability_dualwield_001.dds',                 -- Blood Craze Bleed
+            
+            [38401] = '/esoui/art/icons/ability_1handed_003.dds',                   -- Shielded Assault
 
             [28385] = '/esoui/art/icons/ability_restorationstaff_004.dds',          -- Grand Healing
             [8205]  = '/esoui/art/icons/ability_restorationstaff_002.dds',          -- Regeneration
@@ -169,6 +171,8 @@ FTC.UI.Textures     = {
             [20320] = '/esoui/art/icons/ability_dragonknight_007.dds',              -- Spiked Armor Damage Return
             [20324] = '/esoui/art/icons/ability_dragonknight_007_a.dds',            -- Volatile Armor Damage Return
             [20329] = '/esoui/art/icons/ability_dragonknight_007_b.dds',            -- Hardened Armor Damage Return
+            [31859] = '/esoui/art/icons/ability_dragonknight_012.dds',              -- Inhale Heal
+            [29037] = '/esoui/art/icons/ability_dragonknight_014.dds',              -- Petrify
 
             -- Sorcerer
             [18719] = '/esoui/art/icons/ability_sorcerer_thunder_burst.dds',        -- Mages' Fury Explosion

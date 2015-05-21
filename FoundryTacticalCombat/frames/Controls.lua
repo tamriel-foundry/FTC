@@ -145,7 +145,7 @@ function FTC.Frames:Controls()
     member:SetAlpha(FTC.Vars.FrameOpacityIn/100)
 
     -- Nameplate
-    local plate     = FTC.UI:Control(   "FTC_GroupFrame"..i.."_Plate",      member,     {member:GetWidth(),member:GetHeight()/3},               {TOP,TOP,0,0}, false ) 
+    local plate     = FTC.UI:Control(   "FTC_GroupFrame"..i.."_Plate",      member,     {member:GetWidth(),member:GetHeight()/3},               {TOP,TOP,0,0},                  false ) 
     plate.icon      = FTC.UI:Texture(   "FTC_GroupFrame"..i.."_Icon",       plate ,     {24,24},                                                {BOTTOMLEFT,BOTTOMLEFT,0,0},    "/esoui/art/lfg/lfg_leader_icon.dds", false )
     plate.name      = FTC.UI:Label(     "FTC_GroupFrame"..i.."_Name",       plate,      {plate:GetWidth()-48,plate:GetHeight()},                {LEFT,RIGHT,6,0,plate.icon},    FTC.UI:Font(FTC.Vars.FrameFont1,FTC.Vars.GroupFontSize,true), nil, {0,1}, "Member "..i, false ) 
     plate.class     = FTC.UI:Texture(   "FTC_GroupFrame"..i.."_Class",      plate ,     {24,24},                                                {BOTTOMRIGHT,BOTTOMRIGHT,0,0},  "/esoui/art/contacts/social_classicon_" .. FTC.Player.class .. ".dds", false )
@@ -166,6 +166,50 @@ function FTC.Frames:Controls()
     -- Extra settings
     group["member"..i] = member
     anchor          = {TOP,BOTTOM,0,0,member}
+    end
+
+    --[[-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        RAID FRAME                      NAME                                PARENT      DIMENSIONS                                              ANCHOR                          EXTRAS
+      ]]-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+    -- Create the group frame container 
+    local col       = FTC.Vars.RaidColumnSize
+    local raid      = FTC.UI:Control(   "FTC_RaidFrame",                    FTC_UI,     {FTC.Vars.RaidWidth*(24/col),FTC.Vars.RaidHeight*(col)},FTC.Vars.FTC_RaidFrame,         false )
+    raid.backdrop   = FTC.UI:Backdrop(  "FTC_RaidFrame_BG",                 raid,       "inherit",                                              {CENTER,CENTER,0,0},            {0,0,0,0.4}, {0,0,0,1}, nil, true ) 
+    raid.label      = FTC.UI:Label(     "FTC_RaidFrame_Label",              raid,       "inherit",                                              {CENTER,CENTER,0,0},            FTC.UI:Font("trajan",24,true) , nil , {1,1} , "Raid Frame" , true )   
+    raid.backdrop:SetEdgeTexture("",16,4,4)
+    raid:SetDrawTier(DT_HIGH)
+    raid:SetMovable(true)
+    raid:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end)    
+
+    -- Iterate over 24 possible raid members
+    local anchor    = {TOPLEFT,TOPLEFT,0,0,raid}
+    for i = 1 , 24 do
+    local member    = FTC.UI:Control(   "FTC_RaidFrame"..i,                raid,        {FTC.Vars.RaidWidth,FTC.Vars.RaidHeight},               anchor,                         false)
+    member:SetAlpha(FTC.Vars.FrameOpacityIn/100)
+
+    -- Nameplate
+    local plate     = FTC.UI:Control(   "FTC_RaidFrame"..i.."_Plate",      member,      {member:GetWidth(),member:GetHeight()/2},               {TOPLEFT,TOPLEFT,0,2},          false ) 
+    plate.name      = FTC.UI:Label(     "FTC_RaidFrame"..i.."_Name",       plate,       {plate:GetWidth()-16,plate:GetHeight()},                {LEFT,LEFT,8,0},                FTC.UI:Font(FTC.Vars.FrameFont1,FTC.Vars.RaidFontSize,true), nil, {0,1}, "Member "..i, false ) 
+    plate.icon      = FTC.UI:Texture(   "FTC_RaidFrame"..i.."_Icon",       plate ,      {24,24},                                                {CENTER,CENTER,0,8,member},     "/esoui/art/lfg/lfg_leader_icon.dds", false )
+    plate.icon:SetDrawLayer(DL_CONTROLS)
+    member.plate    = plate
+
+    -- Health bar
+    local health    = FTC.UI:Backdrop(  "FTC_RaidFrame"..i.."_Health",     member,      {member:GetWidth(),member:GetHeight()},                 {CENTER,CENTER,0,0},            {FTC.Vars.FrameHealthColor[1]/5,FTC.Vars.FrameHealthColor[2]/5,FTC.Vars.FrameHealthColor[3]/5,1}, {0,0,0,1}, FTC.UI.Textures.grainy, false ) 
+    health.bar      = FTC.UI:Statusbar( "FTC_RaidFrame"..i.."_Bar",        health,      {health:GetWidth()-4,health:GetHeight()-4},             {LEFT,LEFT,2,0},                {FTC.Vars.FrameHealthColor[1],FTC.Vars.FrameHealthColor[2],FTC.Vars.FrameHealthColor[3],1}, FTC.UI.Textures.grainy, false )   
+    health.current  = FTC.UI:Label(     "FTC_RaidFrame"..i.."_HealthCurrent", health,   {health:GetWidth()*2/3,member:GetHeight()/2},           {LEFT,LEFT,8,8},                FTC.UI:Font(FTC.Vars.FrameFont1,FTC.Vars.RaidFontSize,true), nil, {0,1}, 'H.Lk', false )       
+    health.pct      = FTC.UI:Label(     "FTC_RaidFrame"..i.."_HealthPct",  health,      {health:GetWidth()*1/3,member:GetHeight()/2},           {RIGHT,RIGHT,-8,8},             FTC.UI:Font(FTC.Vars.FrameFont2,FTC.Vars.RaidFontSize,true), nil, {2,1}, 'Pct%', false )
+    member.health   = health
+
+    local shield    = FTC.UI:Backdrop(  "FTC_RaidFrame"..i.."_Shield",     health,      {member:GetWidth()/2,10},                               {BOTTOMLEFT,BOTTOMLEFT,0,0},    {FTC.Vars.FrameShieldColor[1]/5,FTC.Vars.FrameShieldColor[2]/5,FTC.Vars.FrameShieldColor[3]/5,1}, {0,0,0,1}, FTC.UI.Textures.grainy, true )   
+    shield.bar      = FTC.UI:Statusbar( "FTC_RaidFrame"..i.."_ShieldBar",  shield,      {shield:GetWidth()-4,shield:GetHeight()-1},             {TOPLEFT,TOPLEFT,2,1},          {FTC.Vars.FrameShieldColor[1],FTC.Vars.FrameShieldColor[2],FTC.Vars.FrameShieldColor[3],1}, FTC.UI.Textures.grainy, false )
+    member.shield   = shield
+    shield:SetDrawLayer(1)
+
+    -- Extra settings
+    raid["member"..i] = member
+    anchor          = ( i % 6 == 0 ) and {TOPLEFT,TOPRIGHT,-2,0,_G["FTC_RaidFrame"..(i-5)]} or {TOP,BOTTOM,0,-2,member}
     end
 end
 
