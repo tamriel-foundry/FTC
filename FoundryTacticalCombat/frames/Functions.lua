@@ -25,7 +25,7 @@ FTC.Frames.Defaults = {
     ["FrameShieldColor"]        = {255/255,100/255,000/255},
 
     -- Group Frame
-    ["EnableGroupFrames"]       = false,
+    ["EnableGroupFrames"]       = true,
     ["FTC_GroupFrame"]          = {LEFT,LEFT,6,-200},
     ["GroupWidth"]              = 250,
     ["GroupHeight"]             = 400,  

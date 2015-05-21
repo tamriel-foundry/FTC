@@ -66,8 +66,8 @@ function FTC.Initialize( eventCode, addOnName )
     EVENT_MANAGER:UnregisterForEvent( "FTC" , EVENT_ADD_ON_LOADED )
     
     -- Load Saved Variables
-    --FTC.Vars = ZO_SavedVars:NewAccountWide( 'FTC_VARS' , (FTC.settings*100) , nil , FTC.Defaults )
-    FTC.Vars = FTC.Defaults
+    FTC.Vars = ZO_SavedVars:NewAccountWide( 'FTC_VARS' , (FTC.settings*100) , nil , FTC.Defaults )
+    --FTC.Vars = FTC.Defaults
 
     -- Initialize UI Layer
     FTC.UI:Initialize()
