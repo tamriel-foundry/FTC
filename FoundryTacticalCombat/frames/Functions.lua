@@ -226,6 +226,8 @@ function FTC.Frames:SetupGroup()
 
     -- Using default frames
     else
+        FTC_GroupFrame:SetHidden(true) 
+        FTC_RaidFrame:SetHidden(true) 
         ZO_UnitFramesGroups:SetHidden(false)
         return 
     end
