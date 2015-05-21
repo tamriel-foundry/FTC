@@ -26,9 +26,9 @@ FTC.Frames.Defaults = {
 
     -- Group Frame
     ["EnableGroupFrames"]       = true,
-    ["FTC_GroupFrame"]          = {LEFT,LEFT,6,-200},
-    ["GroupWidth"]              = 250,
-    ["GroupHeight"]             = 400,  
+    ["FTC_GroupFrame"]          = {TOPLEFT,TOPLEFT,6,50},
+    ["GroupWidth"]              = 200,
+    ["GroupHeight"]             = 350,  
     ["GroupHidePlayer"]         = false,
     ["GroupFontSize"]           = 18,
     ["ColorRoles"]              = true,
@@ -38,7 +38,7 @@ FTC.Frames.Defaults = {
 
     -- Raid Frame
     ["EnableRaidFrames"]        = true,
-    ["FTC_RaidFrame"]           = {LEFT,LEFT,6,-200},
+    ["FTC_RaidFrame"]           = {TOPLEFT,TOPLEFT,6,50},
     ["RaidWidth"]               = 120,
     ["RaidHeight"]              = 50,  
     ["RaidColumnSize"]          = 12,
@@ -413,7 +413,7 @@ end
         attr.bar:SetWidth( pct * (attr:GetWidth()-4) )
 
         -- Update bar labels
-        local label = ( powerValue > 100000 ) and zo_roundToNearest(powerValue,1000)/1000 .. "k" or CommaValue(powerValue)
+        local label = ( powerValue > 100000 ) and CommaValue(zo_roundToNearest(powerValue,1000)/1000) .. "k" or CommaValue(powerValue)
         if ( round ) then label = zo_roundToNearest(powerValue/1000,0.1).."k" end
 
         local pctLabel = (pct*100) .. "%"

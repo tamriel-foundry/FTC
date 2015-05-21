@@ -134,6 +134,7 @@
             -- Combat Text Display
             if ( FTC.init.SCT ) then
                 local anchor    = FTC.Vars.FTC_SCTIn
+                FTC_SCTIn:ClearAnchors()
                 FTC_SCTIn:SetAnchor(anchor[1],FTC_UI,anchor[2],anchor[3],anchor[4])
                 EVENT_MANAGER:UnregisterForUpdate( "FTC_MenuSCT" )
             end

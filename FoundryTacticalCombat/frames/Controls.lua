@@ -185,7 +185,7 @@ function FTC.Frames:Controls()
     -- Iterate over 24 possible raid members
     local anchor    = {TOPLEFT,TOPLEFT,0,0,raid}
     for i = 1 , 24 do
-    local member    = FTC.UI:Control(   "FTC_RaidFrame"..i,                raid,        {FTC.Vars.RaidWidth,FTC.Vars.RaidHeight},               anchor,                         false)
+    local member    = FTC.UI:Control(   "FTC_RaidFrame"..i,                raid,        {FTC.Vars.RaidWidth,FTC.Vars.RaidHeight},               anchor,                         true)
     member:SetAlpha(FTC.Vars.FrameOpacityIn/100)
 
     -- Nameplate
