@@ -717,8 +717,17 @@ function FTC.Frames:SafetyCheck()
         FTC.Frames:Fade('player',FTC_PlayerFrame)
     end
 
-    -- Fade group frames
+    -- Group frames
     if ( IsUnitGrouped('player') ) then
+
+        -- Update attributes out of combat
+        if ( not IsUnitInCombat('player') ) then 
+            for i = 1 , GetGroupSize() do
+                FTC.Frames:UpdateAttribute( GetGroupUnitTagByIndex(i),POWERTYPE_HEALTH,nil,nil,nil  )
+            end
+        end
+
+        -- Ensure correct fade
         local context = GetGroupSize() <= 4 and "Group" or "Raid"
         for i = 1 , GetGroupSize() do FTC.Frames:Fade('group'..i,_G["FTC_"..context.."Frame"..i]) end
     end

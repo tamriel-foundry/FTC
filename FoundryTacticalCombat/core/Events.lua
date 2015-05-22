@@ -136,7 +136,7 @@
                 
             -- Ultimate
             elseif ( powerType == POWERTYPE_ULTIMATE ) then
-                if ( FTC.init.Hotbar ) then FTC.Hotbar:UpdateUltimate( powerValue , powerMax , powerEffectiveMax ) end
+                FTC.Player:UpdateUltimate( powerValue , powerMax , powerEffectiveMax )
                 
             -- Mount Stamina
             elseif ( powerType == POWERTYPE_MOUNT_STAMINA ) then
@@ -417,6 +417,9 @@
                 FTC.Buffs.pendingGT = nil
             end
         end
+
+        -- Maybe fire a potion alert
+        if ( FTC.init.SCT ) then FTC.SCT:Potion() end
     end
 
     --[[ 
@@ -429,7 +432,10 @@
 
         -- Process potion consumption
         if( itemSoundCategory == ITEM_SOUND_CATEGORY_POTION ) then 
-            if ( FTC.init.Buffs ) then FTC.Buffs:NewEffect( FTC.Player.Quickslot ) end
+            if ( FTC.init.Buffs ) then 
+                FTC.Buffs:NewEffect( FTC.Player.Quickslot ) 
+                FTC.Player.canPotion = false
+            end
         end
     end
 
@@ -538,7 +544,7 @@
      * --------------------------------
      ]]--
     function FTC.OnAPUpdate( ... )
-        --if ( FTC.init.SCT ) then FTC.SCT:NewAP( ... ) end
+        if ( FTC.init.SCT ) then FTC.SCT:NewAP( ... ) end
     end
 
     --[[ 

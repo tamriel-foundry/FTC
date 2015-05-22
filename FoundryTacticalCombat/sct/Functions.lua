@@ -49,7 +49,7 @@
         FTC.SCT.countAlert = 1
         
         -- Save tiny AP gains
-        --FTC.SCT.backAP    = 0
+        FTC.SCT.backAP    = 0
         
         -- Create controls
         FTC.SCT:Controls()

@@ -40,6 +40,8 @@ function FTC.Player:Initialize()
 
     -- Load quickslot ability
     FTC.Player:GetQuickslot()
+    local _ , _ , canPotion = GetSlotCooldownInfo(GetCurrentQuickslot())
+    FTC.Player.canPotion = canPotion
 end
 
 --[[----------------------------------------------------------
@@ -271,6 +273,33 @@ function FTC.Player:GetQuickslot(slotNum)
     -- Otherwise empty the object
     else FTC.Player.Quickslot = {} end 
 end
+
+
+
+
+     --[[ 
+     * Update Ultimate Data
+     * --------------------------------
+     * Called by FTC.OnPowerUpdate()
+     * --------------------------------
+     ]]--
+    function FTC.Player:UpdateUltimate( powerValue , powerMax , powerEffectiveMax )
+            
+        -- Get the currently slotted ultimate cost
+        cost, mechType = GetSlotAbilityCost(8)
+        
+        -- Calculate the percentage to activation
+        local pct = ( cost > 0 ) and math.floor( ( powerValue / cost ) * 100 ) or 0
+        
+        -- Maybe fire an alert
+        if ( FTC.init.SCT and pct >= 100 and FTC.Player.ultimate.pct < 100 ) then
+            FTC.SCT:Ultimate()
+        end
+        
+        -- Update the database object
+        FTC.Player.ultimate = { ["current"] = powerValue , ["max"] = powerEffectiveMax , ["pct"] = pct }
+    end
+
 
 
 --[[ 

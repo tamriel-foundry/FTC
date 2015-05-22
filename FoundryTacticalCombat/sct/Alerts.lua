@@ -204,12 +204,14 @@
 		FTC.SCT:NewAlert( newAlert )
 	end
 
- --[[ 
-  * Handles alliance point gains.
-  * Runs OnAPUpdate()
-
-function FTC.SCT:NewAP( eventCode, alliancePoints, playSound, difference )
-
+	--[[ 
+	* Generate New Alliance Point
+	* --------------------------------
+	* Called by FTC.OnAPUpdate()
+	* --------------------------------
+	]]--
+	function FTC.SCT:NewAP( eventCode, alliancePoints, playSound, difference )
+		
 	-- Save tiny AP rewards for later
 	if ( difference  < 5 ) then 
 		FTC.SCT.backAP = FTC.SCT.backAP + difference
@@ -220,62 +222,79 @@ function FTC.SCT:NewAP( eventCode, alliancePoints, playSound, difference )
 	local subStart, nextSub, rankStart, nextRank = GetAvARankProgress( alliancePoints )
 	
 	-- Calculate percentage to level
-	local pct	= math.floor( 100 * ( alliancePoints - rankStart ) / ( nextRank - rankStart ) )
-	
+	local pct	= zo_roundToNearest( ( alliancePoints - rankStart ) / ( nextRank - rankStart ) , 0.01 ) * 100
+
 	-- Setup the name
 	local name = "Alliance Points ("..pct.."%)"
-	
-	-- Setup a new Alert object
-	local newAlert = {
-		["type"]	= 'ap',
-		["name"]	= name,
-		["value"]	= difference + FTC.SCT.backAP,
-		["ms"]		= GetGameTimeMilliseconds(),
-		["color"]	= 'c99FFFF',
-	}
-	
-	-- Submit the new status
-	FTC.SCT:NewStatus( newAlert )
-	
-	-- Reset the backlogged AP
-	FTC.SCT.backAP = 0
-end
- ]]--
 
-
-
-
- --[[ 
-  * Handles resource depletion alerts.
-  * Runs OnDeath()
-function FTC.SCT:Deathspam( eventCode , unitTag , isDead )
-
-	-- Bail if it's not a target death
-	if ( unitTag ~= 'reticleover' or not isDead ) then return end
-	
-	-- Bail if it's not a player
-	if ( not IsUnitPlayer( unitTag ) ) then return end
-	
-	-- Ignore friendlies
-	if ( GetUnitAlliance( 'reticleover' ) == GetUnitAlliance( 'player' ) ) then return end
-
-	-- Switch by context
-	local label = "You Killed " .. GetUnitName( unitTag )
+		-- Submit an object
+		local newAlert = {
+			["name"]	= "apgain",
+			["label"]	= CommaValue(difference + FTC.SCT.backAP) .. " " .. GetString(FTC_AlliancePoints) .. "! ("..pct.."%)",
+			["color"]	= {0.4,0.8,0.8},
+			["size"]	= FTC.Vars.SCTFontSize,
+			["buffer"]	= 0,
+		}
 		
-	-- Otherwise submit an object
-	local newAlert = {
-		["type"]	= 'killspam',
-		["name"]	= label,
-		["value"]	= '',
-		["ms"]		= GetGameTimeMilliseconds(),
-		["color"]	= 'c990000',
-		["size"]	= 20
-	}
-	
-	-- Submit the new status
-	FTC.SCT:NewStatus( newAlert )
-end
- ]]--
+		-- Submit the new status
+		FTC.SCT:NewAlert( newAlert )
+	end
+
+	--[[ 
+	* Generate Potion Availability Alert
+	* --------------------------------
+	* Called by FTC.OnUpdateCooldowns()
+	* --------------------------------
+	]]--
+	function FTC.SCT:Potion()
+
+		-- Check the usable status
+		local _ , _ , canUse  = GetSlotCooldownInfo(GetCurrentQuickslot())
+
+		-- Only proceed if the potion is now usable and it was not before
+		if ( not canUse or FTC.Player.canPotion ) then
+			FTC.Player.canPotion = canUse
+			return
+		end
+
+		-- Submit an object
+		local newAlert = {
+			["name"]	= "potion",
+			["label"]	= GetString(FTC_Potion) .. "!",
+			["color"]	= {0.8,0.6,0},
+			["size"]	= FTC.Vars.SCTFontSize+8,
+			["buffer"]	= 0,
+		}
+		
+		-- Submit the new status
+		FTC.SCT:NewAlert( newAlert )
+
+		-- Save the new status
+		FTC.Player.canPotion = canUse
+	end
+
+	--[[ 
+	* Generate Ultimate Availability Alert
+	* --------------------------------
+	* Called by FTC.OnPowerUpdate()
+	* --------------------------------
+	]]--
+	function FTC.SCT:Ultimate()
+
+		-- Submit an object
+		local newAlert = {
+			["name"]	= "potion",
+			["label"]	= GetString(FTC_Ultimate) .. "!",
+			["color"]	= {0.2,0.9,0.4},
+			["size"]	= FTC.Vars.SCTFontSize+8,
+			["buffer"]	= 0,
+		}
+		
+		-- Submit the new status
+		FTC.SCT:NewAlert( newAlert )
+	end
+
+
 
 --[[----------------------------------------------------------
 	UPDATING FUNCTIONS
