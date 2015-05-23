@@ -41,9 +41,9 @@ local default = ( FTC.Defaults.EnableSCT ) and "Enabled" or "Disabled"
 ZO_CreateStringId("FTC_Menu_SCT",           "Enable Combat Text")
 ZO_CreateStringId("FTC_Menu_SCTDesc",       "Enable scrolling combat text component? [Default: "..default.."]")
 
-local default = ( FTC.Defaults.EnableMeter ) and "Enabled" or "Disabled"
-ZO_CreateStringId("FTC_Menu_Damage",        "Enable Damage Statistics")
-ZO_CreateStringId("FTC_Menu_DamageDesc",    "Enable tracking and reporting of damage statistics? [Default: "..default.."]")
+local default = ( FTC.Defaults.EnableStats) and "Enabled" or "Disabled"
+ZO_CreateStringId("FTC_Menu_Stats",        "Enable Damage Statistics")
+ZO_CreateStringId("FTC_Menu_StatsDesc",    "Enable tracking and reporting of damage statistics? [Default: "..default.."]")
 
 local default = ( FTC.Defaults.EnableHotbar ) and "Enabled" or "Disabled"
 ZO_CreateStringId("FTC_Menu_Hotbar",        "Enable Advanced Hotbar")
@@ -269,3 +269,18 @@ ZO_CreateStringId("FTC_Feared",             "Feared")
 ZO_CreateStringId("FTC_Silenced",           "Silenced")
 ZO_CreateStringId("FTC_Potion",             "Potion Available")
 ZO_CreateStringId("FTC_Ultimate",           "Ultimate Available")
+
+--[[----------------------------------------------------------
+    DAMAGE STATISTICS
+  ]]----------------------------------------------------------
+ZO_CreateStringId("FTC_Menu_THeader",       "Configure Damage Statistics")
+
+ZO_CreateStringId("FTC_Menu_TTimeout",      "Timeout Threshold")
+ZO_CreateStringId("FTC_Menu_TTimeoutDesc",  "Set the number of seconds that must pass between damage events before a new encounter is recognized. [Default: "..FTC.Defaults.DamageTimeout.."]")
+
+local default = FTC.Defaults.StatTriggerHeals and "Enabled" or "Disabled"
+ZO_CreateStringId("FTC_Menu_TRHeal",        "Allow Healing Trigger")
+ZO_CreateStringId("FTC_Menu_TRHealDesc",    "Allow outgoing healing to trigger the start of a new encounter.")
+
+ZO_CreateStringId("FTC_Menu_TReset",        "Reset Stats")
+ZO_CreateStringId("FTC_Menu_TResetDesc",    "Reset original settings for FTC damage statistics component.")

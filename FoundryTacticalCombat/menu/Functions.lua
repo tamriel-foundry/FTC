@@ -224,6 +224,10 @@
         -- Reset hotbar
 
         -- Reset damage statistics
+        elseif ( context == "Stats" ) then
+             for var , value in pairs( FTC.Stats.Defaults ) do
+                FTC.Vars[var] = value   
+            end           
         end
     end
 

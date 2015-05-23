@@ -64,17 +64,17 @@ function FTC.Menu:Controls()
             warning     = GetString(FTC_Menu_Reload),
         },
 
-
-        --[[
-        -- Enable/Disable Damage Meter
+        -- Enable/Disable Damage Statistics
         {   type        = "checkbox",
-            name        = GetString(FTC_Menu_Damage),
-            tooltip     = GetString(FTC_Menu_DamageDesc),
-            getFunc     = function() return FTC.Vars.EnableDamage end, 
-            setFunc     = function() FTC.Menu:Toggle( 'EnableDamage' , true ) end, 
-            default     = FTC.Defaults.EnableDamage, 
+            name        = GetString(FTC_Menu_Stats),
+            tooltip     = GetString(FTC_Menu_StatsDesc),
+            getFunc     = function() return FTC.Vars.EnableStats end, 
+            setFunc     = function() FTC.Menu:Toggle( 'EnableStats' , true ) end, 
+            default     = FTC.Defaults.EnableStats, 
             warning     = GetString(FTC_Menu_Reload),
         },
+
+        --[[
 
         -- Enable/Disable Ultimate Tracking
         {   type        = "checkbox", 
@@ -686,7 +686,7 @@ function FTC.Menu:Controls()
 
         -- Reset SCT
         { 
-            type        = "button", 
+            type        = "button",
             name        = GetString(FTC_Menu_SCTReset),
             tooltip     = GetString(FTC_Menu_SCTResetDesc),
             func        = function() FTC.Menu:Reset("SCT") end,
@@ -697,34 +697,51 @@ function FTC.Menu:Controls()
     end
 
     --[[----------------------------------------------------------
-        DAMAGE METER
+        DAMAGE STATISTICS
       ]]----------------------------------------------------------
-    --[[
-    local Extras = {
+    local Stats = {
         
-        -- Damage Tracker Header
+        -- Statistics Header
         { 
             type        = "header", 
-            name        = FTC.L("Damage Tracker Settings"), 
-            width       = "full"
+            name        = GetString(FTC_Menu_THeader),
+            width       = "full", 
         },
 
-        -- Damage Tracker Threshold
+        -- Damage Tracker Timeout
         { 
             type        = "slider", 
-            name        = FTC.L("Timeout Threshold"), 
-            tooltip     = FTC.L("Number of seconds without damage to signal encounter termination."), 
+            name        = GetString(FTC_Menu_TTimeout), 
+            tooltip     = GetString(FTC_Menu_TTimeoutDesc),
             min         = 5, 
             max         = 60, 
             step        = 5, 
             getFunc     = function() return FTC.Vars.DamageTimeout end, 
             setFunc     = function( value ) FTC.Menu:Update( "DamageTimeout" , value ) end,
             default     = FTC.Defaults.DamageTimeout,
-        }
+        },
+
+        -- Reset Healing?
+        { 
+            type        = "checkbox", 
+            name        = GetString(FTC_Menu_TRHeal),
+            tooltip     = GetString(FTC_Menu_TRHealDesc),
+            getFunc     = function() return FTC.Vars.StatTriggerHeals end, 
+            setFunc     = function() FTC.Menu:Toggle( 'StatTriggerHeals' ) end, 
+            default     = FTC.Defaults.StatTriggerHeals,
+        },
+
+        -- Reset Stats
+        { 
+            type        = "button",
+            name        = GetString(FTC_Menu_TReset),
+            tooltip     = GetString(FTC_Menu_TResetDesc),
+            func        = function() FTC.Menu:Reset("Stats") end,
+        },
     }
-    if FTC.Vars.EnableDamage then
-        for i = 1 , #Extras do table.insert( FTC.Menu.options , Extras[i] ) end
+    if FTC.Vars.EnableStats then
+        for i = 1 , #Stats do table.insert( FTC.Menu.options , Stats[i] ) end
     end
-    ]]
+
 
 end

@@ -11,6 +11,7 @@ function FTC.Stats:Controls()
 
 	local DM 		= FTC.UI:Control(   "FTC_MiniMeter", 					FTC_UI, 	{240,32}, 			FTC.Vars.FTC_MiniMeter, 		false )
     DM.backdrop     = FTC.UI:Backdrop(  "FTC_MiniMeter_BG",               	DM,         "inherit",      	{CENTER,CENTER,0,0},            {0,0,0,0.25}, {0,0,0,0.5}, nil, false )
+	DM:SetMouseEnabled( true )
 	DM:SetMovable( true )
 	DM:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end )
 

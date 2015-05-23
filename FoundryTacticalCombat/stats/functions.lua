@@ -4,12 +4,11 @@
   ]]----------------------------------------------------------
     FTC.Stats = {}
     FTC.Stats.Defaults = {
-		["FTC_MiniMeter"]           = {TOPLEFT,TOPLEFT,10,10},
+		["FTC_MiniMeter"]           = {BOTTOM,TOP,0,-10,ZO_ActionBar1},
 		["DamageTimeout"]           = 5,
+		["StatTriggerHeals"]        = false,
 	}
     FTC:JoinTables(FTC.Defaults,FTC.Stats.Defaults)
-
-
 
 --[[----------------------------------------------------------
     DAMAGE STATISTICS FUNCTIONS
@@ -119,7 +118,10 @@
 		local data = FTC.Stats.Current
 
 		-- Ignore healing outside of the active threshold
-		if( ( ( damage.ms - FTC.Stats.endTime ) / 1000 ) >= FTC.Vars.DamageTimeout ) then return end
+		if( ( ( damage.ms - FTC.Stats.endTime ) / 1000 ) >= FTC.Vars.DamageTimeout ) then 
+			if ( FTC.Vars.StatTriggerHeals ) then FTC.Stats:Reset()
+			else return end
+		end
 
 		-- Maybe set up new target
 		local target = damage.target
@@ -131,6 +133,9 @@
 
 		-- Add healing value to tracker
 		FTC.Stats.healing = FTC.Stats.healing + damage.value
+
+		-- Maybe flag the time
+		if ( FTC.Vars.StatTriggerHeals ) then FTC.Stats.endTime = damage.ms end
 	end
 
 --[[----------------------------------------------------------
