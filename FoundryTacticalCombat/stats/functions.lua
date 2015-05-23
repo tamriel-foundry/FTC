@@ -59,8 +59,6 @@
 		FTC.Stats.healing	= 0
 		FTC.Stats.startTime = GetGameTimeMilliseconds()
 		FTC.Stats.endTime 	= GetGameTimeMilliseconds()
-
-		d("resetting meter")
 	end
 
 --[[----------------------------------------------------------
