@@ -97,8 +97,8 @@ function FTC.Buffs:CreateBuff()
     buff.backdrop   = FTC.UI:Backdrop(  "FTC_Buff"..counter.."_BG",         buff,    {36,36},  {CENTER,CENTER,0,0},  {0,0,0,1}, {0,0,0,1}, nil, false )
     buff.cooldown   = FTC.UI:Cooldown(  "FTC_Buff"..counter.."_CD",         buff,    {44,44},  {CENTER,CENTER,0,0},  {0,0,0,0.75}, false )
     buff.icon       = FTC.UI:Texture(   "FTC_Buff"..counter.."_Icon",       buff,    {32,32},  {CENTER,CENTER,0,0},  '/esoui/art/icons/icon_missing.dds', false )
-    buff.label      = FTC.UI:Label(     "FTC_Buff"..counter.."_Label",      buff,    {50,20},  {CENTER,BOTTOM,-1,-12},  FTC.UI:Font(FTC.Vars.BuffsFont1,FTC.Vars.BuffsFontSize,true) , {0.8,1,1,1}, {1,1}, nil, false )
-    buff.name       = FTC.UI:Label(     "FTC_Buff"..counter.."_Name",       buff,    {450,20}, {LEFT,RIGHT,10,0},     FTC.UI:Font(FTC.Vars.BuffsFont2,FTC.Vars.BuffsFontSize,true) , {1,1,1,1}, {0,1}, "Buff Name", true )
+    buff.label      = FTC.UI:Label(     "FTC_Buff"..counter.."_Label",      buff,    {50,20},  {CENTER,BOTTOM,-1,-12},FTC.UI:Font(FTC.Vars.BuffsFont1,FTC.Vars.BuffsFontSize,true), {0.8,1,1,1}, {1,1}, nil, false )
+    buff.name       = FTC.UI:Label(     "FTC_Buff"..counter.."_Name",       buff,    {450,20}, {LEFT,RIGHT,10,0},     FTC.UI:Font(FTC.Vars.BuffsFont2,FTC.Vars.BuffsFontSize,true), {1,1,1,1}, {0,1}, "Buff Name", true )
    
     -- Return buff to pool
     return buff

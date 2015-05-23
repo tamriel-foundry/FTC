@@ -56,33 +56,35 @@ lib/LAM/controls/slider.lua
 lib/LAM/controls/texture.lua
 lib/LMW/LibMsgWin-1.0.lua
 
-core/Functions.lua
-core/UI.lua
-core/Events.lua
+core/functions.lua
+core/ui.lua
+core/events.lua
 
-character/Functions.lua
+character/functions.lua
 
-frames/Functions.lua
-frames/Controls.lua
+frames/functions.lua
+frames/controls.lua
 
-buffs/Functions.lua
-buffs/Effects.lua
-buffs/Controls.lua
+buffs/functions.lua
+buffs/effects.lua
+buffs/controls.lua
 
-damage/Functions.lua
-damage/Controls.lua
+damage/functions.lua
 
-log/Functions.lua
+log/functions.lua
 
-sct/Functions.lua
-sct/Alerts.lua
-sct/Controls.lua
+stats/functions.lua
+stats/controls.lua
 
-hotbar/Functions.lua
-hotbar/Controls.lua
+sct/functions.lua
+sct/alerts.lua
+sct/controls.lua
 
-menu/Functions.lua
-menu/Controls.lua
+hotbar/functions.lua
+hotbar/controls.lua
+
+menu/functions.lua
+menu/controls.lua
 
 lang/en.lua
 lang/$(language).lua

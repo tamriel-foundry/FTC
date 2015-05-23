@@ -2,14 +2,22 @@
 --[[----------------------------------------------------------
     DAMAGE MANAGEMENT COMPONENT
   ]]----------------------------------------------------------
-  
-FTC.Damage  = {}
-function FTC.Damage:Initialize()
 
-    -- Set up initial timestamps
-    FTC.Damage.lastIn   = 0
-    FTC.Damage.lastOut  = 0
-end
+    FTC.Damage  = {}
+
+    --[[ 
+     * Initialize Damage Management
+     * --------------------------------
+     * Called by FTC:Initialize()
+     * --------------------------------
+     ]]--
+
+    function FTC.Damage:Initialize()
+
+        -- Set up initial timestamps
+        FTC.Damage.lastIn   = 0
+        FTC.Damage.lastOut  = 0
+    end
 
 --[[----------------------------------------------------------
     EVENT HANDLERS
@@ -83,6 +91,9 @@ end
             -- Modify Buffs on Damage
             if ( FTC.init.Buffs and damageOut ) then FTC.Buffs:Damage(damage) end
 
+            -- Statistics
+            if ( FTC.init.Stats ) then FTC.Stats:RegisterDamage(damage) end
+
         -- Falling damage
         elseif ( result == ACTION_RESULT_FALL_DAMAGE ) then
             damage.ability  = GetString(FTC_Falling)
@@ -125,6 +136,9 @@ end
             -- Modify Buffs on Damage
             if ( FTC.init.Buffs and damageOut ) then FTC.Buffs:Damage(damage) end
 
+            -- Statistics
+            if ( FTC.init.Stats and sourceType == COMBAT_UNIT_TYPE_PLAYER ) then FTC.Stats:RegisterHealing(damage) end 
+
         -- Target Death
         elseif ( result == ACTION_RESULD_DIED or result == ACTION_RESULT_DIED_XP ) then
 
@@ -139,7 +153,7 @@ end
         elseif ( hitValue > 0 ) then
 
             -- Prompt other unrecognized
-            local direction = damageIn and "Incoming" or "Outgoing"
+            --local direction = damageIn and "Incoming" or "Outgoing"
             -- FTC.Log:Print( direction .. " result " .. result .. " not recognized! Target: " .. targetName .. " Value: " .. hitValue , {1,1,0} )
         end
     end
@@ -169,6 +183,7 @@ end
 
         -- Keep a list of ignored abilities
         local abilities = {
+            31221,          -- Skyshard Collect
             36010,          -- Mount Up
         }
         for i = 1 , #abilities do
@@ -193,7 +208,7 @@ end
             32480,     -- Heavy Attack Werewolf
         }
 
-        -- Compare each shield ability with the current buffs for purging
+        -- Compare each ability with the damage name
         for i = 1 , #attacks do
             local name = GetAbilityName(attacks[i])
             if ( abilityName == name ) then return true end 

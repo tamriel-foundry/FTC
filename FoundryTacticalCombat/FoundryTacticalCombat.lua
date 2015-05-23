@@ -41,7 +41,7 @@ FTC.Defaults            = {
     ["EnableLog"]       = true,
     ["EnableSCT"]       = true,
     ["EnableHotbar"]    = false,
-    ["EnableStats"]     = false,
+    ["EnableStats"]     = true,
 }
 
 -- Track component initialization
@@ -99,7 +99,7 @@ function FTC.Initialize( eventCode, addOnName )
     --if ( FTC.Vars.EnableHotbar )    then FTC.Hotbar:Initialize() end
     
     -- Combat Statistics
-    --if ( FTC.Vars.EnableStats )     then FTC.Stats:Initialize() end
+    if ( FTC.Vars.EnableStats )     then FTC.Stats:Initialize() end
     
     -- Menu Component
     FTC.Menu:Initialize()
