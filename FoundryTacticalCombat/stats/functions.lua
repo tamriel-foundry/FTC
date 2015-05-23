@@ -162,7 +162,7 @@
 		local time  = ( FTC.Stats.endTime - FTC.Stats.startTime ) / 1000
 
 		-- Determine the correct time label
-		local dtime	= ((( GetGameTimeMilliseconds() - FTC.Stats.endTime ) / 1000 ) >= FTC.Vars.DamageTimeout ) and time - 1 or ( GetGameTimeMilliseconds() - FTC.Stats.startTime )  / 1000
+		local dtime	= (( not IsUnitInCombat('player') ) or ((( GetGameTimeMilliseconds() - FTC.Stats.endTime ) / 1000 ) >= FTC.Vars.DamageTimeout )) and time or ( GetGameTimeMilliseconds() - FTC.Stats.startTime )  / 1000
 		local secs	= ZO_FormatTime( dtime , SI_TIME_FORMAT_TIMESTAMP)
 
 		-- Compute player statistics

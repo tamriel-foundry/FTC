@@ -163,12 +163,12 @@ end
         
         -- Champion Mobs
         elseif ( GetUnitDifficulty('reticleover') == 2) then 
-            icon  = "/esoui/art/unitframes/target_veteranrank_icon.dds"
+            icon  = "/esoui/art/lfg/lfg_normaldungeon_down.dds"
             title = GetUnitCaption( 'reticleover' )
 
         -- Boss Mobs
         elseif ( GetUnitDifficulty('reticleover') >= 3 ) then 
-            icon  = "/esoui/art/lfg/lfg_veterandungeon_down.dds"
+            icon  = "/esoui/art/unitframes/target_veteranrank_icon.dds"
             title = GetUnitCaption( 'reticleover' )
 
         -- Normal NPCs
