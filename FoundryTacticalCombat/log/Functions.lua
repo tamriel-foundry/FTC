@@ -123,13 +123,13 @@ FTC:JoinTables(FTC.Defaults,FTC.Log.Defaults)
 		-- Shielding
 		elseif ( damage.result == ACTION_RESULT_DAMAGE_SHIELDED ) then
 			local subject = damage.out and zo_strformat("<<!aCg:1>>",damage.target) or "Your"
-			FTC.Log:Print(subject .. " shield absorbed " .. CommaValue(damage.value) .. " damage." , {0.6,0.2,0.6} )
+			FTC.Log:Print(subject .. " shield absorbed  |cEEEEEE" .. CommaValue(damage.value) .. "|r damage." , {0.6,0.2,0.6} )
 
 	    -- Blocks
 	    elseif ( damage.result == ACTION_RESULT_BLOCKED_DAMAGE ) then
 	        local subject = damage.out and zo_strformat("<<!aCg:1>>",damage.target) or "You"
 			local ability = damage.out and zo_strformat("<<!aC:1>> ",damage.ability) or ""
-	        FTC.Log:Print(subject .. " blocked " .. ability .. "taking " .. CommaValue(damage.value) .. " damage." , {0.6,0.1,0} )
+	        FTC.Log:Print(subject .. " blocked " .. ability .. "taking |cEEEEEE" .. CommaValue(damage.value) .. "|r damage." , {0.6,0.1,0} )
 
 	    -- Dodges
 	    elseif ( damage.result == ACTION_RESULT_DODGED or damage.result == ACTION_RESULT_MISS ) then
@@ -158,7 +158,7 @@ FTC:JoinTables(FTC.Defaults,FTC.Log.Defaults)
 
 			-- Determine the damage done
 			local dtype		= damage.heal and " health" or " damage"
-			local amount	= " for " .. CommaValue(damage.value) .. dtype .. "."
+			local amount	= " for |cEEEEEE" .. CommaValue(damage.value) .. "|r" .. dtype .. "."
 
 			-- Ignore Sprinting and Crouching
 			if ( ability == GetAbilityName(15356) or ability == GetAbilityName(20301) ) then return end

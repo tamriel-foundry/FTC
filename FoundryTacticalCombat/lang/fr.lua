@@ -186,55 +186,55 @@ ZO_CreateStringId("FTC_Menu_BResetDesc",    "Réinitialiser les paramètres orig
 --[[----------------------------------------------------------
     COMBAT LOG
   ]]----------------------------------------------------------
---ZO_CreateStringId("FTC_Menu_LHeader",       "Configure Combat Log Settings")
+ZO_CreateStringId("FTC_Menu_LHeader",       "Configurer les Paramètres de Journalisation de Combat")
 
---local default = FTC.Defaults.AlternateChat and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_LAltChat",      "Alternate With Chat")
---ZO_CreateStringId("FTC_Menu_LAltChatDesc",  "Alternate Combat Log visibility with primary chat window? [Default: "..default.."]")
+local default = FTC.Defaults.AlternateChat and "Activé" or "Désactivé"
+ZO_CreateStringId("FTC_Menu_LAltChat",      "Alterner avec le chat")
+ZO_CreateStringId("FTC_Menu_LAltChatDesc",  "Alterner la visibilité du journal de combat avec la fenêtre de chat par défaut? [Défaut: "..default.."]")
 
---ZO_CreateStringId("FTC_Menu_LFont",         "Combat Log Font")
---ZO_CreateStringId("FTC_Menu_LFontDesc",     "Change the font used in the FTC combat log. [Default: "..FTC.UI:TranslateFont(FTC.Defaults.LogFont).."]")
+ZO_CreateStringId("FTC_Menu_LFont",         "Police du Journal de Combat")
+ZO_CreateStringId("FTC_Menu_LFontDesc",     "Changer la police utilisée dans le journal de combat de FTC. [Défaut: "..FTC.UI:TranslateFont(FTC.Defaults.LogFont).."]")
 
---ZO_CreateStringId("FTC_Menu_LFontS",        "Log Font Size")
---ZO_CreateStringId("FTC_Menu_LFontSDesc",    "Change the font size used in the FTC combat log. [Default: "..FTC.Defaults.LogFontSize.."]")
+ZO_CreateStringId("FTC_Menu_LFontS",        "Taille de Police du Journal")
+ZO_CreateStringId("FTC_Menu_LFontSDesc",    "Changer la taile de la police utilisée dans le journal de combat de FTC. [Défaut: "..FTC.Defaults.LogFontSize.."]")
 
---ZO_CreateStringId("FTC_Menu_LReset",        "Reset Combat Log")
---ZO_CreateStringId("FTC_Menu_LResetDesc",    "Reset original settings for FTC combat log component.")
+ZO_CreateStringId("FTC_Menu_LReset",        "Rénitialiser le Journal de Combat")
+ZO_CreateStringId("FTC_Menu_LResetDesc",    "Réinitialiser les paramètres originaux pour la composante de journalisation de combat de FTC.")
 
 --[[----------------------------------------------------------
     SCROLLING COMBAT TEXT
   ]]----------------------------------------------------------
---ZO_CreateStringId("FTC_Menu_SHeader",       "Configure Combat Text Settings")
+ZO_CreateStringId("FTC_Menu_SHeader",       "Configurer les Paramètres du Texte de Combat")
 
---local default = FTC.Defaults.SCTIcons and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_SIcons",        "Display SCT Icons")
---ZO_CreateStringId("FTC_Menu_SIconsDesc",    "Display ability icons beside scrolling combat text? [Default: "..default.."]")
+local default = FTC.Defaults.SCTIcons and "Activé" or "Désactivé"
+ZO_CreateStringId("FTC_Menu_SIcons",        "Montrer les Icones du TCD")
+ZO_CreateStringId("FTC_Menu_SIconsDesc",    "Afficher les icones des abilités à coté du texte de combat déroulant? [Défaut: "..default.."]")
 
---local default = FTC.Defaults.SCTNames and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_SNames",        "Display SCT Names")
---ZO_CreateStringId("FTC_Menu_SNamesDesc",    "Display ability names when possible in scrolling combat text? [Default: "..default.."]")
+local default = FTC.Defaults.SCTNames and "Activé" or "Désactivé"
+ZO_CreateStringId("FTC_Menu_SNames",        "MOntrer les Nombres du TCD")
+ZO_CreateStringId("FTC_Menu_SNamesDesc",    "Afficher le nom des abilités lorsque possible dans le texte de combat déroulant? [Défaut: "..default.."]")
 
---local default = FTC.Defaults.SCTRound and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_SRound",        "Shorten Numbers")
---ZO_CreateStringId("FTC_Menu_SRoundDesc",    "Round damage numbers to the nearest hundred; for example 9,543 becomes 9.5k. [Default: "..default.."]")
+local default = FTC.Defaults.SCTRound and "Activé" or "Désactivé"
+ZO_CreateStringId("FTC_Menu_SRound",        "Arrondir Nombres")
+ZO_CreateStringId("FTC_Menu_SRoundDesc",    "Arrondir les chiffres des dégats à la centaine proche; par exemple 9,543 deviens 9.5k. [Défaut: "..default.."]")
 
---ZO_CreateStringId("FTC_Menu_SSpeed",        "SCT Scroll Speed")
---ZO_CreateStringId("FTC_Menu_SSpeedDesc",    "Change speed of combat text scrolling, higher is faster. [Default: "..FTC.Defaults.SCTSpeed.."]")
+ZO_CreateStringId("FTC_Menu_SSpeed",        "Vitesse de défilement du TCD")
+ZO_CreateStringId("FTC_Menu_SSpeedDesc",    "Changer la vitesse du texte de combat déroulant, la valeur haute est plus rapide. [Défaut: "..FTC.Defaults.SCTSpeed.."]")
 
---ZO_CreateStringId("FTC_Menu_SArc",          "SCT Arc Intensity")
---ZO_CreateStringId("FTC_Menu_SArcDesc",      "Change the curviture of scrolling combat text, higher values generate more arcing. [Default: "..FTC.Defaults.SCTArc.."]")
+ZO_CreateStringId("FTC_Menu_SArc",          "Intensité de l'Arc du TCD")
+ZO_CreateStringId("FTC_Menu_SArcDesc",      "Changer la courbature du texte de combat déroulant, plus la valeur est élevée, plus l'arc est prononcé. [Défaut: "..FTC.Defaults.SCTArc.."]")
 
---ZO_CreateStringId("FTC_Menu_SFont1",        "Primary Font")
---ZO_CreateStringId("FTC_Menu_SFont1Desc",    "Change the primary font used for damage values in scrolling combat text. [Default: "..FTC.UI:TranslateFont(FTC.Defaults.SCTFont1).."]")
+ZO_CreateStringId("FTC_Menu_SFont1",        "Police Primaire")
+ZO_CreateStringId("FTC_Menu_SFont1Desc",    "Changer la police de base utilisée pour les valeurs des dégats dans le texte de combat déroulant. [Défaut: "..FTC.UI:TranslateFont(FTC.Defaults.SCTFont1).."]")
 
---ZO_CreateStringId("FTC_Menu_SFont2",        "Secondary Font")
---ZO_CreateStringId("FTC_Menu_SFont2Desc",    "Change the secondary font used for ability names in scrolling combat text. [Default: "..FTC.UI:TranslateFont(FTC.Defaults.SCTFont2).."]")
+ZO_CreateStringId("FTC_Menu_SFont2",        "Police Secondaire")
+ZO_CreateStringId("FTC_Menu_SFont2Desc",    "Changer la police secondaire utilisée les noms des abilitéesdans le texte de combat déroulant. [Défaut: "..FTC.UI:TranslateFont(FTC.Defaults.SCTFont2).."]")
 
---ZO_CreateStringId("FTC_Menu_SFontS",        "SCT Font Size")
---ZO_CreateStringId("FTC_Menu_SFontSDesc",    "Change the font size used in the FTC scrolling combat text. [Default: "..FTC.Defaults.SCTFontSize.."]")
+ZO_CreateStringId("FTC_Menu_SFontS",        "Taille Police du TCD")
+ZO_CreateStringId("FTC_Menu_SFontSDesc",    "Changer la tille de la police utilisée dans le texte de combat déroulant de FTC. [Défaut: "..FTC.Defaults.SCTFontSize.."]")
 
---ZO_CreateStringId("FTC_Menu_SIconS",        "SCT Icon Size")
---ZO_CreateStringId("FTC_Menu_SIconSDesc",    "Change the size of icons displayed in FTC scrolling combat text. [Default: "..FTC.Defaults.SCTIconSize.."]")
+ZO_CreateStringId("FTC_Menu_SIconS",        "Taille d'icones du TCD")
+ZO_CreateStringId("FTC_Menu_SIconSDesc",    "Changer la taille des icones affichées dans le texte de combat déroulant de FTC. [Défaut: "..FTC.Defaults.SCTIconSize.."]")
 
---ZO_CreateStringId("FTC_Menu_SCTReset",      "Reset SCT")
---ZO_CreateStringId("FTC_Menu_SCTResetDesc",  "Reset original settings for FTC scrolling combat text component.")
+ZO_CreateStringId("FTC_Menu_SCTReset",      "Rénitialiser le TCD")
+ZO_CreateStringId("FTC_Menu_SCTResetDesc",  "Réinitialiser les paramètres originaux pour la composante de texte déroulant de combat de FTC")
