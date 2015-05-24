@@ -10,6 +10,7 @@ ZO_CreateStringId("FTC_LongInfo",           "You are using Foundry Tactical Comb
     KEYBINDINGS
   ]]----------------------------------------------------------
 ZO_CreateStringId("SI_BINDING_NAME_TOGGLE_COMBAT_LOG", "Toggle Combat Log")
+ZO_CreateStringId("SI_BINDING_NAME_DISPLAY_DAMAGE_REPORT", "Display Damage Report")
 
 --[[----------------------------------------------------------
     DAMAGE WORDS

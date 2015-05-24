@@ -94,10 +94,10 @@
                 FTC_CombatLog:SetHidden(true) 
             end
 
-            -- Toggle visibility
+            -- Show the UI layer
             FTC.inMenu = true
-            FTC:ToggleVisibility()
-
+            FTC_UI:SetHidden(false)
+            
         -- Otherwise, restore their positions
         else
 

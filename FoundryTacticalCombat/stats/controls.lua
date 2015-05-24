@@ -31,11 +31,14 @@ function FTC.Stats:Controls()
 	DM.time  		= time
 	
 	--[[----------------------------------------------------------
-		EXPANDED DAMAGE ANALYTICS
-	----------------------------------------------------------
-	local FM 		= FTC.UI.TopLevelWindow( "FTC_Meter" 			, FoundryTacticalCombat , {720,720} , {CENTER,CENTER,0,-250} , true )
-	FM.backdrop 	= FTC.UI.Backdrop( "FTC_MeterBackdrop" 			, FM , "inherit" , {CENTER,CENTER,0,0} , nil , nil , false )
-	FM.title 		= FTC.UI.Label( "FTC_MeterTitle"				, FM , {FM:GetWidth() - 40 , 60} , {TOP,TOP,0,0} , "ZoFontWindowTitle" , nil , {0,1} , "FTC Damage Meter" , false )
+		EXPANDED ANALYTICS
+	  ]]----------------------------------------------------------
+	local FM 		= FTC.UI:TopLevelWindow( "FTC_Report", 					GuiRoot, 	{720,720}, 			{CENTER,CENTER,0,-200}, 		true )
+	FM.backdrop 	= FTC.UI:Backdrop( 	"FTC_ReportBackdrop", 				FM, 		"inherit", 			{CENTER,CENTER,0,0}, 			{0,0,0,0.25}, {0,0,0,0.5}, nil, false )
+	FM.title 		= FTC.UI:Label( 	"FTC_ReportTitle", 					FM, 		{700,60}, 			{TOPLEFT,TOPLEFT,20,0}, 		"ZoFontWindowTitle", {1,1,1,1}, {0,1}, "FTC Damage Report", false )
+
+	 --[[
+
 
 	-- Outgoing damage component
 	FM.dam			= FTC.UI.Control( "FTC_MeterDamage" 			, FM , {FM:GetWidth() - 40 , 280} , {TOP,TOP,0,50} , false )
@@ -63,4 +66,5 @@ function FTC.Stats:Controls()
 	FM.inc			= FTC.UI.Control( "FTC_MeterIncoming" 			, FM , {FM:GetWidth() - 40 , 240} , {TOP,BOTTOM,0,10,FM.heal} , false )
 	FM.inc.title 	= FTC.UI.Label( "FTC_MeterIncoming_Title"		, FM.inc , {FM.inc:GetWidth() , 40} , {TOP,TOP,0,0} , "ZoFontWindowSubtitle" , nil , {0,1} , "Incoming Damage" , false )
 	  ]]
+
 end

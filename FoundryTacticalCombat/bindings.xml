@@ -4,8 +4,8 @@
 			<Action name="TOGGLE_COMBAT_LOG">
 				<Down>FTC.Log:Toggle()</Down>
 			</Action>
-			<Action name="DISPLAY_DAMAGE_METER">
-				<Down>FTC.Damage:ToggleMeter()</Down>
+			<Action name="DISPLAY_DAMAGE_REPORT">
+				<Down>FTC.Stats:Toggle()</Down>
 			</Action>
 			<Action name="POST_DAMAGE_RESULTS">
 				<Down>FTC.Damage:Post('damage')</Down>

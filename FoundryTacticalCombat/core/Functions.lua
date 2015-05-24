@@ -40,40 +40,44 @@ function FTC:JoinTables(t1,t2)
 	for k,v in pairs(t2) do t1[k]=v end
 	return t1
 end
+ 
 
- --[[ 
- * Toggles the visibility of add-on elements
- * Called by OnReticleHidden()
- ]]-- 
-function FTC:ToggleVisibility( activeLayerIndex )
+	 --[[ 
+	 * Handle Special Visibility Neds
+	 * --------------------------------
+	 * Called by FTC.OnLayerChange()
+	 * --------------------------------
+	 ]]--  
+	function FTC:ToggleVisibility( activeLayerIndex )
 
-	-- Maybe get action layer
-	activeLayerIndex = activeLayerIndex or GetNumActiveActionLayers()
+		-- We only need to act if it's in move mode
+		if not FTC.move then return end
 
-	-- Are we in move mode?
-	local hidden = activeLayerIndex > 2 and not FTC.move and not FTC.inMenu
+		-- Maybe get action layer
+		activeLayerIndex = activeLayerIndex or GetNumActiveActionLayers()
 
-	-- If we were leaving move mode
-	if ( FTC.move and activeLayerIndex > 2 ) then FTC.Menu:MoveFrames( false ) end
-	
-	-- Hide the FTC_UI Layer
-	FTC_UI:SetHidden(hidden)
-end
+		-- Maybe disable move mode
+		if ( activeLayerIndex > 2 ) then FTC.Menu:MoveFrames( false ) end
+	end
 
---[[ 
- * Returns a formatted number with commas
- ]]--
-function CommaValue(number)
-	local left,num,right = string.match(number,'^([^%d]*%d)(%d*)(.-)$')
-	return left..(num:reverse():gsub('(%d%d%d)','%1,'):reverse())..right
-end
 
---[[ 
- * Slash Function
- * --------------------------------
- * Triggered by /ftc or /FTC
- * --------------------------------
- ]]--  
-function FTC:Slash( text )
-    LAM2:OpenToPanel(FTC_Menu)
-end
+	 --[[ 
+	 * Return Comma Delimited Number
+	 * --------------------------------
+	 * Called by ... 
+	 * --------------------------------
+	 ]]--  
+	function CommaValue(number)
+		local left,num,right = string.match(number,'^([^%d]*%d)(%d*)(.-)$')
+		return left..(num:reverse():gsub('(%d%d%d)','%1,'):reverse())..right
+	end
+
+	--[[ 
+	 * Slash Function
+	 * --------------------------------
+	 * Triggered by /ftc or /FTC
+	 * --------------------------------
+	 ]]--  
+	function FTC:Slash( text )
+	    LAM2:OpenToPanel(FTC_Menu)
+	end

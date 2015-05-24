@@ -84,15 +84,36 @@
 		-- Outgoing damage
 		if ( damage.out ) then
 
-			-- Get the target
-			local target = damage.target
+			-- Setup some placeholder data
+			local ability	= damage.ability
+			local newDamage = {
+				['total']	= damage.value,
+				['count']	= 1,
+				['crit']	= damage.crit and 1 or 0,
+				['max']		= damage.value,
+			}
+
+			-- Add data to total
+			if ( data.Damage.Total[ability] == nil ) then data.Damage.Total[ability] = newDamage
+			else
+				data.Damage.Total[ability].total = data.Damage.Total[ability].total + newDamage.total
+				data.Damage.Total[ability].count = data.Damage.Total[ability].count + newDamage.count
+				data.Damage.Total[ability].crit  = data.Damage.Total[ability].crit  + newDamage.crit
+				data.Damage.Total[ability].max   = math.max(newDamage.max,data.Damage.Total[ability].max)
+			end
 
 			-- Maybe set up new target
+			local target = damage.target
 			if ( data.Damage[target] == nil ) then data.Damage[target] = {} end
 
-			-- Add data to tables
-			table.insert(data.Damage.Total,damage)
-			table.insert(data.Damage[target],damage)
+			-- Add data to target
+			if ( data.Damage[target][ability] == nil ) then data.Damage[target][ability] = newDamage
+			else
+				data.Damage[target][ability].total = data.Damage[target][ability].total + newDamage.total
+				data.Damage[target][ability].count = data.Damage[target][ability].count + newDamage.count
+				data.Damage[target][ability].crit  = data.Damage[target][ability].crit  + newDamage.crit
+				data.Damage[target][ability].max   = math.max(newDamage.max,data.Damage[target][ability].max)
+			end
 
 			-- Add damage value to tracker
 			FTC.Stats.damage = FTC.Stats.damage + damage.value
@@ -136,6 +157,28 @@
 
 		-- Maybe flag the time
 		if ( FTC.Vars.StatTriggerHeals ) then FTC.Stats.endTime = damage.ms end
+	end
+
+
+
+    --[[ 
+     * Toggle Visibility of Report
+     * --------------------------------
+     * Called by 
+     * --------------------------------
+     ]]--
+	function FTC.Stats:Toggle()
+
+		-- Bail if damage is disabled
+		if ( not FTC.Vars.EnableStats ) then return end
+		
+		-- Determine wether the report is currently shown
+		local hide = FTC_Report:IsHidden()
+
+		-- Toggle visibility
+		FTC_UI:SetHidden(hide)
+		FTC_Report:SetHidden(not hide)
+		SetGameCameraUIMode(hide)
 	end
 
 --[[----------------------------------------------------------
@@ -480,62 +523,6 @@ end
 
 
 
-
-
-
-
---[[ 
- * Reset the damage meter
- ]]--
-function FTC.Damage:Reset()
-
-	-- Setup damage overview
-	FTC.Damage.Meter 	= {
-		['damage']		= 0,
-		['maxDam']		= 0,
-		['maxDamName']	= "",
-		['healing']		= 0,
-		['maxHeal']		= 0,
-		['maxHealName']	= "",
-		['incoming']	= 0,
-		['maxInc']		= 0,
-		['startTime']	= 0,
-		['endTime']		= 0,
-	}
-	
-	-- Setup damaged target tracking
-	FTC.Damage.Targets 	= {}
-	
-	-- Setup damage ability tracking
-	FTC.Damage.Damages	= {}
-	
-	-- Setup healing ability tracking
-	FTC.Damage.Heals	= {}
-end
-
-
-
-
---[[ 
- * Reset the damage meter
- ]]--
-function FTC.Damage:ToggleMeter()
-
-	-- Bail if damage is disabled
-	if ( not FTC.vars.EnableDamage ) then return end
-	
-	-- Get the elements
-	local mini 	= _G["FTC_MiniMeter"]
-	local full	= _G["FTC_Meter"]
-	
-	-- Maybe update
-	if ( full:IsHidden() ) then FTC.Damage:Display() end
-	
-	-- Toggle visibility
-	mini:SetHidden( full:IsHidden() )
-	full:SetHidden( not full:IsHidden() )
-
-end
 
 --[[ 
  * Print damage output to chat
