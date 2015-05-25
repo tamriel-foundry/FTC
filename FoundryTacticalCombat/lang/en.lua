@@ -9,8 +9,9 @@ ZO_CreateStringId("FTC_LongInfo",           "You are using Foundry Tactical Comb
 --[[----------------------------------------------------------
     KEYBINDINGS
   ]]----------------------------------------------------------
-ZO_CreateStringId("SI_BINDING_NAME_TOGGLE_COMBAT_LOG", "Toggle Combat Log")
-ZO_CreateStringId("SI_BINDING_NAME_DISPLAY_DAMAGE_REPORT", "Display Damage Report")
+ZO_CreateStringId("SI_BINDING_NAME_TOGGLE_COMBAT_LOG",      "Toggle Combat Log")
+ZO_CreateStringId("SI_BINDING_NAME_DISPLAY_DAMAGE_REPORT",  "Display Damage Report")
+ZO_CreateStringId("SI_BINDING_NAME_POST_DAMAGE_RESULTS",    "Post Damage Results")
 
 --[[----------------------------------------------------------
     DAMAGE WORDS
@@ -287,11 +288,14 @@ ZO_CreateStringId("FTC_Menu_TReset",        "Reset Stats")
 ZO_CreateStringId("FTC_Menu_TResetDesc",    "Reset original settings for FTC damage statistics component.")
 
 -- Damage Report Words
+ZO_CreateStringId("FTC_DReport",            "FTC Damage Report")
+ZO_CreateStringId("FTC_HReport",            "FTC Healing Report")
 ZO_CreateStringId("FTC_NoDamage",           "No damage to report!")
 ZO_CreateStringId("FTC_NoHealing",          "No healing to report!")
 ZO_CreateStringId("FTC_AllTargets",         "All Targets")
 ZO_CreateStringId("FTC_Ability",            "Ability")
 ZO_CreateStringId("FTC_Crit",               "Crit")
+ZO_CreateStringId("FTC_Mean",               "Mean")
 ZO_CreateStringId("FTC_Max",                "Max")
 ZO_CreateStringId("FTC_Damage",             "Damage")
 ZO_CreateStringId("FTC_Healing",            "Healing")

@@ -8,10 +8,7 @@
 				<Down>FTC.Stats:Toggle()</Down>
 			</Action>
 			<Action name="POST_DAMAGE_RESULTS">
-				<Down>FTC.Damage:Post('damage')</Down>
-			</Action>
-			<Action name="POST_HEALING_RESULTS">
-				<Down>FTC.Damage:Post('healing')</Down>
+				<Down>FTC.Stats:Post()</Down>
 			</Action>
 		</Category>
 	</Layer>

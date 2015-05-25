@@ -255,9 +255,8 @@
 			control.target = target.name
 			control.context = context
 
-			-- Compute DPS
+			-- Compute data
 			local time = math.max(( FTC.Stats.endTime - FTC.Stats.startTime ) / 1000 , 1)
-			local dps  = zo_roundToNearest( target.damage / time , 0.01 )
 			local pct  = FTC.DisplayNumber( target.damage * 100 / FTC.Stats[string.lower(context)] , 1 )
 
 			-- Set Labels
@@ -273,7 +272,7 @@
 				local damname = ( context == "Damage" ) and GetString(FTC_Damage) or GetString(FTC_Healing)
 				control.total:SetText(FTC.DisplayNumber(target.damage) .. " " .. damname .. " |cAAAAAA(" .. pct .. "%)|r")
 				local dpsname = ( context == "Damage" ) and GetString(FTC_DPS) or GetString(FTC_HPS)
-				control.dps:SetText(FTC.DisplayNumber(dps,2) .. " " .. dpsname)
+				control.dps:SetText(FTC.DisplayNumber(target.damage / time , 2) .. " " .. dpsname)
 				control.expand:SetState(BSTATE_ENABLED)
 			end
 
@@ -296,6 +295,10 @@
 			FTC_Report_HealingTitle:ClearAnchors()
 			FTC_Report_HealingTitle:SetAnchor(TOP,anchor,BOTTOM,0,25)
 		end
+
+		-- Maybe change the post to chat button state
+		local postState = ( FTC.Stats.damage + FTC.Stats.healing == 0 ) and BSTATE_DISABLED or BSTATE_NORMAL
+		FTC_Report_Post:SetState(postState)
 	end
 
 
@@ -383,7 +386,6 @@
 
 				-- Compute data
 				local time 	= math.max(( FTC.Stats.endTime - FTC.Stats.startTime ) / 1000 , 1)
-				local dps 	= zo_roundToNearest( ability.total / time , 0.01 )
 				local crit	= FTC.DisplayNumber( math.max((ability.crit * 100 / ability.count ),0),1)
 				local pct	= FTC.DisplayNumber( ability.total * 100 / tarTotal , 1 )
 
@@ -392,8 +394,9 @@
 				control.name:SetText(zo_strformat("<<!aC:1>>",name))
 				control.count:SetText(ability.count)
 				control.total:SetText(FTC.DisplayNumber(ability.total) .. " |cAAAAAA(" .. pct .. "%)|r")
-				control.dps:SetText(FTC.DisplayNumber(dps))
+				control.dps:SetText(FTC.DisplayNumber(ability.total / time,2))
 				control.crit:SetText(crit.."%")
+				control.mean:SetText(FTC.DisplayNumber(ability.total/ability.count))
 				control.max:SetText(FTC.DisplayNumber(ability.max))
 
 				-- Set Anchors
@@ -439,203 +442,61 @@
         elseif ( y.name == "Total" ) then return false 
         else return x.damage > y.damage end
     end
+	
 
+    --[[ 
+     * Print Encounter Report to Chat
+     * --------------------------------
+     * Called by SI_BINDING_NAME_POST_DAMAGE_RESULTS
+     * --------------------------------
+     ]]--
+	function FTC.Stats:Post()
 
+		-- Flag if there is no damage to display
+		if ( FTC.Stats.damage + FTC.Stats.healing == 0 ) then
+			d( "No damage or healing to report!" )
+			return
+		end 
 
+		-- Minimize the report if it is shown
+		if ( not FTC_Report:IsHidden() ) then FTC.Stats:Toggle() end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	 --[[ 
-	 * Process new combat events passed from the combat event handler
-	 * Called by OnCombatEvent()
-	 ]]--
-	function FTC.Damage:UpdateMeter( newDamage , context )
-
-		-- Retrieve the data
-		local meter		= FTC.Damage.Meter
-		local damage	= newDamage.dam
-		local name		= newDamage.name
-		local target	= newDamage.target
-		local source	= newDamage.source
-		
-		-- If the meter is inactive, don't start it for heals
-		if ( meter.endTime == 0 and newDamage.heal ) then return end
-		
-		-- If the meter has been inactive for over X seconds
-		if( ( ( newDamage.ms - meter.endTime ) / 1000 ) >= FTC.vars.DamageTimeout ) then
+		-- Compute most damaged target
+		local targets = {}
+		for target , abilities in pairs(FTC.Stats.Current.Damage) do
 			
-			-- If it's a new source of damage, reset the meter
-			if ( not newDamage.heal ) then
-				FTC.Damage:Reset()
-				meter				= FTC.Damage.Meter
-				meter.startTime 	= newDamage.ms
-				
-			-- Otherwise, bail out
-			else return end
+			-- Calculate total damage dealt to target
+			local damage = 0
+			for ability , stats in pairs(abilities) do
+				damage = damage + stats.total
+			end
+
+			-- Setup some data
+			local data = {
+				["name"]	= target,
+				["damage"] 	= damage,
+			}
+
+			-- Add the target to an index table
+			table.insert(targets,data)
 		end
-		
-		-- Process outgoing healing events
-		if ( newDamage.heal and context == "Out") then
-			
-			-- Update meter
-			meter.healing			= meter.healing + damage
-			if ( damage > meter.maxHeal ) then
-				meter.maxHeal		= damage
-				meter.maxHealName 	= name			
-			end
-			
-			-- Track ability
-			if ( FTC.Damage.Heals[name] ~= nil ) then
-				FTC.Damage.Heals[name].total 	= FTC.Damage.Heals[name].total + damage
-				FTC.Damage.Heals[name].count 	= FTC.Damage.Heals[name].count + 1
-				FTC.Damage.Heals[name].crit		= newDamage.crit and FTC.Damage.Heals[name].crit + 1 or FTC.Damage.Heals[name].crit
-			else
-				FTC.Damage.Heals[name] 	= {
-					["total"]			= damage,
-					["count"]			= 1,
-					["crit"]			= newDamage.crit and 1 or 0,			
-				}
-			end
-		
-		-- Process outgoing damage events
-		elseif ( context == "Out" ) then
-				
-			-- Update meter
-			meter.damage			= meter.damage + damage
-			if ( damage > meter.maxDam ) then
-				meter.maxDam		= damage
-				meter.maxDamName 	= name			
-			end
 
-			-- Track ability
-			if ( FTC.Damage.Damages[name] ~= nil ) then
-				FTC.Damage.Damages[name].total 	= FTC.Damage.Damages[name].total + damage
-				FTC.Damage.Damages[name].count 	= FTC.Damage.Damages[name].count + 1
-				FTC.Damage.Damages[name].crit	= newDamage.crit and FTC.Damage.Damages[name].crit + 1 or FTC.Damage.Damages[name].crit
-			else
-				FTC.Damage.Damages[name] 	= {
-					["total"]			= damage,
-					["count"]			= 1,
-					["crit"]			= newDamage.crit and 1 or 0,			
-				}
-			end
-			
-			-- Track target
-			FTC.Damage.Targets[target]	= ( FTC.Damage.Targets[target] ~= nil ) and FTC.Damage.Targets[target] + damage or damage
+		-- Sort targets based on total damage
+		table.sort( targets , FTC.Stats.SortDamage )
+
+		-- Compute data
+		local time = math.max(( FTC.Stats.endTime - FTC.Stats.startTime ) / 1000 , 1)
+
+		-- Generate output
+		local output 	= "[FTC] " .. zo_strformat("<<!aC:1>>",targets[2].name) .. " (" .. ZO_FormatTime( time , SI_TIME_FORMAT_TIMESTAMP) .. ") || "
+		output		 	= output .. FTC.DisplayNumber(FTC.Stats.damage) .. " " .. GetString(FTC_Damage) .. " (" .. FTC.DisplayNumber(FTC.Stats.damage/time,2) .. " " .. GetString(FTC_DPS) .. ") || "
+		output		 	= output .. FTC.DisplayNumber(FTC.Stats.healing) .. " " .. GetString(FTC_Healing) .. " (" .. FTC.DisplayNumber(FTC.Stats.healing/time,2) .. " " .. GetString(FTC_HPS) .. ")."
 		
-		-- Process incoming damage events
-		elseif ( context == "In" ) then
-		
-			-- Update meter
-			meter.incoming					= meter.incoming + damage
-			if ( damage > meter.maxInc ) then
-				meter.maxInc				= damage		
-			end	
-		end
-		
-		-- Stamp the time (but not for heals)
-		if ( not newDamage.heal ) then meter.endTime = newDamage.ms end
-		
-		-- Return data back to the meter
-		FTC.Damage.Meter = meter	
+		-- Determine appropriate channel
+		local channel = IsUnitGrouped('player') and "/p " or "/say "
+
+		-- Print output to chat
+		CHAT_SYSTEM.textEntry:SetText( channel .. output )
+		CHAT_SYSTEM:Maximize()
+		CHAT_SYSTEM.textEntry:Open()
 	end
-
-
-	
-
---[[ 
- * Print damage output to chat
- ]]--
-function FTC.Damage:Post( context )
-
-	-- Retrieve the data
-	local meter = FTC.Damage.Meter
-	
-	-- Make sure there's something to report
-	if ( meter.damage + meter.healing == 0 ) then 
-		d( "No damage to report!" ) 
-		return
-	end
-
-	-- Compute the most damaged target
-	local most_damaged_target = ""
-	local most_damage = 0
-	for k,v in pairs( FTC.Damage.Targets ) do
-		if ( v > most_damage ) then
-			most_damage = v
-			most_damaged_target = k
-		end
-	end
-	
-	-- Sanitize the name
-	local name = SanitizeLocalization( most_damaged_target )
-	
-	-- Compute the fight time
-	local total = 0
-	local metric = 0
-	local fight_time = math.max( ( meter.endTime - meter.startTime ) / 1000 , 1 )
-	local label = ""
-
-	-- Generate output
-	if ( 'damage' == context ) then
-		total 	= meter.damage
-		metric	= string.format( "%.1f" , total / fight_time )
-		label 	= name .. " (" .. string.format( "%.1f" , fight_time ) .. "s) || " .. FTC.DisplayNumber( total) .. " Total Damage " .. " (" .. metric .. " DPS)"
-
-	elseif ( 'healing' == context ) then
-		total 	= meter.healing
-		metric	= string.format( "%.1f" , total / fight_time )
-		label 	= name .. " (" .. string.format( "%.1f" , fight_time ) .. "s) || " .. FTC.DisplayNumber( total) .. " Total Healing " .. " (" .. metric .. " HPS)"
-	end
-	
-	-- Determine appropriate channel
-	local channel = IsUnitGrouped('player') and "/p " or "/say "
-
-	-- Print output to chat
-	CHAT_SYSTEM.textEntry:SetText( channel .. label )
-end
