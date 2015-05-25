@@ -138,7 +138,7 @@
 		-- Submit an object
 		local newAlert = {
 			["name"]	= "exp"..reason,
-			["label"]	= CommaValue(gain) .. " " .. GetString(FTC_Experience) .. "! ("..pct.."%)",
+			["label"]	= FTC.DisplayNumber(gain) .. " " .. GetString(FTC_Experience) .. "! ("..pct.."%)",
 			["color"]	= {0.4,0.8,0.8},
 			["size"]	= FTC.Vars.SCTFontSize,
 			["buffer"]	= 0,
@@ -230,7 +230,7 @@
 		-- Submit an object
 		local newAlert = {
 			["name"]	= "apgain",
-			["label"]	= CommaValue(difference + FTC.SCT.backAP) .. " " .. GetString(FTC_AlliancePoints) .. "! ("..pct.."%)",
+			["label"]	= FTC.DisplayNumber(difference + FTC.SCT.backAP) .. " " .. GetString(FTC_AlliancePoints) .. "! ("..pct.."%)",
 			["color"]	= {0.4,0.8,0.8},
 			["size"]	= FTC.Vars.SCTFontSize,
 			["buffer"]	= 0,

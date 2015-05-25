@@ -159,8 +159,8 @@
 		local secs	= ZO_FormatTime( dtime , SI_TIME_FORMAT_TIMESTAMP)
 
 		-- Compute player statistics
-		local dps 	= CommaValue( zo_round( FTC.Stats.damage / math.max(time,1) ) )
-		local hps 	= CommaValue( zo_round( FTC.Stats.healing / math.max(time,1) ) )
+		local dps 	= FTC.DisplayNumber( FTC.Stats.damage  / math.max(time,1) )
+		local hps 	= FTC.DisplayNumber( FTC.Stats.healing / math.max(time,1) )
 		
 		-- Update the labels
 		mini.damage.label:SetText( dps )
@@ -258,7 +258,7 @@
 			-- Compute DPS
 			local time = math.max(( FTC.Stats.endTime - FTC.Stats.startTime ) / 1000 , 1)
 			local dps  = zo_roundToNearest( target.damage / time , 0.01 )
-			local pct  = zo_roundToNearest( target.damage * 100 / FTC.Stats[string.lower(context)] , 0.1 )
+			local pct  = FTC.DisplayNumber( target.damage * 100 / FTC.Stats[string.lower(context)] , 1 )
 
 			-- Set Labels
 			if ( nodamage ) then 
@@ -271,9 +271,9 @@
 				local name = target.name == "Total" and GetString(FTC_AllTargets) or zo_strformat("<<!aC:1>>",target.name)
 				control.name:SetText(name)
 				local damname = ( context == "Damage" ) and GetString(FTC_Damage) or GetString(FTC_Healing)
-				control.total:SetText(CommaValue(target.damage) .. " " .. damname .. " |cAAAAAA(" .. pct .. "%)|r")
+				control.total:SetText(FTC.DisplayNumber(target.damage) .. " " .. damname .. " |cAAAAAA(" .. pct .. "%)|r")
 				local dpsname = ( context == "Damage" ) and GetString(FTC_DPS) or GetString(FTC_HPS)
-				control.dps:SetText(CommaValue(string.format("%.2f",dps)) .. " " .. dpsname)
+				control.dps:SetText(FTC.DisplayNumber(dps,2) .. " " .. dpsname)
 				control.expand:SetState(BSTATE_ENABLED)
 			end
 
@@ -384,17 +384,17 @@
 				-- Compute data
 				local time 	= math.max(( FTC.Stats.endTime - FTC.Stats.startTime ) / 1000 , 1)
 				local dps 	= zo_roundToNearest( ability.total / time , 0.01 )
-				local crit	= math.max(zo_roundToNearest( ( ability.crit * 100 / ability.count ) , 0.1 ),0)
-				local pct	= zo_roundToNearest( ability.total * 100 / tarTotal , 0.1 )
+				local crit	= FTC.DisplayNumber( math.max((ability.crit * 100 / ability.count ),0),1)
+				local pct	= FTC.DisplayNumber( ability.total * 100 / tarTotal , 1 )
 
 				-- Set data
 				control.icon:SetTexture(ability.icon)
 				control.name:SetText(zo_strformat("<<!aC:1>>",name))
 				control.count:SetText(ability.count)
-				control.total:SetText(CommaValue(ability.total) .. " |cAAAAAA(" .. pct .. "%)|r")
-				control.dps:SetText(CommaValue(dps))
+				control.total:SetText(FTC.DisplayNumber(ability.total) .. " |cAAAAAA(" .. pct .. "%)|r")
+				control.dps:SetText(FTC.DisplayNumber(dps))
 				control.crit:SetText(crit.."%")
-				control.max:SetText(CommaValue(ability.max))
+				control.max:SetText(FTC.DisplayNumber(ability.max))
 
 				-- Set Anchors
 				control:ClearAnchors()
@@ -586,154 +586,7 @@
 	end
 
 
---[[ 
- * Loads updated combat meter data and displays it to the frame
- * Toggles the meter off if it is already shown and no update is ready
- ]]--
-function FTC.Damage:Display()
 	
-	-- Get the damage meter container
-	local parent 	= _G["FTC_Meter"]
-	local title 	= _G["FTC_MeterTitle"]
-	
-	-- Grab elements
-	local meter 	= FTC.Damage.Meter
-	local header 	= "FTC Damage Meter"
-	
-	-- Compute the most damaged target
-	local most_damaged_target = ""
-	local most_damage = 0
-	for k,v in pairs( FTC.Damage.Targets ) do
-		if ( v > most_damage ) then
-			most_damage = v
-			most_damaged_target = k
-		end
-	end
-	
-	-- Compute the fight time
-	local fight_time = math.max( ( meter.endTime - meter.startTime ) / 1000 , 1 )
-	
-	-- Generate a title
-	if ( meter.damage + meter.healing == 0 ) then
-		header = header ..  " - No Combat Recorded"
-	else
-		header = header .. " - " .. most_damaged_target .. " (" .. string.format( "%.1f" , fight_time ) .. " seconds)"
-	end
-	
-	--[[----------------------------------
-		OUTGOING DAMAGE
-	  ]]----------------------------------
-	local dps = string.format( "%.2f" , meter.damage/fight_time )
-	
-	-- Set Header
-	local head	= ( meter.damage > 0 ) and CommaValue( meter.damage ) .. " Total Damage (" .. dps .. " DPS)" or "No Outgoing Damage"
-	FTC_MeterDamage_Title:SetText( head )
-	
-	-- Sort damaging abilities
-	local damages = {}
-	for k,v in pairs( FTC.Damage.Damages ) do
-		v.name = k
-		table.insert( damages , v ) 
-	end
-	table.sort( damages , function(x,y) return x.total > y.total end )
-
-	local ndamage = math.min( #damages , 10 )
-	for i = 1 , ndamage do
-		
-		-- Get elements
-		local line	= _G["FTC_MeterDamage_"..i]
-		local left	= _G["FTC_MeterDamage_"..i.."Left"]
-		local right	= _G["FTC_MeterDamage_"..i.."Right"]
-		
-		-- Get data
-		local total	= CommaValue( damages[i].total )
-		local count	= damages[i].count
-		local crit	= math.floor( ( damages[i].crit / count ) * 100 )
-		local adps	= string.format( "%.2f" , damages[i].total/fight_time )
-		local pdps	= math.floor( ( adps / dps ) * 100 )
-		
-		-- Add data
-		line:SetHidden(false)
-		left:SetText( damages[i].name .. " - " .. total .. " Damage || " .. count .. " Hits || " .. crit .. "% Crit" )
-		right:SetText( "(" .. pdps .. "%) " .. adps .. " DPS" )
-	end
-	
-	-- Hide unused lines
-	for i = ndamage + 1 , 10 do
-		local line 	= _G["FTC_MeterDamage_"..i]
-		line:SetHidden(true)
-	end
-	
-	-- Change the element height
-	FTC_MeterDamage:SetHeight( 50 + ( math.min(#damages,10) * 24 ) )
-	
-	--[[----------------------------------
-		OUTGOING HEALING
-	  ]]----------------------------------		
-	local hps = string.format( "%.2f" , meter.healing/fight_time )
-	
-	-- Set Header
-	local head	= ( meter.healing > 0 ) and CommaValue( meter.healing ) .. " Total Healing (" .. hps .. " HPS)" or "No Outgoing Healing"
-	FTC_MeterHealing_Title:SetText( head )
-	
-	-- Sort damaging abilities
-	local heals = {}
-	for k,v in pairs( FTC.Damage.Heals ) do
-		v.name = k
-		table.insert( heals , v ) 
-	end
-	table.sort( heals , function(x,y) return x.total > y.total end )	
-
-	local nheals = math.min( #heals , 10 )
-	for i = 1 , nheals do
-		
-		-- Get elements
-		local line	= _G["FTC_MeterHealing_"..i]
-		local left	= _G["FTC_MeterHealing_"..i.."Left"]
-		local right	= _G["FTC_MeterHealing_"..i.."Right"]
-		
-		-- Get data
-		local total	= CommaValue( heals[i].total )
-		local count	= damages[i].count
-		local crit	= math.floor( ( heals[i].crit / count ) * 100 )
-		local ahps	= string.format( "%.2f" , heals[i].total/fight_time )
-		local phps	= math.floor( ( ahps / hps ) * 100 )
-		
-		-- Add data
-		line:SetHidden(false)
-		left:SetText( heals[i].name .. " - " .. total .. " Healing || " .. count .. " Hits || " .. crit .. "% Crit")
-		right:SetText( "(" .. phps .. "%) " .. ahps .. " HPS" )
-	end
-	
-	-- Hide unused lines
-	for i = nheals + 1 , 10 do
-		local line 	= _G["FTC_MeterHealing_"..i]
-		line:SetHidden(true)	
-	end	
-
-	-- Change the element height
-	FTC_MeterHealing:SetHeight( 50 + ( #heals * 24 ) )		
-	
-	--[[----------------------------------
-		INCOMING DAMAGE
-	  ]]----------------------------------			
-	local ips = string.format( "%.2f" , meter.incoming/fight_time )
-	
-	-- Set Header
-	local head	= ( meter.incoming > 0 ) and CommaValue( meter.incoming ) .. " Incoming Damage (" .. ips .. " IPS)" or "No Incoming Damage"
-	FTC_MeterIncoming_Title:SetText( head )
-	
-	--[[----------------------------------
-		ADJUST DISPLAY
-	  ]]----------------------------------		 
-	local height = 60 + FTC_MeterDamage:GetHeight() + FTC_MeterHealing:GetHeight() + 60 
-	parent:SetHeight( height )
-	parent.backdrop:SetHeight( height )
-	title:SetText(header)
-end
-
-
-
 
 --[[ 
  * Print damage output to chat
@@ -772,12 +625,12 @@ function FTC.Damage:Post( context )
 	if ( 'damage' == context ) then
 		total 	= meter.damage
 		metric	= string.format( "%.1f" , total / fight_time )
-		label 	= name .. " (" .. string.format( "%.1f" , fight_time ) .. "s) || " .. CommaValue(total) .. " Total Damage " .. " (" .. metric .. " DPS)"
+		label 	= name .. " (" .. string.format( "%.1f" , fight_time ) .. "s) || " .. FTC.DisplayNumber( total) .. " Total Damage " .. " (" .. metric .. " DPS)"
 
 	elseif ( 'healing' == context ) then
 		total 	= meter.healing
 		metric	= string.format( "%.1f" , total / fight_time )
-		label 	= name .. " (" .. string.format( "%.1f" , fight_time ) .. "s) || " .. CommaValue(total) .. " Total Healing " .. " (" .. metric .. " HPS)"
+		label 	= name .. " (" .. string.format( "%.1f" , fight_time ) .. "s) || " .. FTC.DisplayNumber( total) .. " Total Healing " .. " (" .. metric .. " HPS)"
 	end
 	
 	-- Determine appropriate channel

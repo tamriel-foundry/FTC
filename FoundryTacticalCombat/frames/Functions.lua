@@ -413,14 +413,12 @@ end
         attr.bar:SetWidth( pct * (attr:GetWidth()-4) )
 
         -- Update bar labels
-        local label = ( powerValue > 100000 ) and CommaValue(zo_roundToNearest(powerValue,1000)/1000) .. "k" or CommaValue(powerValue)
-        if ( round ) then label = zo_roundToNearest(powerValue/1000,0.1).."k" end
-
+        local label = ( powerValue > 100000 or round ) and FTC.DisplayNumber(powerValue/1000,1) .. "k" or FTC.DisplayNumber(powerValue)
         local pctLabel = (pct*100) .. "%"
         
         -- Maybe add shielding
         if ( powerType == POWERTYPE_HEALTH ) then
-            local slabel = ( round ) and zo_roundToNearest(data.shield.current/1000,0.1).."k" or CommaValue(data.shield.current)
+            local slabel = ( round ) and FTC.DisplayNumber(data.shield.current/1000,1).."k" or FTC.DisplayNumber(data.shield.current/1000)
             label = ( data.shield.current ~= nil and data.shield.current > 0 ) and label .. " [" .. slabel .. "]" or label
         end
 
@@ -513,7 +511,7 @@ function FTC.Frames:UpdateShield( unitTag , value , maxValue )
         frame.shield.bar:SetWidth(frame.shield:GetWidth()-4)
 
         -- Update the health text
-        local displayText = round and tooltip.." ["..zo_roundToNearest(value/1000,0.1).."k]" or tooltip.." ["..CommaValue(value).."]"
+        local displayText = round and tooltip.." ["..FTC.DisplayNumber(value/1000,1).."k]" or tooltip.." ["..FTC.DisplayNumber(value).."]"
         frame.health.current:SetText(displayText)
 
         -- Ensure visibility

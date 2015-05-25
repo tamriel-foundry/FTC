@@ -498,7 +498,7 @@
                     elseif ( duration > 60 ) then   
                         local minutes   = math.floor( duration / 60 )
                         label           = string.format( "%dm" , minutes )
-                    else label = string.format( "%.1f" , duration ) end
+                    else label = FTC.DisplayNumber( duration , 1 ) end
                 end
 
                 -- Update labels

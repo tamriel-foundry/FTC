@@ -59,17 +59,42 @@ end
 		-- Maybe disable move mode
 		if ( activeLayerIndex > 2 ) then FTC.Menu:MoveFrames( false ) end
 	end
-
-
+	
 	 --[[ 
-	 * Return Comma Delimited Number
+	 * Return Localized Delimited Number
 	 * --------------------------------
-	 * Called by ... 
+	 * Called by (many)
 	 * --------------------------------
 	 ]]--  
-	function CommaValue(number)
-		local left,num,right = string.match(number,'^([^%d]*%d)(%d*)(.-)$')
-		return left..(num:reverse():gsub('(%d%d%d)','%1,'):reverse())..right
+	function FTC.DisplayNumber(number,places)
+
+		-- Determine thousands and decimal format
+		local thousands = FTC.language == "en" and "," or "."
+		local decimal 	= FTC.language == "en" and "." or ","
+
+		-- If no places were passed assume zero
+		places = places or 0
+		local output = 0
+
+		-- If the number is less than 1000
+		if ( number < 1000 ) then 
+			output = string.format("%."..places.."f",number)
+			output = string.gsub(output,"%.",decimal)
+
+		-- Greater than 1000 with decimals
+		elseif( number >= 1000 and places > 0 ) then
+			output = string.format("%."..places.."f",number)
+			local left, right = zo_strsplit("%.",output)
+			left = FormatIntegerWithDigitGrouping(left,thousands)
+			output = left .. decimal .. right
+		
+		-- Greater than 1000 no decimals
+		else
+			output = FormatIntegerWithDigitGrouping(number,thousands)
+		end
+
+		-- Return the output
+		return output
 	end
 
 	--[[ 

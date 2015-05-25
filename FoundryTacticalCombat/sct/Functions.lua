@@ -97,7 +97,7 @@
                     FTC.SCT[context][i].mult = mult
 
                     -- Update labels
-                    local value = ( damage.value >= 1000 ) and zo_roundToNearest( damage.value / 1000 , 0.1 ) .. "k" or damage.value
+                    local value = ( damage.value >= 1000 ) and FTC.DisplayNumber( damage.value / 1000 , 1 ) .. "k" or FTC.DisplayNumber( damage.value )
                     dam.control.value:SetText(value .. " [x" .. mult .. "]")
                     
                     -- Bail out
@@ -128,7 +128,7 @@
             FTC.SCT["count"..context] = ( FTC.SCT["count"..context] % 4 == 0 ) and 1 or FTC.SCT["count"..context] + 1
 
             -- Determine labels
-            local value = ( FTC.Vars.SCTRound ) and ( ( damage.value >= 1000 ) and zo_roundToNearest( damage.value / 1000 , 0.1 ) .. "k" or damage.value ) or CommaValue(damage.value)
+            local value = ( FTC.Vars.SCTRound ) and ( ( damage.value >= 1000 ) and FTC.DisplayNumber( damage.value / 1000 , 1 ) .. "k" or damage.value ) or FTC.DisplayNumber(damage.value)
             local size  = ( damage.crit ) and FTC.Vars.SCTFontSize + 4 or FTC.Vars.SCTFontSize
             local name  = zo_strformat("<<!aC:1>>",damage.ability)
 
