@@ -92,7 +92,7 @@
             if ( FTC.init.Buffs and damageOut ) then FTC.Buffs:Damage(damage) end
 
             -- Statistics
-            if ( FTC.init.Stats ) then FTC.Stats:RegisterDamage(damage) end
+            if ( FTC.init.Stats and damageOut ) then FTC.Stats:RegisterDamage(damage) end
 
         -- Falling damage
         elseif ( result == ACTION_RESULT_FALL_DAMAGE ) then
@@ -137,7 +137,7 @@
             if ( FTC.init.Buffs and damageOut ) then FTC.Buffs:Damage(damage) end
 
             -- Statistics
-            if ( FTC.init.Stats and sourceType == COMBAT_UNIT_TYPE_PLAYER ) then FTC.Stats:RegisterHealing(damage) end 
+            if ( FTC.init.Stats and sourceType == COMBAT_UNIT_TYPE_PLAYER ) then FTC.Stats:RegisterDamage(damage) end 
 
         -- Target Death
         elseif ( result == ACTION_RESULD_DIED or result == ACTION_RESULT_DIED_XP ) then

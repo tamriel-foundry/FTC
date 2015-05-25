@@ -227,7 +227,8 @@
         elseif ( context == "Stats" ) then
              for var , value in pairs( FTC.Stats.Defaults ) do
                 FTC.Vars[var] = value   
-            end           
+            end
+            FTC.Menu:UpdateStats()
         end
     end
 
@@ -498,6 +499,26 @@
         FTC.Log:Initialize()
     end
 
+--[[----------------------------------------------------------
+     DAMAGE STATISTICS
+  ]]----------------------------------------------------------
+
+    --[[ 
+     * Update Statistics
+     * --------------------------------
+     * Called by FTC.Menu:Controls()
+     * --------------------------------
+     ]]--
+    function FTC.Menu:UpdateStats(setting,value)
+
+        -- Maybe apply a new setting
+        if ( setting ~= nil and value ~= nil ) then
+            FTC.Vars[setting] = value
+        end
+
+        -- Rebuild the log dynamically
+        FTC.Stats:Controls()
+    end
 
 --[[----------------------------------------------------------
      REPOSITION ELEMENTS

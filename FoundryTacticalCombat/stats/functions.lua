@@ -4,7 +4,7 @@
   ]]----------------------------------------------------------
     FTC.Stats = {}
     FTC.Stats.Defaults = {
-		["FTC_MiniMeter"]           = {BOTTOM,TOP,0,-10,ZO_ActionBar1},
+		["FTC_MiniMeter"]           = {BOTTOM,BOTTOM,0,-80},
 		["DamageTimeout"]           = 5,
 		["StatTriggerHeals"]        = false,
 	}
@@ -51,7 +51,8 @@
 		FTC.Stats.Current.Damage.Total 	= {}
 		FTC.Stats.Current.Healing 		= {}
 		FTC.Stats.Current.Healing.Total = {}
-		FTC.Stats.Current.Incoming 		= {}
+		FTC.Stats.DamageTargets			= {}
+		FTC.Stats.HealingTargets		= {}
 
 		-- Setup flags
 		FTC.Stats.damage	= 0
@@ -64,7 +65,6 @@
     EVENT HANDLERS
   ]]----------------------------------------------------------
 
-
     --[[ 
      * Store New Damage to Table
      * --------------------------------
@@ -73,119 +73,69 @@
      ]]--
 	function FTC.Stats:RegisterDamage(damage)
 
-		-- Get the tables
-		local data = FTC.Stats.Current
-
 		-- If we are past the timeout threshold, reset the tables
 		if( ( ( damage.ms - FTC.Stats.endTime ) / 1000 ) >= FTC.Vars.DamageTimeout ) then
+			if ( damage.heal and not FTC.Vars.StatTriggerHeals ) then return end
 			FTC.Stats:Reset()
 		end
 
-		-- Outgoing damage
-		if ( damage.out ) then
+		-- Add damage value to tracker
+		if ( damage.heal ) then FTC.Stats.healing = FTC.Stats.healing + damage.value
+		else FTC.Stats.damage = FTC.Stats.damage + damage.value end
 
-			-- Setup some placeholder data
-			local ability	= damage.ability
-			local newDamage = {
+		-- Flag the time
+		FTC.Stats.endTime = damage.ms
+
+		-- Get the tables
+		local data = ( damage.heal ) and FTC.Stats.Current.Healing or FTC.Stats.Current.Damage 
+
+		-- Setup some placeholder data
+		local ability	= damage.ability
+
+		-- Add data to total
+		if ( data.Total[ability] == nil ) then 
+			data.Total[ability] = {
 				['total']	= damage.value,
 				['count']	= 1,
 				['crit']	= damage.crit and 1 or 0,
 				['max']		= damage.value,
+				['icon']	= damage.icon,
 			}
 
-			-- Add data to total
-			if ( data.Damage.Total[ability] == nil ) then data.Damage.Total[ability] = newDamage
-			else
-				data.Damage.Total[ability].total = data.Damage.Total[ability].total + newDamage.total
-				data.Damage.Total[ability].count = data.Damage.Total[ability].count + newDamage.count
-				data.Damage.Total[ability].crit  = data.Damage.Total[ability].crit  + newDamage.crit
-				data.Damage.Total[ability].max   = math.max(newDamage.max,data.Damage.Total[ability].max)
-			end
-
-			-- Maybe set up new target
-			local target = damage.target
-			if ( data.Damage[target] == nil ) then data.Damage[target] = {} end
-
-			-- Add data to target
-			if ( data.Damage[target][ability] == nil ) then data.Damage[target][ability] = newDamage
-			else
-				data.Damage[target][ability].total = data.Damage[target][ability].total + newDamage.total
-				data.Damage[target][ability].count = data.Damage[target][ability].count + newDamage.count
-				data.Damage[target][ability].crit  = data.Damage[target][ability].crit  + newDamage.crit
-				data.Damage[target][ability].max   = math.max(newDamage.max,data.Damage[target][ability].max)
-			end
-
-			-- Add damage value to tracker
-			FTC.Stats.damage = FTC.Stats.damage + damage.value
-
-		-- Incoming damage
-		else 
-			table.insert(data.Incoming,damage)
-		end
-
-		-- Flag the time
-		FTC.Stats.endTime = damage.ms
-	end
-
-    --[[ 
-     * Store New Healing
-     * --------------------------------
-     * Called by FTC.Damage:New()
-     * --------------------------------
-     ]]--
-	function FTC.Stats:RegisterHealing(damage)
-
-		-- Get the tables
-		local data = FTC.Stats.Current
-
-		-- Ignore healing outside of the active threshold
-		if( ( ( damage.ms - FTC.Stats.endTime ) / 1000 ) >= FTC.Vars.DamageTimeout ) then 
-			if ( FTC.Vars.StatTriggerHeals ) then FTC.Stats:Reset()
-			else return end
+		-- Update existing ability
+		else
+			data.Total[ability].total = data.Total[ability].total + damage.value
+			data.Total[ability].count = data.Total[ability].count + 1
+			data.Total[ability].crit  = data.Total[ability].crit  + ( damage.crit and 1 or 0 )
+			data.Total[ability].max   = math.max(damage.value,data.Total[ability].max)
 		end
 
 		-- Maybe set up new target
 		local target = damage.target
-		if ( data.Healing[target] == nil ) then data.Healing[target] = {} end
+		if ( data[target] == nil ) then data[target] = {} end
 
-		-- Add data to tables
-		table.insert(data.Healing.Total,damage)
-		table.insert(data.Healing[target],damage)
+		-- Add new ability to target
+		if ( data[target][ability] == nil ) then 
+			data[target][ability] = {
+				['total']	= damage.value,
+				['count']	= 1,
+				['crit']	= damage.crit and 1 or 0,
+				['max']		= damage.value,
+				['icon']	= damage.icon,
+			}
 
-		-- Add healing value to tracker
-		FTC.Stats.healing = FTC.Stats.healing + damage.value
-
-		-- Maybe flag the time
-		if ( FTC.Vars.StatTriggerHeals ) then FTC.Stats.endTime = damage.ms end
-	end
-
-
-
-    --[[ 
-     * Toggle Visibility of Report
-     * --------------------------------
-     * Called by 
-     * --------------------------------
-     ]]--
-	function FTC.Stats:Toggle()
-
-		-- Bail if damage is disabled
-		if ( not FTC.Vars.EnableStats ) then return end
-		
-		-- Determine wether the report is currently shown
-		local hide = FTC_Report:IsHidden()
-
-		-- Toggle visibility
-		FTC_UI:SetHidden(hide)
-		FTC_Report:SetHidden(not hide)
-		SetGameCameraUIMode(hide)
+		-- Update existing ability
+		else
+			data[target][ability].total = data[target][ability].total + damage.value
+			data[target][ability].count = data[target][ability].count + 1
+			data[target][ability].crit  = data[target][ability].crit  + ( damage.crit and 1 or 0 )
+			data[target][ability].max   = math.max(damage.value,data[target][ability].max)
+		end
 	end
 
 --[[----------------------------------------------------------
     UPDATING FUNCTIONS
   ]]----------------------------------------------------------
-
-
 
     --[[ 
      * Update the mini DPS meter
@@ -218,16 +168,277 @@
 		mini.time.label:SetText( secs )
 	end
 
+--[[----------------------------------------------------------
+    REPORT FUNCTIONS
+  ]]----------------------------------------------------------
 
 
+    --[[ 
+     * Toggle Visibility of Report
+     * --------------------------------
+     * Called by 
+     * --------------------------------
+     ]]--
+	function FTC.Stats:Toggle()
+
+		-- Bail if damage is disabled
+		if ( not FTC.Vars.EnableStats ) then return end
+		
+		-- Determine wether the report is currently shown
+		local hide = FTC_Report:IsHidden()
+
+		-- Maybe setup the report
+		if ( hide ) then 
+			FTC.Stats.TargetPool:ReleaseAllObjects()
+			FTC.Stats.AbilityPool:ReleaseAllObjects()
+			FTC.Stats:SetupReport("Damage") 
+			FTC.Stats:SetupReport("Healing") 
+		end
+
+		-- Toggle visibility
+		FTC_UI:SetHidden(hide)
+		FTC_Report:SetHidden(not hide)
+		SetGameCameraUIMode(hide)
+	end
+
+    --[[ 
+     * Setup Damage Report
+     * --------------------------------
+     * Called by FTC.Stats:Toggle()
+     * --------------------------------
+     ]]--
+	function FTC.Stats:SetupReport( context )
+
+		-- Hide expanded abilities
+		FTC_Report_Ability:SetHidden(true)
+
+		-- Flag if there is no damage to display
+		local nodamage  = ( FTC.Stats[string.lower(context)] == 0 ) 
+
+		-- Compute index of targets
+		local targets = {}
+		for target , abilities in pairs(FTC.Stats.Current[context]) do
+			
+			-- Calculate total damage dealt to target
+			local damage = 0
+			for ability , stats in pairs(abilities) do
+				damage = damage + stats.total
+			end
+
+			-- Setup some data
+			local data = {
+				["name"]	= target,
+				["damage"] 	= damage,
+			}
+
+			-- Add the target to an index table
+			table.insert(targets,data)
+		end
+
+		-- Sort targets based on total damage
+		table.sort( targets , FTC.Stats.SortDamage )
+
+		-- Remove total if there is only one target
+		if ( #targets == 2 ) then table.remove(targets,1) end
+		FTC.Stats[context.."Targets"] = targets
+
+		-- Loop over targets, setting up controls
+		local anchor = _G["FTC_Report_"..context.."Title"]
+		for i = 1 , math.min(#targets,5) do
+
+			-- Get a control from the pool
+			local control, objectKey = FTC.Stats.TargetPool:AcquireObject()
+			control.id = objectKey
+			
+			-- Assign data
+			local target = targets[i]
+			control.target = target.name
+			control.context = context
+
+			-- Compute DPS
+			local time = math.max(( FTC.Stats.endTime - FTC.Stats.startTime ) / 1000 , 1)
+			local dps  = zo_roundToNearest( target.damage / time , 0.01 )
+			local pct  = zo_roundToNearest( target.damage * 100 / FTC.Stats[string.lower(context)] , 0.1 )
+
+			-- Set Labels
+			if ( nodamage ) then 
+				local name = ( context == "Damage" ) and GetString(FTC_NoDamage) or GetString(FTC_NoHealing)
+				control.name:SetText(name)
+				control.total:SetText()
+				control.dps:SetText()
+				control.expand:SetState(BSTATE_DISABLED)
+			else
+				local name = target.name == "Total" and GetString(FTC_AllTargets) or zo_strformat("<<!aC:1>>",target.name)
+				control.name:SetText(name)
+				local damname = ( context == "Damage" ) and GetString(FTC_Damage) or GetString(FTC_Healing)
+				control.total:SetText(CommaValue(target.damage) .. " " .. damname .. " |cAAAAAA(" .. pct .. "%)|r")
+				local dpsname = ( context == "Damage" ) and GetString(FTC_DPS) or GetString(FTC_HPS)
+				control.dps:SetText(CommaValue(string.format("%.2f",dps)) .. " " .. dpsname)
+				control.expand:SetState(BSTATE_ENABLED)
+			end
+
+			-- Reset Button
+			control.expand:SetState(BSTATE_NORMAL)
+			control.state = "collapsed"
+
+			-- Set Anchors
+			control:SetHeight(50)
+			control:ClearAnchors()
+			control:SetAnchor(TOP,anchor,BOTTOM,0,25)
+			anchor = control
+
+			-- Display
+			control:SetHidden(false)
+		end
+
+		-- Maybe move healing header
+		if ( context == "Damage" ) then 
+			FTC_Report_HealingTitle:ClearAnchors()
+			FTC_Report_HealingTitle:SetAnchor(TOP,anchor,BOTTOM,0,25)
+		end
+	end
 
 
+	--[[ 
+	 * Expand Target Abilities
+	 * --------------------------------
+	 * Called by FTC.Stats.CreateTarget()
+	 * --------------------------------
+	 ]]--
+	function FTC.Stats.ExpandTarget( self ) 
 
+		-- Get data
+		local parent 	= self:GetParent()
+		local state 	= parent.state
+		local target 	= parent.target
+		local context	= parent.context
+		local container	= FTC_Report_Ability
 
+		-- Release existing objects
+		FTC.Stats.AbilityPool:ReleaseAllObjects()
 
+		-- Maybe Collapse
+		local isExpanded = not container:IsHidden()
+		local oldButton  = nil
+		if ( isExpanded ) then
 
+			-- Get the old parent
+			local _ , _ , oldParent = FTC_Report_Ability:GetAnchor()
+			oldButton = oldParent.expand
 
+			-- Set the button state 
+			oldButton:SetState(BSTATE_DISABLED)
 
+			-- Expand the parent container
+			oldParent:SetHeight(50)
+			container:SetHidden(true)
+
+			-- Restore the button state
+			oldButton:SetState(BSTATE_NORMAL)
+			oldParent.state = "collapsed"
+		end
+
+		-- Maybe Expand
+		if ( self ~= oldButton and parent.state == "collapsed" ) then 
+
+			-- Set the button state
+			self:SetState(BSTATE_DISABLED_PRESSED)
+			parent.state = "disabled"
+
+			-- Compute index of abilities
+			local abilities = {}
+			for ability , stats in pairs(FTC.Stats.Current[context][target]) do
+				
+				-- Setup some data
+				local data = {
+					["name"]	= ability,
+					["damage"] 	= stats.total,
+				}
+
+				-- Add the target to an index table
+				table.insert(abilities,data)
+			end
+
+			-- Sort targets based on total damage
+			table.sort( abilities , FTC.Stats.SortDamage )
+
+			-- Get total damage for the target
+			local tarTotal = 0
+			local targets = FTC.Stats[context.."Targets"]
+			for i = 1 , #targets do 
+				if ( targets[i].name == target ) then tarTotal = targets[i].damage end
+			end
+
+			-- Setup the display of abilities
+			local anchor = {TOP,FTC_Report_Ability_Header,BOTTOM,0,0}
+			for i = 1 , math.min(#abilities,10) do
+
+				-- Get the ability
+				local name		= abilities[i].name
+				local ability 	= FTC.Stats.Current[context][target][name]
+
+				-- Get a control from the pool
+				local control, objectKey = FTC.Stats.AbilityPool:AcquireObject()
+				control.id = objectKey
+
+				-- Compute data
+				local time 	= math.max(( FTC.Stats.endTime - FTC.Stats.startTime ) / 1000 , 1)
+				local dps 	= zo_roundToNearest( ability.total / time , 0.01 )
+				local crit	= math.max(zo_roundToNearest( ( ability.crit * 100 / ability.count ) , 0.1 ),0)
+				local pct	= zo_roundToNearest( ability.total * 100 / tarTotal , 0.1 )
+
+				-- Set data
+				control.icon:SetTexture(ability.icon)
+				control.name:SetText(zo_strformat("<<!aC:1>>",name))
+				control.count:SetText(ability.count)
+				control.total:SetText(CommaValue(ability.total) .. " |cAAAAAA(" .. pct .. "%)|r")
+				control.dps:SetText(CommaValue(dps))
+				control.crit:SetText(crit.."%")
+				control.max:SetText(CommaValue(ability.max))
+
+				-- Set Anchors
+				control:ClearAnchors()
+				control:SetAnchor(unpack(anchor))
+				anchor = {TOP,control,BOTTOM,0,10}
+
+				-- Display
+				control:SetHidden(false)
+			end			
+
+			-- Modify header labels
+			container.header.total:SetText( ( context == "Damage" ) and GetString(FTC_Damage) or GetString(FTC_Healing) )
+			container.header.dps:SetText( ( context == "Damage" ) and GetString(FTC_DPS) or GetString(FTC_HPS) )
+
+			-- Expand the parent container
+			parent:SetHeight((math.min(#abilities,10)+2)*60)
+			container:ClearAnchors()
+			container:SetAnchor(TOP,parent,TOP,0,60)
+			container:SetHidden(false)
+
+			-- Restore the button state
+			self:SetState(BSTATE_PRESSED)
+			parent.state = "expanded"
+		end
+
+		-- Maybe hide some elements
+		for _ , control in pairs(FTC.Stats.TargetPool.m_Active) do
+			control:SetHidden( control ~= parent and control:GetBottom() > FTC_Report:GetBottom() )
+		end
+		FTC_Report_HealingTitle:SetHidden( FTC_Report_HealingTitle:GetBottom() > FTC_Report:GetBottom() )
+	end
+
+    --[[ 
+     * Sort By Damage
+     * --------------------------------
+     * Called by FTC.Stats:SetupReport()
+     * --------------------------------
+     ]]--
+	function FTC.Stats.SortDamage(x,y)
+
+        if ( x.name == "Total" ) then return true
+        elseif ( y.name == "Total" ) then return false 
+        else return x.damage > y.damage end
+    end
 
 
 

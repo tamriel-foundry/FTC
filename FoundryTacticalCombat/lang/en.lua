@@ -285,3 +285,15 @@ ZO_CreateStringId("FTC_Menu_TRHealDesc",    "Allow outgoing healing to trigger t
 
 ZO_CreateStringId("FTC_Menu_TReset",        "Reset Stats")
 ZO_CreateStringId("FTC_Menu_TResetDesc",    "Reset original settings for FTC damage statistics component.")
+
+-- Damage Report Words
+ZO_CreateStringId("FTC_NoDamage",           "No damage to report!")
+ZO_CreateStringId("FTC_NoHealing",          "No healing to report!")
+ZO_CreateStringId("FTC_AllTargets",         "All Targets")
+ZO_CreateStringId("FTC_Ability",            "Ability")
+ZO_CreateStringId("FTC_Crit",               "Crit")
+ZO_CreateStringId("FTC_Max",                "Max")
+ZO_CreateStringId("FTC_Damage",             "Damage")
+ZO_CreateStringId("FTC_Healing",            "Healing")
+ZO_CreateStringId("FTC_DPS",                "DPS")
+ZO_CreateStringId("FTC_HPS",                "HPS")
