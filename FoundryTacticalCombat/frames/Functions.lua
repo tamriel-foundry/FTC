@@ -381,10 +381,13 @@ end
         data    = FTC.Group[i]
 
         -- Get the frame
-        if ( GetGroupSize() <= 4 and FTC.Vars.EnableGroupFrames ) then frame = _G["FTC_GroupFrame" .. i]
+        if ( GetGroupSize() <= 4 and FTC.Vars.EnableGroupFrames ) then 
+            frame = _G["FTC_GroupFrame" .. i]
+            ZO_UnitFramesGroups:SetHidden(true)
         elseif ( FTC.Vars.EnableRaidFrames ) then 
             frame = _G["FTC_RaidFrame" .. i]  
             round = true
+            ZO_UnitFramesGroups:SetHidden(true)
         end
 
         -- Run fade animation

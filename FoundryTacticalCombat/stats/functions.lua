@@ -73,9 +73,12 @@
      ]]--
 	function FTC.Stats:RegisterDamage(damage)
 
+		-- Don't register anything if the player is out of combat
+		if ( not IsUnitInCombat('player') ) then return end
+
 		-- If we are past the timeout threshold, reset the tables
 		if( ( ( damage.ms - FTC.Stats.endTime ) / 1000 ) >= FTC.Vars.DamageTimeout ) then
-			if ( damage.heal and not FTC.Vars.StatTriggerHeals ) then return end
+			if ( damage.heal and FTC.Vars.StatTriggerHeals == false ) then return end
 			FTC.Stats:Reset()
 		end
 
@@ -84,7 +87,7 @@
 		else FTC.Stats.damage = FTC.Stats.damage + damage.value end
 
 		-- Flag the time
-		FTC.Stats.endTime = damage.ms
+		if ( ( not damage.heal ) or FTC.Vars.StatTriggerHeals ) then FTC.Stats.endTime = damage.ms end
 
 		-- Get the tables
 		local data = ( damage.heal ) and FTC.Stats.Current.Healing or FTC.Stats.Current.Damage 
