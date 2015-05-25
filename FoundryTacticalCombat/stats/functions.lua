@@ -243,6 +243,7 @@
 		FTC.Stats[context.."Targets"] = targets
 
 		-- Loop over targets, setting up controls
+		local time = math.max(( FTC.Stats.endTime - FTC.Stats.startTime ) / 1000 , 1)
 		local anchor = _G["FTC_Report_"..context.."Title"]
 		for i = 1 , math.min(#targets,5) do
 
@@ -256,7 +257,6 @@
 			control.context = context
 
 			-- Compute data
-			local time = math.max(( FTC.Stats.endTime - FTC.Stats.startTime ) / 1000 , 1)
 			local pct  = FTC.DisplayNumber( target.damage * 100 / FTC.Stats[string.lower(context)] , 1 )
 
 			-- Set Labels
@@ -277,7 +277,7 @@
 			end
 
 			-- Reset Button
-			control.expand:SetState(BSTATE_NORMAL)
+			control.expand:SetState( nodamage and BSTATE_DISABLED or BSTATE_NORMAL )
 			control.state = "collapsed"
 
 			-- Set Anchors
@@ -290,8 +290,12 @@
 			control:SetHidden(false)
 		end
 
-		-- Maybe move healing header
-		if ( context == "Damage" ) then 
+		-- Modify headers
+		local targetName = ( #targets > 1 ) and targets[2].name or targets[1].name
+		local title	= context == "Damage" and GetString(FTC_DReport) or GetString(FTC_HReport)
+		title = ( nodamage ) and title or title .. " - " .. zo_strformat("<<!aC:1>>",targetName) .. " (" .. ZO_FormatTime( time , SI_TIME_FORMAT_TIMESTAMP) .. ")"
+		_G["FTC_Report_"..context.."Title"]:SetText(title)
+		if ( context == "Damage" ) then
 			FTC_Report_HealingTitle:ClearAnchors()
 			FTC_Report_HealingTitle:SetAnchor(TOP,anchor,BOTTOM,0,25)
 		end
@@ -396,7 +400,7 @@
 				control.total:SetText(FTC.DisplayNumber(ability.total) .. " |cAAAAAA(" .. pct .. "%)|r")
 				control.dps:SetText(FTC.DisplayNumber(ability.total / time,2))
 				control.crit:SetText(crit.."%")
-				control.mean:SetText(FTC.DisplayNumber(ability.total/ability.count))
+				control.avg:SetText(FTC.DisplayNumber(ability.total/ability.count))
 				control.max:SetText(FTC.DisplayNumber(ability.max))
 
 				-- Set Anchors

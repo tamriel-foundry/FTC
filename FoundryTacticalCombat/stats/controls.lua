@@ -23,7 +23,7 @@ function FTC.Stats:Controls()
 
 	local healing	= FTC.UI:Control(   "FTC_MiniMeter_Heal", 				DM, 		{80,32}, 				{LEFT,RIGHT,0,0,damage}, 		false )
 	healing.label	= FTC.UI:Label( 	"FTC_MiniMeter_HealLabel", 			healing, 	{48,32}, 				{RIGHT,RIGHT,0,0}, 				FTC.UI:Font("standard",16,true), {1,1,1,1}, {0,1}, "0", false )
-	healing.icon    = FTC.UI:Texture(   "FTC_MiniMeter_HealIcon",       	healing,    {28,28},  				{LEFT,LEFT,2,0},  				'/esoui/art/buttons/gamepad/pointsplus_up.dds', false )
+	healing.icon    = FTC.UI:Texture(   "FTC_MiniMeter_HealIcon",       	healing,    {26,26},  				{LEFT,LEFT,3,0},  				'/esoui/art/buttons/gamepad/pointsplus_up.dds', false )
 	DM.healing		= healing
 
 	local time		= FTC.UI:Control(   "FTC_MiniMeter_Time", 				DM, 		{80,32}, 				{LEFT,RIGHT,0,0,healing}, 		false )
@@ -57,8 +57,8 @@ function FTC.Stats:Controls()
     header.total 	= FTC.UI:Label(    "FTC_Report_Ability_Total",  		header,  	{150,50},  				{LEFT,RIGHT,0,0,header.count},  FTC.UI:Font("esobold",20,true), {1,1,1,1}, {0,1}, GetString(FTC_Damage), false )
     header.dps 		= FTC.UI:Label(    "FTC_Report_Ability_DPS",  			header,  	{100,50},  				{LEFT,RIGHT,0,0,header.total},  FTC.UI:Font("esobold",20,true), {1,1,1,1}, {0,1}, GetString(FTC_DPS), false )
     header.crit 	= FTC.UI:Label(    "FTC_Report_Ability_Crit",   		header,  	{100,50},  				{LEFT,RIGHT,0,0,header.dps},  	FTC.UI:Font("esobold",20,true), {1,1,1,1}, {0,1}, GetString(FTC_Crit), false )
-    header.mean		= FTC.UI:Label(    "FTC_Report_Ability_Mean",   		header,  	{100,50},  				{LEFT,RIGHT,0,0,header.crit},  	FTC.UI:Font("esobold",20,true), {1,1,1,1}, {0,1}, GetString(FTC_Mean), false )
-    header.max 		= FTC.UI:Label(    "FTC_Report_Ability_Max",   			header,  	{100,50},  				{LEFT,RIGHT,0,0,header.mean},  	FTC.UI:Font("esobold",20,true), {1,1,1,1}, {0,1}, GetString(FTC_Max), false )
+    header.avg		= FTC.UI:Label(    "FTC_Report_Ability_Avg",   			header,  	{100,50},  				{LEFT,RIGHT,0,0,header.crit},  	FTC.UI:Font("esobold",20,true), {1,1,1,1}, {0,1}, GetString(FTC_Average), false )
+    header.max 		= FTC.UI:Label(    "FTC_Report_Ability_Max",   			header,  	{100,50},  				{LEFT,RIGHT,0,0,header.avg},  	FTC.UI:Font("esobold",20,true), {1,1,1,1}, {0,1}, GetString(FTC_Max), false )
     abilities.header= header
     FM.abilities	= abilities
 
@@ -132,8 +132,8 @@ end
 	    control.total 	= FTC.UI:Label(    "FTC_Report_Ability"..counter.."_Total",  	control,  	{150,50},  					{LEFT,RIGHT,0,0,control.count},  	FTC.UI:Font("standard",20,true), {1,1,1,1}, {0,1}, "Total", false )
 	    control.dps 	= FTC.UI:Label(    "FTC_Report_Ability"..counter.."_DPS",  		control,  	{100,50},  					{LEFT,RIGHT,0,0,control.total},  	FTC.UI:Font("standard",20,true), {1,1,1,1}, {0,1}, "DPS", false )
 	    control.crit 	= FTC.UI:Label(    "FTC_Report_Ability"..counter.."_Crit",   	control,  	{100,50},  					{LEFT,RIGHT,0,0,control.dps},  		FTC.UI:Font("standard",20,true), {1,1,1,1}, {0,1}, "Crit", false )
-	    control.mean 	= FTC.UI:Label(    "FTC_Report_Ability"..counter.."_Mean",   	control,  	{100,50},  					{LEFT,RIGHT,0,0,control.crit},  	FTC.UI:Font("standard",20,true), {1,1,1,1}, {0,1}, "Avg", false )
-	    control.max 	= FTC.UI:Label(    "FTC_Report_Ability"..counter.."_Max",   	control,  	{100,50},  					{LEFT,RIGHT,0,0,control.mean},  	FTC.UI:Font("standard",20,true), {1,1,1,1}, {0,1}, "Max", false )
+	    control.avg 	= FTC.UI:Label(    "FTC_Report_Ability"..counter.."_Avg",   	control,  	{100,50},  					{LEFT,RIGHT,0,0,control.crit},  	FTC.UI:Font("standard",20,true), {1,1,1,1}, {0,1}, "Avg", false )
+	    control.max 	= FTC.UI:Label(    "FTC_Report_Ability"..counter.."_Max",   	control,  	{100,50},  					{LEFT,RIGHT,0,0,control.avg},  		FTC.UI:Font("standard",20,true), {1,1,1,1}, {0,1}, "Max", false )
 	    control.frame:SetDrawLayer(DL_OVERLAY)
 
 	    -- Return ability to pool
