@@ -10,6 +10,8 @@ ZO_CreateStringId("FTC_LongInfo",           "Du benutzt die Foundry Tactical Com
     KEYBINDINGS
   ]]----------------------------------------------------------
 ZO_CreateStringId("SI_BINDING_NAME_TOGGLE_COMBAT_LOG", "Aktiviere den Kampflog")
+--ZO_CreateStringId("SI_BINDING_NAME_DISPLAY_DAMAGE_REPORT",  "Display Damage Report")
+--ZO_CreateStringId("SI_BINDING_NAME_POST_DAMAGE_RESULTS",    "Post Damage Results")
 
 --[[----------------------------------------------------------
     DAMAGE WORDS
@@ -142,6 +144,19 @@ local default = math.floor(FTC.Defaults.FrameDamageColor[1]*255)..","..math.floo
 --ZO_CreateStringId("FTC_Menu_FDamageC",      "Damage Role Color")
 --ZO_CreateStringId("FTC_Menu_FDamageCDesc",  "Set the color displayed for DPS in FTC group and raid frames. [Default: "..default.."]")
 
+local default = ( FTC.Defaults.EnableRaidFrames ) and "Ein" or "Aus"
+--ZO_CreateStringId("FTC_Menu_FRaid",         "Enable Raid Frames")
+--ZO_CreateStringId("FTC_Menu_FRaidDesc",     "Use custom unit frames for groups of size 4 or more? [Default: "..default.."]")
+
+--ZO_CreateStringId("FTC_Menu_FRWidth",       "Raid Frames Width")
+--ZO_CreateStringId("FTC_Menu_FRWidthDesc",   "Set the width of FTC raid frames. [Default: "..FTC.Defaults.RaidWidth.."]")
+
+--ZO_CreateStringId("FTC_Menu_FRHeight",      "Raid Frames Height")
+--ZO_CreateStringId("FTC_Menu_FRHeightDesc",  "Set the height of FTC raid frames. [Default: "..FTC.Defaults.RaidHeight.."]")
+
+--ZO_CreateStringId("FTC_Menu_FRFontS",       "Raid Frame Font Size")
+--ZO_CreateStringId("FTC_Menu_FRFontSDesc",   "Change the scale of the fonts used in FTC raid frames. [Default: "..FTC.Defaults.RaidFontSize.."]")
+
 ZO_CreateStringId("FTC_Menu_FReset",        "Zurücksetzen")
 ZO_CreateStringId("FTC_Menu_FResetDesc",    "Setzt die FTC Anzeigeelemente zurück auf die Standardwertet.")
  
@@ -238,3 +253,51 @@ ZO_CreateStringId("FTC_Menu_SIconSDesc",    "Ändert die Symbolgröße im FTC Ka
 
 ZO_CreateStringId("FTC_Menu_SCTReset",      "SCT zurücksetzen")
 ZO_CreateStringId("FTC_Menu_SCTResetDesc",  "Setzt die Einstellungen des FTC Kampflauftextes zu den Standartwerten zurück.")
+
+--[[----------------------------------------------------------
+    SCT ALERTS
+  ]]----------------------------------------------------------
+--ZO_CreateStringId("FTC_LowHealth",          "Low Health")
+--ZO_CreateStringId("FTC_LowMagicka",         "Low Magicka")
+--ZO_CreateStringId("FTC_LowStamina",         "Low Stamina")
+--ZO_CreateStringId("FTC_Experience",         "Experience")
+--ZO_CreateStringId("FTC_AlliancePoints",     "Alliance Points")
+--ZO_CreateStringId("FTC_Stunned",            "Stunned")
+--ZO_CreateStringId("FTC_Disoriented",        "Disoriented")
+--ZO_CreateStringId("FTC_Offbalance",         "Off Balance")
+--ZO_CreateStringId("FTC_Staggered",          "Staggered")
+--ZO_CreateStringId("FTC_Interrupted",        "Interrupted")
+--ZO_CreateStringId("FTC_Feared",             "Feared")
+--ZO_CreateStringId("FTC_Silenced",           "Silenced")
+--ZO_CreateStringId("FTC_Potion",             "Potion Available")
+--ZO_CreateStringId("FTC_Ultimate",           "Ultimate Available")
+
+--[[----------------------------------------------------------
+    DAMAGE STATISTICS
+  ]]----------------------------------------------------------
+--ZO_CreateStringId("FTC_Menu_THeader",       "Configure Damage Statistics")
+
+--ZO_CreateStringId("FTC_Menu_TTimeout",      "Timeout Threshold")
+--ZO_CreateStringId("FTC_Menu_TTimeoutDesc",  "Set the number of seconds that must pass between damage events before a new encounter is recognized. [Default: "..FTC.Defaults.DamageTimeout.."]")
+
+--local default = FTC.Defaults.StatTriggerHeals and "Enabled" or "Disabled"
+--ZO_CreateStringId("FTC_Menu_TRHeal",        "Allow Healing Trigger")
+--ZO_CreateStringId("FTC_Menu_TRHealDesc",    "Allow outgoing healing to trigger the start of a new encounter.")
+
+--ZO_CreateStringId("FTC_Menu_TReset",        "Reset Stats")
+--ZO_CreateStringId("FTC_Menu_TResetDesc",    "Reset original settings for FTC damage statistics component.")
+
+-- Damage Report Words
+--ZO_CreateStringId("FTC_DReport",            "FTC Damage Report")
+--ZO_CreateStringId("FTC_HReport",            "FTC Healing Report")
+--ZO_CreateStringId("FTC_NoDamage",           "No damage to report!")
+--ZO_CreateStringId("FTC_NoHealing",          "No healing to report!")
+--ZO_CreateStringId("FTC_AllTargets",         "All Targets")
+--ZO_CreateStringId("FTC_Ability",            "Ability")
+--ZO_CreateStringId("FTC_Crit",               "Crit")
+--ZO_CreateStringId("FTC_Average",            "Avg")
+--ZO_CreateStringId("FTC_Max",                "Max")
+--ZO_CreateStringId("FTC_Damage",             "Damage")
+--ZO_CreateStringId("FTC_Healing",            "Healing")
+--ZO_CreateStringId("FTC_DPS",                "DPS")
+--ZO_CreateStringId("FTC_HPS",                "HPS")
