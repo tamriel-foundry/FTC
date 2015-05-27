@@ -279,6 +279,8 @@ ZO_CreateStringId("FTC_Feared",             "Verängstigt")
 ZO_CreateStringId("FTC_Silenced",           "Stumm")
 ZO_CreateStringId("FTC_Potion",             "Potion verfügbar")
 ZO_CreateStringId("FTC_Ultimate",           "Ultimate verfügbar")
+--ZO_CreateStringId("FTC_CombatIn",           "Entered Combat")
+--ZO_CreateStringId("FTC_CombatOut",          "Left Combat")
 
 --[[----------------------------------------------------------
     DAMAGE STATISTICS

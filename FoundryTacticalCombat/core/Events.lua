@@ -258,10 +258,12 @@
      * --------------------------------
      ]]--
     function FTC.OnCombatState( eventCode, inCombat )
-        --if ( FTC.init.SCT ) then FTC.SCT:CombatStatus( inCombat ) end
 
         -- Control frame visibility
         if ( FTC.init.Frames ) then FTC.Frames:Fade('player',FTC_PlayerFrame) end
+
+        -- Trigger an alert
+        if ( FTC.init.SCT ) then FTC.SCT:Combat(inCombat) end
     end
 
     --[[ 

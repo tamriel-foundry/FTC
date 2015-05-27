@@ -295,6 +295,27 @@
 	end
 
 
+	--[[ 
+	* Generate Combat State Alert
+	* --------------------------------
+	* Called by FTC.OnPowerUpdate()
+	* --------------------------------
+	]]--
+	function FTC.SCT:Combat( inCombat )
+
+		-- Submit an object
+		local newAlert = {
+			["name"]	= "combat",
+			["label"]	= ( inCombat ) and GetString(FTC_CombatIn) or GetString(FTC_CombatOut),
+			["color"]	= {0.8,0.8,0},
+			["size"]	= FTC.Vars.SCTFontSize,
+			["buffer"]	= 0,
+		}
+		
+		-- Submit the new status
+		FTC.SCT:NewAlert( newAlert )
+	end
+
 
 --[[----------------------------------------------------------
 	UPDATING FUNCTIONS

@@ -279,6 +279,8 @@ ZO_CreateStringId("FTC_Menu_SCTResetDesc",  "Réinitialiser les paramètres orig
 --ZO_CreateStringId("FTC_Silenced",           "Silenced")
 --ZO_CreateStringId("FTC_Potion",             "Potion Available")
 --ZO_CreateStringId("FTC_Ultimate",           "Ultimate Available")
+--ZO_CreateStringId("FTC_CombatIn",           "Entered Combat")
+--ZO_CreateStringId("FTC_CombatOut",          "Left Combat")
 
 --[[----------------------------------------------------------
     DAMAGE STATISTICS
