@@ -70,6 +70,35 @@
             }
             FTC.Buffs:NewEffect( ability ) 
 		end
+
+		-- Trigger Exploitation Minor Prophecy
+		local exploitation = GetSkillAbilityInfo(SKILL_TYPE_CLASS,1,10)
+		if ( FTC.init.Buffs and exploitation > 0 ) then
+
+			-- Determine whether the ability used was a Dark Magic ability
+			for i = 1 , 6 do
+				if ( ability.id == GetSkillAbilityId(SKILL_TYPE_CLASS,1,i,false) ) then 
+
+					-- Fire a buff
+		            local ability  = {
+		                ["owner"]  = FTC.Player.name,
+		                ["id"]     = 31389,
+		                ["name"]   = GetAbilityName(31389),
+		                ["cast"]   = 0,
+		                ["dur"]    = (10 * exploitation),
+		                ["tex"]    = FTC.UI.Textures[GetAbilityName(31389)],
+		                ["ground"] = false,
+		                ["area"]   = false,
+		                ["debuff"] = false,
+		                ["toggle"] = nil,
+		            }
+		            FTC.Buffs:NewEffect( ability )
+
+					-- Break out of the loop
+					break
+				end
+			end
+		end
 	end
 
     --[[ 
