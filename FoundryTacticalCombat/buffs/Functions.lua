@@ -488,6 +488,7 @@
                 -- Update labels
                 control:SetHidden(true)
                 control.cooldown:SetHidden(true)
+                control.cooldown:SetAlpha(0.7)
                 control.label:SetText(label)
                 control.name:ClearAnchors()
                 control.name:SetAnchor(LEFT,control,RIGHT,10,0)
