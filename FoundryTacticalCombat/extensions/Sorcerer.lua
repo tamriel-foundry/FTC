@@ -72,7 +72,7 @@
 		end
 
 		-- Trigger Exploitation Minor Prophecy
-		local exploitation = GetSkillAbilityInfo(SKILL_TYPE_CLASS,1,10)
+		local exploitation = GetSkillAbilityUpgradeInfo(SKILL_TYPE_CLASS,1,10)
 		if ( FTC.init.Buffs and exploitation > 0 ) then
 
 			-- Determine whether the ability used was a Dark Magic ability
