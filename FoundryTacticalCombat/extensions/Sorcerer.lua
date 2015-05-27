@@ -175,7 +175,7 @@
 					local newAlert = {
 						["type"]	= 'crystalFragments',
 						["label"]	= effectName,
-						["color"]	= {0,0.5,1}
+						["color"]	= {0,0.5,1},
 						["size"]	= FTC.Vars.SCTFontSize + 8,
 						["buffer"]	= 5000,
 					}
