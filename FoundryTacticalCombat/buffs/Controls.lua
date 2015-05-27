@@ -99,6 +99,12 @@ function FTC.Buffs:CreateBuff()
     buff.icon       = FTC.UI:Texture(   "FTC_Buff"..counter.."_Icon",       buff,    {32,32},  {CENTER,CENTER,0,0},  '/esoui/art/icons/icon_missing.dds', false )
     buff.label      = FTC.UI:Label(     "FTC_Buff"..counter.."_Label",      buff,    {50,20},  {CENTER,BOTTOM,-1,-12},FTC.UI:Font(FTC.Vars.BuffsFont1,FTC.Vars.BuffsFontSize,true), {0.8,1,1,1}, {1,1}, nil, false )
     buff.name       = FTC.UI:Label(     "FTC_Buff"..counter.."_Name",       buff,    {450,20}, {LEFT,RIGHT,10,0},     FTC.UI:Font(FTC.Vars.BuffsFont2,FTC.Vars.BuffsFontSize,true), {1,1,1,1}, {0,1}, "Buff Name", true )
+
+    -- Control visibility
+    buff.frame:SetDrawLayer(DL_BACKGROUND)
+    buff.cooldown:SetDrawLayer(DL_BACKGROUND)
+    buff.backdrop:SetDrawLayer(DL_CONTROLS)
+    buff.icon:SetDrawLayer(DL_CONTROLS) 
    
     -- Return buff to pool
     return buff

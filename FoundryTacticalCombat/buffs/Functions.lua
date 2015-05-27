@@ -299,10 +299,6 @@
                 local control, objectKey = FTC.Buffs.Pool:AcquireObject()
                 control.id = objectKey
                 control.icon:SetTexture(newBuff.icon)
-                control.frame:SetDrawLayer(DL_BACKGROUND)
-                control.backdrop:SetDrawLayer(DL_BACKGROUND)
-                control.cooldown:SetDrawLayer(DL_CONTROLS)
-                control.icon:SetDrawLayer(DL_CONTROLS) 
                 newDebuff.control = control
                 
                 -- Add debuff to timed table
@@ -321,10 +317,6 @@
                 local control, objectKey = FTC.Buffs.Pool:AcquireObject()
                 control.id = objectKey
                 control.icon:SetTexture(newBuff.icon)
-                control.frame:SetDrawLayer(DL_BACKGROUND)
-                control.backdrop:SetDrawLayer(DL_BACKGROUND)
-                control.cooldown:SetDrawLayer(DL_CONTROLS)
-                control.icon:SetDrawLayer(DL_CONTROLS) 
                 newBuff.control = control
 
                 -- Add buff to timed table
@@ -341,10 +333,6 @@
             local control, objectKey = FTC.Buffs.Pool:AcquireObject()
             control.id = objectKey
             control.icon:SetTexture(newBuff.icon)
-            control.frame:SetDrawLayer(DL_BACKGROUND)
-            control.backdrop:SetDrawLayer(DL_BACKGROUND)
-            control.cooldown:SetDrawLayer(DL_CONTROLS)
-            control.icon:SetDrawLayer(DL_CONTROLS) 
             newBuff.control = control
 
             -- Add buff to timed table
@@ -359,11 +347,7 @@
             -- Assign buff to pooled control
             local control, objectKey = FTC.Buffs.Pool:AcquireObject()
             control.id = objectKey
-            control.icon:SetTexture(newBuff.icon)
-            control.frame:SetDrawLayer(DL_BACKGROUND)
-            control.backdrop:SetDrawLayer(DL_BACKGROUND)
-            control.cooldown:SetDrawLayer(DL_CONTROLS)
-            control.icon:SetDrawLayer(DL_CONTROLS) 
+            control.icon:SetTexture(newBuff.icon) 
             newBuff.control = control
 
             -- Add buff to timed table
@@ -458,7 +442,7 @@
             -- Gather data
             local render    = true
             local name      = buffs[i].name
-            local isLong    = ( context == "Player" and buffs[i].toggle ~= nil )
+            local isLong    = buffs[i].toggle ~= nil
             local label     = buffs[i].toggle or ""
             local control   = buffs[i].control
             local duration  = zo_roundToNearest( buffs[i].ends - gameTime , 0.1 )
@@ -489,7 +473,7 @@
                 if ( duration > 0 ) then 
 
                     -- Flag long buffs
-                    isLong = ( context == "Player" and duration >= 60 ) and true or isLong
+                    isLong = ( duration >= 60 ) and true or isLong
                         
                     -- Format displayed duration
                     if ( duration > 3600 ) then
@@ -503,7 +487,7 @@
 
                 -- Update labels
                 control:SetHidden(true)
-                control.cooldown:SetHidden(false)
+                control.cooldown:SetHidden(true)
                 control.label:SetText(label)
                 control.name:ClearAnchors()
                 control.name:SetAnchor(LEFT,control,RIGHT,10,0)
@@ -530,7 +514,6 @@
                     control.name:SetAnchor(RIGHT,control,LEFT,-10,0)
                     control.name:SetHorizontalAlignment(2)
                     control.name:SetHidden(string.match(FTC.Vars.LongBuffFormat,"list") == nil)
-                    control.cooldown:SetHidden(true)
                     control:SetHidden(false)
 
                     -- Update the count
@@ -553,6 +536,7 @@
                     control:SetAnchor(unpack(dbAnchor))
                     control.frame:SetTexture('/esoui/art/actionbar/debuff_frame.dds')
                     control.cooldown:StartCooldown( ( buffs[i].ends - gameTime ) * 1000 , ( buffs[i].ends - buffs[i].begin ) * 1000 , CD_TYPE_RADIAL, CD_TIME_TYPE_TIME_UNTIL, false )
+                    control.cooldown:SetHidden(false)
                     control.name:SetHidden(string.match(FTC.Vars[context.."DebuffFormat"],"list") == nil)
                     control:SetHidden(false)
 
@@ -560,7 +544,7 @@
                     debuffCount = debuffCount + 1
 
                 -- Buffs
-                elseif ( not isLong and ( FTC.Vars[context.."BuffFormat"] ~= "disabled" ) ) then
+                elseif ( FTC.Vars[context.."BuffFormat"] ~= "disabled" ) then
                     local container =  _G["FTC_"..context.."Buffs"]
 
                     -- Determine the anchor
@@ -576,6 +560,7 @@
                     control:SetAnchor(unpack(bAnchor))
                     control.frame:SetTexture('/esoui/art/actionbar/buff_frame.dds')
                     control.cooldown:StartCooldown( ( buffs[i].ends - gameTime ) * 1000 , ( buffs[i].ends - buffs[i].begin ) * 1000 , CD_TYPE_RADIAL, CD_TIME_TYPE_TIME_UNTIL, false )
+                    control.cooldown:SetHidden(isLong)
                     control.name:SetHidden(string.match(FTC.Vars[context.."BuffFormat"],"list") == nil)
                     control:SetHidden(false)
 
