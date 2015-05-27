@@ -1,92 +1,157 @@
--- Watch for FTC initialization
-CALLBACK_MANAGER:RegisterCallback( "FTC_Ready" , function() InitializeFragmentsWatcher()  end )
 
--- Register the callback to fire whenever a spell is cast
-function InitializeFragmentsWatcher()
-	if ( FTC.Player.class == "Sorcerer" ) then
-		
-		-- Setup defaults 
-		FTC.Sorcerer = {
-			["fragSlot"]	= nil,
-			["fragButton"]	= nil,
-		}		
-		
-		-- Register callbacks
-		CALLBACK_MANAGER:RegisterCallback( "FTC_SpellCast" , function( ability ) CanFragmentsProc( ability ) end )
-		CALLBACK_MANAGER:RegisterCallback( "FTC_EffectChanged" , function( ... ) FTC.ProcFragments( ... ) end )
-	end
-end
-
--- If Crystal Fragments is eligible, listen for it proccing
-function FTC.ProcFragments( ... )
-
-	-- Grab relevant arguments
-	local changeType 	= select( 2 , ... )
-	local effectName	= select( 4 , ... )
-
-	-- Trigger Crystal Fragments
-	if ( changeType == 1 and "Crystal Fragments Passive" == effectName ) then
-
-		-- Get the slot
-		local slot = FTC.Sorcerer.fragSlot
-		if slot == nil then return end
-
-		-- Get the time
-		local ms = GetGameTimeMilliseconds()
-
-		-- Trigger a buff
-		if ( FTC.init.Buffs ) then
-			local newBuff = {
-				["name"]	= "Crystal Fragments",
-				["begin"]	= ms / 1000,
-				["ends"]	= ( ms / 1000 ) + 8,
-				["debuff"]	= false,
-				["stacks"]	= 0,
-				["tag"]		= 'player',
-				["icon"]	= FTC.Hotbar.Abilities[slot].tex,
-			}
-			FTC.Buffs.Player["Crystal Fragments"] = newBuff
-		end
-				
-		-- Trigger an alert
-		if ( FTC.init.SCT ) then
-			local newAlert = {
-				["type"]	= 'crystalFragments',
-				["name"]	= 'Crystal Fragments',
-				["value"]	= '',
-				["ms"]		= ms,
-				["color"]	= 'c6699cc',
-				["size"]	= 20
-			}
-			FTC.SCT:NewStatus( newAlert )
-		end
-	end
-end
-
--- Determine whether Crystal Fragments can proc?
-function CanFragmentsProc( ability )
-
-	-- Bail if no ability is passed
-	if ( ability == nil ) then return end
+--[[----------------------------------------------------------
+    FTC SORCERER EXTENSION
+  ]]----------------------------------------------------------
 	
-	-- Clear any existing proc buff
-	if ( ability.name == "Crystal Fragments" ) then
-		FTC.Buffs.Player["Crystal Fragments"] = nil	
-		FTC.Hotbar.Abilities[ability.slot].effects = FTC.Buffs.Effects["Crystal Fragments"]
-		return
-	end
+	CALLBACK_MANAGER:RegisterCallback( "FTC_Ready" , function() FTC.Sorcerer:Initialize()  end )
+	FTC.Sorcerer = {}
 
-	-- Is Crystal Fragments (47569) available?
-	for i = 3 , #FTC.Hotbar do
-		if ( FTC.Hotbar.Abilities[i].id == 47569 ) then
-		
-			-- Get the button
-			local button = _G["ActionButton"..i.."Button"]
-			FTC.Sorcerer.fragSlot 	= i
-			FTC.Sorcerer.fragButton = button
+    --[[ 
+     * Initialize Sorcerer Extension
+     * --------------------------------
+     * Called by FTC_Ready
+     * --------------------------------
+     ]]--
+	function FTC.Sorcerer:Initialize()
+		if ( GetUnitClassId( 'player' ) == 2 ) then
 			
-			-- Bail out of the loop
-			break
+			-- Setup data
+			FTC.Sorcerer.fragSlot	= nil
+			
+			-- Register callback
+			CALLBACK_MANAGER:RegisterCallback( "FTC_SpellCast", 	function( ability ) FTC.Sorcerer.SpellCast( ability ) end )
+			CALLBACK_MANAGER:RegisterCallback( "FTC_NewDamage", 	function( ability ) FTC.Sorcerer.NewDamage( ability ) end )
+
+	        -- Register events
+	        EVENT_MANAGER:RegisterForEvent( "FTC_Sorcerer", 		EVENT_EFFECT_CHANGED , FTC.Sorcerer.EffectChanged )
 		end
 	end
-end
+
+    --[[ 
+     * Handle Custom Sorcerer Effects
+     * --------------------------------
+     * Called by FTC_SpellCast
+     * --------------------------------
+     ]]--
+	function FTC.Sorcerer.SpellCast( ability )
+		
+		-- Clear any existing proc buff
+		local fragments = GetAbilityName(46324)
+		if ( ability.name == fragments ) then 
+			FTC.Buffs.Player[fragments] = nil
+		end
+
+		-- Check if Crystal Fragments is available?
+		for i = 3 , #FTC.Player.Abilities do
+			if ( FTC.Player.Abilities[i].name == fragments ) then
+			
+				-- Get the button
+				local button = _G["ActionButton"..i.."Button"]
+				FTC.Sorcerer.fragSlot = i
+				
+				-- Bail out of the loop
+				break
+			end
+		end
+
+		-- Debuff Bolt Escape Cost
+		if ( FTC.init.Buffs and ability.name == GetAbilityName(23234) or ability.name == GetAbilityName(23236) or ability.name == GetAbilityName(23277) ) then        
+            local ability  = {
+                ["owner"]  = FTC.Player.name,
+                ["id"]     = ability.id,
+                ["name"]   = ability.name .. " Cost",
+                ["cast"]   = 0,
+                ["dur"]    = 4,
+                ["tex"]    = ability.tex,
+                ["ground"] = false,
+                ["area"]   = true,
+                ["debuff"] = true,
+                ["toggle"] = nil,
+            }
+            FTC.Buffs:NewEffect( ability ) 
+		end
+	end
+
+    --[[ 
+     * Handle Custom Sorcerer Effects
+     * --------------------------------
+     * Called by FTC_NewDamage
+     * --------------------------------
+     ]]--
+	function FTC.Sorcerer.NewDamage( damage )
+
+		-- Check if the player has defensive rune up
+		local defRune = GetAbilityName(24574)
+		if ( FTC.init.Buffs and FTC.Buffs.Player[defrune] ~= nil ) then
+
+			-- Expire the existing buff
+            local control = FTC.Buffs.Player[defrune].control
+            FTC.Buffs.Player[defrune] = nil 
+			FTC.Buffs.Pool:ReleaseObject(control.id)
+
+			-- Maybe trigger a debuff on the target
+			if ( DoesUnitExist('reticleover') ) then
+	            local ability  = {
+	                ["owner"]  = GetUnitName('reticleover'),
+	                ["id"]     = 24574,
+	                ["name"]   = defRune,
+	                ["cast"]   = 0,
+	                ["dur"]    = 16.6,
+	                ["tex"]    = FTC.UI.Textures[defRune],
+	                ["ground"] = false,
+	                ["area"]   = false,
+	                ["debuff"] = true,
+	                ["toggle"] = nil,
+	            }
+	            FTC.Buffs:NewEffect( ability ) 
+          	end
+		end 
+	end
+
+  	--[[ 
+     * Handle Custom Sorcerer Effects
+     * --------------------------------
+     * Called by FTC_EffectChanged
+     * --------------------------------
+     ]]--
+	function FTC.Sorcerer.EffectChanged( eventCode , changeType , effectSlot , effectName , unitTag , beginTime , endTime , stackCount , iconName , buffType , effectType , abilityType , statusEffectType )
+
+		-- Trigger Crystal Fragments
+		if ( changeType == 1 and effectName == GetAbilityName(46326)) then
+
+			-- Fire if eligible
+			local slot = FTC.Sorcerer.fragSlot
+			if slot ~= nil then
+				local ms = GetGameTimeMilliseconds()
+
+				-- Trigger a buff
+				if ( FTC.init.Buffs ) then
+	                local ability  = {
+	                    ["owner"]  = FTC.Player.name,
+	                    ["id"]     = 46324,
+	                    ["name"]   = effectName,
+	                    ["cast"]   = 0,
+	                    ["dur"]    = 8,
+	                    ["tex"]    = FTC.Player.Abilities[slot].tex,
+	                    ["ground"] = false,
+	                    ["area"]   = false,
+	                    ["debuff"] = false,
+	                    ["toggle"] = nil,
+	                }
+	                FTC.Buffs:NewEffect( ability ) 
+				end
+						
+				-- Trigger an alert
+				if ( FTC.init.SCT ) then
+					local newAlert = {
+						["type"]	= 'crystalFragments',
+						["label"]	= effectName,
+						["color"]	= {0,0.5,1}
+						["size"]	= FTC.Vars.SCTFontSize + 8,
+						["buffer"]	= 5000,
+					}
+					FTC.SCT:NewAlert( newAlert )
+				end
+			end
+		end
+	end

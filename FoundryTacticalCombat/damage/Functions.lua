@@ -113,6 +113,9 @@
             -- Modify Buffs on Damage
             if ( FTC.init.Buffs and damageOut ) then FTC.Buffs:Damage(damage) end
 
+            -- Statistics
+            if ( FTC.init.Stats and damageOut ) then FTC.Stats:RegisterDamage(damage) end
+
         -- Misses and  Dodges
         elseif ( result == ACTION_RESULT_DODGED or result == ACTION_RESULT_MISS ) then
 
@@ -156,6 +159,9 @@
             --local direction = damageIn and "Incoming" or "Outgoing"
             -- FTC.Log:Print( direction .. " result " .. result .. " not recognized! Target: " .. targetName .. " Value: " .. hitValue , {1,1,0} )
         end
+
+        -- Fire a callback for extensions to use
+       CALLBACK_MANAGER:FireCallbacks( "FTC_NewDamage" , damage )
     end
 
 

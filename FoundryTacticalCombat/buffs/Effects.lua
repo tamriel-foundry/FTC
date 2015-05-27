@@ -121,7 +121,7 @@ function FTC.Buffs:RegisterEffects()
         [28308] = { 0,    5.4,  0,    false },      -- Shattering Prison
         [24371] = { 0,    19.9, 0,    false },      -- Rune Prison
         [24578] = { 0 ,   21.7, 0,    false },      -- Rune Cage
-        [24574] = { 144000,19.9,0,    false },      -- Defensive Rune
+        [24574] = { 60,   0,    0,    false },      -- Defensive Rune
         [24828] = { 0,    36,   0,    false },      -- Daedric Mines
         [24834] = { 0,    36,   0,    false },      -- Daedric Minefield
         [24842] = { 0,    36,   0,    false },      -- Daedric Tomb
@@ -151,9 +151,9 @@ function FTC.Buffs:RegisterEffects()
         [29037] = { 0,    20,   0,    true },       -- Petrify
         [32685] = { 0,    20,   0,    true },       -- Fossilize
         [32678] = { 0,    20,   0,    true },       -- Shattering Rocks
-      --[xxxxx] = { 0,    14.4  0,    false },      -- Ash Cloud
-      --[xxxxx] = { 0,    18,   0,    false },      -- Cinder Storm
-      --[xxxxx] = { 0,    18,   0,    false },      -- Eruption
+        [29059] = { 0,    14.4  0,    false },      -- Ash Cloud
+        [20779] = { 0,    18,   0,    false },      -- Cinder Storm
+        [20789] = { 0,    18,   0,    false },      -- Eruption
 
         -- Draconic Power
         [20245] = { 0,    4,    0,    true },       -- Dark Talons
@@ -219,9 +219,9 @@ function FTC.Buffs:RegisterEffects()
         [22139] = { 0,    6,    0,    true },       -- Crescent Sweep
         
         -- Dawn's Wrath
-        [21726] = { 0,    6,    0,    true },       -- Sun Fire
-        [21732] = { 0,    6,    0,    true },       -- Reflective Light
-        [21729] = { 0,    8.4,  0,    true },       -- Vampire's Bane
+        [21726] = { 6,    6,    0,    true },       -- Sun Fire
+        [21732] = { 6,    6,    0,    true },       -- Reflective Light
+        [21729] = { 8.4,  8.4,  0,    true },       -- Vampire's Bane
         [22110] = { 0,    7.2,  0,    true },       -- Dark Flare
         [21776] = { 0,    6,    0,    false },      -- Eclipse
         [22006] = { 0,    6,    0,    false },      -- Total Dark
@@ -239,6 +239,9 @@ function FTC.Buffs:RegisterEffects()
         -- Restoring Light
         [22253] = { 8,    0,    0,    false },      -- Honor The Dead
         [22314] = { 8,    0,    0,    false },      -- Lingering Ritual
+        [22265] = { 12,   0,    0,    false },      -- Cleansing Ritual
+        [22259] = { 12,   0,    0,    false },      -- Purifying Ritual
+        [22262] = { 22,   0,    0,    false },      -- Extended Ritual
             
         --[[---------------------------------
             ARMOR

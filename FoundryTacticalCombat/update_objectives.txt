@@ -29,11 +29,11 @@ DONE		Options			font size, color, etc...
 			Options			show rounded or complete numbers
 			Frames			Show large Mag/Stam +/- next to frames
 		
-		Alerts
-			Expansion		more useful alerts, different positioning
+DONE	Alerts
+DONE		Expansion		more useful alerts, different positioning
 
-		Damage Meter
-			Statistics		more reported statistics, better insight into per/mob
+DONE	Damage Meter
+DONE		Statistics		more reported statistics, better insight into per/mob
 
 DONE 	Default Frames		deprecate default frame text
 
@@ -41,25 +41,53 @@ DONE	Group Frames
 DONE		Options			role colors, etc...
 			Sorting			sort frames by role
 
-		Raid Frames
+DONE	Raid Frames
 
 
 
 
-		Additional Buff/Effect Tracking
-			Burning/Explosion
+		Weapons
+			Burning
 			Poisoned
 			Diseased
-			Crystal Frags
-			Might of the Guild
-			Mountain's Blessing
+			Bow roll dodge
+			Empower Wrecking Blow
+
+
+		Sorcerer
+DONE		Crystal Frags
+DONE		Bolt Escape Cost
 			Exploitation
-			Shadow Barrier
+DONE		Break sorc bubble on damage
+DONE		Purge runes/mines on damage
+
+
+
+		Templar
 			Illuminate
-			Purge runes/mines on damage
-			Break sorc bubble on damage
+			Dark Flare
+
+
+		Nightblade
+			Shadow Barrier
+			Nightblade Grim Focus proc
+			executioner
+			hemorrhage
+
+		Dragonknight
+			Mountain's Blessing
 			Add DoTs on damage for Agony / Fossilize
-			
+			Warmth
+
+
+
+			Might of the Guild
+			Ultimate gain buff?
+			Cleanse alert?
+
+
+			AvA Combat Medic / Reach
+
 
 
 

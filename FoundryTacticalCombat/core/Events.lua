@@ -451,9 +451,6 @@
      * --------------------------------
      ]]--
     function FTC.OnEffectChanged( eventCode , changeType , effectSlot , effectName , unitTag , beginTime , endTime , stackCount , iconName , buffType , effectType , abilityType , statusEffectType )
-
-        -- Fire callback
-        CALLBACK_MANAGER:FireCallbacks( "FTC_EffectChanged" ,  eventCode , changeType , effectSlot , effectName , unitTag , beginTime , endTime , stackCount , iconName , buffType , effectType , abilityType , statusEffectType )
         
         -- Pass information to buffs component
         if ( FTC.init.Buffs ) then FTC.Buffs:EffectChanged( changeType , unitTag , effectName , endTime , abilityType , iconName ) end
@@ -476,9 +473,6 @@
 
         -- Pass damage event to handler
         FTC.Damage:New( result , abilityName , abilityGraphic , abilityActionSlotType , sourceName , sourceType , targetName , targetType , hitValue , powerType , damageType )
-
-        -- Pass damage to a callback for extensions to use
-       -- CALLBACK_MANAGER:FireCallbacks( "FTC_NewDamage" , damage )
     end
 
 
