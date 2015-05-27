@@ -4,14 +4,14 @@
   ]]----------------------------------------------------------
 ZO_CreateStringId("FTC_Name",               "Foundry Tactical Combat")
 ZO_CreateStringId("FTC_ShortInfo",          "Foundry Tactical Combat by Atropos")
-ZO_CreateStringId("FTC_LongInfo",           "Du benutzt die Foundry Tactical Combat Version " .. FTC.version .. " entwickelt von Atropos der Tamriel Foundry.")
+ZO_CreateStringId("FTC_LongInfo",           "Du benutzt Foundry Tactical Combat Version " .. FTC.version .. " entwickelt von Atropos der Tamriel Foundry.")
 
 --[[----------------------------------------------------------
     KEYBINDINGS
   ]]----------------------------------------------------------
-ZO_CreateStringId("SI_BINDING_NAME_TOGGLE_COMBAT_LOG", "Aktiviere den Kampflog")
---ZO_CreateStringId("SI_BINDING_NAME_DISPLAY_DAMAGE_REPORT",  "Display Damage Report")
---ZO_CreateStringId("SI_BINDING_NAME_POST_DAMAGE_RESULTS",    "Post Damage Results")
+ZO_CreateStringId("SI_BINDING_NAME_TOGGLE_COMBAT_LOG", "Aktiviere das Kampflog")
+--ZO_CreateStringId("SI_BINDING_NAME_DISPLAY_DAMAGE_REPORT",  "Damage Report anzeigen")
+--ZO_CreateStringId("SI_BINDING_NAME_POST_DAMAGE_RESULTS",    "Damage in Chat einfügen")
 
 --[[----------------------------------------------------------
     DAMAGE WORDS
@@ -47,12 +47,12 @@ local default = ( FTC.Defaults.EnableMeter ) and "Ein" or "Aus"
 ZO_CreateStringId("FTC_Menu_Damage",        "Schadensstatistik aktivieren")
 ZO_CreateStringId("FTC_Menu_DamageDesc",    "Aktiviere die Anzeige der Schadensstatistik? [Standard: "..default.."]")
  
---local default = ( FTC.Defaults.EnableHotbar ) and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_Hotbar",        "Enable Advanced Hotbar")
---ZO_CreateStringId("FTC_Menu_HotbarDesc",    "Enable advanced tooltips displayed over the default hotbar? [Default: "..default.."]")
+--local default = ( FTC.Defaults.EnableHotbar ) and "Ein" or "Aus"
+--ZO_CreateStringId("FTC_Menu_Hotbar",        "Aktiviere erweiterte Hotbar")
+--ZO_CreateStringId("FTC_Menu_HotbarDesc",    "Erweiterte Tooltips über der standard Hotbar anzeigen? [Default: "..default.."]")
 
---ZO_CreateStringId("FTC_Menu_Move",          "Unlock Positions")
---ZO_CreateStringId("FTC_Menu_MoveDesc",      "Modify the position of FTC interface elements.")
+--ZO_CreateStringId("FTC_Menu_Move",          "Positionen entsperren")
+--ZO_CreateStringId("FTC_Menu_MoveDesc",      "Ändere die Position der FTC interface Elemente.")
 
 --[[----------------------------------------------------------
     UNIT FRAMES
@@ -112,50 +112,50 @@ ZO_CreateStringId("FTC_Menu_FShieldC",      "Farbe der Schildleiste")
 ZO_CreateStringId("FTC_Menu_FShieldCDesc",  "Ändert die Farbe der Schildleiste der FTC Anzeigeelemente. [Standard: "..default.."]")
 
 local default = ( FTC.Defaults.EnableGroupFrames ) and "Ein" or "Aus"
---ZO_CreateStringId("FTC_Menu_FGroup",        "Enable Small Group Frames")
---ZO_CreateStringId("FTC_Menu_FGroupDesc",    "Use custom group unit frames when in a group of size 4 or less. [Default: "..default.."]")
+--ZO_CreateStringId("FTC_Menu_FGroup",        "Aktiviere kleine Gruppenframes")
+--ZO_CreateStringId("FTC_Menu_FGroupDesc",    "Zeige benutzerdefinierte Gruppenfenster in Gruppen von 4 oder weniger. [Default: "..default.."]")
 
---ZO_CreateStringId("FTC_Menu_FGWidth",       "Group Frames Width")
---ZO_CreateStringId("FTC_Menu_FGWidthDesc",   "Set the width of FTC small group frames. [Default: "..FTC.Defaults.GroupWidth.."]")
+--ZO_CreateStringId("FTC_Menu_FGWidth",       "Gruppenframe Breite")
+--ZO_CreateStringId("FTC_Menu_FGWidthDesc",   "Definiere die Breite der FTC kleinen Gruppenframes. [Default: "..FTC.Defaults.GroupWidth.."]")
 
---ZO_CreateStringId("FTC_Menu_FGHeight",      "Group Frames Height")
---ZO_CreateStringId("FTC_Menu_FGHeightDesc",  "Set the height of FTC small group frames. [Default: "..FTC.Defaults.GroupHeight.."]")
+--ZO_CreateStringId("FTC_Menu_FGHeight",      "Gruppenframe Höhe")
+--ZO_CreateStringId("FTC_Menu_FGHeightDesc",  "Definiere die Höhe der FTC kleinen Gruppenframes. [Default: "..FTC.Defaults.GroupHeight.."]")
 
---ZO_CreateStringId("FTC_Menu_FGFontS",       "Group Frame Font Size")
---ZO_CreateStringId("FTC_Menu_FGFontSDesc",   "Change the scale of the fonts used in FTC small group frames. [Default: "..FTC.Defaults.GroupFontSize.."]")
+--ZO_CreateStringId("FTC_Menu_FGFontS",       "Gruppenfenster Schriftgröße")
+--ZO_CreateStringId("FTC_Menu_FGFontSDesc",   "Ändere die Schriftgröße die FTC kleine Gruppenframe verwendet. [Default: "..FTC.Defaults.GroupFontSize.."]")
 
 local default = ( FTC.Defaults.GroupHidePlayer ) and "Ein" or "Aus"
---ZO_CreateStringId("FTC_Menu_FGHideP",       "Hide Player in Group Frame")
---ZO_CreateStringId("FTC_Menu_FGHidePDesc",   "Do not show your own health bar in small group frame? [Default: " .. default .."]")
+--ZO_CreateStringId("FTC_Menu_FGHideP",       "Verstecke Spieler im Gruppenframe")
+--ZO_CreateStringId("FTC_Menu_FGHidePDesc",   "Eigene Lebensleiste nicht im Gruppenframe anzeigen? [Default: " .. default .."]")
 
 local default = ( FTC.Defaults.ColorRoles ) and "Ein" or "Aus"
 --ZO_CreateStringId("FTC_Menu_FColorR",       "Color Frames by Role")
---ZO_CreateStringId("FTC_Menu_FColorRDesc",   "Use different colors for each combat role in FTC group and raid frames? [Default: "..default.."]")
+--ZO_CreateStringId("FTC_Menu_FColorRDesc",   "Unterschiedliche Farben für verschiedene Rollen in Gruppen und Raidframes verwenden? [Default: "..default.."]")
 
 local default = math.floor(FTC.Defaults.FrameTankColor[1]*255)..","..math.floor(FTC.Defaults.FrameTankColor[2]*255)..","..math.floor(FTC.Defaults.FrameTankColor[3]*255)
---ZO_CreateStringId("FTC_Menu_FTankC",        "Tank Role Color")
---ZO_CreateStringId("FTC_Menu_FTankCDesc",    "Set the color displayed for tanks in FTC group and raid frames. [Default: "..default.."]")
+--ZO_CreateStringId("FTC_Menu_FTankC",        "Farbe Tank")
+--ZO_CreateStringId("FTC_Menu_FTankCDesc",    "Definiere die Farbe von Tanks für die FTC Gruppen- und Raidframes. [Default: "..default.."]")
 
 local default = math.floor(FTC.Defaults.FrameHealerColor[1]*255)..","..math.floor(FTC.Defaults.FrameHealerColor[2]*255)..","..math.floor(FTC.Defaults.FrameHealerColor[3]*255)
---ZO_CreateStringId("FTC_Menu_FHealerC",      "Healer Role Color")
---ZO_CreateStringId("FTC_Menu_FHealerCDesc",  "Set the color displayed for healers in FTC group and raid frames. [Default: "..default.."]")
+--ZO_CreateStringId("FTC_Menu_FHealerC",      "Farbe Heiler")
+--ZO_CreateStringId("FTC_Menu_FHealerCDesc",  "Definiere die Farbe von Heilern für die FTC Gruppen- und Raidframes.. [Default: "..default.."]")
 
 local default = math.floor(FTC.Defaults.FrameDamageColor[1]*255)..","..math.floor(FTC.Defaults.FrameDamageColor[2]*255)..","..math.floor(FTC.Defaults.FrameDamageColor[3]*255)
---ZO_CreateStringId("FTC_Menu_FDamageC",      "Damage Role Color")
---ZO_CreateStringId("FTC_Menu_FDamageCDesc",  "Set the color displayed for DPS in FTC group and raid frames. [Default: "..default.."]")
+--ZO_CreateStringId("FTC_Menu_FDamageC",      "Farbe Damage-Dealer")
+--ZO_CreateStringId("FTC_Menu_FDamageCDesc",  "Definiere die Farbe von DDs für die FTC Gruppen- und Raidframes.. [Default: "..default.."]")
 
 local default = ( FTC.Defaults.EnableRaidFrames ) and "Ein" or "Aus"
---ZO_CreateStringId("FTC_Menu_FRaid",         "Enable Raid Frames")
---ZO_CreateStringId("FTC_Menu_FRaidDesc",     "Use custom unit frames for groups of size 4 or more? [Default: "..default.."]")
+--ZO_CreateStringId("FTC_Menu_FRaid",         "Aktiviere Raid Frames")
+--ZO_CreateStringId("FTC_Menu_FRaidDesc",     "Zeige benutzerdefinierte Gruppenfenster in Gruppen von mehr als 4? [Default: "..default.."]")
 
---ZO_CreateStringId("FTC_Menu_FRWidth",       "Raid Frames Width")
---ZO_CreateStringId("FTC_Menu_FRWidthDesc",   "Set the width of FTC raid frames. [Default: "..FTC.Defaults.RaidWidth.."]")
+--ZO_CreateStringId("FTC_Menu_FRWidth",       "Raidframe Höhe")
+--ZO_CreateStringId("FTC_Menu_FRWidthDesc",   "Definiere die Höhe der FTC kleinen Raidframes. [Default: "..FTC.Defaults.RaidWidth.."]")
 
---ZO_CreateStringId("FTC_Menu_FRHeight",      "Raid Frames Height")
---ZO_CreateStringId("FTC_Menu_FRHeightDesc",  "Set the height of FTC raid frames. [Default: "..FTC.Defaults.RaidHeight.."]")
+--ZO_CreateStringId("FTC_Menu_FRHeight",      "Raidframes Breite")
+--ZO_CreateStringId("FTC_Menu_FRHeightDesc",  "Definiere die Breite der FTC kleinen Raidframes. [Default: "..FTC.Defaults.RaidHeight.."]")
 
---ZO_CreateStringId("FTC_Menu_FRFontS",       "Raid Frame Font Size")
---ZO_CreateStringId("FTC_Menu_FRFontSDesc",   "Change the scale of the fonts used in FTC raid frames. [Default: "..FTC.Defaults.RaidFontSize.."]")
+--ZO_CreateStringId("FTC_Menu_FRFontS",       "Raidframe Schriftgröße")
+--ZO_CreateStringId("FTC_Menu_FRFontSDesc",   "Ändere die Schriftgröße für FTC Raidframes. [Default: "..FTC.Defaults.RaidFontSize.."]")
 
 ZO_CreateStringId("FTC_Menu_FReset",        "Zurücksetzen")
 ZO_CreateStringId("FTC_Menu_FResetDesc",    "Setzt die FTC Anzeigeelemente zurück auf die Standardwertet.")
@@ -199,8 +199,8 @@ ZO_CreateStringId("FTC_Menu_BReset",        "Zurücksetzen")
 ZO_CreateStringId("FTC_Menu_BResetDesc",    "Setzt die FTC Buff Einstellungen zurück auf die Standardwertet.")
 
 -- Menu Display Words
---ZO_CreateStringId("FTC_PlayerBuff",         "Player Buff")
---ZO_CreateStringId("FTC_PlayerDebuff",       "Player Debuff")
+--ZO_CreateStringId("FTC_PlayerBuff",         "Spielerr Buff")
+--ZO_CreateStringId("FTC_PlayerDebuff",       "Spieler Debuff")
  
 --[[----------------------------------------------------------
     COMBAT LOG
@@ -265,47 +265,47 @@ ZO_CreateStringId("FTC_Menu_SCTResetDesc",  "Setzt die Einstellungen des FTC Kam
 --[[----------------------------------------------------------
     SCT ALERTS
   ]]----------------------------------------------------------
---ZO_CreateStringId("FTC_LowHealth",          "Low Health")
---ZO_CreateStringId("FTC_LowMagicka",         "Low Magicka")
---ZO_CreateStringId("FTC_LowStamina",         "Low Stamina")
---ZO_CreateStringId("FTC_Experience",         "Experience")
---ZO_CreateStringId("FTC_AlliancePoints",     "Alliance Points")
---ZO_CreateStringId("FTC_Stunned",            "Stunned")
---ZO_CreateStringId("FTC_Disoriented",        "Disoriented")
---ZO_CreateStringId("FTC_Offbalance",         "Off Balance")
---ZO_CreateStringId("FTC_Staggered",          "Staggered")
---ZO_CreateStringId("FTC_Interrupted",        "Interrupted")
---ZO_CreateStringId("FTC_Feared",             "Feared")
---ZO_CreateStringId("FTC_Silenced",           "Silenced")
---ZO_CreateStringId("FTC_Potion",             "Potion Available")
---ZO_CreateStringId("FTC_Ultimate",           "Ultimate Available")
+--ZO_CreateStringId("FTC_LowHealth",          "Wenig Leben")
+--ZO_CreateStringId("FTC_LowMagicka",         "Wenig Magicka")
+--ZO_CreateStringId("FTC_LowStamina",         "Wenig Stamina")
+--ZO_CreateStringId("FTC_Experience",         "Erfahrung")
+--ZO_CreateStringId("FTC_AlliancePoints",     "Allianz Punkte")
+--ZO_CreateStringId("FTC_Stunned",            "Betäubt")
+--ZO_CreateStringId("FTC_Disoriented",        "Orientierungslos")
+--ZO_CreateStringId("FTC_Offbalance",         "Aus dem Gleichgewicht")
+--ZO_CreateStringId("FTC_Staggered",          "Taumlend")
+--ZO_CreateStringId("FTC_Interrupted",        "Unterbrochen")
+--ZO_CreateStringId("FTC_Feared",             "Verängstigt")
+--ZO_CreateStringId("FTC_Silenced",           "Stumm")
+--ZO_CreateStringId("FTC_Potion",             "Potion verfügbar")
+--ZO_CreateStringId("FTC_Ultimate",           "Ultimate verfügbar")
 
 --[[----------------------------------------------------------
     DAMAGE STATISTICS
   ]]----------------------------------------------------------
---ZO_CreateStringId("FTC_Menu_THeader",       "Configure Damage Statistics")
+--ZO_CreateStringId("FTC_Menu_THeader",       "Konfigurieree Damage Statistiken")
 
---ZO_CreateStringId("FTC_Menu_TTimeout",      "Timeout Threshold")
---ZO_CreateStringId("FTC_Menu_TTimeoutDesc",  "Set the number of seconds that must pass between damage events before a new encounter is recognized. [Default: "..FTC.Defaults.DamageTimeout.."]")
+--ZO_CreateStringId("FTC_Menu_TTimeout",      "Timeout Grenzwert")
+--ZO_CreateStringId("FTC_Menu_TTimeoutDesc",  "Definiere die Anzahl von Sekunden, die zwischen Schadensanzeigen vergangen sein müssen bis ein neues Gefecht beginnt. [Default: "..FTC.Defaults.DamageTimeout.."]")
 
---local default = FTC.Defaults.StatTriggerHeals and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_TRHeal",        "Allow Healing Trigger")
---ZO_CreateStringId("FTC_Menu_TRHealDesc",    "Allow outgoing healing to trigger the start of a new encounter.")
+--local default = FTC.Defaults.StatTriggerHeals and "Ein" or "Aus"
+--ZO_CreateStringId("FTC_Menu_TRHeal",        "Aktiviere Heilauslösung")
+--ZO_CreateStringId("FTC_Menu_TRHealDesc",    "Ausgehende Heilung darf ein Gefecht aktivieren.")
 
---ZO_CreateStringId("FTC_Menu_TReset",        "Reset Stats")
---ZO_CreateStringId("FTC_Menu_TResetDesc",    "Reset original settings for FTC damage statistics component.")
+--ZO_CreateStringId("FTC_Menu_TReset",        "Stats wiederherstellen")
+--ZO_CreateStringId("FTC_Menu_TResetDesc",    "Ooriginal Einstellungen für FTC Damage Statistiken wiederherstellen.")
 
 -- Damage Report Words
 --ZO_CreateStringId("FTC_DReport",            "FTC Damage Report")
---ZO_CreateStringId("FTC_HReport",            "FTC Healing Report")
---ZO_CreateStringId("FTC_NoDamage",           "No damage to report!")
---ZO_CreateStringId("FTC_NoHealing",          "No healing to report!")
---ZO_CreateStringId("FTC_AllTargets",         "All Targets")
---ZO_CreateStringId("FTC_Ability",            "Ability")
---ZO_CreateStringId("FTC_Crit",               "Crit")
---ZO_CreateStringId("FTC_Average",            "Avg")
+--ZO_CreateStringId("FTC_HReport",            "FTC Heil Report")
+--ZO_CreateStringId("FTC_NoDamage",           "Kein Schaden ausgeteilt!")
+--ZO_CreateStringId("FTC_NoHealing",          "Keine Heilung gewirkt!")
+--ZO_CreateStringId("FTC_AllTargets",         "Alle Ziele")
+--ZO_CreateStringId("FTC_Ability",            "Fähigkeit")
+--ZO_CreateStringId("FTC_Crit",               "Krit")
+--ZO_CreateStringId("FTC_Average",            "Durchschnitt")
 --ZO_CreateStringId("FTC_Max",                "Max")
---ZO_CreateStringId("FTC_Damage",             "Damage")
---ZO_CreateStringId("FTC_Healing",            "Healing")
+--ZO_CreateStringId("FTC_Damage",             "Schaden")
+--ZO_CreateStringId("FTC_Healing",            "Heilung")
 --ZO_CreateStringId("FTC_DPS",                "DPS")
 --ZO_CreateStringId("FTC_HPS",                "HPS")
