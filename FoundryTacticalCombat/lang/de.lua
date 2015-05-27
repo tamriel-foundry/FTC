@@ -149,10 +149,10 @@ local default = ( FTC.Defaults.EnableRaidFrames ) and "Ein" or "Aus"
 --ZO_CreateStringId("FTC_Menu_FRaidDesc",     "Zeige benutzerdefinierte Gruppenfenster in Gruppen von mehr als 4? [Default: "..default.."]")
 
 --ZO_CreateStringId("FTC_Menu_FRWidth",       "Raidframe Höhe")
---ZO_CreateStringId("FTC_Menu_FRWidthDesc",   "Definiere die Höhe der FTC kleinen Raidframes. [Default: "..FTC.Defaults.RaidWidth.."]")
+--ZO_CreateStringId("FTC_Menu_FRWidthDesc",   "Definiere die Höhe der FTC  Raidframes. [Default: "..FTC.Defaults.RaidWidth.."]")
 
 --ZO_CreateStringId("FTC_Menu_FRHeight",      "Raidframes Breite")
---ZO_CreateStringId("FTC_Menu_FRHeightDesc",  "Definiere die Breite der FTC kleinen Raidframes. [Default: "..FTC.Defaults.RaidHeight.."]")
+--ZO_CreateStringId("FTC_Menu_FRHeightDesc",  "Definiere die Breite der FTC Raidframes. [Default: "..FTC.Defaults.RaidHeight.."]")
 
 --ZO_CreateStringId("FTC_Menu_FRFontS",       "Raidframe Schriftgröße")
 --ZO_CreateStringId("FTC_Menu_FRFontSDesc",   "Ändere die Schriftgröße für FTC Raidframes. [Default: "..FTC.Defaults.RaidFontSize.."]")
@@ -269,11 +269,11 @@ ZO_CreateStringId("FTC_Menu_SCTResetDesc",  "Setzt die Einstellungen des FTC Kam
 --ZO_CreateStringId("FTC_LowMagicka",         "Wenig Magicka")
 --ZO_CreateStringId("FTC_LowStamina",         "Wenig Stamina")
 --ZO_CreateStringId("FTC_Experience",         "Erfahrung")
---ZO_CreateStringId("FTC_AlliancePoints",     "Allianz Punkte")
+--ZO_CreateStringId("FTC_AlliancePoints",     "Allianzpunkte")
 --ZO_CreateStringId("FTC_Stunned",            "Betäubt")
 --ZO_CreateStringId("FTC_Disoriented",        "Orientierungslos")
 --ZO_CreateStringId("FTC_Offbalance",         "Aus dem Gleichgewicht")
---ZO_CreateStringId("FTC_Staggered",          "Taumlend")
+--ZO_CreateStringId("FTC_Staggered",          "Taumelnd")
 --ZO_CreateStringId("FTC_Interrupted",        "Unterbrochen")
 --ZO_CreateStringId("FTC_Feared",             "Verängstigt")
 --ZO_CreateStringId("FTC_Silenced",           "Stumm")
