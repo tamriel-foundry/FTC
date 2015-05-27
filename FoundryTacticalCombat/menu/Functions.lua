@@ -353,7 +353,7 @@
             if ( FTC.Buffs.Player["Player Buff 1"] == nil ) then
                 local ability = {
                     ["owner"]   = FTC.Player.name,
-                    ["name"]    = "Player Buff 1",
+                    ["name"]    = GetString(FTC_PlayerBuff) .. " 1",
                     ["dur"]     = 8000, 
                     ["cast"]    = 0,
                     ["debuff"]  = false,
@@ -367,7 +367,7 @@
             if ( FTC.Buffs.Player["Player Buff 2"] == nil ) then
                 local ability = {
                     ["owner"]   = FTC.Player.name,
-                    ["name"]    = "Player Buff 2",
+                    ["name"]    = GetString(FTC_PlayerBuff) .. " 2",
                     ["dur"]     = 12000, 
                     ["cast"]    = 0,
                     ["debuff"]  = false,
@@ -381,7 +381,7 @@
             if ( FTC.Buffs.Player["Player Debuff 1"] == nil ) then
                 local ability = {
                     ["owner"]   = FTC.Player.name,
-                    ["name"]    = "Player Debuff 1",
+                    ["name"]    = GetString(FTC_PlayerDebuff) .. " 1",
                     ["dur"]     = 7000, 
                     ["cast"]    = 0,
                     ["debuff"]  = true,
@@ -395,7 +395,7 @@
             if ( FTC.Buffs.Player["Player Debuff 2"] == nil ) then
                 local ability = {
                     ["owner"]   = FTC.Player.name,
-                    ["name"]    = "Player Debuff 2",
+                    ["name"]    = GetString(FTC_PlayerDebuff) .. " 2",
                     ["dur"]     = 6000, 
                     ["cast"]    = 0,
                     ["debuff"]  = true,
@@ -428,7 +428,7 @@
             ["result"]  = ACTION_RESULT_DAMAGE,
             ["target"]  = "fake",
             ["source"]  = FTC.Player.name,
-            ["ability"] = "Fake Damage",
+            ["ability"] = GetString(FTC_FakeDamage),
             ["value"]   = 9100,
             ["ms"]      = GetGameTimeMilliseconds(),
             ["crit"]    = false,
@@ -445,7 +445,7 @@
             ["result"]  = ACTION_RESULT_HEAL,
             ["target"]  = "fake",
             ["source"]  = FTC.Player.name,
-            ["ability"] = "Fake Heal",
+            ["ability"] = GetString(FTC_FakeHeal),
             ["value"]   = 4300,
             ["ms"]      = GetGameTimeMilliseconds() + 500,
             ["crit"]    = true,

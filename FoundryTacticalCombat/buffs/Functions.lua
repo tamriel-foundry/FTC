@@ -494,7 +494,7 @@
                 control.name:SetAnchor(LEFT,control,RIGHT,10,0)
                 control.name:SetHorizontalAlignment(0)
                 control.name:SetText(zo_strformat("<<!aC:1>>",name))
-
+                
                 -- Long Buffs
                 if ( context == "Player" and isLong and ( FTC.Vars.LongBuffFormat ~= "disabled" ) ) then
                     local container =  _G["FTC_LongBuffs"]

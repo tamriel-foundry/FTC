@@ -197,6 +197,10 @@ ZO_CreateStringId("FTC_Menu_BFontSDesc",    "Ändert die Schriftgröße der FTC 
  
 ZO_CreateStringId("FTC_Menu_BReset",        "Zurücksetzen")
 ZO_CreateStringId("FTC_Menu_BResetDesc",    "Setzt die FTC Buff Einstellungen zurück auf die Standardwertet.")
+
+-- Menu Display Words
+--ZO_CreateStringId("FTC_PlayerBuff",         "Player Buff")
+--ZO_CreateStringId("FTC_PlayerDebuff",       "Player Debuff")
  
 --[[----------------------------------------------------------
     COMBAT LOG
@@ -253,6 +257,10 @@ ZO_CreateStringId("FTC_Menu_SIconSDesc",    "Ändert die Symbolgröße im FTC Ka
 
 ZO_CreateStringId("FTC_Menu_SCTReset",      "SCT zurücksetzen")
 ZO_CreateStringId("FTC_Menu_SCTResetDesc",  "Setzt die Einstellungen des FTC Kampflauftextes zu den Standartwerten zurück.")
+
+-- Menu Display Words
+-- ZO_CreateStringId("FTC_FakeDamage",         "Fake Damage")
+-- ZO_CreateStringId("FTC_FakeHeal",           "Fake Heal")
 
 --[[----------------------------------------------------------
     SCT ALERTS
