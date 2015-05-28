@@ -9,7 +9,7 @@ ZO_CreateStringId("FTC_LongInfo",           "Du benutzt Foundry Tactical Combat 
 --[[----------------------------------------------------------
     KEYBINDINGS
   ]]----------------------------------------------------------
-ZO_CreateStringId("SI_BINDING_NAME_TOGGLE_COMBAT_LOG", "Aktiviere das Kampflog")
+ZO_CreateStringId("SI_BINDING_NAME_TOGGLE_COMBAT_LOG",      "Aktiviere das Kampflog")
 ZO_CreateStringId("SI_BINDING_NAME_DISPLAY_DAMAGE_REPORT",  "Damage Report anzeigen")
 ZO_CreateStringId("SI_BINDING_NAME_POST_DAMAGE_RESULTS",    "Damage in Chat einfügen")
 
@@ -149,10 +149,10 @@ ZO_CreateStringId("FTC_Menu_FRaid",         "Aktiviere Raid Frames")
 ZO_CreateStringId("FTC_Menu_FRaidDesc",     "Zeige benutzerdefinierte Gruppenfenster in Gruppen von mehr als 4? [Default: "..default.."]")
 
 ZO_CreateStringId("FTC_Menu_FRWidth",       "Raidframe Höhe")
-ZO_CreateStringId("FTC_Menu_FRWidthDesc",   "Definiere die Höhe der FTC kleinen Raidframes. [Default: "..FTC.Defaults.RaidWidth.."]")
+ZO_CreateStringId("FTC_Menu_FRWidthDesc",   "Definiere die Höhe der FTC Raidframes. [Default: "..FTC.Defaults.RaidWidth.."]")
 
 ZO_CreateStringId("FTC_Menu_FRHeight",      "Raidframes Breite")
-ZO_CreateStringId("FTC_Menu_FRHeightDesc",  "Definiere die Breite der FTC kleinen Raidframes. [Default: "..FTC.Defaults.RaidHeight.."]")
+ZO_CreateStringId("FTC_Menu_FRHeightDesc",  "Definiere die Breite der FTC Raidframes. [Default: "..FTC.Defaults.RaidHeight.."]")
 
 ZO_CreateStringId("FTC_Menu_FRFontS",       "Raidframe Schriftgröße")
 ZO_CreateStringId("FTC_Menu_FRFontSDesc",   "Ändere die Schriftgröße für FTC Raidframes. [Default: "..FTC.Defaults.RaidFontSize.."]")
@@ -269,11 +269,11 @@ ZO_CreateStringId("FTC_LowHealth",          "Wenig Leben")
 ZO_CreateStringId("FTC_LowMagicka",         "Wenig Magicka")
 ZO_CreateStringId("FTC_LowStamina",         "Wenig Stamina")
 ZO_CreateStringId("FTC_Experience",         "Erfahrung")
-ZO_CreateStringId("FTC_AlliancePoints",     "Allianz Punkte")
+ZO_CreateStringId("FTC_AlliancePoints",     "Allianzpunkte")
 ZO_CreateStringId("FTC_Stunned",            "Betäubt")
 ZO_CreateStringId("FTC_Disoriented",        "Orientierungslos")
 ZO_CreateStringId("FTC_Offbalance",         "Aus dem Gleichgewicht")
-ZO_CreateStringId("FTC_Staggered",          "Taumlend")
+ZO_CreateStringId("FTC_Staggered",          "Taumelnd")
 ZO_CreateStringId("FTC_Interrupted",        "Unterbrochen")
 ZO_CreateStringId("FTC_Feared",             "Verängstigt")
 --ZO_CreateStringId("FTC_Rooted",             "Rooted")
