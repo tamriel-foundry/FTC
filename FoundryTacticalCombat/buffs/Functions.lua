@@ -496,77 +496,83 @@
                 control.name:SetText(zo_strformat("<<!aC:1>>",name))
                 
                 -- Long Buffs
-                if ( context == "Player" and isLong and ( FTC.Vars.LongBuffFormat ~= "disabled" ) ) then
-                    local container =  _G["FTC_LongBuffs"]
+                if ( context == "Player" and isLong ) then
+                    if ( FTC.Vars.LongBuffFormat ~= "disabled" ) then 
+                        local container =  _G["FTC_LongBuffs"]
 
-                    -- Determine the anchor
-                    local lbAnchor = {}
-                    if ( FTC.Vars.LongBuffFormat == "vtiles" ) then      lbAnchor = {BOTTOMRIGHT,container,BOTTOMRIGHT,0,(longCount*-50)}
-                    elseif ( FTC.Vars.LongBuffFormat == "htiles" ) then  lbAnchor = {BOTTOMRIGHT,container,BOTTOMRIGHT,(longCount*-50),0}
-                    elseif ( FTC.Vars.LongBuffFormat == "dlist" ) then   lbAnchor = {TOPRIGHT,container,TOPRIGHT,0,(longCount*50)}
-                    elseif ( FTC.Vars.LongBuffFormat == "alist" ) then   lbAnchor = {BOTTOMRIGHT,container,BOTTOMRIGHT,0,(longCount*-50)} end
+                        -- Determine the anchor
+                        local lbAnchor = {}
+                        if ( FTC.Vars.LongBuffFormat == "vtiles" ) then      lbAnchor = {BOTTOMRIGHT,container,BOTTOMRIGHT,0,(longCount*-50)}
+                        elseif ( FTC.Vars.LongBuffFormat == "htiles" ) then  lbAnchor = {BOTTOMRIGHT,container,BOTTOMRIGHT,(longCount*-50),0}
+                        elseif ( FTC.Vars.LongBuffFormat == "dlist" ) then   lbAnchor = {TOPRIGHT,container,TOPRIGHT,0,(longCount*50)}
+                        elseif ( FTC.Vars.LongBuffFormat == "alist" ) then   lbAnchor = {BOTTOMRIGHT,container,BOTTOMRIGHT,0,(longCount*-50)} end
 
-                    -- Move the control into the container and anchor it
-                    control:SetParent(container)
-                    control:ClearAnchors()
-                    control:SetAnchor(unpack(lbAnchor))
-                    control.frame:SetTexture('/esoui/art/actionbar/magechamber_firespelloverlay_down.dds')
-                    control.name:ClearAnchors()
-                    control.name:SetAnchor(RIGHT,control,LEFT,-10,0)
-                    control.name:SetHorizontalAlignment(2)
-                    control.name:SetHidden(string.match(FTC.Vars.LongBuffFormat,"list") == nil)
-                    control:SetHidden(false)
+                        -- Move the control into the container and anchor it
+                        control:SetParent(container)
+                        control:ClearAnchors()
+                        control:SetAnchor(unpack(lbAnchor))
+                        control.frame:SetTexture('/esoui/art/actionbar/magechamber_firespelloverlay_down.dds')
+                        control.name:ClearAnchors()
+                        control.name:SetAnchor(RIGHT,control,LEFT,-10,0)
+                        control.name:SetHorizontalAlignment(2)
+                        control.name:SetHidden(string.match(FTC.Vars.LongBuffFormat,"list") == nil)
+                        control:SetHidden(false)
 
-                    -- Update the count
-                    longCount = longCount + 1
+                        -- Update the count
+                        longCount = longCount + 1
+                    end
 
                 -- Debuffs
-                elseif ( buffs[i].debuff and ( FTC.Vars[context.."DebuffFormat"] ~= "disabled" ) ) then
-                    local container =  _G["FTC_"..context.."Debuffs"]
+                elseif ( buffs[i].debuff ) then
+                    if ( FTC.Vars[context.."DebuffFormat"] ~= "disabled" ) then 
+                        local container =  _G["FTC_"..context.."Debuffs"]
 
-                    -- Determine the anchor
-                    local dbAnchor = {}
-                    if ( FTC.Vars[context.."DebuffFormat"] == "htiles" ) then     dbAnchor = {TOPLEFT,container,TOPLEFT,(debuffCount*50),0}
-                    elseif ( FTC.Vars[context.."DebuffFormat"] == "vtiles" ) then dbAnchor = {TOPLEFT,container,TOPLEFT,0,(debuffCount*50)}
-                    elseif ( FTC.Vars[context.."DebuffFormat"] == "dlist" ) then  dbAnchor = {TOPLEFT,container,TOPLEFT,0,(debuffCount*50)}
-                    elseif ( FTC.Vars[context.."DebuffFormat"] == "alist" ) then  dbAnchor = {BOTTOMLEFT,container,BOTTOMLEFT,0,(debuffCount*-50)} end
+                        -- Determine the anchor
+                        local dbAnchor = {}
+                        if ( FTC.Vars[context.."DebuffFormat"] == "htiles" ) then     dbAnchor = {TOPLEFT,container,TOPLEFT,(debuffCount*50),0}
+                        elseif ( FTC.Vars[context.."DebuffFormat"] == "vtiles" ) then dbAnchor = {TOPLEFT,container,TOPLEFT,0,(debuffCount*50)}
+                        elseif ( FTC.Vars[context.."DebuffFormat"] == "dlist" ) then  dbAnchor = {TOPLEFT,container,TOPLEFT,0,(debuffCount*50)}
+                        elseif ( FTC.Vars[context.."DebuffFormat"] == "alist" ) then  dbAnchor = {BOTTOMLEFT,container,BOTTOMLEFT,0,(debuffCount*-50)} end
 
-                    -- Move the control into the container and anchor it
-                    control:SetParent(container)
-                    control:ClearAnchors()
-                    control:SetAnchor(unpack(dbAnchor))
-                    control.frame:SetTexture('/esoui/art/actionbar/debuff_frame.dds')
-                    control.cooldown:StartCooldown( ( buffs[i].ends - gameTime ) * 1000 , ( buffs[i].ends - buffs[i].begin ) * 1000 , CD_TYPE_RADIAL, CD_TIME_TYPE_TIME_UNTIL, false )
-                    control.cooldown:SetHidden(false)
-                    control.name:SetHidden(string.match(FTC.Vars[context.."DebuffFormat"],"list") == nil)
-                    control:SetHidden(false)
+                        -- Move the control into the container and anchor it
+                        control:SetParent(container)
+                        control:ClearAnchors()
+                        control:SetAnchor(unpack(dbAnchor))
+                        control.frame:SetTexture('/esoui/art/actionbar/debuff_frame.dds')
+                        control.cooldown:StartCooldown( ( buffs[i].ends - gameTime ) * 1000 , ( buffs[i].ends - buffs[i].begin ) * 1000 , CD_TYPE_RADIAL, CD_TIME_TYPE_TIME_UNTIL, false )
+                        control.cooldown:SetHidden(false)
+                        control.name:SetHidden(string.match(FTC.Vars[context.."DebuffFormat"],"list") == nil)
+                        control:SetHidden(false)
 
-                    -- Update the count
-                    debuffCount = debuffCount + 1
+                        -- Update the count
+                        debuffCount = debuffCount + 1
+                    end
 
                 -- Buffs
-                elseif ( FTC.Vars[context.."BuffFormat"] ~= "disabled" ) then
-                    local container =  _G["FTC_"..context.."Buffs"]
+                else
+                    if ( FTC.Vars[context.."BuffFormat"] ~= "disabled" ) then
+                        local container =  _G["FTC_"..context.."Buffs"]
 
-                    -- Determine the anchor
-                    local bAnchor = {}
-                    if ( FTC.Vars[context.."BuffFormat"] == "htiles" ) then       bAnchor = {TOPLEFT,container,TOPLEFT,(buffCount*50),0}
-                    elseif ( FTC.Vars[context.."BuffFormat"] == "vtiles" ) then   bAnchor = {TOPLEFT,container,TOPLEFT,0,(buffCount*50)}
-                    elseif ( FTC.Vars[context.."BuffFormat"] == "dlist" ) then    bAnchor = {TOPLEFT,container,TOPLEFT,0,(buffCount*50)}
-                    elseif ( FTC.Vars[context.."BuffFormat"] == "alist" ) then    bAnchor = {BOTTOMLEFT,container,BOTTOMLEFT,0,(buffCount*-50)} end
+                        -- Determine the anchor
+                        local bAnchor = {}
+                        if ( FTC.Vars[context.."BuffFormat"] == "htiles" ) then       bAnchor = {TOPLEFT,container,TOPLEFT,(buffCount*50),0}
+                        elseif ( FTC.Vars[context.."BuffFormat"] == "vtiles" ) then   bAnchor = {TOPLEFT,container,TOPLEFT,0,(buffCount*50)}
+                        elseif ( FTC.Vars[context.."BuffFormat"] == "dlist" ) then    bAnchor = {TOPLEFT,container,TOPLEFT,0,(buffCount*50)}
+                        elseif ( FTC.Vars[context.."BuffFormat"] == "alist" ) then    bAnchor = {BOTTOMLEFT,container,BOTTOMLEFT,0,(buffCount*-50)} end
 
-                    -- Move the control into the container and anchor it
-                    control:SetParent(container)
-                    control:ClearAnchors()
-                    control:SetAnchor(unpack(bAnchor))
-                    control.frame:SetTexture('/esoui/art/actionbar/buff_frame.dds')
-                    control.cooldown:StartCooldown( ( buffs[i].ends - gameTime ) * 1000 , ( buffs[i].ends - buffs[i].begin ) * 1000 , CD_TYPE_RADIAL, CD_TIME_TYPE_TIME_UNTIL, false )
-                    control.cooldown:SetHidden(isLong)
-                    control.name:SetHidden(string.match(FTC.Vars[context.."BuffFormat"],"list") == nil)
-                    control:SetHidden(false)
+                        -- Move the control into the container and anchor it
+                        control:SetParent(container)
+                        control:ClearAnchors()
+                        control:SetAnchor(unpack(bAnchor))
+                        control.frame:SetTexture('/esoui/art/actionbar/buff_frame.dds')
+                        control.cooldown:StartCooldown( ( buffs[i].ends - gameTime ) * 1000 , ( buffs[i].ends - buffs[i].begin ) * 1000 , CD_TYPE_RADIAL, CD_TIME_TYPE_TIME_UNTIL, false )
+                        control.cooldown:SetHidden(isLong)
+                        control.name:SetHidden(string.match(FTC.Vars[context.."BuffFormat"],"list") == nil)
+                        control:SetHidden(false)
 
-                    -- Update the count
-                    buffCount = buffCount + 1
+                        -- Update the count
+                        buffCount = buffCount + 1
+                    end
                 end
             end
         end
