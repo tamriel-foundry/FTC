@@ -16,6 +16,7 @@ DONE	Buffs/Debuffs
 DONE		Options			icon and/or text
 DONE		Options			sizing, color, fonts, etc..
 DONE		Localization	make sure buff tracking works with all languages
+			Options			add ascending/descending list-right
 
 
 DONE	Damage Tracking

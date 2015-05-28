@@ -1,15 +1,15 @@
-
+﻿
 --[[----------------------------------------------------------
     GERMAN LANGUAGE LOCALIZATION
   ]]----------------------------------------------------------
 ZO_CreateStringId("FTC_Name",               "Foundry Tactical Combat")
 ZO_CreateStringId("FTC_ShortInfo",          "Foundry Tactical Combat by Atropos")
-ZO_CreateStringId("FTC_LongInfo",           "Du benutzt Foundry Tactical Combat Version " .. FTC.version .. " entwickelt von Atropos der Tamriel Foundry.")
+ZO_CreateStringId("FTC_LongInfo",           "Du benutzt Foundry Tactical Combat Version " .. FTC.version .. " entwickelt von Atropos, Schöpfer von Tamriel Foundry.")
 
 --[[----------------------------------------------------------
     KEYBINDINGS
   ]]----------------------------------------------------------
-ZO_CreateStringId("SI_BINDING_NAME_TOGGLE_COMBAT_LOG",      "Aktiviere das Kampflog")
+ZO_CreateStringId("SI_BINDING_NAME_TOGGLE_COMBAT_LOG", 	    "Wechsel zwischen Kampflog/Chat")
 ZO_CreateStringId("SI_BINDING_NAME_DISPLAY_DAMAGE_REPORT",  "Schadensreport anzeigen")
 ZO_CreateStringId("SI_BINDING_NAME_POST_DAMAGE_RESULTS",    "Schadensreport in Chat einfügen")
 
@@ -28,24 +28,24 @@ ZO_CreateStringId("FTC_Menu_Reload",        "Durch die Veränderung dieser Einst
 ZO_CreateStringId("FTC_Menu_NeedReload",    "Veränderungen an dieser Einstellung werden erst aktiv nachdem das UI neu geladen wurde!")
 
 local default = ( FTC.Defaults.EnableFrames ) and "Ein" or "Aus"
-ZO_CreateStringId("FTC_Menu_Frames",        "Einheitenfenster aktivieren")
-teStringId("FTC_Menu_FramesDesc",           "Aktiviere das Einheitenfenster, Gruppenfenster und Schlachtzugsfenster. [Standard: "..default.."]")
+ZO_CreateStringId("FTC_Menu_Frames",        "Fenster aktivieren")
+ZO_CreateStringId("FTC_Menu_FramesDesc",    "Aktiviere das Spielerfenster, Zielfenster, Gruppenfenster und Schlachtzugsfenster. [Standard: "..default.."]")
 
 local default = ( FTC.Defaults.EnableBuffs ) and "Ein" or "Aus"
-ZO_CreateStringId("FTC_Menu_Buffs",         "Buffs aktivieren")
-ZO_CreateStringId("FTC_Menu_BuffsDesc",     "Aktiviere die Anzeige der aktiven Buffs? [Standard: "..default.."]")
+ZO_CreateStringId("FTC_Menu_Buffs",         "Buffs und Debuffs aktivieren")
+ZO_CreateStringId("FTC_Menu_BuffsDesc",     "Aktiviere die Anzeige der aktiven Buffs und Debuffs. [Standard: "..default.."]")
  
 local default = ( FTC.Defaults.EnableLog ) and "Ein" or "Aus"
 ZO_CreateStringId("FTC_Menu_Log",           "Kampflog aktivieren")
-ZO_CreateStringId("FTC_Menu_LogDesc",       "Aktiviere die Kampflog Anzeige? [Standard: "..default.."]")
+ZO_CreateStringId("FTC_Menu_LogDesc",       "Aktiviere die Kampflog Anzeige [Standard: "..default.."]")
  
 local default = ( FTC.Defaults.EnableSCT ) and "Ein" or "Aus"
-ZO_CreateStringId("FTC_Menu_SCT",           "Schwebender Kampftext aktivieren") 
-ZO_CreateStringId("FTC_Menu_SCTDesc",       "Aktiviere die Schwebender Kampftext? [Standard: "..default.."]")
+ZO_CreateStringId("FTC_Menu_SCT",           "Scrolling Combat Text aktivieren") 
+ZO_CreateStringId("FTC_Menu_SCTDesc",       "Aktiviere den Scrolling Combat Text (SCT). [Standard: "..default.."]")
 
-local default = ( FTC.Defaults.EnableMeter ) and "Ein" or "Aus"
-ZO_CreateStringId("FTC_Menu_Damage",        "Schadensstatistik aktivieren")
-ZO_CreateStringId("FTC_Menu_DamageDesc",    "Aktiviere die Anzeige der Schadensstatistik? [Standard: "..default.."]")
+local default = ( FTC.Defaults.EnableStats ) and "Ein" or "Aus"
+ZO_CreateStringId("FTC_Menu_Stats",        "Schadensstatistik aktivieren")
+ZO_CreateStringId("FTC_Menu_StatsDesc",    "Aktiviere die Anzeige der Schadensstatistik. [Standard: "..default.."]")
  
 local default = ( FTC.Defaults.EnableHotbar ) and "Ein" or "Aus"
 ZO_CreateStringId("FTC_Menu_Hotbar",        "Aktiviere erweiterte Hotbar")
@@ -57,63 +57,63 @@ ZO_CreateStringId("FTC_Menu_MoveDesc",      "Die Positionen der einzelnen FTC UI
 --[[----------------------------------------------------------
     UNIT FRAMES
   ]]----------------------------------------------------------
-ZO_CreateStringId("FTC_Menu_FHeader",       "Einheitenfenster Einstellungen")
+ZO_CreateStringId("FTC_Menu_FHeader",       "Fenster Einstellungen")
  
-ZO_CreateStringId("FTC_Menu_FWidth",        "Einheitenfenster Breite")
-ZO_CreateStringId("FTC_Menu_FWidthDesc",    "Ändert die Breite der Einheitenfenster. [Standard: "..FTC.Defaults.FrameWidth.."]")
+ZO_CreateStringId("FTC_Menu_FWidth",        "Fenster Breite")
+ZO_CreateStringId("FTC_Menu_FWidthDesc",    "Ändert die Breite des Spieler- und Zielfensters. [Standard: "..FTC.Defaults.FrameWidth.."]")
  
-ZO_CreateStringId("FTC_Menu_FHeight",       "Einheitenfenster Höhe")
-ZO_CreateStringId("FTC_Menu_FHeightDesc",   "Ändert die Höhe der Einheitenfenster. [Standard: "..FTC.Defaults.FrameHeight.."]")
+ZO_CreateStringId("FTC_Menu_FHeight",       "Fenster Höhe")
+ZO_CreateStringId("FTC_Menu_FHeightDesc",   "Ändert die Höhe des Spieler- und Zielfensters. [Standard: "..FTC.Defaults.FrameHeight.."]")
  
 ZO_CreateStringId("FTC_Menu_FOpacIn",       "Deckkraft im Kampf")
-ZO_CreateStringId("FTC_Menu_FOpacInDesc",   "Ändert die Deckkraft der Einheitenfenster während eines Kampfes. [Standard: "..FTC.Defaults.FrameOpacityIn.."]")
- 
+ZO_CreateStringId("FTC_Menu_FOpacInDesc",   "Ändert die Deckkraft der Fenster während eines Kampfes. [Standard: "..FTC.Defaults.FrameOpacityIn.."]")
+
 ZO_CreateStringId("FTC_Menu_FOpacOut",      "Deckkraft außerhalb eines Kampfes")
-ZO_CreateStringId("FTC_Menu_FOpacOutDesc",  "Ändert die Deckkraft der Einheitenfenster außerhalb eines Kampfes. Je niedriger desto durchsichtiger. [Standard: "..FTC.Defaults.FrameOpacityOut.."]")
+ZO_CreateStringId("FTC_Menu_FOpacOutDesc",  "Ändert die Deckkraft der Fenster außerhalb eines Kampfes. Je niedriger desto durchsichtiger. [Standard: "..FTC.Defaults.FrameOpacityOut.."]")
  
 ZO_CreateStringId("FTC_Menu_FFont1",        "Primäre Schriftart")
-ZO_CreateStringId("FTC_Menu_FFont1Desc",    "Ändert die primäre Schriftart der FTC Einheitenfenster. [Standard: "..FTC.UI:TranslateFont(FTC.Defaults.FrameFont1).."]")
+ZO_CreateStringId("FTC_Menu_FFont1Desc",    "Ändert die primäre Schriftart im Fenster. [Standard: "..FTC.UI:TranslateFont(FTC.Defaults.FrameFont1).."]")
  
 ZO_CreateStringId("FTC_Menu_FFont2",        "Sekundäre Schriftart")
-ZO_CreateStringId("FTC_Menu_FFont2Desc",    "Ändert die sekundäre Schriftart der FTC Einheitenfenster. [Standard: "..FTC.UI:TranslateFont(FTC.Defaults.FrameFont2).."]")
+ZO_CreateStringId("FTC_Menu_FFont2Desc",    "Ändert die sekundäre Schriftart im Fenster. [Standard: "..FTC.UI:TranslateFont(FTC.Defaults.FrameFont2).."]")
  
 ZO_CreateStringId("FTC_Menu_FFontS",        "Schriftgröße")
-ZO_CreateStringId("FTC_Menu_FFontSDesc",    "Ändert die Schriftgröße der FTC Einheitenfenster. [Standard: "..FTC.Defaults.FrameFontSize.."]")
+ZO_CreateStringId("FTC_Menu_FFontSDesc",    "Ändert die Schriftgröße im Fenster. [Standard: "..FTC.Defaults.FrameFontSize.."]")
  
 ZO_CreateStringId("FTC_Menu_Exceute",       "Hinrichten Schwelle")
 ZO_CreateStringId("FTC_Menu_ExecuteDesc",   "Ändert den Wert der erreicht werden muss damit ein Alarm angezeigt wird. [Standard: "..FTC.Defaults.ExecuteThreshold.."]")
 
 local default = ( FTC.Defaults.DefaultTargetFrame ) and "Ein" or "Aus"
-ZO_CreateStringId("FTC_Menu_FShowDef",      "Standard Zielanzeige anzeigen")
-ZO_CreateStringId("FTC_Menu_FShowDefDesc",  "Standard ESO Zielanzeige weiterhin anzeigen? [Standard: "..default.."]")
+ZO_CreateStringId("FTC_Menu_FShowDef",      "Standard Zielfenster anzeigen")
+ZO_CreateStringId("FTC_Menu_FShowDefDesc",  "Standard ESO Zielfenster weiterhin anzeigen. [Standard: "..default.."]")
  
 local default = ( FTC.Defaults.EnableNameplate ) and "Ein" or "Aus"
 ZO_CreateStringId("FTC_Menu_FShowName",     "Spieler Namen anzeigen")
-ZO_CreateStringId("FTC_Menu_FShowNameDesc", "Eigenen Namen über der FTC Einheitenfenster anzeigen? [Standard: "..default.."]")
+ZO_CreateStringId("FTC_Menu_FShowNameDesc", "Eigenen Namen über den Spielerfenster anzeigen. [Standard: "..default.."]")
 
 local default = ( FTC.Defaults.EnableXPBar ) and "Ein" or "Aus"
 ZO_CreateStringId("FTC_Menu_FShowXP",       "Mini Erfahrungsleiste aktivieren")
-ZO_CreateStringId("FTC_Menu_FShowXPDesc",   "Zeige eine kleine Erfahrungsleiste unter dem FTC Spielerelement an? [Standard: "..default.."]")
+ZO_CreateStringId("FTC_Menu_FShowXPDesc",   "Zeige eine kleine Erfahrungsleiste unter dem Spielerfenster an. [Standard: "..default.."]")
 
 local default = math.floor(FTC.Defaults.FrameHealthColor[1]*255)..","..math.floor(FTC.Defaults.FrameHealthColor[2]*255)..","..math.floor(FTC.Defaults.FrameHealthColor[3]*255)
 ZO_CreateStringId("FTC_Menu_FHealthC",      "Farbe der Lebensleiste")
-ZO_CreateStringId("FTC_Menu_FHealthCDesc",  "Ändert die Farbe der Lebensleiste der FTC Einheitenfenster. [Standard: "..default.."]")
+ZO_CreateStringId("FTC_Menu_FHealthCDesc",  "Ändert die Farbe der Lebensleiste im Spieler- und Zielfenster. [Standard: "..default.."]")
 
 local default = math.floor(FTC.Defaults.FrameMagickaColor[1]*255)..","..math.floor(FTC.Defaults.FrameMagickaColor[2]*255)..","..math.floor(FTC.Defaults.FrameMagickaColor[3]*255)
 ZO_CreateStringId("FTC_Menu_FMagickaC",     "Farbe der Magieleiste")
-ZO_CreateStringId("FTC_Menu_FMagickaCDesc", "Ändert die Farbe der Magieleiste der FTC Einheitenfenster. [Standard: "..default.."]")
+ZO_CreateStringId("FTC_Menu_FMagickaCDesc", "Ändert die Farbe der Magieleiste im Spielerfenster. [Standard: "..default.."]")
  
 local default = math.floor(FTC.Defaults.FrameShieldColor[1]*255)..","..math.floor(FTC.Defaults.FrameShieldColor[2]*255)..","..math.floor(FTC.Defaults.FrameShieldColor[3]*255)
 ZO_CreateStringId("FTC_Menu_FStaminaC",     "Farbe der Ausdauerleiste")
-ZO_CreateStringId("FTC_Menu_FStaminaCDesc", "Ändert die Farbe der Ausdauerleiste der FTC Einheitenfenster. [Standard: "..default.."]")
+ZO_CreateStringId("FTC_Menu_FStaminaCDesc", "Ändert die Farbe der Ausdauerleiste im Spielerfenster. [Standard: "..default.."]")
  
 local default = math.floor(FTC.Defaults.FrameShieldColor[1]*255)..","..math.floor(FTC.Defaults.FrameShieldColor[2]*255)..","..math.floor(FTC.Defaults.FrameShieldColor[3]*255)
 ZO_CreateStringId("FTC_Menu_FShieldC",      "Farbe der Schildleiste")
-ZO_CreateStringId("FTC_Menu_FShieldCDesc",  "Ändert die Farbe der Schildleiste der FTC Einheitenfenster. [Standard: "..default.."]")
+ZO_CreateStringId("FTC_Menu_FShieldCDesc",  "Ändert die Farbe der Schildleiste im Spielerfenster. [Standard: "..default.."]")
 
 local default = ( FTC.Defaults.EnableGroupFrames ) and "Ein" or "Aus"
-ZO_CreateStringId("FTC_Menu_FGroup",        "Gruppenfenster aktivieren")
-ZO_CreateStringId("FTC_Menu_FGroupDesc",    "Das FTC Gruppenfenster wird bei einer Gruppengröße von 4 oder weniger angezeigt. [Standart: "..default.."]")
+ZO_CreateStringId("FTC_Menu_FGroup",          "Gruppenfenster aktivieren")
+ZO_CreateStringId("FTC_Menu_FGroupDesc",      "Das FTC Gruppenfenster wird bei einer Gruppengröße von 4 oder weniger angezeigt. [Standart: "..default.."]")
 
 ZO_CreateStringId("FTC_Menu_FGWidth",       "Gruppenfenster Breite")
 ZO_CreateStringId("FTC_Menu_FGWidthDesc",   "Ändert die Breite des Gruppenfensters. [Standart: "..FTC.Defaults.GroupWidth.."]")
@@ -158,12 +158,12 @@ ZO_CreateStringId("FTC_Menu_FRFontS",       "Schlachtzugsfenster Schriftgröße"
 ZO_CreateStringId("FTC_Menu_FRFontSDesc",   "Ändert die Schriftgröße für das FTC Schlachtzugsfenster. [Standart: "..FTC.Defaults.RaidFontSize.."]")
 
 ZO_CreateStringId("FTC_Menu_FReset",        "Zurücksetzen")
-ZO_CreateStringId("FTC_Menu_FResetDesc",    "Setzt die FTC Einheitenfenster zurück auf die Standardwertet.")
- 
+ZO_CreateStringId("FTC_Menu_FResetDesc",    "Setzt die FTC Fenster Einstellungen zurück auf die Standardwerte.")
+
 --[[----------------------------------------------------------
     BUFF TRACKING
   ]]----------------------------------------------------------
-ZO_CreateStringId("FTC_Menu_BHeader",       "Buff-Anzeige Einstellungen")
+ZO_CreateStringId("FTC_Menu_BHeader",       "Buff und Debuff Einstellungen")
 
 ZO_CreateStringId("FTC_BuffFormat0",        "Deaktiviert")
 ZO_CreateStringId("FTC_BuffFormat1",        "Horizontale Ausrichtung")
@@ -184,7 +184,7 @@ ZO_CreateStringId("FTC_Menu_BTBFormat",     "Ziel Buff Format")
 ZO_CreateStringId("FTC_Menu_BTBFormatDesc", "Wähle das Format der Ziel Buffs. [Standard: "..FTC.Menu:GetBuffFormat(FTC.Defaults.TargetBuffFormat).."]")
  
 ZO_CreateStringId("FTC_Menu_BTDFormat",     "Ziel Debuff Format")
-ZO_CreateStringId("FTC_Menu_BTDFormatDesc", "Wähle das Format der Ziel debuffs. [Standard: "..FTC.Menu:GetBuffFormat(FTC.Defaults.TargetDebuffFormat).."]")
+ZO_CreateStringId("FTC_Menu_BTDFormatDesc", "Wähle das Format der Ziel Debuffs. [Standard: "..FTC.Menu:GetBuffFormat(FTC.Defaults.TargetDebuffFormat).."]")
  
 ZO_CreateStringId("FTC_Menu_BFont1",        "Primäre Schriftart")
 ZO_CreateStringId("FTC_Menu_BFont1Desc",    "Ändert die primäre Schriftart der FTC Buff Komponente. [Standard: "..FTC.UI:TranslateFont(FTC.Defaults.BuffsFont1).."]")
@@ -196,13 +196,13 @@ ZO_CreateStringId("FTC_Menu_BFontS",        "Schriftgröße")
 ZO_CreateStringId("FTC_Menu_BFontSDesc",    "Ändert die Schriftgröße der FTC Buff Komponente. [Standard: "..FTC.Defaults.BuffsFontSize.."]")
  
 ZO_CreateStringId("FTC_Menu_BReset",        "Zurücksetzen")
-ZO_CreateStringId("FTC_Menu_BResetDesc",    "Setzt die FTC Buff Einstellungen zurück auf die Standardwertet.")
+ZO_CreateStringId("FTC_Menu_BResetDesc",    "Setzt die FTC Buff Einstellungen zurück auf die Standardwerte.")
 
 -- Menu Display Words
-ZO_CreateStringId("FTC_PlayerBuff",         "Spielerr Buff")
+ZO_CreateStringId("FTC_PlayerBuff",         "Spieler Buff")
 ZO_CreateStringId("FTC_PlayerDebuff",       "Spieler Debuff")
- 
---[[----------------------------------------------------------
+
+ --[[----------------------------------------------------------
     COMBAT LOG
   ]]----------------------------------------------------------
 ZO_CreateStringId("FTC_Menu_LHeader",       "Kampflog Einstellungen")
@@ -218,12 +218,12 @@ ZO_CreateStringId("FTC_Menu_LFontS",        "Schriftgröße")
 ZO_CreateStringId("FTC_Menu_LFontSDesc",    "Ändert die Schriftgröße des FTC Kampflogs. [Standard: "..FTC.Defaults.LogFontSize.."]")
  
 ZO_CreateStringId("FTC_Menu_LReset",        "Zurücksetzen")
-ZO_CreateStringId("FTC_Menu_LResetDesc",    "Setzt die FTC Kampflog Einstellungen zurück auf die Standardwertet.")
+ZO_CreateStringId("FTC_Menu_LResetDesc",    "Setzt die FTC Kampflog Einstellungen zurück auf die Standardwerte.")
 
 --[[----------------------------------------------------------
     SCROLLING COMBAT TEXT
   ]]----------------------------------------------------------
-ZO_CreateStringId("FTC_Menu_SHeader",       "Schwebender Kampftext Einstellungen")
+ZO_CreateStringId("FTC_Menu_SHeader",       "Scrolling Combat Text Einstellungen")
 
 local default = FTC.Defaults.SCTIcons and "Ein" or "Aus"
 ZO_CreateStringId("FTC_Menu_SIcons",        "Anzeige der Symbole")
@@ -237,26 +237,26 @@ local default = FTC.Defaults.SCTRound and "Enabled" or "Disabled"
 ZO_CreateStringId("FTC_Menu_SRound",        "Schadenswerte verkürzen")
 ZO_CreateStringId("FTC_Menu_SRoundDesc",    "Die Schadenswerte werden aufgerundet, als Beispiel aus 9.543 Schaden wird 9,5k Schaden. [Standart: "..default.."]")
 
-ZO_CreateStringId("FTC_Menu_SSpeed",        "Geschwindigkeit des Lauftextes")
-ZO_CreateStringId("FTC_Menu_SSpeedDesc",    "Ändert die Geschwindigkeit der Schwebender Kampftext, je höher der Wert, umso schneller die Animation. [Standart: "..FTC.Defaults.SCTSpeed.."]")
+ZO_CreateStringId("FTC_Menu_SSpeed",        "Scroll Geschwindigkeit")
+ZO_CreateStringId("FTC_Menu_SSpeedDesc",    "Ändert die Geschwindigkeit der Animation, je höher der Wert, umso schneller. [Standart: "..FTC.Defaults.SCTSpeed.."]")
 
 ZO_CreateStringId("FTC_Menu_SArc",          "Intensität des Bogens")
-ZO_CreateStringId("FTC_Menu_SArcDesc",      "Ändert die Krümmung der Animation im Schwebender Kampftext, höhere Werte generieren eine größere Biegung. [Standart: "..FTC.Defaults.SCTArc.."]")
+ZO_CreateStringId("FTC_Menu_SArcDesc",      "Ändert die Krümmung der Animation, höhere Werte generieren eine größere Biegung. [Standart: "..FTC.Defaults.SCTArc.."]")
 
 ZO_CreateStringId("FTC_Menu_SFont1",        "Primäre Schriftart")
-ZO_CreateStringId("FTC_Menu_SFont1Desc",    "Ändert die primäre Schriftart der Schadenswerte im Schwebender Kampftext. [Standart: "..FTC.UI:TranslateFont(FTC.Defaults.SCTFont1).."]")
+ZO_CreateStringId("FTC_Menu_SFont1Desc",    "Ändert die primäre Schriftart für die Schadenswerte im SCT. [Standart: "..FTC.UI:TranslateFont(FTC.Defaults.SCTFont1).."]")
 
 ZO_CreateStringId("FTC_Menu_SFont2",        "Sekundäre Schriftart")
-ZO_CreateStringId("FTC_Menu_SFont2Desc",    "Ändert die sekundäre Schriftart der Fähigkeitsnamen im Schwebender Kampftext. [Standart: "..FTC.UI:TranslateFont(FTC.Defaults.SCTFont2).."]")
+ZO_CreateStringId("FTC_Menu_SFont2Desc",    "Ändert die sekundäre Schriftart für die Fähigkeitsnamen im SCT. [Standart: "..FTC.UI:TranslateFont(FTC.Defaults.SCTFont2).."]")
 
 ZO_CreateStringId("FTC_Menu_SFontS",        "Schriftgröße")
-ZO_CreateStringId("FTC_Menu_SFontSDesc",    "Ändert die Schriftgröße im FTC Schwebender Kampftext. [Standart: "..FTC.Defaults.SCTFontSize.."]")
+ZO_CreateStringId("FTC_Menu_SFontSDesc",    "Ändert die Schriftgröße im SCT. [Standart: "..FTC.Defaults.SCTFontSize.."]")
 
 ZO_CreateStringId("FTC_Menu_SIconS",        "Symbolgröße")
-ZO_CreateStringId("FTC_Menu_SIconSDesc",    "Ändert die Symbolgröße im FTC Schwebender Kampftext. [Standart: "..FTC.Defaults.SCTIconSize.."]")
+ZO_CreateStringId("FTC_Menu_SIconSDesc",    "Ändert die Symbolgröße im SCT. [Standart: "..FTC.Defaults.SCTIconSize.."]")
 
-ZO_CreateStringId("FTC_Menu_SCTReset",      "SCT zurücksetzen")
-ZO_CreateStringId("FTC_Menu_SCTResetDesc",  "Setzt die Einstellungen des FTC Schwebender Kampftext zurück auf die Standartwerte.")
+ZO_CreateStringId("FTC_Menu_SCTReset",      "Zurücksetzen")
+ZO_CreateStringId("FTC_Menu_SCTResetDesc",  "Setzt die FTC Scrolling Combat Text Einstellungen zurück auf die Standartwerte.")
 
 -- Menu Display Words
 ZO_CreateStringId("FTC_FakeDamage",         "Test Schaden")
@@ -265,13 +265,13 @@ ZO_CreateStringId("FTC_FakeHeal",           "Test Heilung")
 --[[----------------------------------------------------------
     SCT ALERTS
   ]]----------------------------------------------------------
-ZO_CreateStringId("FTC_LowHealth",          "Wenig Leben")
-ZO_CreateStringId("FTC_LowMagicka",         "Wenig Magicka")
-ZO_CreateStringId("FTC_LowStamina",         "Wenig Stamina")
+ZO_CreateStringId("FTC_LowHealth",          "wenig Leben")
+ZO_CreateStringId("FTC_LowMagicka",         "wenig Magicka")
+ZO_CreateStringId("FTC_LowStamina",         "wenig Stamina")
 ZO_CreateStringId("FTC_Experience",         "Erfahrung")
-ZO_CreateStringId("FTC_AlliancePoints",     "Allianzpunkte")
+ZO_CreateStringId("FTC_AlliancePoints",     "Allianz Punkte")
 ZO_CreateStringId("FTC_Stunned",            "Betäubt")
-ZO_CreateStringId("FTC_Disoriented",        "Orientierungslos")
+ZO_CreateStringId("FTC_Disoriented",        "Desorientiert")
 ZO_CreateStringId("FTC_Offbalance",         "Aus dem Gleichgewicht")
 ZO_CreateStringId("FTC_Staggered",          "Taumelnd")
 ZO_CreateStringId("FTC_Interrupted",        "Unterbrochen")

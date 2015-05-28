@@ -324,6 +324,9 @@
             return 
         end
 
+        -- Otherwise make sure the defaults stay hidden
+        ZO_UnitFramesGroups:SetHidden(true)
+
         -- Retrieve the frame
         local i = GetGroupIndexByUnitTag(unitTag)
         local frame = _G["FTC_GroupFrame"..i]

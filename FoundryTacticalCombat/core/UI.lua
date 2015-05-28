@@ -146,6 +146,7 @@ FTC.UI.Textures     = {
             [29293] = '/esoui/art/icons/ability_dualwield_001.dds',                 -- Twin Slashes Bleed
             [38841] = '/esoui/art/icons/ability_dualwield_001.dds',                 -- Rending Slashes Bleed
             [38848] = '/esoui/art/icons/ability_dualwield_001.dds',                 -- Blood Craze Bleed
+          --[xxxxx] = ,                                                             -- Blade Cloak
             
             [38401] = '/esoui/art/icons/ability_1handed_003.dds',                   -- Shielded Assault
 
