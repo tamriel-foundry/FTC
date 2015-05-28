@@ -421,7 +421,7 @@
             
             -- Maybe add shielding
             if ( powerType == POWERTYPE_HEALTH ) then
-                local slabel = ( round ) and FTC.DisplayNumber(data.shield.current/1000,1).."k" or FTC.DisplayNumber(data.shield.current/1000)
+                local slabel = ( round ) and FTC.DisplayNumber(data.shield.current/1000,1).."k" or FTC.DisplayNumber(data.shield.current)
                 label = ( data.shield.current ~= nil and data.shield.current > 0 ) and label .. " [" .. slabel .. "]" or label
             end
 

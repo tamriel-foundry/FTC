@@ -162,7 +162,6 @@
 
 			-- Fire if eligible
 			local slot = FTC.Sorcerer.fragSlot
-			d(beginTime  - GetFrameTimeSeconds())
 			if slot ~= nil and ( GetFrameTimeSeconds() - beginTime <= 0.1 ) then
 
 				-- Trigger a buff
