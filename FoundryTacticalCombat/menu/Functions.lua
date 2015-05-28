@@ -125,8 +125,10 @@
                 local anchor = FTC.Vars.FTC_PlayerDebuffs
                 FTC_PlayerDebuffs:SetAnchor(anchor[1],FTC_UI,anchor[2],anchor[3],anchor[4])
 
-                -- Restore buffs for player
+                -- Empty Buffs
                 FTC.Buffs.Player = {}
+                FTC.Buffs.Target = {}
+                FTC.Buffs:ReleaseUnusedBuffs()
                 EVENT_MANAGER:UnregisterForUpdate( "FTC_MenuBuffs" )
                 FTC.Buffs:GetBuffs('player')
             end

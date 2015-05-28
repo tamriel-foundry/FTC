@@ -146,7 +146,7 @@
             end
             
             -- Fire a callback to hook extensions
-            CALLBACK_MANAGER:FireCallbacks( "FTC_SpellCast" , ability )
+            if ( not ability.ground ) then CALLBACK_MANAGER:FireCallbacks( "FTC_SpellCast" , ability ) end
 
             -- Flag the last cast time  
             FTC.Buffs.lastCast = time

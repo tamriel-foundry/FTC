@@ -86,6 +86,7 @@ hotbar/controls.lua
 menu/functions.lua
 menu/controls.lua
 
+extensions/global.lua
 extensions/sorcerer.lua
 
 lang/en.lua

@@ -26,7 +26,7 @@ DONE		Log				Process all damage events into log
 DONE	Scrolling Combat Text
 DONE		Options			icon and/or text
 DONE		Options			font size, color, etc...
-			Options			show rounded or complete numbers
+DONE		Options			show rounded or complete numbers
 			Frames			Show large Mag/Stam +/- next to frames
 		
 DONE	Alerts
@@ -44,20 +44,20 @@ DONE		Options			role colors, etc...
 DONE	Raid Frames
 
 
-
-
-		Weapons
-			Burning
-			Poisoned
-			Diseased
-			Bow roll dodge
+		Global
+DONE		Burning
+DONE		Poisoned
+NOT POSS.	Bow roll dodge 
 			Empower Wrecking Blow
+			Might of the Guild
+			Ultimate gain buff?
+			AvA Combat Medic / Reach
+			Cleanse alert?
 
-
-		Sorcerer
+DONE	Sorcerer
 DONE		Crystal Frags
 DONE		Bolt Escape Cost
-			Exploitation
+DONE		Exploitation
 DONE		Break sorc bubble on damage
 DONE		Purge runes/mines on damage
 
@@ -81,12 +81,9 @@ DONE		Purge runes/mines on damage
 
 
 
-			Might of the Guild
-			Ultimate gain buff?
-			Cleanse alert?
 
 
-			AvA Combat Medic / Reach
+
 
 
 

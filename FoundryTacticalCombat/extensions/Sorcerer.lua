@@ -2,9 +2,9 @@
 --[[----------------------------------------------------------
     FTC SORCERER EXTENSION
   ]]----------------------------------------------------------
-	
-	CALLBACK_MANAGER:RegisterCallback( "FTC_Ready" , function() FTC.Sorcerer:Initialize()  end )
+
 	FTC.Sorcerer = {}
+	CALLBACK_MANAGER:RegisterCallback( "FTC_Ready" , function() FTC.Sorcerer:Initialize()  end )
 
     --[[ 
      * Initialize Sorcerer Extension
@@ -20,7 +20,7 @@
 			
 			-- Register callback
 			CALLBACK_MANAGER:RegisterCallback( "FTC_SpellCast", 	function( ability ) FTC.Sorcerer.SpellCast( ability ) end )
-			CALLBACK_MANAGER:RegisterCallback( "FTC_NewDamage", 	function( ability ) FTC.Sorcerer.NewDamage( ability ) end )
+			CALLBACK_MANAGER:RegisterCallback( "FTC_NewDamage", 	function( damage )  FTC.Sorcerer.NewDamage( damage ) end )
 
 	        -- Register events
 	        EVENT_MANAGER:RegisterForEvent( "FTC_Sorcerer", 		EVENT_EFFECT_CHANGED , FTC.Sorcerer.EffectChanged )
