@@ -255,6 +255,9 @@
 		
 		-- Submit the new status
 		FTC.SCT:NewAlert( newAlert )
+
+		-- Reset backlogged AP
+		FTC.SCT.backAP = 0
 	end
 
 	--[[ 
