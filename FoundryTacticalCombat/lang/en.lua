@@ -14,13 +14,6 @@ ZO_CreateStringId("SI_BINDING_NAME_DISPLAY_DAMAGE_REPORT",  "Display Damage Repo
 ZO_CreateStringId("SI_BINDING_NAME_POST_DAMAGE_RESULTS",    "Post Damage Results")
 
 --[[----------------------------------------------------------
-    DAMAGE WORDS
-  ]]----------------------------------------------------------
-ZO_CreateStringId("FTC_Falling",            "Falling")
-ZO_CreateStringId("FTC_Dead",               "Dead")
-ZO_CreateStringId("FTC_Offline",            "Offline")
-
---[[----------------------------------------------------------
     MENU CORE
   ]]----------------------------------------------------------
 ZO_CreateStringId("FTC_Menu_Configure",     "Configure Addon Components")
@@ -35,11 +28,11 @@ local default = ( FTC.Defaults.EnableBuffs ) and "Enabled" or "Disabled"
 ZO_CreateStringId("FTC_Menu_Buffs",         "Enable Buff Tracking")
 ZO_CreateStringId("FTC_Menu_BuffsDesc",     "Enable buff and debuff tracking component? [Default: "..default.."]")
 
-local default = ( FTC.Defaults.EnableLog ) and "Enabled" or "Disabled"
+local default = ( FTC.Defaults.EnableLog )  and "Enabled" or "Disabled"
 ZO_CreateStringId("FTC_Menu_Log",         	"Enable Combat Log")
 ZO_CreateStringId("FTC_Menu_LogDesc",     	"Enable chat-based combat log component? [Default: "..default.."]")
 
-local default = ( FTC.Defaults.EnableSCT ) and "Enabled" or "Disabled"
+local default = ( FTC.Defaults.EnableSCT )  and "Enabled" or "Disabled"
 ZO_CreateStringId("FTC_Menu_SCT",           "Enable Combat Text")
 ZO_CreateStringId("FTC_Menu_SCTDesc",       "Enable scrolling combat text component? [Default: "..default.."]")
 
@@ -57,6 +50,16 @@ ZO_CreateStringId("FTC_Menu_MoveDesc",      "Modify the position of FTC interfac
 --[[----------------------------------------------------------
     UNIT FRAMES
   ]]----------------------------------------------------------
+
+-- Unit Frames UI
+ZO_CreateStringId("FTC_PF_Label",           "Player Frame")
+ZO_CreateStringId("FTC_TF_Label",           "Target Frame")
+ZO_CreateStringId("FTC_GF_Label",           "Group Frame")
+ZO_CreateStringId("FTC_RF_Label",           "Raid Frame")
+ZO_CreateStringId("FTC_Dead",               "Dead")
+ZO_CreateStringId("FTC_Offline",            "Offline")
+
+-- Unit Frames Menu
 ZO_CreateStringId("FTC_Menu_FHeader",       "Configure Unit Frames Settings")
 
 ZO_CreateStringId("FTC_Menu_FWidth",        "Unit Frames Width")
@@ -163,6 +166,17 @@ ZO_CreateStringId("FTC_Menu_FResetDesc",    "Reset original settings for FTC uni
 --[[----------------------------------------------------------
     BUFF TRACKING
   ]]----------------------------------------------------------
+
+-- Buff Tracking UI
+ZO_CreateStringId("FTC_PlayerBuff",         "Player Buff")
+ZO_CreateStringId("FTC_PlayerDebuff",       "Player Debuff")
+ZO_CreateStringId("FTC_PB_Label",           "Player Buffs")
+ZO_CreateStringId("FTC_PD_Label",           "Player Debuffs")
+ZO_CreateStringId("FTC_LB_Label",           "L\no\nn\ng\n\nB\nu\nf\nf\ns")
+ZO_CreateStringId("FTC_TB_Label",           "Target Buffs")
+ZO_CreateStringId("FTC_TD_Label",           "Target Debuffs")
+
+-- Buff Tracking Menu
 ZO_CreateStringId("FTC_Menu_BHeader",       "Configure Buff Tracker Settings")
 
 ZO_CreateStringId("FTC_BuffFormat0",   		  "Disabled")
@@ -198,16 +212,17 @@ ZO_CreateStringId("FTC_Menu_BFontSDesc",    "Change the base scale of the fonts 
 ZO_CreateStringId("FTC_Menu_BReset",        "Reset Buff Tracking")
 ZO_CreateStringId("FTC_Menu_BResetDesc",    "Reset original settings for FTC buff tracking component.")
 
--- Menu Display Words
-ZO_CreateStringId("FTC_PlayerBuff",         "Player Buff")
-ZO_CreateStringId("FTC_PlayerDebuff",       "Player Debuff")
-
 --[[----------------------------------------------------------
     COMBAT LOG
   ]]----------------------------------------------------------
+
+-- Combat Log UI
+ZO_CreateStringId("FTC_CL_Label",           "Combat Log")
+
+-- Combat Log Menu
 ZO_CreateStringId("FTC_Menu_LHeader",       "Configure Combat Log Settings")
 
-local default = FTC.Defaults.AlternateChat and "Enabled" or "Disabled"
+local default = FTC.Defaults.AlternateChat  and "Enabled" or "Disabled"
 ZO_CreateStringId("FTC_Menu_LAltChat",     	"Alternate With Chat")
 ZO_CreateStringId("FTC_Menu_LAltChatDesc", 	"Alternate Combat Log visibility with primary chat window? [Default: "..default.."]")
 
@@ -223,17 +238,45 @@ ZO_CreateStringId("FTC_Menu_LResetDesc",    "Reset original settings for FTC com
 --[[----------------------------------------------------------
     SCROLLING COMBAT TEXT
   ]]----------------------------------------------------------
+
+-- Combat Text UI
+ZO_CreateStringId("FTC_OD_Label",           "Outgoing Damage")
+ZO_CreateStringId("FTC_ID_Label",           "Incoming Damage")
+ZO_CreateStringId("FTC_CA_Label",           "Combat Alerts")
+ZO_CreateStringId("FTC_LowHealth",          "Low Health")
+ZO_CreateStringId("FTC_LowMagicka",         "Low Magicka")
+ZO_CreateStringId("FTC_LowStamina",         "Low Stamina")
+ZO_CreateStringId("FTC_Experience",         "Experience")
+ZO_CreateStringId("FTC_AlliancePoints",     "Alliance Points")
+ZO_CreateStringId("FTC_Stunned",            "Stunned")
+ZO_CreateStringId("FTC_Disoriented",        "Disoriented")
+ZO_CreateStringId("FTC_Offbalance",         "Off Balance")
+ZO_CreateStringId("FTC_Staggered",          "Staggered")
+ZO_CreateStringId("FTC_Interrupted",        "Interrupted")
+ZO_CreateStringId("FTC_Feared",             "Feared")
+ZO_CreateStringId("FTC_Silenced",           "Silenced")
+ZO_CreateStringId("FTC_Rooted",             "Rooted")
+ZO_CreateStringId("FTC_BreakFree",          "Break Free")
+ZO_CreateStringId("FTC_Potion",             "Potion Available")
+ZO_CreateStringId("FTC_Ultimate",           "Ultimate Available")
+ZO_CreateStringId("FTC_CombatIn",           "Entered Combat")
+ZO_CreateStringId("FTC_CombatOut",          "Left Combat")
+ZO_CreateStringId("FTC_Falling",            "Falling")
+ZO_CreateStringId("FTC_FakeDamage",         "Fake Damage")
+ZO_CreateStringId("FTC_FakeHeal",           "Fake Heal")
+
+-- Combat Text Menu
 ZO_CreateStringId("FTC_Menu_SHeader",       "Configure Combat Text Settings")
 
-local default = FTC.Defaults.SCTIcons and "Enabled" or "Disabled"
+local default = FTC.Defaults.SCTIcons       and "Enabled" or "Disabled"
 ZO_CreateStringId("FTC_Menu_SIcons",        "Display SCT Icons")
 ZO_CreateStringId("FTC_Menu_SIconsDesc",    "Display ability icons beside scrolling combat text? [Default: "..default.."]")
 
-local default = FTC.Defaults.SCTNames and "Enabled" or "Disabled"
+local default = FTC.Defaults.SCTNames       and "Enabled" or "Disabled"
 ZO_CreateStringId("FTC_Menu_SNames",        "Display SCT Names")
 ZO_CreateStringId("FTC_Menu_SNamesDesc",    "Display ability names when possible in scrolling combat text? [Default: "..default.."]")
 
-local default = FTC.Defaults.SCTRound and "Enabled" or "Disabled"
+local default = FTC.Defaults.SCTRound       and "Enabled" or "Disabled"
 ZO_CreateStringId("FTC_Menu_SRound",        "Shorten Numbers")
 ZO_CreateStringId("FTC_Menu_SRoundDesc",    "Round damage numbers to the nearest hundred; for example 9,543 becomes 9.5k. [Default: "..default.."]")
 
@@ -258,48 +301,11 @@ ZO_CreateStringId("FTC_Menu_SIconSDesc",    "Change the size of icons displayed 
 ZO_CreateStringId("FTC_Menu_SCTReset",      "Reset SCT")
 ZO_CreateStringId("FTC_Menu_SCTResetDesc",  "Reset original settings for FTC scrolling combat text component.")
 
--- Menu Display Words
-ZO_CreateStringId("FTC_FakeDamage",         "Fake Damage")
-ZO_CreateStringId("FTC_FakeHeal",           "Fake Heal")
-
---[[----------------------------------------------------------
-    SCT ALERTS
-  ]]----------------------------------------------------------
-ZO_CreateStringId("FTC_LowHealth",          "Low Health")
-ZO_CreateStringId("FTC_LowMagicka",         "Low Magicka")
-ZO_CreateStringId("FTC_LowStamina",         "Low Stamina")
-ZO_CreateStringId("FTC_Experience",         "Experience")
-ZO_CreateStringId("FTC_AlliancePoints",     "Alliance Points")
-ZO_CreateStringId("FTC_Stunned",            "Stunned")
-ZO_CreateStringId("FTC_Disoriented",        "Disoriented")
-ZO_CreateStringId("FTC_Offbalance",         "Off Balance")
-ZO_CreateStringId("FTC_Staggered",          "Staggered")
-ZO_CreateStringId("FTC_Interrupted",        "Interrupted")
-ZO_CreateStringId("FTC_Feared",             "Feared")
-ZO_CreateStringId("FTC_Silenced",           "Silenced")
-ZO_CreateStringId("FTC_Rooted",             "Rooted")
-ZO_CreateStringId("FTC_BreakFree",          "Break Free")
-ZO_CreateStringId("FTC_Potion",             "Potion Available")
-ZO_CreateStringId("FTC_Ultimate",           "Ultimate Available")
-ZO_CreateStringId("FTC_CombatIn",           "Entered Combat")
-ZO_CreateStringId("FTC_CombatOut",          "Left Combat")
-
 --[[----------------------------------------------------------
     DAMAGE STATISTICS
   ]]----------------------------------------------------------
-ZO_CreateStringId("FTC_Menu_THeader",       "Configure Damage Statistics")
 
-ZO_CreateStringId("FTC_Menu_TTimeout",      "Timeout Threshold")
-ZO_CreateStringId("FTC_Menu_TTimeoutDesc",  "Set the number of seconds that must pass between damage events before a new encounter is recognized. [Default: "..FTC.Defaults.DamageTimeout.."]")
-
-local default = FTC.Defaults.StatTriggerHeals and "Enabled" or "Disabled"
-ZO_CreateStringId("FTC_Menu_TRHeal",        "Allow Healing Trigger")
-ZO_CreateStringId("FTC_Menu_TRHealDesc",    "Allow outgoing healing to trigger the start of a new encounter.")
-
-ZO_CreateStringId("FTC_Menu_TReset",        "Reset Stats")
-ZO_CreateStringId("FTC_Menu_TResetDesc",    "Reset original settings for FTC damage statistics component.")
-
--- Damage Report Words
+-- Damage Report UI
 ZO_CreateStringId("FTC_DReport",            "FTC Damage Report")
 ZO_CreateStringId("FTC_HReport",            "FTC Healing Report")
 ZO_CreateStringId("FTC_NoDamage",           "No damage to report!")
@@ -313,3 +319,16 @@ ZO_CreateStringId("FTC_Damage",             "Damage")
 ZO_CreateStringId("FTC_Healing",            "Healing")
 ZO_CreateStringId("FTC_DPS",                "DPS")
 ZO_CreateStringId("FTC_HPS",                "HPS")
+
+-- Damage Report Menu
+ZO_CreateStringId("FTC_Menu_THeader",       "Configure Damage Statistics")
+
+ZO_CreateStringId("FTC_Menu_TTimeout",      "Timeout Threshold")
+ZO_CreateStringId("FTC_Menu_TTimeoutDesc",  "Set the number of seconds that must pass between damage events before a new encounter is recognized. [Default: "..FTC.Defaults.DamageTimeout.."]")
+
+local default = FTC.Defaults.StatTriggerHeals and "Enabled" or "Disabled"
+ZO_CreateStringId("FTC_Menu_TRHeal",        "Allow Healing Trigger")
+ZO_CreateStringId("FTC_Menu_TRHealDesc",    "Allow outgoing healing to trigger the start of a new encounter.")
+
+ZO_CreateStringId("FTC_Menu_TReset",        "Reset Stats")
+ZO_CreateStringId("FTC_Menu_TResetDesc",    "Reset original settings for FTC damage statistics component.")

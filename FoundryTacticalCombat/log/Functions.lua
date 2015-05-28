@@ -30,7 +30,7 @@ FTC:JoinTables(FTC.Defaults,FTC.Log.Defaults)
 		LMW = LibStub("LibMsgWin-1.0")
 
 		-- Maybe create the log
-		if ( FTC_CombatLog == nil ) then FCL = LMW:CreateMsgWindow("FTC_CombatLog", "Combat Log", nil , nil ) end
+		if ( FTC_CombatLog == nil ) then FCL = LMW:CreateMsgWindow("FTC_CombatLog", GetString(FTC_CL_Label) , nil , nil ) end
 		FCL:SetDimensions(FTC.Vars.LogWidth,FTC.Vars.LogHeight)
 		FCL:SetParent(FTC_UI)
 		FCL:ClearAnchors()

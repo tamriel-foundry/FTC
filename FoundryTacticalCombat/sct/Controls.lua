@@ -14,7 +14,7 @@
 		-- Create outgoing damage container
 		local CTO 		= FTC.UI:Control(   "FTC_SCTOut",           FTC_UI,     {400,900},             	FTC.Vars.FTC_SCTOut,       	false )  
 	    CTO.backdrop 	= FTC.UI:Backdrop(  "FTC_SCTOut_BG",        CTO,     	"inherit",              {CENTER,CENTER,0,0},      	{0,0,0,0.4}, {0,0,0,1}, nil, true )
-	    CTO.label       = FTC.UI:Label(     "FTC_SCTOut_Label",     CTO,        "inherit",              {CENTER,CENTER,0,0},       	FTC.UI:Font("trajan",24,true) , nil , {1,1} , "Outgoing Damage" , true )   
+	    CTO.label       = FTC.UI:Label(     "FTC_SCTOut_Label",     CTO,        "inherit",              {CENTER,CENTER,0,0},       	FTC.UI:Font("trajan",24,true) , nil , {1,1} , GetString(FTC_OD_Label) , true )   
 	    CTO.backdrop:SetEdgeTexture("",16,4,4)	    
 	    CTO:SetDrawLayer(DL_BACKGROUND)
 	    CTO:SetMovable(true)
@@ -23,7 +23,7 @@
 		-- Create incoming damage container
 		local CTI 		= FTC.UI:Control(   "FTC_SCTIn",           FTC_UI,     	{400,900},             	FTC.Vars.FTC_SCTIn,       	false )  
 	    CTI.backdrop 	= FTC.UI:Backdrop(  "FTC_SCTIn_BG",        CTI,     	"inherit",              {CENTER,CENTER,0,0},      	{0,0,0,0.4}, {0,0,0,1}, nil, true )
-	    CTI.label       = FTC.UI:Label(     "FTC_SCTIn_Label",     CTI,        	"inherit",              {CENTER,CENTER,0,0},       	FTC.UI:Font("trajan",24,true) , nil , {1,1} , "Incoming Damage" , true )  
+	    CTI.label       = FTC.UI:Label(     "FTC_SCTIn_Label",     CTI,        	"inherit",              {CENTER,CENTER,0,0},       	FTC.UI:Font("trajan",24,true) , nil , {1,1} , GetString(FTC_ID_Label) , true )  
 	    CTI.backdrop:SetEdgeTexture("",16,4,4) 
 	    CTI:SetDrawLayer(DL_BACKGROUND)
 	    CTI:SetMovable(true)
@@ -32,7 +32,7 @@
 		-- Create alerts container
 		local CTA 		= FTC.UI:Control(   "FTC_SCTAlerts",       FTC_UI,     	{500,500},             	FTC.Vars.FTC_SCTAlerts,     false )  
 	    CTA.backdrop 	= FTC.UI:Backdrop(  "FTC_SCTAlerts_BG",    CTA,     	"inherit",              {CENTER,CENTER,0,0},      	{0,0,0,0.4}, {0,0,0,1}, nil, true )
-	    CTA.label       = FTC.UI:Label(     "FTC_SCTAlerts_Label", CTA,        	"inherit",              {CENTER,CENTER,0,0},       	FTC.UI:Font("trajan",24,true) , nil , {1,1} , "Combat Alerts" , true )  
+	    CTA.label       = FTC.UI:Label(     "FTC_SCTAlerts_Label", CTA,        	"inherit",              {CENTER,CENTER,0,0},       	FTC.UI:Font("trajan",24,true) , nil , {1,1} , GetString(FTC_CA_Label) , true )  
 	    CTA.backdrop:SetEdgeTexture("",16,4,4) 
 	    CTA:SetDrawLayer(DL_BACKGROUND)
 	    CTA:SetMovable(true)

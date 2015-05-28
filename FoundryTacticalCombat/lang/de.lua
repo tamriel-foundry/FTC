@@ -14,13 +14,6 @@ ZO_CreateStringId("SI_BINDING_NAME_DISPLAY_DAMAGE_REPORT",  "Schadensreport anze
 ZO_CreateStringId("SI_BINDING_NAME_POST_DAMAGE_RESULTS",    "Schadensreport in Chat einfügen")
 
 --[[----------------------------------------------------------
-    DAMAGE WORDS
-  ]]----------------------------------------------------------
-ZO_CreateStringId("FTC_Falling",            "Fallschaden")
-ZO_CreateStringId("FTC_Dead",               "Dead")
-ZO_CreateStringId("FTC_Offline",            "Offline")
-
---[[----------------------------------------------------------
     MENU CORE
   ]]----------------------------------------------------------
 ZO_CreateStringId("FTC_Menu_Configure",     "Addon Komponenten Einstellungen")
@@ -57,6 +50,16 @@ ZO_CreateStringId("FTC_Menu_MoveDesc",      "Die Positionen der einzelnen FTC UI
 --[[----------------------------------------------------------
     UNIT FRAMES
   ]]----------------------------------------------------------
+
+-- Unit Frames UI
+ZO_CreateStringId("FTC_PF_Label",           "Player Frame")
+ZO_CreateStringId("FTC_TF_Label",           "Target Frame")
+ZO_CreateStringId("FTC_GF_Label",           "Group Frame")
+ZO_CreateStringId("FTC_RF_Label",           "Raid Frame")
+ZO_CreateStringId("FTC_Dead",               "Dead")
+ZO_CreateStringId("FTC_Offline",            "Offline")
+
+-- Unit Frames Menu
 ZO_CreateStringId("FTC_Menu_FHeader",       "Einheitenfenster Einstellungen")
  
 ZO_CreateStringId("FTC_Menu_FWidth",        "Einheitenfenster Breite")
@@ -163,6 +166,17 @@ ZO_CreateStringId("FTC_Menu_FResetDesc",    "Setzt die FTC Einheitenfenster zur�
 --[[----------------------------------------------------------
     BUFF TRACKING
   ]]----------------------------------------------------------
+
+-- Buff Tracking UI
+--ZO_CreateStringId("FTC_PB_Label",           "Player Buffs")
+--ZO_CreateStringId("FTC_PD_Label",           "Player Debuffs")
+--ZO_CreateStringId("FTC_LB_Label",           "L\no\nn\ng\n\nB\nu\nf\nf\ns")
+--ZO_CreateStringId("FTC_TB_Label",           "Target Buffs")
+--ZO_CreateStringId("FTC_TD_Label",           "Target Debuffs")
+ZO_CreateStringId("FTC_PlayerBuff",         "Spielerr Buff")
+ZO_CreateStringId("FTC_PlayerDebuff",       "Spieler Debuff")
+
+-- Buff Tracking Menu
 ZO_CreateStringId("FTC_Menu_BHeader",       "Buff-Anzeige Einstellungen")
 
 ZO_CreateStringId("FTC_BuffFormat0",        "Deaktiviert")
@@ -197,14 +211,15 @@ ZO_CreateStringId("FTC_Menu_BFontSDesc",    "Ändert die Schriftgröße der FTC 
  
 ZO_CreateStringId("FTC_Menu_BReset",        "Zurücksetzen")
 ZO_CreateStringId("FTC_Menu_BResetDesc",    "Setzt die FTC Buff Einstellungen zurück auf die Standardwertet.")
-
--- Menu Display Words
-ZO_CreateStringId("FTC_PlayerBuff",         "Spielerr Buff")
-ZO_CreateStringId("FTC_PlayerDebuff",       "Spieler Debuff")
  
 --[[----------------------------------------------------------
     COMBAT LOG
   ]]----------------------------------------------------------
+
+-- Combat Log UI
+ZO_CreateStringId("FTC_CL_Label",            "Combat Log")
+
+-- Combat Log Menu
 ZO_CreateStringId("FTC_Menu_LHeader",       "Kampflog Einstellungen")
 
 local default = FTC.Defaults.AlternateChat and "Ein" or "Aus"
@@ -223,6 +238,34 @@ ZO_CreateStringId("FTC_Menu_LResetDesc",    "Setzt die FTC Kampflog Einstellunge
 --[[----------------------------------------------------------
     SCROLLING COMBAT TEXT
   ]]----------------------------------------------------------
+
+-- Combat Text UI
+--ZO_CreateStringId("FTC_OD_Label",           "Outgoing Damage")
+--ZO_CreateStringId("FTC_ID_Label",           "Incoming Damage")
+--ZO_CreateStringId("FTC_CA_Label",           "Combat Alerts")
+ZO_CreateStringId("FTC_LowHealth",          "Wenig Leben")
+ZO_CreateStringId("FTC_LowMagicka",         "Wenig Magicka")
+ZO_CreateStringId("FTC_LowStamina",         "Wenig Stamina")
+ZO_CreateStringId("FTC_Experience",         "Erfahrung")
+ZO_CreateStringId("FTC_AlliancePoints",     "Allianzpunkte")
+ZO_CreateStringId("FTC_Stunned",            "Betäubt")
+ZO_CreateStringId("FTC_Disoriented",        "Orientierungslos")
+ZO_CreateStringId("FTC_Offbalance",         "Aus dem Gleichgewicht")
+ZO_CreateStringId("FTC_Staggered",          "Taumelnd")
+ZO_CreateStringId("FTC_Interrupted",        "Unterbrochen")
+ZO_CreateStringId("FTC_Feared",             "Verängstigt")
+ZO_CreateStringId("FTC_Silenced",           "Stumm")
+ZO_CreateStringId("FTC_Rooted",             "Verwurzelt")
+ZO_CreateStringId("FTC_BreakFree",          "Entfesseln")
+ZO_CreateStringId("FTC_Potion",             "Trank verfügbar")
+ZO_CreateStringId("FTC_Ultimate",           "Ultimate verfügbar")
+ZO_CreateStringId("FTC_CombatIn",           "Im Kampf")
+ZO_CreateStringId("FTC_CombatOut",          "Kampfende")
+ZO_CreateStringId("FTC_Falling",            "Fallschaden")
+ZO_CreateStringId("FTC_FakeDamage",         "Test Schaden")
+ZO_CreateStringId("FTC_FakeHeal",           "Test Heilung")
+
+-- Combat Text Menu
 ZO_CreateStringId("FTC_Menu_SHeader",       "Schwebender Kampftext Einstellungen")
 
 local default = FTC.Defaults.SCTIcons and "Ein" or "Aus"
@@ -258,49 +301,11 @@ ZO_CreateStringId("FTC_Menu_SIconSDesc",    "Ändert die Symbolgröße im FTC Sc
 ZO_CreateStringId("FTC_Menu_SCTReset",      "SCT zurücksetzen")
 ZO_CreateStringId("FTC_Menu_SCTResetDesc",  "Setzt die Einstellungen des FTC Schwebender Kampftext zurück auf die Standartwerte.")
 
--- Menu Display Words
-ZO_CreateStringId("FTC_FakeDamage",         "Test Schaden")
-ZO_CreateStringId("FTC_FakeHeal",           "Test Heilung")
-
---[[----------------------------------------------------------
-    SCT ALERTS
-  ]]----------------------------------------------------------
-ZO_CreateStringId("FTC_LowHealth",          "Wenig Leben")
-ZO_CreateStringId("FTC_LowMagicka",         "Wenig Magicka")
-ZO_CreateStringId("FTC_LowStamina",         "Wenig Stamina")
-ZO_CreateStringId("FTC_Experience",         "Erfahrung")
-ZO_CreateStringId("FTC_AlliancePoints",     "Allianzpunkte")
-ZO_CreateStringId("FTC_Stunned",            "Betäubt")
-ZO_CreateStringId("FTC_Disoriented",        "Orientierungslos")
-ZO_CreateStringId("FTC_Offbalance",         "Aus dem Gleichgewicht")
-ZO_CreateStringId("FTC_Staggered",          "Taumelnd")
-ZO_CreateStringId("FTC_Interrupted",        "Unterbrochen")
-ZO_CreateStringId("FTC_Feared",             "Verängstigt")
-ZO_CreateStringId("FTC_Silenced",           "Stumm")
-ZO_CreateStringId("FTC_Rooted",             "Verwurzelt")
-ZO_CreateStringId("FTC_BreakFree",          "Entfesseln")
-ZO_CreateStringId("FTC_Potion",             "Trank verfügbar")
-ZO_CreateStringId("FTC_Ultimate",           "Ultimate verfügbar")
-ZO_CreateStringId("FTC_CombatIn",           "Im Kampf")
-ZO_CreateStringId("FTC_CombatOut",          "Kampfende")
-
 --[[----------------------------------------------------------
     DAMAGE STATISTICS
   ]]----------------------------------------------------------
-ZO_CreateStringId("FTC_Menu_THeader",       "Schadensstatistik Einstellungen")
 
-ZO_CreateStringId("FTC_Menu_TTimeout",      "Zeitüberschreitung in Sekunden")
-ZO_CreateStringId("FTC_Menu_TTimeoutDesc",  "Ändert die Sekunden, die nach einem Kampf vergehen müssen, damit Schadensstatistik neu aufgezeichnet wird. [Standart: "..FTC.Defaults.DamageTimeout.."]")
-
-
-local default = FTC.Defaults.StatTriggerHeals and "Ein" or "Aus"
-ZO_CreateStringId("FTC_Menu_TRHeal",        "Aktiviere Heilungstrigger")
-ZO_CreateStringId("FTC_Menu_TRHealDesc",    "Bei ausgehender Heilung wird die Schadensstatistik sofort aktiviert.")
-
-ZO_CreateStringId("FTC_Menu_TReset",        "Zurücksetzen")
-ZO_CreateStringId("FTC_Menu_TResetDesc",    "Setzt die Einstellungen der FTC Schadensstatistik zurück auf die Standartwerte.")
-
--- Damage Report Words
+-- Damage Report UI
 ZO_CreateStringId("FTC_DReport",            "FTC Schadensreport")
 ZO_CreateStringId("FTC_HReport",            "FTC Heilungseport")
 ZO_CreateStringId("FTC_NoDamage",           "Kein Schaden ausgeteilt!")
@@ -314,3 +319,16 @@ ZO_CreateStringId("FTC_Damage",             "Schaden")
 ZO_CreateStringId("FTC_Healing",            "Heilung")
 ZO_CreateStringId("FTC_DPS",                "DPS")
 ZO_CreateStringId("FTC_HPS",                "HPS")
+
+-- Damage Report Menu
+ZO_CreateStringId("FTC_Menu_THeader",       "Schadensstatistik Einstellungen")
+
+ZO_CreateStringId("FTC_Menu_TTimeout",      "Zeitüberschreitung in Sekunden")
+ZO_CreateStringId("FTC_Menu_TTimeoutDesc",  "Ändert die Sekunden, die nach einem Kampf vergehen müssen, damit Schadensstatistik neu aufgezeichnet wird. [Standart: "..FTC.Defaults.DamageTimeout.."]")
+
+local default = FTC.Defaults.StatTriggerHeals and "Ein" or "Aus"
+ZO_CreateStringId("FTC_Menu_TRHeal",        "Aktiviere Heilungstrigger")
+ZO_CreateStringId("FTC_Menu_TRHealDesc",    "Bei ausgehender Heilung wird die Schadensstatistik sofort aktiviert.")
+
+ZO_CreateStringId("FTC_Menu_TReset",        "Zurücksetzen")
+ZO_CreateStringId("FTC_Menu_TResetDesc",    "Setzt die Einstellungen der FTC Schadensstatistik zurück auf die Standartwerte.")
