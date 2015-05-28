@@ -277,6 +277,8 @@ ZO_CreateStringId("FTC_Menu_SCTResetDesc",  "Réinitialiser les paramètres orig
 --ZO_CreateStringId("FTC_Interrupted",        "Interrupted")
 --ZO_CreateStringId("FTC_Feared",             "Feared")
 --ZO_CreateStringId("FTC_Silenced",           "Silenced")
+--ZO_CreateStringId("FTC_Rooted",             "Rooted")
+--ZO_CreateStringId("FTC_BreakFree",          "Break Free")
 --ZO_CreateStringId("FTC_Potion",             "Potion Available")
 --ZO_CreateStringId("FTC_Ultimate",           "Ultimate Available")
 --ZO_CreateStringId("FTC_CombatIn",           "Entered Combat")

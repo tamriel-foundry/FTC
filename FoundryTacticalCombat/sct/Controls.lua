@@ -30,7 +30,7 @@
 	    CTI:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end)
 
 		-- Create alerts container
-		local CTA 		= FTC.UI:Control(   "FTC_SCTAlerts",       FTC_UI,     	{400,500},             	FTC.Vars.FTC_SCTAlerts,     false )  
+		local CTA 		= FTC.UI:Control(   "FTC_SCTAlerts",       FTC_UI,     	{500,500},             	FTC.Vars.FTC_SCTAlerts,     false )  
 	    CTA.backdrop 	= FTC.UI:Backdrop(  "FTC_SCTAlerts_BG",    CTA,     	"inherit",              {CENTER,CENTER,0,0},      	{0,0,0,0.4}, {0,0,0,1}, nil, true )
 	    CTA.label       = FTC.UI:Label(     "FTC_SCTAlerts_Label", CTA,        	"inherit",              {CENTER,CENTER,0,0},       	FTC.UI:Font("trajan",24,true) , nil , {1,1} , "Combat Alerts" , true )  
 	    CTA.backdrop:SetEdgeTexture("",16,4,4) 
@@ -152,8 +152,8 @@
 
 	    -- Create buff
 	    local size		= FTC.Vars.SCTIconSize
-	    local control  	= FTC.UI:Control(  "FTC_SCTAlert"..counter,            FTC_SCTAlerts,   {400,50},  {CENTER,CENTER,0,0},  false )
-	    control.label   = FTC.UI:Label(    "FTC_SCTAlert"..counter.."_Label",  control, 		{250,50},  {CENTER,CENTER,0,0},  nil , {1,1,1,1}, {0,1}, "Alert", false )
+	    local control  	= FTC.UI:Control(  "FTC_SCTAlert"..counter,            FTC_SCTAlerts,   {500,50},  {CENTER,CENTER,0,0},  false )
+	    control.label   = FTC.UI:Label(    "FTC_SCTAlert"..counter.."_Label",  control, 		{500,50},  {CENTER,CENTER,0,0},  nil , {1,1,1,1}, {1,1}, "Alert", false )
 
 	    -- Return buff to pool
 	    return control

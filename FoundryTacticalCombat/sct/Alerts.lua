@@ -154,54 +154,71 @@
 	* Called by FTC.OnPowerUpdate()
 	* --------------------------------
 	]]--
-	function FTC.SCT:NewCC( result , outgoing )
+	function FTC.SCT:NewCC( result , abilityName , outgoing )
 
 		-- Only handle incoming CC for now
 		if ( outgoing ) then return end
-		
-		-- Determine result
-		local CC = {
-			[ACTION_RESULT_INTERRUPT]	= {
-				["label"]		= GetString(FTC_Interrupted),
-				["color"] 		= {0.8,0,0},
-			},
-			[ACTION_RESULT_STUNNED]		= {
-				["label"]		= GetString(FTC_Stunned),
-				["color"] 		= {0.8,0,0},
-			},
-			[ACTION_RESULT_OFFBALANCE]	= {
-				["label"]		= GetString(FTC_Offbalance),
-				["color"] 		= {0.8,0,0},
-			},
-			[ACTION_RESULT_DISORIENTED]	= {
-				["label"]		= GetString(FTC_Disoriented),
-				["color"] 		= {0.8,0,0},
-			},
-			[ACTION_RESULT_STAGGERED]	= {
-				["label"]		= GetString(FTC_Staggered),
-				["color"] 		= {0.8,0,0},
-			},
-			[ACTION_RESULT_FEARED]		= {
-				["label"]		= GetString(FTC_Feared),
-				["color"] 		= {0.8,0,0},
-			},
-			[ACTION_RESULT_SILENCED]	= {
-				["label"]		= GetString(FTC_Silenced),
-				["color"] 		= {0.8,0,0},
-			},
-		}
 
-		-- Submit an object
-		local newAlert = {
-			["name"]	= "cc"..result,
-			["label"]	= CC[result].label .. "!",
-			["color"]	= CC[result].color,
-			["size"]	= FTC.Vars.SCTFontSize+12,
-			["buffer"]	= 250,
-		}
+		-- Crowd control breaks
+		if ( abilityName == GetAbilityName(16565) ) then
+			local newAlert = {
+				["name"]	= "ccBreak",
+				["label"]	= GetString(FTC_BreakFree) .. "!",
+				["color"]	= {0.4,0.8,0},
+				["size"]	= FTC.Vars.SCTFontSize+12,
+				["buffer"]	= 5000,
+			}
+			FTC.SCT:NewAlert( newAlert )
+
+		-- Crowd control effects
+		else
 		
-		-- Submit the new status
-		FTC.SCT:NewAlert( newAlert )
+			-- Determine result
+			local CC = {
+				[ACTION_RESULT_INTERRUPT]	= {
+					["label"]		= GetString(FTC_Interrupted),
+					["color"] 		= {0.8,0,0},
+				},
+				[ACTION_RESULT_STUNNED]		= {
+					["label"]		= GetString(FTC_Stunned),
+					["color"] 		= {0.8,0,0},
+				},
+				[ACTION_RESULT_OFFBALANCE]	= {
+					["label"]		= GetString(FTC_Offbalance),
+					["color"] 		= {0.8,0,0},
+				},
+				[ACTION_RESULT_DISORIENTED]	= {
+					["label"]		= GetString(FTC_Disoriented),
+					["color"] 		= {0.8,0,0},
+				},
+				[ACTION_RESULT_STAGGERED]	= {
+					["label"]		= GetString(FTC_Staggered),
+					["color"] 		= {0.8,0,0},
+				},
+				[ACTION_RESULT_FEARED]		= {
+					["label"]		= GetString(FTC_Feared),
+					["color"] 		= {0.8,0,0},
+				},
+				[ACTION_RESULT_SILENCED]	= {
+					["label"]		= GetString(FTC_Silenced),
+					["color"] 		= {0.8,0,0},
+				},
+				[ACTION_RESULT_ROOTED]	= {
+					["label"]		= GetString(FTC_Rooted),
+					["color"] 		= {0.8,0,0},
+				},
+			}
+
+			-- Submit the new status
+			local newAlert = {
+				["name"]	= "cc"..result,
+				["label"]	= CC[result].label .. "!",
+				["color"]	= CC[result].color,
+				["size"]	= FTC.Vars.SCTFontSize+12,
+				["buffer"]	= 4000,
+			}
+			FTC.SCT:NewAlert( newAlert )
+		end
 	end
 
 	--[[ 
@@ -305,11 +322,11 @@
 
 		-- Submit an object
 		local newAlert = {
-			["name"]	= "combat",
+			["name"]	= "combat" .. ( inCombat and "In" or "Out" ),
 			["label"]	= ( inCombat ) and GetString(FTC_CombatIn) or GetString(FTC_CombatOut),
-			["color"]	= {0.8,0.8,0},
+			["color"]	= {0.6,0.4,0},
 			["size"]	= FTC.Vars.SCTFontSize,
-			["buffer"]	= 0,
+			["buffer"]	= 1000,
 		}
 		
 		-- Submit the new status

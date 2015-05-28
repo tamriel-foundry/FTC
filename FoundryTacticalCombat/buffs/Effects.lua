@@ -119,9 +119,9 @@ function FTC.Buffs:RegisterEffects()
         [4737]  = { 0,    5.4,  0,    false },      -- Encase
         [28311] = { 0,    10.2, 0,    false },      -- Restraining Prison
         [28308] = { 0,    5.4,  0,    false },      -- Shattering Prison
-        [24371] = { 0,    19.9, 0,    false },      -- Rune Prison
-        [24578] = { 0 ,   21.7, 0,    false },      -- Rune Cage
-        [24574] = { 60,   0,    0,    false },      -- Defensive Rune
+        [24371] = { 0,    19.9, 1.5,  false },      -- Rune Prison
+        [24578] = { 0 ,   21.7, 1.5,  false },      -- Rune Cage
+        [24574] = { 60,   0,    1.5,  false },      -- Defensive Rune
         [24828] = { 0,    36,   0,    false },      -- Daedric Mines
         [24834] = { 0,    36,   0,    false },      -- Daedric Minefield
         [24842] = { 0,    36,   0,    false },      -- Daedric Tomb

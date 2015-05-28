@@ -111,29 +111,41 @@
 
 		-- Check if the player has defensive rune up
 		local defRune = GetAbilityName(24574)
-		if ( FTC.init.Buffs and FTC.Buffs.Player[defrune] ~= nil ) then
+		if ( FTC.init.Buffs and FTC.Buffs.Player[defRune] ~= nil and damage.result == ACTION_RESULT_DISORIENTED and damage.ability == defRune ) then
 
 			-- Expire the existing buff
-            local control = FTC.Buffs.Player[defrune].control
-            FTC.Buffs.Player[defrune] = nil 
+            local control = FTC.Buffs.Player[defRune].control
+            FTC.Buffs.Player[defRune] = nil 
 			FTC.Buffs.Pool:ReleaseObject(control.id)
 
-			-- Maybe trigger a debuff on the target
-			if ( DoesUnitExist('reticleover') ) then
-	            local ability  = {
-	                ["owner"]  = GetUnitName('reticleover'),
-	                ["id"]     = 24574,
-	                ["name"]   = defRune,
-	                ["cast"]   = 0,
-	                ["dur"]    = 16600,
-	                ["tex"]    = FTC.UI.Textures[defRune],
-	                ["ground"] = false,
-	                ["area"]   = false,
-	                ["debuff"] = true,
-	                ["toggle"] = nil,
-	            }
-	            FTC.Buffs:NewEffect( ability ) 
-          	end
+			-- Trigger a debuff on the target
+            local ability  = {
+                ["owner"]  = damage.target,
+                ["id"]     = 24574,
+                ["name"]   = defRune,
+                ["cast"]   = 0,
+                ["dur"]    = 16600,
+                ["tex"]    = damage.icon,
+                ["ground"] = false,
+                ["area"]   = false,
+                ["debuff"] = true,
+                ["toggle"] = nil,
+            }
+            FTC.Buffs:NewEffect( ability ) 
+
+        -- Check if the target has a rune to purge
+        elseif ( FTC.init.Buffs and damage.out and ( damage.result == ACTION_RESULT_DAMAGE or damage.result == ACTION_RESULT_CRITICAL_DAMAGE or damage.result == ACTION_RESULT_BLOCKED_DAMAGE or damage.result == ACTION_RESULT_DOT_TICK or damage.result == ACTION_RESULT_DOT_TICK_CRITICAL ) ) then
+
+        	-- Define runes
+        	local Runes = { GetAbilityName(24371) , GetAbilityName(24578) , GetAbilityName(24574) }
+        	for _ , name in pairs(Runes) do
+        		if ( FTC.Buffs.Target[name] ~= nil and damage.target == FTC.Buffs.Target[name].owner ) then
+		            local control = FTC.Buffs.Target[name].control
+		            FTC.Buffs.Target[name] = nil 
+					FTC.Buffs.Pool:ReleaseObject(control.id)
+					break
+				end
+        	end
 		end 
 	end
 
@@ -150,8 +162,8 @@
 
 			-- Fire if eligible
 			local slot = FTC.Sorcerer.fragSlot
-			if slot ~= nil then
-				local ms = GetGameTimeMilliseconds()
+			d(beginTime  - GetFrameTimeSeconds())
+			if slot ~= nil and ( GetFrameTimeSeconds() - beginTime <= 0.1 ) then
 
 				-- Trigger a buff
 				if ( FTC.init.Buffs ) then
@@ -177,7 +189,7 @@
 						["label"]	= effectName,
 						["color"]	= {0,0.5,1},
 						["size"]	= FTC.Vars.SCTFontSize + 8,
-						["buffer"]	= 5000,
+						["buffer"]	= 0,
 					}
 					FTC.SCT:NewAlert( newAlert )
 				end

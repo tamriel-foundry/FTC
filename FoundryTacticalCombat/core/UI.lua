@@ -134,6 +134,7 @@ FTC.UI.Textures     = {
             [30934] = '/esoui/art/icons/ability_rogue_037.dds',                     -- Dodge
             [20309] = '/esoui/art/icons/ability_rogue_044.dds',                     -- Hidden
             [24684] = '/esoui/art/icons/ability_rogue_044.dds',                     -- Stealth
+            [16565] = '/esoui/art/icons/ability_warrior_032.dds',                   -- CC Breaker
 
             -- Weapon Attacks
             [4858]  = '/esoui/art/icons/ability_warrior_011.dds',                   -- Bash
