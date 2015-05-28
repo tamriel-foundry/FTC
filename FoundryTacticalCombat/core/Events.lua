@@ -186,9 +186,10 @@
         -- Track Player, Target, and Group
         if ( unitTag ~= "player" and unitTag ~= "reticleover" and string.match(unitTag,"group") == nil ) then return end
 
-        -- Attribute Regeneration
-        if ( unitAttributeVisual == ATTRIBUTE_VISUAL_INCREASED_REGEN_POWER or unitAttributeVisual == ATTRIBUTE_VISUAL_DECREASED_REGEN_POWER ) then
-            if ( FTC.init.Frames )  then FTC.Frames:Regen(unitTag,unitAttributeVisual,powerType,2000) end   
+        -- Health Regeneration
+        if ( ( unitAttributeVisual == ATTRIBUTE_VISUAL_INCREASED_REGEN_POWER or unitAttributeVisual == ATTRIBUTE_VISUAL_DECREASED_REGEN_POWER ) and powerType == POWERTYPE_HEALTH ) then
+            if ( FTC.init.Frames ) then FTC.Frames:Regen(unitTag,unitAttributeVisual,powerType,2000) end
+            if ( FTC.init.SCT and unitAttributeVisual == ATTRIBUTE_VISUAL_DECREASED_REGEN_POWER ) then FTC.SCT:Cleanse() end
         
         -- Damage Shields 
         elseif ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH and value > 0) then

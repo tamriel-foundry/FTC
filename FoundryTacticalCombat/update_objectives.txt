@@ -1,6 +1,11 @@
 
 FTC Weekend of Code - Objectives!
 
+		Final Polish
+			Reduce default sizes for large UI scale (or maybe for everyone?)
+			Atrollpos?
+
+
 DONE	Unit Frames
 DONE		Options 		sizing, color, font, etc...
 DONE		Shielding		better representation of shielded health
@@ -49,11 +54,11 @@ DONE	Raid Frames
 DONE		Burning
 DONE		Poisoned
 NOT POSS.	Bow roll dodge 
-			Empower Wrecking Blow
-			Might of the Guild
+DONE		Empower Wrecking Blow
+DONE		Might of the Guild
 			Ultimate gain buff?
 			AvA Combat Medic / Reach
-			Cleanse alert?
+DONE		Cleanse alert?
 
 DONE	Sorcerer
 DONE		Crystal Frags

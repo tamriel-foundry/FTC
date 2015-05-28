@@ -260,6 +260,7 @@ ZO_CreateStringId("FTC_Menu_LResetDesc",    "Réinitialiser les paramètres orig
 --ZO_CreateStringId("FTC_Potion",             "Potion Available")
 --ZO_CreateStringId("FTC_Ultimate",           "Ultimate Available")
 --ZO_CreateStringId("FTC_CombatIn",           "Entered Combat")
+--ZO_CreateStringId("FTC_CleanseNow",         "Cleanse Now")
 --ZO_CreateStringId("FTC_CombatOut",          "Left Combat")
 --ZO_CreateStringId("FTC_Falling",            "Falling")
 --ZO_CreateStringId("FTC_FakeDamage",         "Fake Damage")

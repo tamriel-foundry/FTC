@@ -314,7 +314,6 @@
 		FTC.SCT:NewAlert( newAlert )
 	end
 
-
 	--[[ 
 	* Generate Combat State Alert
 	* --------------------------------
@@ -330,6 +329,27 @@
 			["color"]	= {0.6,0.4,0},
 			["size"]	= FTC.Vars.SCTFontSize,
 			["buffer"]	= 1000,
+		}
+		
+		-- Submit the new status
+		FTC.SCT:NewAlert( newAlert )
+	end
+
+	--[[ 
+	* Generate Cleanse Now Alert
+	* --------------------------------
+	* Called by FTC.OnPowerUpdate()
+	* --------------------------------
+	]]--
+	function FTC.SCT:Cleanse()
+
+		-- Submit an object
+		local newAlert = {
+			["name"]	= "cleanse",
+			["label"]	= GetString(FTC_CleanseNow) .. "!",
+			["color"]	= {0.4,0.8,0},
+			["size"]	= FTC.Vars.SCTFontSize+8,
+			["buffer"]	= 5000,
 		}
 		
 		-- Submit the new status
