@@ -155,6 +155,7 @@ FTC.UI.Textures     = {
 
             [29078] = '/esoui/art/icons/ability_destructionstaff_005.dds',          -- Frost Touch
             [29089] = '/esoui/art/icons/ability_destructionstaff_006.dds',          -- Shock Touch
+            [4539]  = '/esoui/art/icons/ability_destructionstaff_007.dds',          -- Flame Touch
             [62648] = '/esoui/art/icons/ability_destructionstaff_007.dds',          -- Fire Touch
             [39145] = '/esoui/art/icons/ability_destructionstaff_010.dds',          -- Fire Ring
             [39146] = '/esoui/art/icons/ability_destructionstaff_008.dds',          -- Frost Ring

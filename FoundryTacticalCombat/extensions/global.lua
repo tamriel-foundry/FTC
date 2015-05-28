@@ -42,7 +42,7 @@
 					-- Fire a buff
 		            local ability  = {
 		                ["owner"]  = FTC.Player.name,
-		                ["id"]     = 31389,
+		                ["id"]     = 45607,
 		                ["name"]   = GetAbilityName(45607),
 		                ["cast"]   = 0,
 		                ["dur"]    = 5000,
@@ -58,7 +58,7 @@
 					break
 				end
 			end
-		end		
+		end
 	end
 
 
@@ -107,9 +107,18 @@
             FTC.Buffs:NewEffect( ability )
 		end
 
-
-
-
+		-- Purge Empower Buffs on damage
+		if ( FTC.init.Buffs and damage.out and ( damage.result == ACTION_RESULT_DAMAGE or damage.result == ACTION_RESULT_CRITICAL_DAMAGE or damage.result == ACTION_RESULT_BLOCKED_DAMAGE or damage.result == ACTION_RESULT_DOT_TICK or damage.result == ACTION_RESULT_DOT_TICK_CRITICAL ) ) then
+			local Empowers = { 38807 , 45607 }
+			for i = 1 , #Empowers do
+				local name = GetAbilityName(Empowers[i])
+				if ( FTC.Buffs.Player[name] ~= nil and FTC.Buffs.Player[name].begin < GetFrameTimeSeconds() ) then
+		            local control = FTC.Buffs.Player[name].control
+		            FTC.Buffs.Player[name] = nil 
+					FTC.Buffs.Pool:ReleaseObject(control.id)
+				end
+			end
+		end
 	end
 
 
