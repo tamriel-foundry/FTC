@@ -230,7 +230,7 @@
 	function FTC.SCT:NewAP( eventCode, alliancePoints, playSound, difference )
 		
 	-- Save tiny AP rewards for later
-	if ( difference  < 5 ) then 
+	if ( difference > 0 and difference <= 5 ) then 
 		FTC.SCT.backAP = FTC.SCT.backAP + difference
 		return
 	end
