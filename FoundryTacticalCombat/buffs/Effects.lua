@@ -44,7 +44,7 @@ function FTC.Buffs:RegisterEffects()
         [38745] = { 0,    10,   0,    true },       -- Carve
         [21055] = { 0,    8,    0,    true },       -- Stampede
         [24648] = { 0,    3.5,  0,    true },       -- Uppercut
-        [38807] = { 0,    3.5,  0,    true },       -- Wrecking Blow
+        [38807] = { 5,    3.5,  0,    true },       -- Wrecking Blow
         [38814] = { 0,    7.5,  0,    true },       -- Dizzying Swing
         
         -- Bow
