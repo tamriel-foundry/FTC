@@ -34,10 +34,13 @@ FTC.UI.Textures     = {
         -- Create a parent FTC window
         FTC.UI:TopLevelWindow( "FTC_UI" , GuiRoot , {GuiRoot:GetWidth(),GuiRoot:GetHeight()} , {CENTER,CENTER,0,0} , false )
 
-        -- Add FTC HUD layer to the scene manager
+        -- Reference the FTC_UI layer as a scene fragment
         local fragment = ZO_HUDFadeSceneFragment:New(FTC_UI)
-        HUD_SCENE:AddFragment(fragment)
-        HUD_UI_SCENE:AddFragment(fragment)
+
+        -- Add the fragment to select scenes
+        SCENE_MANAGER:GetScene("hud"):AddFragment( fragment )
+        SCENE_MANAGER:GetScene("hudui"):AddFragment( fragment )
+        SCENE_MANAGER:GetScene("siegeBar"):AddFragment( fragment )
 
         -- Preload ability icons
         FTC:GetAbilityIcons()
@@ -127,6 +130,7 @@ FTC.UI.Textures     = {
             [21928] = '/esoui/art/icons/death_recap_disease_aoe.dds',               -- Pestilence
             [58856] = '/esoui/art/icons/death_recap_disease_aoe.dds',               -- Infection
             [5139]  = '/esoui/art/icons/death_recap_environmental.dds',             -- Lava
+          --[]  = ,                                                                 -- Intense Cold
             
             -- Defenses
             [2890]  = '/esoui/art/icons/ability_warrior_030.dds',                   -- Block
