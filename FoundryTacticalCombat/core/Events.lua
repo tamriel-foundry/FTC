@@ -14,6 +14,7 @@
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_PLAYER_ACTIVATED              , FTC.OnLoad )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_LAYER_POPPED           , FTC.OnLayerChange )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_LAYER_PUSHED           , FTC.OnLayerChange )
+        EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_SCREEN_RESIZED                , FTC.OnScreenResize )
 
         -- Target Events
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_RETICLE_TARGET_CHANGED        , FTC.OnTargetChanged )
@@ -96,7 +97,16 @@
         else d("[FTC] " .. GetString(FTC_LongInfo)) end
     end
 
-
+    --[[ 
+     * Handles UI Rescaling
+     * --------------------------------
+     * Called by EVENT_SCREEN_RESIZED
+     * Called by EVENT_ACTION_LAYER_PUSHED
+     * --------------------------------
+     ]]--
+    function FTC.OnScreenResize()
+        FTC.UI:TopLevelWindow( "FTC_UI" , GuiRoot , {GuiRoot:GetWidth(),GuiRoot:GetHeight()} , {CENTER,CENTER,0,0} , false )
+    end
 
 
 --[[----------------------------------------------------------
@@ -189,7 +199,7 @@
         -- Health Regeneration
         if ( ( unitAttributeVisual == ATTRIBUTE_VISUAL_INCREASED_REGEN_POWER or unitAttributeVisual == ATTRIBUTE_VISUAL_DECREASED_REGEN_POWER ) and powerType == POWERTYPE_HEALTH ) then
             if ( FTC.init.Frames ) then FTC.Frames:Regen(unitTag,unitAttributeVisual,powerType,2000) end
-            if ( FTC.init.SCT and unitAttributeVisual == ATTRIBUTE_VISUAL_DECREASED_REGEN_POWER ) then FTC.SCT:Cleanse() end
+            if ( FTC.init.SCT and unitAttributeVisual == ATTRIBUTE_VISUAL_DECREASED_REGEN_POWER and unitTag == "player" ) then FTC.SCT:Cleanse() end
         
         -- Damage Shields 
         elseif ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH and value > 0) then

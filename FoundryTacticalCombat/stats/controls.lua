@@ -34,7 +34,7 @@ function FTC.Stats:Controls()
 	--[[----------------------------------------------------------
 		EXPANDED ANALYTICS
 	  ]]----------------------------------------------------------
-	local FM 		= FTC.UI:TopLevelWindow( "FTC_Report", 					GuiRoot, 	{1000,1000}, 			{CENTER,CENTER,0,-50}, 			true )
+	local FM 		= FTC.UI:TopLevelWindow( "FTC_Report", 					GuiRoot, 	{1000,math.min(1000,GuiRoot:GetHeight()*0.8)}, 			{TOP,BOTTOM,0,20,ZO_CompassFrame}, true )
 	FM.backdrop 	= FTC.UI:Backdrop( 	"FTC_Report_Backdrop", 				FM, 		"inherit", 				{CENTER,CENTER,0,0}, 			{0,0,0,0.6}, {0,0,0,0.9}, nil, false )
 	FM.dtitle 		= FTC.UI:Label( 	"FTC_Report_DamageTitle", 			FM, 		{950,50}, 				{TOPLEFT,TOPLEFT,25,25}, 		"ZoFontWindowTitle", {1,1,1,1}, {0,1}, GetString(FTC_DReport), false )
 	FM.htitle		= FTC.UI:Label( 	"FTC_Report_HealingTitle", 			FM, 		{950,50}, 				{BOTTOMLEFT,BOTTOMLEFT,25,25}, 	"ZoFontWindowTitle", {1,1,1,1}, {0,1}, GetString(FTC_HReport), false )

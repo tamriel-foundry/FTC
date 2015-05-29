@@ -182,8 +182,10 @@ ZO_CreateStringId("FTC_Menu_BHeader",       "Modifier les paramètres de suivi d
 ZO_CreateStringId("FTC_BuffFormat0",        "Désactivé")
 ZO_CreateStringId("FTC_BuffFormat1",        "Tuiles Horizontales")
 ZO_CreateStringId("FTC_BuffFormat2",        "Tuiles Verticales")
-ZO_CreateStringId("FTC_BuffFormat3",        "Liste Descendante")
-ZO_CreateStringId("FTC_BuffFormat4",        "Liste Croissante")
+ZO_CreateStringId("FTC_BuffFormat3",        "Liste Descendante Gauche")
+ZO_CreateStringId("FTC_BuffFormat4",        "Liste Croissante Gauche")
+ZO_CreateStringId("FTC_BuffFormat5",        "Liste Descendante Droite")
+ZO_CreateStringId("FTC_BuffFormat6",        "Liste Croissante Droite")
 
 ZO_CreateStringId("FTC_Menu_BPBFormat",     "Format du Buff de joueur")
 ZO_CreateStringId("FTC_Menu_BPBFormatDesc", "Choisir le format désiré pour les buffs du joueur. [Défaut:: "..FTC.Menu:GetBuffFormat(FTC.Defaults.PlayerBuffFormat).."]")

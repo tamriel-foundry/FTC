@@ -10,7 +10,7 @@
         ["FTC_PlayerFrame"]         = {TOPRIGHT,CENTER,-250,180},
         ["EnableNameplate"]         = true,
         ["EnableXPBar"]             = true,
-        ["FrameWidth"]              = 350,
+        ["FrameWidth"]              = 300,
         ["FrameHeight"]             = 180,  
 
         -- Target Frame

@@ -60,7 +60,7 @@
 
                 -- Show the player frame
                 FTC_PlayerFrame:ClearAnchors()
-                FTC_PlayerFrame:SetAnchor(LEFT,FTC_UI,CENTER,25,0)
+                FTC_PlayerFrame:SetAnchor(LEFT,FTC_Menu,RIGHT,50,0)
                 FTC_PlayerFrame:SetHidden(false)
 
                 -- Spoof a shield on the player frame
@@ -73,19 +73,18 @@
                 -- Move buffs
                 local offsetY = ( FTC.Vars.FrameHeight ~= nil ) and ( FTC.Vars.FrameHeight / 2 ) + 6 or 106
                 FTC_PlayerBuffs:ClearAnchors()
-                FTC_PlayerBuffs:SetAnchor(TOPLEFT,FTC_UI,CENTER,25,offsetY)
+                FTC_PlayerBuffs:SetAnchor(TOPLEFT,FTC_Menu,RIGHT,50,offsetY)
                 FTC_PlayerDebuffs:ClearAnchors()
-                FTC_PlayerDebuffs:SetAnchor(BOTTOMLEFT,FTC_UI,CENTER,25,-1 * offsetY)
+                FTC_PlayerDebuffs:SetAnchor(BOTTOMLEFT,FTC_Menu,RIGHT,50,-1 * offsetY)
 
                 -- Spoof player buffs
-                FTC.Buffs.Target = {}
                 FTC.Menu.buffCounter = 1
                 EVENT_MANAGER:RegisterForUpdate( "FTC_MenuBuffs" , 100 , function() FTC.Menu:FakeBuffs() end )
             end
 
             -- Combat Text Display
             if ( FTC.init.SCT ) then
-                FTC_SCTIn:SetAnchor(LEFT,FTC_UI,CENTER,500,-50)
+                FTC_SCTIn:SetAnchor(RIGHT,FTC_UI,RIGHT,-50,-50)
                 EVENT_MANAGER:RegisterForUpdate( "FTC_MenuSCT" , 1000 , function() FTC.Menu:FakeSCT() end )
             end
 
@@ -126,10 +125,10 @@
                 FTC_PlayerDebuffs:SetAnchor(anchor[1],FTC_UI,anchor[2],anchor[3],anchor[4])
 
                 -- Empty Buffs
+                EVENT_MANAGER:UnregisterForUpdate( "FTC_MenuBuffs" )
                 FTC.Buffs.Player = {}
                 FTC.Buffs.Target = {}
                 FTC.Buffs:ReleaseUnusedBuffs()
-                EVENT_MANAGER:UnregisterForUpdate( "FTC_MenuBuffs" )
                 FTC.Buffs:GetBuffs('player')
             end
 
@@ -288,6 +287,12 @@
         -- Rebuild the frames dynamically
         FTC.Buffs:Controls()
 
+        -- Empty Buffs
+        FTC.Buffs.Player = {}
+        FTC.Buffs.Target = {}
+        FTC.Buffs:ReleaseUnusedBuffs()
+        FTC.Buffs:GetBuffs('player')
+
         -- Change fonts for active buffs
         for _ , buff in pairs(FTC.Buffs.Pool.m_Active) do 
             buff.label = FTC.UI:Label( "FTC_Buff"..buff.id.."_Label", buff, {50,20},  {BOTTOM,BOTTOM,-1,-4}, FTC.UI:Font(FTC.Vars.BuffsFont1,FTC.Vars.BuffsFontSize,true) , {0.8,1,1,1}, {1,1}, nil, false )
@@ -316,8 +321,10 @@
         if ( value == "disabled" )   then return GetString(FTC_BuffFormat0)
         elseif ( value == "htiles" ) then return GetString(FTC_BuffFormat1)
         elseif ( value == "vtiles" ) then return GetString(FTC_BuffFormat2)
-        elseif ( value == "dlist" )  then return GetString(FTC_BuffFormat3)
-        elseif ( value == "alist" )  then return GetString(FTC_BuffFormat4) end
+        elseif ( value == "ldlist" )  then return GetString(FTC_BuffFormat3)
+        elseif ( value == "lalist" )  then return GetString(FTC_BuffFormat4)
+        elseif ( value == "rdlist" )  then return GetString(FTC_BuffFormat5)
+        elseif ( value == "ralist" )  then return GetString(FTC_BuffFormat6) end
     end
 
     --[[ 
@@ -332,8 +339,10 @@
         if ( value == GetString(FTC_BuffFormat0) )     then FTC.Vars[setting] = "disabled"
         elseif ( value == GetString(FTC_BuffFormat1) ) then FTC.Vars[setting] = "htiles"
         elseif ( value == GetString(FTC_BuffFormat2) ) then FTC.Vars[setting] = "vtiles"
-        elseif ( value == GetString(FTC_BuffFormat3) ) then FTC.Vars[setting] = "dlist"
-        elseif ( value == GetString(FTC_BuffFormat4) ) then FTC.Vars[setting] = "alist" end
+        elseif ( value == GetString(FTC_BuffFormat3) ) then FTC.Vars[setting] = "ldlist"
+        elseif ( value == GetString(FTC_BuffFormat4) ) then FTC.Vars[setting] = "lalist"
+        elseif ( value == GetString(FTC_BuffFormat5) ) then FTC.Vars[setting] = "rdlist"
+        elseif ( value == GetString(FTC_BuffFormat6) ) then FTC.Vars[setting] = "ralist" end
 
         -- Reconstruct the buff tracking component
         FTC.Menu:UpdateBuffs()

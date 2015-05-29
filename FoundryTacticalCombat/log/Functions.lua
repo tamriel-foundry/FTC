@@ -6,13 +6,13 @@
 	FTC.Log		= {}
 	FTC.Log.Defaults = {
 	    ["FTC_CombatLog"]         	= {BOTTOMLEFT,FTC_UI,BOTTOMLEFT,24,-6},
-	    ["LogWidth"]         		= 460,
+	    ["LogWidth"]         		= 450,
 	    ["LogHeight"]         		= 300,
 	    ["AlternateChat"]         	= true,
 	    ["LogFont"]         		= "standard",
 	    ["LogFontSize"]         	= 16,
 	}
-FTC:JoinTables(FTC.Defaults,FTC.Log.Defaults)
+	FTC:JoinTables(FTC.Defaults,FTC.Log.Defaults)
 
 --[[----------------------------------------------------------
     COMBAT LOG FUNCTIONS
