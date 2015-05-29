@@ -36,7 +36,7 @@
         
         -- Action Bar Events
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_SLOT_UPDATED           , FTC.OnSlotUpdate )
-        EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTIVE_WEAPON_PAIR_CHANGED    , FTC.OnSwapWeapons )
+        EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_SLOTS_FULL_UPDATE      , FTC.OnSwapWeapons )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTIVE_QUICKSLOT_CHANGED      , FTC.OnQuickslotChanged )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_UPDATE_COOLDOWNS       , FTC.OnUpdateCooldowns )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_INVENTORY_ITEM_USED           , FTC.OnItemUsed )
@@ -49,7 +49,6 @@
 
         -- Group Events
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_CREATED                  , FTC.OnUnitCreated )
-      --EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_GROUP_MEMBER_JOINED           , FTC.OnGroupChanged )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_GROUP_MEMBER_LEFT             , FTC.OnGroupChanged )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_LEADER_UPDATE                 , FTC.OnGroupChanged )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_GROUP_MEMBER_CONNECTED_STATUS , FTC.OnGroupChanged )
@@ -391,11 +390,11 @@
     --[[ 
      * Handles Action Bar Swap
      * --------------------------------
-     * Called by EVENT_ACTIVE_WEAPON_PAIR_CHANGED
+     * Called by EVENT_ACTION_SLOTS_FULL_UPDATE
      * --------------------------------
      ]]--
-    function FTC:OnSwapWeapons( eventCode , activeWeaponPair , locked )
-        if ( not locked ) then FTC.Player:GetActionBar() end
+    function FTC:OnSwapWeapons( eventCode , isWeaponSwap )
+        FTC.Player:GetActionBar()
     end
 
     --[[ 
