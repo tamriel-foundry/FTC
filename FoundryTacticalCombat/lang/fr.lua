@@ -234,6 +234,9 @@ ZO_CreateStringId("FTC_Menu_LFontDesc",     "Changer la police utilisée dans le
 ZO_CreateStringId("FTC_Menu_LFontS",        "Taille de Police du Journal")
 ZO_CreateStringId("FTC_Menu_LFontSDesc",    "Changer la taile de la police utilisée dans le journal de combat de FTC. [Défaut: "..FTC.Defaults.LogFontSize.."]")
 
+--ZO_CreateStringId("FTC_Menu_LOpacity",      "Log Background Opacity")
+--ZO_CreateStringId("FTC_Menu_LOpacityDesc",  "Change the opacity of the background of the FTC combat log. [Default: "..FTC.Defaults.LogOpacity.."]")
+
 ZO_CreateStringId("FTC_Menu_LReset",        "Rénitialiser le Journal de Combat")
 ZO_CreateStringId("FTC_Menu_LResetDesc",    "Réinitialiser les paramètres originaux pour la composante de journalisation de combat de FTC.")
 

@@ -541,7 +541,7 @@
                     -- Set anchors
                     local anchor = {}
                     if (     format == "vtiles" ) then anchor = {BOTTOMRIGHT,container,BOTTOMRIGHT,0,((count-1)*-50)}
-                    elseif ( format == "htiles" ) then anchor = {BOTTOMLEFT,container,BOTTOMLEFT,((count-1)*50),0}
+                    elseif ( format == "htiles" ) then anchor = ( container == _G["FTC_LongBuffs"]) and {BOTTOMRIGHT,container,BOTTOMRIGHT,((count-1)*(-1*50)),0} or {BOTTOMLEFT,container,BOTTOMLEFT,((count-1)*50),0}
                     elseif ( format == "ldlist" ) then anchor = {TOPLEFT,container,TOPLEFT,0,((count-1)*50)}
                     elseif ( format == "lalist" ) then anchor = {BOTTOMLEFT,container,BOTTOMLEFT,0,((count-1)*-50)}
                     elseif ( format == "rdlist" ) then anchor = {TOPRIGHT,container,TOPRIGHT,0,((count-1)*50)}

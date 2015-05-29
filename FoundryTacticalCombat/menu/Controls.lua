@@ -561,6 +561,18 @@ function FTC.Menu:Controls()
             default     = FTC.Defaults.LogFontSize
         },
 
+        -- Combat Log Opacity
+        {   type        = "slider", 
+            name        = GetString(FTC_Menu_LOpacity),
+            tooltip     = GetString(FTC_Menu_LOpacityDesc),
+            min         = 0,
+            max         = 100, 
+            step        = 5, 
+            getFunc     = function() return FTC.Vars.LogOpacity end, 
+            setFunc     = function( value ) FTC.Menu:UpdateLog( "LogOpacity" , value ) end, 
+            default     = FTC.Defaults.LogOpacity
+        },
+
         -- Reset Log
         { 
             type        = "button", 

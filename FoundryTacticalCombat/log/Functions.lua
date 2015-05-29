@@ -11,6 +11,7 @@
 	    ["AlternateChat"]         	= true,
 	    ["LogFont"]         		= "standard",
 	    ["LogFontSize"]         	= 16,
+	    ["LogOpacity"]         		= 100,
 	}
 	FTC:JoinTables(FTC.Defaults,FTC.Log.Defaults)
 
@@ -43,6 +44,7 @@
 		FCL.buffer:SetFont(FTC.UI:Font(FTC.Vars.LogFont,FTC.Vars.LogFontSize,true))
 		FCL.buffer:SetMaxHistoryLines(1000)
 		FTC_CombatLogLabel:SetFont(FTC.UI:Font(FTC.Vars.LogFont,FTC.Vars.LogFontSize+2,true))
+		FTC_CombatLogBg:SetAlpha(FTC.Vars.LogOpacity/100)
 
 		-- Save initialization status
 		FTC.init.Log = true

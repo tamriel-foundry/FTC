@@ -147,7 +147,7 @@ function FTC.Frames:Controls()
     -- Nameplate
     local plate     = FTC.UI:Control(   "FTC_GroupFrame"..i.."_Plate",      member,     {member:GetWidth(),member:GetHeight()/3},               {TOP,TOP,0,0},                  false ) 
     plate.icon      = FTC.UI:Texture(   "FTC_GroupFrame"..i.."_Icon",       plate ,     {24,24},                                                {BOTTOMLEFT,BOTTOMLEFT,0,0},    "/esoui/art/lfg/lfg_leader_icon.dds", false )
-    plate.name      = FTC.UI:Label(     "FTC_GroupFrame"..i.."_Name",       plate,      {plate:GetWidth()-48,plate:GetHeight()},                {LEFT,RIGHT,6,0,plate.icon},    FTC.UI:Font(FTC.Vars.FrameFont1,FTC.Vars.GroupFontSize,true), nil, {0,1}, "Member "..i, false ) 
+    plate.name      = FTC.UI:Label(     "FTC_GroupFrame"..i.."_Name",       plate,      {plate:GetWidth()-24,plate:GetHeight()},                {LEFT,RIGHT,6,0,plate.icon},    FTC.UI:Font(FTC.Vars.FrameFont1,FTC.Vars.GroupFontSize,true), nil, {0,1}, "Member "..i, false ) 
     plate.class     = FTC.UI:Texture(   "FTC_GroupFrame"..i.."_Class",      plate ,     {24,24},                                                {BOTTOMRIGHT,BOTTOMRIGHT,0,0},  "/esoui/art/contacts/social_classicon_" .. FTC.Player.class .. ".dds", false )
     member.plate    = plate
 

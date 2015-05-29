@@ -234,6 +234,9 @@ ZO_CreateStringId("FTC_Menu_LFontDesc",     "Change the font used in the FTC com
 ZO_CreateStringId("FTC_Menu_LFontS",        "Log Font Size")
 ZO_CreateStringId("FTC_Menu_LFontSDesc",    "Change the font size used in the FTC combat log. [Default: "..FTC.Defaults.LogFontSize.."]")
 
+ZO_CreateStringId("FTC_Menu_LOpacity",      "Log Background Opacity")
+ZO_CreateStringId("FTC_Menu_LOpacityDesc",  "Change the opacity of the background of the FTC combat log. [Default: "..FTC.Defaults.LogOpacity.."]")
+
 ZO_CreateStringId("FTC_Menu_LReset",        "Reset Combat Log")
 ZO_CreateStringId("FTC_Menu_LResetDesc",    "Reset original settings for FTC combat log component.")
 
