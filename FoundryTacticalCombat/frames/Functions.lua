@@ -206,23 +206,18 @@
      ]]--
     function FTC.Frames:SetupGroup()
 
-        -- Bail out if the player is not grouped
-        if ( not IsUnitGrouped('player') ) then
-            FTC_GroupFrame:SetHidden(true) 
-            FTC_RaidFrame:SetHidden(true) 
-            return
-        end
-
         -- Using group frame
         local context   = nil
-        if ( GetGroupSize() <= 4 and FTC.Vars.EnableGroupFrames ) then 
+        if ( IsUnitGrouped('player') and GetGroupSize() <= 4 and FTC.Vars.EnableGroupFrames ) then 
             context = "Group"
             FTC_RaidFrame:SetHidden(true) 
+            ZO_UnitFramesGroups:SetHidden(true)
 
         -- Using raid frames
-        elseif ( FTC.Vars.EnableRaidFrames ) then
+        elseif ( IsUnitGrouped('player') and FTC.Vars.EnableRaidFrames ) then
             context = "Raid"
             FTC_GroupFrame:SetHidden(true) 
+            ZO_UnitFramesGroups:SetHidden(true)
 
         -- Using default frames
         else
@@ -306,7 +301,6 @@
 
         -- Display custom frames
         container:SetHidden(false)
-        ZO_UnitFramesGroups:SetHidden(true)
     end
 
 
@@ -318,18 +312,21 @@
      ]]--
     function FTC.Frames:GroupRange( unitTag , inRange )
 
-        -- Bail out if group frames are disabled
-        if ( not FTC.Vars.EnableGroupFrames or GetGroupSize() > 4 ) then 
-            ZO_UnitFramesGroups:SetHidden(false)
-            return 
-        end
+        -- Using group frame
+        local context   = nil
+        if ( GetGroupSize() <= 4 and FTC.Vars.EnableGroupFrames ) then 
+            context = "Group"
 
-        -- Otherwise make sure the defaults stay hidden
-        ZO_UnitFramesGroups:SetHidden(true)
+        -- Using raid frames
+        elseif ( FTC.Vars.EnableRaidFrames ) then
+            context = "Raid"
+
+        -- Otherwise bail out
+        else return end
 
         -- Retrieve the frame
         local i = GetGroupIndexByUnitTag(unitTag)
-        local frame = _G["FTC_GroupFrame"..i]
+        local frame = _G["FTC_"..context.."Frame"..i]
 
         -- Bail if the group member has not yet been set up
         if ( FTC.Group[i] == nil ) then return end
@@ -386,11 +383,9 @@
             -- Get the frame
             if ( GetGroupSize() <= 4 and FTC.Vars.EnableGroupFrames ) then 
                 frame = _G["FTC_GroupFrame" .. i]
-                ZO_UnitFramesGroups:SetHidden(true)
             elseif ( FTC.Vars.EnableRaidFrames ) then 
                 frame = _G["FTC_RaidFrame" .. i]  
                 round = true
-                ZO_UnitFramesGroups:SetHidden(true)
             end
 
             -- Run fade animation
