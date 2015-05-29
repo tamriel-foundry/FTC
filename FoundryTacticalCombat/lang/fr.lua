@@ -28,11 +28,11 @@ local default = ( FTC.Defaults.EnableBuffs ) and "Activé" or "Désactivé"
 ZO_CreateStringId("FTC_Menu_Buffs",         "Activer le Suivi de Buffs")
 ZO_CreateStringId("FTC_Menu_BuffsDesc",     "Activer le composant de suivi de Buffs et Débuffs? [Défaut: "..default.."]")
 
-local default = ( FTC.Defaults.EnableLog )  and "Activé" or "Désactivé"
+local default = ( FTC.Defaults.EnableLog ) and "Activé" or "Désactivé"
 ZO_CreateStringId("FTC_Menu_Log",           "Activer la Journalisation du Combat")
 ZO_CreateStringId("FTC_Menu_LogDesc",       "Activer le composant de journalisation du combat du chat? [Défaut: "..default.."]")
 
-local default = ( FTC.Defaults.EnableSCT )  and "Activé" or "Désactivé"
+local default = ( FTC.Defaults.EnableSCT ) and "Activé" or "Désactivé"
 ZO_CreateStringId("FTC_Menu_SCT",           "Activer le Texte de Combat")
 ZO_CreateStringId("FTC_Menu_SCTDesc",       "Activer le composant de défilement du texte de combat? [Défaut: "..default.."]")
 
@@ -60,7 +60,7 @@ ZO_CreateStringId("FTC_Dead",               "Mort")
 ZO_CreateStringId("FTC_Offline",            "Hors-Ligne")
 
 -- Unit Frames Menu
-ZO_CreateStringId("FTC_Menu_FHeader",       "Configurer les Paramètres des Cadres Unitaires")
+ZO_CreateStringId("FTC_Menu_FHeader",       "Configurer Paramètres Cadres Unitaires")
 
 ZO_CreateStringId("FTC_Menu_FWidth",        "Largeur des Cadres")
 ZO_CreateStringId("FTC_Menu_FWidthDesc",    "Régler la larger des cadres unitaires de FTC. [Défaut: "..FTC.Defaults.FrameWidth.."]")
@@ -128,7 +128,7 @@ ZO_CreateStringId("FTC_Menu_FGFontS",       "Taille de Police du Cadre de Groupe
 ZO_CreateStringId("FTC_Menu_FGFontSDesc",   "Changer l'échelle de base de la police utilisée dans les cadres de petits groupes de FTC. [Défaut: "..FTC.Defaults.GroupFontSize.."]")
 
 local default = ( FTC.Defaults.GroupHidePlayer ) and "Activé" or "Désactivé"
-ZO_CreateStringId("FTC_Menu_FGHideP",       "Cacher le joueur dans le cadre du groupe")
+ZO_CreateStringId("FTC_Menu_FGHideP",       "Cacher Joueur dans Cadre de groupe")
 ZO_CreateStringId("FTC_Menu_FGHidePDesc",   "Ne pas montrer votre propre barre de santé dans un cadre de petit groupe? [Défaut: " .. default .."]")
 
 local default = ( FTC.Defaults.ColorRoles ) and "Activé" or "Désactivé"
@@ -222,9 +222,9 @@ ZO_CreateStringId("FTC_Menu_BResetDesc",    "Réinitialiser les paramètres orig
 --ZO_CreateStringId("FTC_CL_Label",           "Combat Log")
 
 -- Combat Log Menu
-ZO_CreateStringId("FTC_Menu_LHeader",       "Configurer les Paramètres de Journalisation de Combat")
+ZO_CreateStringId("FTC_Menu_LHeader",       "Configurer Paramètres du JDC")
 
-local default = FTC.Defaults.AlternateChat  and "Activé" or "Désactivé"
+local default = FTC.Defaults.AlternateChat and "Activé" or "Désactivé"
 ZO_CreateStringId("FTC_Menu_LAltChat",      "Alterner avec le chat")
 ZO_CreateStringId("FTC_Menu_LAltChatDesc",  "Alterner la visibilité du journal de combat avec la fenêtre de chat par défaut? [Défaut: "..default.."]")
 
@@ -272,14 +272,14 @@ ZO_CreateStringId("FTC_Menu_LResetDesc",    "Réinitialiser les paramètres orig
 --ZO_CreateStringId("FTC_FakeHeal",           "Fake Heal")
 
 -- Combat Text Menu
-ZO_CreateStringId("FTC_Menu_SHeader",       "Configurer les Paramètres du Texte de Combat")
+ZO_CreateStringId("FTC_Menu_SHeader",       "Configurer Paramètres Texte de Combat")
 
 local default = FTC.Defaults.SCTIcons and "Activé" or "Désactivé"
 ZO_CreateStringId("FTC_Menu_SIcons",        "Montrer les Icones du TCD")
 ZO_CreateStringId("FTC_Menu_SIconsDesc",    "Afficher les icones des abilités à coté du texte de combat déroulant? [Défaut: "..default.."]")
 
 local default = FTC.Defaults.SCTNames and "Activé" or "Désactivé"
-ZO_CreateStringId("FTC_Menu_SNames",        "MOntrer les Nombres du TCD")
+ZO_CreateStringId("FTC_Menu_SNames",        "Montrer les Nombres du TCD")
 ZO_CreateStringId("FTC_Menu_SNamesDesc",    "Afficher le nom des abilités lorsque possible dans le texte de combat déroulant? [Défaut: "..default.."]")
 
 local default = FTC.Defaults.SCTRound and "Activé" or "Désactivé"
@@ -299,9 +299,9 @@ ZO_CreateStringId("FTC_Menu_SFont2",        "Police Secondaire")
 ZO_CreateStringId("FTC_Menu_SFont2Desc",    "Changer la police secondaire utilisée les noms des abilitéesdans le texte de combat déroulant. [Défaut: "..FTC.UI:TranslateFont(FTC.Defaults.SCTFont2).."]")
 
 ZO_CreateStringId("FTC_Menu_SFontS",        "Taille Police du TCD")
-ZO_CreateStringId("FTC_Menu_SFontSDesc",    "Changer la tille de la police utilisée dans le texte de combat déroulant de FTC. [Défaut: "..FTC.Defaults.SCTFontSize.."]")
+ZO_CreateStringId("FTC_Menu_SFontSDesc",    "Changer la taille de la police utilisée dans le texte de combat déroulant de FTC. [Défaut: "..FTC.Defaults.SCTFontSize.."]")
 
-ZO_CreateStringId("FTC_Menu_SIconS",        "Taille d'icones du TCD")
+ZO_CreateStringId("FTC_Menu_SIconS",        "Taille d'Icones du TCD")
 ZO_CreateStringId("FTC_Menu_SIconSDesc",    "Changer la taille des icones affichées dans le texte de combat déroulant de FTC. [Défaut: "..FTC.Defaults.SCTIconSize.."]")
 
 ZO_CreateStringId("FTC_Menu_SCTReset",      "Rénitialiser le TCD")
