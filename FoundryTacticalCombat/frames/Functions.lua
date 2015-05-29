@@ -562,7 +562,7 @@
 
             -- Fetch the current mount stamina level
             local current, maximum, effectiveMax = GetUnitPower( 'player' , POWERTYPE_MOUNT_STAMINA )
-            parent.bar:SetWidth( ( current / effectiveMax ) * ( parent.bg:GetWidth()-6 ) )
+            parent.bar:SetWidth( math.min(current/effectiveMax,1) * (parent.bg:GetWidth()-6) )
 
             -- Set the context
             parent.context = "mount"
@@ -577,7 +577,7 @@
 
             -- Fetch the current werewolf time remaining
             local current, maximum, effectiveMax = GetUnitPower( 'player' , POWERTYPE_WEREWOLF )
-            parent.bar:SetWidth( ( current / effectiveMax ) * parent.bg:GetWidth()-6 )
+            parent.bar:SetWidth( math.min(current/maximum,1) * (parent.bg:GetWidth()-6) )
 
             -- Set the context
             parent.context = "werewolf"
@@ -592,7 +592,7 @@
 
             -- Fetch the current siege health level
             local current, maximum, effectiveMax = GetUnitPower( 'controlledsiege' , POWERTYPE_HEALTH )
-            parent.bar:SetWidth( ( current / effectiveMax ) * parent.bg:GetWidth()-6 )
+            parent.bar:SetWidth( math.min(current/maximum,1) * (parent.bg:GetWidth()-6) )
 
             -- Set the context
             parent.context = "siege"
@@ -608,7 +608,7 @@
             -- Fetch the current experience level
             maxExp = 400000
             currExp = GetPlayerChampionXP()
-            parent.bar:SetWidth( (currExp/maxExp) * (parent.bg:GetWidth()-6) )
+            parent.bar:SetWidth( math.min(currExp/maxExp,1) * (parent.bg:GetWidth()-6) )
 
             -- Set the context
             parent.context = "exp"
@@ -624,7 +624,7 @@
             -- Fetch the current experience level
             maxExp = GetUnitXPMax('player')
             currExp = FTC.Player.exp
-            parent.bar:SetWidth( (currExp/maxExp) * (parent.bg:GetWidth()-6) )
+            parent.bar:SetWidth( math.min(currExp/maxExp,1) * (parent.bg:GetWidth()-6) )
 
             -- Set the context
             parent.context = "exp"
@@ -718,16 +718,16 @@
 
         -- Group frames
         if ( IsUnitGrouped('player') ) then
+            local context   = nil
+            if (  GetGroupSize() <= 4 and FTC.Vars.EnableGroupFrames ) then context = "Group"
+            elseif ( FTC.Vars.EnableRaidFrames ) then context = "Raid"
+            else return end
 
             -- Update attributes out of combat
-            if ( not IsUnitInCombat('player') ) then 
-                for i = 1 , GetGroupSize() do
-                    FTC.Frames:UpdateAttribute( GetGroupUnitTagByIndex(i),POWERTYPE_HEALTH,nil,nil,nil  )
-                end
+            for i = 1 , GetGroupSize() do
+                if ( not IsUnitInCombat('player') ) then FTC.Frames:UpdateAttribute( GetGroupUnitTagByIndex(i),POWERTYPE_HEALTH,nil,nil,nil  ) end
+                FTC.Frames:Fade('group'..i,_G["FTC_"..context.."Frame"..i])
+                FTC.Frames:GroupRange( 'group'..i , nil )
             end
-
-            -- Ensure correct fade
-            local context = GetGroupSize() <= 4 and "Group" or "Raid"
-            for i = 1 , GetGroupSize() do FTC.Frames:Fade('group'..i,_G["FTC_"..context.."Frame"..i]) end
         end
     end

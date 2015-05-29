@@ -204,3 +204,16 @@
 		-- Print to log
 		FTC.Log:Print( "You earned " .. FTC.DisplayNumber(diff) .. label .. "experience." , {0,0.6,0.6} )	
 	end
+
+	--[[ 
+	 * Write Combat Log Alliance Points
+	 * --------------------------------
+	 * Called by FTC.OnXPUpdate()
+	 * --------------------------------
+	 ]]--
+	function FTC.Log:AP( eventCode, alliancePoints, playSound, difference )
+		if ( difference < 0 ) then return end
+
+		-- Print to log
+		FTC.Log:Print( "You earned " .. FTC.DisplayNumber(difference) .. " alliance points." , {0,0.6,0.6} )	
+	end

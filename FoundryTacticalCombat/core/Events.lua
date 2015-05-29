@@ -551,6 +551,7 @@
      ]]--
     function FTC.OnAPUpdate( ... )
         if ( FTC.init.SCT ) then FTC.SCT:NewAP( ... ) end
+        if ( FTC.init.Log ) then FTC.Log:AP( ... ) end
     end
 
     --[[ 
