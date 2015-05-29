@@ -29,8 +29,8 @@
 FTC                     = {}
 FTC.name                = "FoundryTacticalCombat"
 FTC.tag                 = "FTC"
-FTC.version             = 0.50
-FTC.settings            = 0.50
+FTC.version             = 0.51
+FTC.settings            = 0.51
 FTC.language            = GetCVar("language.2")
 FTC.UI                  = WINDOW_MANAGER:CreateTopLevelWindow( "FTC_UI" )
 

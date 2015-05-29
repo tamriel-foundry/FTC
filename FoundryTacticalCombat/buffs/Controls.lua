@@ -20,7 +20,7 @@ function FTC.Buffs:Controls()
 
     -- Player Buffs 
     local pbheight  = ( FTC.Vars.PlayerBuffFormat ~= "htiles" ) and 200 or 50
-    local pbwidth   = ( FTC.Vars.PlayerBuffFormat == "htiles" ) and ( FTC.Vars.MaxBuffs * 50 ) or 300
+    local pbwidth   = ( FTC.Vars.PlayerBuffFormat == "htiles" ) and ( FTC.Vars.MaxBuffs * 50 ) or FTC.Vars.FrameWidth
     local pb        = FTC.UI:Control(   "FTC_PlayerBuffs",                  FTC_UI,     {pbwidth,pbheight},                                     FTC.Vars.FTC_PlayerBuffs,       false )  
     pb.backdrop     = FTC.UI:Backdrop(  "FTC_PlayerBuffs_BG",               pb,         "inherit",                                              {CENTER,CENTER,0,0},            {0,0,0,0.4}, {0,0,0,1}, nil, true )
     pb.label        = FTC.UI:Label(     "FTC_PlayerBuffs_Label",            pb,         "inherit",                                              {CENTER,CENTER,0,0},            FTC.UI:Font("trajan",24,true) , nil , {1,1} , GetString(FTC_PB_Label) , true )   
@@ -30,7 +30,7 @@ function FTC.Buffs:Controls()
 
     -- Player Debuffs
     local pdheight  = ( FTC.Vars.PlayerDebuffFormat ~= "htiles" ) and 200 or 50
-    local pdwidth   = ( FTC.Vars.PlayerBuffFormat == "htiles" ) and ( FTC.Vars.MaxBuffs * 50 ) or 300
+    local pdwidth   = ( FTC.Vars.PlayerBuffFormat == "htiles" ) and ( FTC.Vars.MaxBuffs * 50 ) or FTC.Vars.FrameWidth
     local pd        = FTC.UI:Control(   "FTC_PlayerDebuffs",                FTC_UI,     {pdwidth,pdheight},                                     FTC.Vars.FTC_PlayerDebuffs,     false )  
     pd.backdrop     = FTC.UI:Backdrop(  "FTC_PlayerDebuffs_BG",             pd,         "inherit",                                              {CENTER,CENTER,0,0},            {0,0,0,0.4}, {0,0,0,1}, nil, true )
     pd.label        = FTC.UI:Label(     "FTC_PlayerDebuffs_Label",          pd,         "inherit",                                              {CENTER,CENTER,0,0},            FTC.UI:Font("trajan",24,true) , nil , {1,1} , GetString(FTC_PD_Label) , true )   
@@ -40,7 +40,7 @@ function FTC.Buffs:Controls()
 
     -- Long buffs
     local lbheight  = ( FTC.Vars.LongBuffFormat ~= "htiles" ) and 400 or 50
-    local lbwidth   = ( FTC.Vars.PlayerBuffFormat == "htiles" ) and ( FTC.Vars.MaxBuffs * 50 ) or 300
+    local lbwidth   = ( FTC.Vars.PlayerBuffFormat == "htiles" ) and ( FTC.Vars.MaxBuffs * 50 ) or 400
     local lb        = FTC.UI:Control(   "FTC_LongBuffs",                    FTC_UI,     {lbwidth,lbheight},                                     FTC.Vars.FTC_LongBuffs,         false )  
     lb.backdrop     = FTC.UI:Backdrop(  "FTC_LongBuffs_BG",                 lb,         "inherit",                                              {CENTER,CENTER,0,0},            {0,0,0,0.4}, {0,0,0,1}, nil, true )
     lb.label        = FTC.UI:Label(     "FTC_LongBuffs_Label",              lb,         "inherit",                                              {CENTER,CENTER,0,0},            FTC.UI:Font("trajan",24,true) , nil , {1,1} , GetString(FTC_LB_Label) , true )   
@@ -54,7 +54,7 @@ function FTC.Buffs:Controls()
 
     -- Target Debuffs
     local tdheight  = ( FTC.Vars.TargetDebuffFormat ~= "htiles" ) and 200 or 50
-    local tdwidth   = ( FTC.Vars.PlayerBuffFormat == "htiles" ) and ( FTC.Vars.MaxBuffs * 50 ) or 300
+    local tdwidth   = ( FTC.Vars.PlayerBuffFormat == "htiles" ) and ( FTC.Vars.MaxBuffs * 50 ) or FTC.Vars.FrameWidth
     local td        = FTC.UI:Control(   "FTC_TargetDebuffs",                FTC_UI,     {tdwidth,tdheight},                                     FTC.Vars.FTC_TargetDebuffs,     false )  
     td.backdrop     = FTC.UI:Backdrop(  "FTC_TargetDebuffs_BG",             td,         "inherit",                                              {CENTER,CENTER,0,0},            {0,0,0,0.4}, {0,0,0,1}, nil, true )
     td.label        = FTC.UI:Label(     "FTC_TargetDebuffs_Label",          td,         "inherit",                                              {CENTER,CENTER,0,0},            FTC.UI:Font("trajan",24,true) , nil , {1,1} , GetString(FTC_TD_Label) , true )   
@@ -64,7 +64,7 @@ function FTC.Buffs:Controls()
 
     -- Target Buffs 
     local tbheight  = ( FTC.Vars.TargetBuffFormat ~= "htiles" ) and 200 or 50
-    local tbwidth   = ( FTC.Vars.PlayerBuffFormat == "htiles" ) and ( FTC.Vars.MaxBuffs * 50 ) or 300
+    local tbwidth   = ( FTC.Vars.PlayerBuffFormat == "htiles" ) and ( FTC.Vars.MaxBuffs * 50 ) or FTC.Vars.FrameWidth
     local tb        = FTC.UI:Control(   "FTC_TargetBuffs",                  FTC_UI,     {tbwidth,tbheight},                                     FTC.Vars.FTC_TargetBuffs,       false )  
     tb.backdrop     = FTC.UI:Backdrop(  "FTC_TargetBuffs_BG",               tb,         "inherit",                                              {CENTER,CENTER,0,0},            {0,0,0,0.4}, {0,0,0,1}, nil, true )
     tb.label        = FTC.UI:Label(     "FTC_TargetBuffs_Label",            tb,         "inherit",                                              {CENTER,CENTER,0,0},            FTC.UI:Font("trajan",24,true) , nil , {1,1} , GetString(FTC_TB_Label) , true )   
