@@ -31,8 +31,8 @@ FTC.UI.Textures     = {
      ]]-- 
     function FTC.UI:Initialize()
         
-        -- Create a parent FTC window
-        FTC.UI:TopLevelWindow( "FTC_UI" , GuiRoot , {GuiRoot:GetWidth(),GuiRoot:GetHeight()} , {CENTER,CENTER,0,0} , false )
+        -- Create core controls
+        FTC.UI:Controls()
 
         -- Reference the FTC_UI layer as a scene fragment
         local fragment = ZO_HUDFadeSceneFragment:New(FTC_UI)

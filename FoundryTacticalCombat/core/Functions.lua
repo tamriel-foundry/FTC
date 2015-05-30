@@ -42,6 +42,31 @@ function FTC:JoinTables(t1,t2)
 end
  
 
+	function FTC.Welcome()  
+
+        -- Show welcome message
+        if ( FTC.Vars.welcomed ~= FTC.version ) then
+
+            local buffer  = FTC_Welcome:GetNamedChild("Buffer")
+            local slider  = FTC_Welcome:GetNamedChild("Slider")
+
+            -- Set the welcome position
+            buffer:SetScrollPosition(14)
+            slider:SetValue(buffer:GetNumHistoryLines() - 14)
+            slider:SetHidden(false)
+            welcome:SetHidden(false)
+            FTC_UI:SetAlpha(0)
+
+            -- Register that the user has been welcomed
+            FTC.Vars.welcomed = FTC.version
+        
+        -- Do not show
+        else
+        	welcome:SetHidden(true)
+        	FTC_UI:SetAlpha(100)
+        end
+	end
+
 	 --[[ 
 	 * Handle Special Visibility Neds
 	 * --------------------------------

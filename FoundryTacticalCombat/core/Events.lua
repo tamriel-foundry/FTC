@@ -94,6 +94,10 @@
 
         -- Otherwie Print to Chat
         else d("[FTC] " .. GetString(FTC_LongInfo)) end
+
+
+        -- Show welcome message
+        FTC.Welcome()
     end
 
     --[[ 

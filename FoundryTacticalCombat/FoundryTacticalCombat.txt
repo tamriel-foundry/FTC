@@ -57,6 +57,7 @@ lib/LAM/controls/texture.lua
 lib/LMW/LibMsgWin-1.0.lua
 
 core/functions.lua
+core/controls.lua
 core/ui.lua
 core/events.lua
 

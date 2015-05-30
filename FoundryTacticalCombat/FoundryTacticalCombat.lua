@@ -42,6 +42,7 @@ FTC.Defaults            = {
     ["EnableSCT"]       = true,
     ["EnableHotbar"]    = false,
     ["EnableStats"]     = true,
+    ["welcomed"]        = 0,
 }
 
 -- Track component initialization
