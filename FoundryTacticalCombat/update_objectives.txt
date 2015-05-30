@@ -9,6 +9,7 @@ DONE		Visualizations	regen/DoT/execute/etc..
 		Advanced Hotbar
 			Show global cooldown
 			Move ultimate tracking to advanced hotbar
+			Ultimate gain buff?
 			Show quickslots
 			Move potion tracking to advanced hotbar
 
@@ -51,7 +52,6 @@ DONE		Poisoned
 NOPE		Bow roll dodge 
 DONE		Empower Wrecking Blow
 DONE		Might of the Guild
-			Ultimate gain buff?
 			AvA Combat Medic / Reach
 DONE		Cleanse alert?
 
@@ -62,9 +62,9 @@ DONE		Exploitation
 DONE		Break sorc bubble on damage
 DONE		Purge runes/mines on damage
 
-		Templar
-			Illuminate
-			Dark Flare
+DONE	Templar
+DONE		Illuminate
+DONE		Dark Flare
 
 
 		Nightblade
@@ -73,10 +73,10 @@ DONE		Purge runes/mines on damage
 			executioner
 			hemorrhage
 
-		Dragonknight
-			Mountain's Blessing
-			Add DoTs on damage for Agony / Fossilize
-			Warmth
+DONE	Dragonknight
+DONE		Mountain's Blessing
+DONE		Purge petrify on damage
+DONE		Warmth
 
 		Atrollpos?
 

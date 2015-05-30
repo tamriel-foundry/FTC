@@ -87,6 +87,7 @@ menu/functions.lua
 menu/controls.lua
 
 extensions/global.lua
+extensions/dragonknight.lua
 extensions/sorcerer.lua
 extensions/templar.lua
 

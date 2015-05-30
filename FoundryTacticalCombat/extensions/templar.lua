@@ -21,7 +21,7 @@
 	end
 
     --[[ 
-     * Handle Custom Sorcerer Effects
+     * Handle Custom Templar Casts
      * --------------------------------
      * Called by FTC_SpellCast
      * --------------------------------
