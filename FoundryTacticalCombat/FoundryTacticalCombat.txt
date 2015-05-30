@@ -88,6 +88,7 @@ menu/controls.lua
 
 extensions/global.lua
 extensions/sorcerer.lua
+extensions/templar.lua
 
 lang/en.lua
 lang/$(language).lua

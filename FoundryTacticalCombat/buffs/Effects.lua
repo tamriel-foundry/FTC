@@ -222,7 +222,9 @@ function FTC.Buffs:RegisterEffects()
         [21726] = { 6,    6,    0,    true },       -- Sun Fire
         [21732] = { 6,    6,    0,    true },       -- Reflective Light
         [21729] = { 8.4,  8.4,  0,    true },       -- Vampire's Bane
-        [22110] = { 0,    7.2,  0,    true },       -- Dark Flare
+        [22057] = { 5,    0,    0,    true },       -- Solar Flare
+        [22110] = { 5,    7.2,  0,    true },       -- Dark Flare
+        [22095] = { 5,    0,    0,    true },       -- Solar Barrage
         [21776] = { 0,    6,    0,    false },      -- Eclipse
         [22006] = { 0,    6,    0,    false },      -- Total Dark
         [22004] = { 0,    6,    0,    false },      -- Unstable Core

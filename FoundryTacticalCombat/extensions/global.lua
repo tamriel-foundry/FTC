@@ -72,7 +72,7 @@
 
 		-- Burning
 		local burning = GetAbilityName(1339)
-		if ( FTC.init.Buffs and damage.out and damage.ability == burning ) then
+		if ( FTC.init.Buffs and damage.out and damage.ability == burning and FTC.Buffs.Target[burning] == nil ) then
             local ability  = {
                 ["owner"]  = damage.target,
                 ["id"]     = 1339,
@@ -91,7 +91,7 @@
 
 		-- Poisoned
 		local poisoned = GetAbilityName(776)
-		if ( FTC.init.Buffs and damage.out and damage.ability == poisoned ) then
+		if ( FTC.init.Buffs and damage.out and damage.ability == poisoned and FTC.Buffs.Target[poisoned] == nil) then
             local ability  = {
                 ["owner"]  = damage.target,
                 ["id"]     = 776,
@@ -109,7 +109,7 @@
 
 		-- Purge Empower Buffs on damage
 		if ( FTC.init.Buffs and damage.out and ( damage.result == ACTION_RESULT_DAMAGE or damage.result == ACTION_RESULT_CRITICAL_DAMAGE or damage.result == ACTION_RESULT_BLOCKED_DAMAGE or damage.result == ACTION_RESULT_DOT_TICK or damage.result == ACTION_RESULT_DOT_TICK_CRITICAL ) ) then
-			local Empowers = { 38807 , 45607 }
+			local Empowers = { 38807 , 45607 , 22057 , 22110 , 22095 }
 			for i = 1 , #Empowers do
 				local name = GetAbilityName(Empowers[i])
 				if ( FTC.Buffs.Player[name] ~= nil and FTC.Buffs.Player[name].begin < GetFrameTimeSeconds() ) then
@@ -120,55 +120,3 @@
 			end
 		end
 	end
-
-
-
-
-
-
-function IsFireDamageProc( damage )
-
-	-- Bail if buff tracking is disabled
-	if ( not FTC.init.Buffs ) then return end
-
-	-- Look for burning
-	if ( damage.name == "Burning" ) then
-
-		-- Don't re-apply burning after the first tick
-		if ( FTC.Buffs.Saved['Burning'] ~= nil ) then return end
-		
-		-- Trigger a debuff
-		local ms = GetGameTimeMilliseconds()
-		local newBuff = {
-			["target"]	= FTC.Target.name,
-			["name"]	= "Burning",
-			["begin"]	= ms / 1000,
-			["ends"]	= ( ms / 1000 ) + 4,
-			["debuff"]	= true,
-			["area"]	= true,
-			["stacks"]	= 0,
-			["icon"]	= '/esoui/art/icons/ability_dragonknight_004_b.dds',
-		}
-		FTC.Buffs.Target['Burning'] = newBuff
-		FTC.Buffs.Saved['Burning'] = newBuff
-	end
-
-	-- Look for explosion
-	if ( damage.name == "Explosion" ) then
-		
-		-- Trigger a debuff
-		local ms = GetGameTimeMilliseconds()
-		local newBuff = {
-			["target"]	= FTC.Target.name,
-			["name"]	= "Explosion",
-			["begin"]	= ms / 1000,
-			["ends"]	= ( ms / 1000 ) + 2,
-			["debuff"]	= true,
-			["area"]	= true,
-			["stacks"]	= 0,
-			["icon"]	= '/esoui/art/icons/ability_destructionstaff_010.dds',
-		}
-		FTC.Buffs.Target["Explosion"] = newBuff
-		FTC.Buffs.Saved["Explosion"] = newBuff
-	end
-end
