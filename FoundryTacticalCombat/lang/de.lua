@@ -22,7 +22,7 @@ ZO_CreateStringId("FTC_Menu_NeedReload",    "Veränderungen an dieser Einstellun
 
 local default = ( FTC.Defaults.EnableFrames ) and "Ein" or "Aus"
 ZO_CreateStringId("FTC_Menu_Frames",        "Einheitenfenster aktivieren")
-teStringId("FTC_Menu_FramesDesc",           "Aktiviere das Einheitenfenster, Gruppenfenster und Schlachtzugsfenster. [Standard: "..default.."]")
+ZO_CreateStringId("FTC_Menu_FramesDesc",    "Aktiviere das Einheitenfenster, Gruppenfenster und Schlachtzugsfenster. [Standard: "..default.."]")
 
 local default = ( FTC.Defaults.EnableBuffs ) and "Ein" or "Aus"
 ZO_CreateStringId("FTC_Menu_Buffs",         "Buffs aktivieren")

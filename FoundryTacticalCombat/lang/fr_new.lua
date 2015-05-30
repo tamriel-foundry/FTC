@@ -173,7 +173,7 @@ ZO_CreateStringId("FTC_PlayerDebuff",       "Debuff Joueur")
 ZO_CreateStringId("FTC_PB_Label",           "Buffs Joueur")
 ZO_CreateStringId("FTC_PD_Label",           "Debuffs Joueur")
 ZO_CreateStringId("FTC_LB_Label",           "B\nu\nf\nf\ns\n\nL\no\nn\ng\ns") -- "Buffs Longs"
-ZO_CreateStringId("FTC_TB_Label",           "Buffs Cible")
+-ZO_CreateStringId("FTC_TB_Label",           "Buffs Cible")
 ZO_CreateStringId("FTC_TD_Label",           "Debuffs Cible")
 
 -- Buff Tracking Menu
@@ -212,7 +212,7 @@ ZO_CreateStringId("FTC_Menu_BFontS",        "Police des Buff")
 ZO_CreateStringId("FTC_Menu_BFontSDesc",    "Changer la taille de base des polices utilisées pour le suivi des buffs de FTC. [Défaut: "..FTC.Defaults.BuffsFontSize.."]")
 
 ZO_CreateStringId("FTC_Menu_BReset",        "Rénitialiser le Suivi de Buffs")
-ZO_CreateStringId("FTC_Menu_BResetDesc",    "Réinitialiser les paramètres originaux pour la composante de suivi des Buffs de FTC.")
+ZO_CreateStringId("FTC_Menu_BResetDesc",    "Réinitialiser les paramètres originaux du composant de suivi des Buffs de FTC.")
 
 --[[----------------------------------------------------------
     COMBAT LOG

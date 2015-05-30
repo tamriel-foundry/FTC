@@ -248,7 +248,8 @@ FTC.UI.Textures     = {
             [23428] = '/esoui/art/icons/ability_sorcerer_storm_atronach.dds',       -- Atronach Zap
 
             -- Items
-            [9866]  = '/esoui/art/icons/consumable_potion_001_type_005.dds',        -- Restore_Health
+            [9866]  = '/esoui/art/icons/consumable_potion_001_type_005.dds',        -- Restore Health
+            [17302] = '/esoui/art/icons/consumable_potion_001_type_005.dds',        -- Restore Health
 
             -- AvA Damage
             [7011]  = '/esoui/art/icons/ava_siege_ui_001.dds',                      -- Ballista Bolt
