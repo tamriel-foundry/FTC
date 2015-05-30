@@ -52,7 +52,8 @@ function FTC.Buffs:RegisterEffects()
         [38645] = { 0,    10,   0,    true },       -- Venom Arrow
         [38660] = { 0,    10,   0,    true },       -- Poison Injection
         [28628] = { 0,    5,    1.5,  false },      -- Volley
-        [20778] = { 0,    11,   1.5,  false },      -- Scorched Earth
+        [38689] = { 0,    11,   1.5,  false },      -- Scorched Earth
+        [5262]  = { 0,    11,   1.5,  false },      -- Burning Ground (French)
         [38695] = { 0,    5,    1.5,  false },      -- Arrow Barrage
         [28879] = { 0,    5,    0,    true },       -- Scatter Shot
         [38672] = { 0,    5,    0,    true },       -- Magnum Shot
