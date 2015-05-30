@@ -665,9 +665,9 @@
         
         -- Bail if the bar is currently used for something else
         if ( parent.context ~= "siege" ) then return end
-        
+
         -- Change the bar width
-        parent.bar:SetWidth( ( powerValue / powerEffectiveMax ) * ( parent:GetWidth() - 2 ) )
+        parent.bar:SetWidth( ( powerValue / powerEffectiveMax ) * ( parent.bg:GetWidth()-6 ) )
     end
      
      --[[ 

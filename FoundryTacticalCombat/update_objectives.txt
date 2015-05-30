@@ -40,7 +40,7 @@ DONE 	Default Frames		deprecate default frame text
 
 DONE	Group Frames
 DONE		Options			role colors, etc...
-			Sorting			sort frames by role
+NOPE		Sorting			sort frames by role
 
 DONE	Raid Frames
 
@@ -48,7 +48,7 @@ DONE	Raid Frames
 		Global
 DONE		Burning
 DONE		Poisoned
-NOT POSS.	Bow roll dodge 
+NOPE		Bow roll dodge 
 DONE		Empower Wrecking Blow
 DONE		Might of the Guild
 			Ultimate gain buff?
