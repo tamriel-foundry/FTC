@@ -40,7 +40,7 @@ FTC.Defaults            = {
     ["EnableBuffs"]     = true,
     ["EnableLog"]       = true,
     ["EnableSCT"]       = true,
-    ["EnableHotbar"]    = false,
+    ["EnableHotbar"]    = true,
     ["EnableStats"]     = true,
     ["welcomed"]        = 0,
 }
@@ -97,7 +97,7 @@ function FTC.Initialize( eventCode, addOnName )
     if ( FTC.Vars.EnableSCT )       then FTC.SCT:Initialize() end
 
     -- Advanced Hotbar Component
-    --if ( FTC.Vars.EnableHotbar )    then FTC.Hotbar:Initialize() end
+    if ( FTC.Vars.EnableHotbar )    then FTC.Hotbar:Initialize() end
     
     -- Combat Statistics
     if ( FTC.Vars.EnableStats )     then FTC.Stats:Initialize() end

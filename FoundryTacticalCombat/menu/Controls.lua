@@ -74,9 +74,7 @@ function FTC.Menu:Controls()
             warning     = GetString(FTC_Menu_Reload),
         },
 
-        --[[
-
-        -- Enable/Disable Ultimate Tracking
+        -- Enable/Disable Advanced Hotbar
         {   type        = "checkbox", 
             name        = GetString(FTC_Menu_Hotbar),
             tooltip     = GetString(FTC_Menu_HotbarDesc),
@@ -84,8 +82,7 @@ function FTC.Menu:Controls()
             setFunc     = function() FTC.Menu:Toggle( 'EnableHotbar' , true ) end, 
             default     = FTC.Defaults.EnableHotbar, 
             warning     = GetString(FTC_Menu_Reload),
-        }
-        ]]
+        },
 
         -- Reposition Elements?
         { 
@@ -154,6 +151,15 @@ function FTC.Menu:Controls()
             getFunc     = function() return FTC.Vars.FrameOpacityOut end, 
             setFunc     = function( value ) FTC.Menu:UpdateFrames( "FrameOpacityOut" , value ) end, 
             default     = FTC.Defaults.OpacityOut
+        },
+
+        -- Show Maximum Health?
+        {   type        = "checkbox", 
+            name        = GetString(FTC_Menu_FShowMax),
+            tooltip     = GetString(FTC_Menu_FShowMaxDesc),
+            getFunc     = function() return FTC.Vars.FrameShowMax end, 
+            setFunc     = function() FTC.Menu:Toggle( 'FrameShowMax' ) end,
+            default     = FTC.Defaults.FrameShowMax
         },
 
         -- Primary Frame Font

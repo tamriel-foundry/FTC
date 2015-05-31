@@ -74,6 +74,10 @@ ZO_CreateStringId("FTC_Menu_FOpacInDesc",   "Ajuster l'opacité des cadres unita
 ZO_CreateStringId("FTC_Menu_FOpacOut",      "Opacacité Hors-Combat")
 ZO_CreateStringId("FTC_Menu_FOpacOutDesc",  "Ajuster l'opacité Hord-Combat des cadres unitaires de FTC. Les valeurs faibles sont plus transparents. [Défaut: "..FTC.Defaults.FrameOpacityOut.."]")
 
+--local default = ( FTC.Defaults.FrameShowMax ) and "Enabled" or "Disabled"
+--ZO_CreateStringId("FTC_Menu_FShowMax",      "Show Maximum Health")
+--ZO_CreateStringId("FTC_Menu_FShowMaxDesc",  "Display maximum health values in player, target, and group frames? [Default: "..default.."]")
+
 ZO_CreateStringId("FTC_Menu_FFont1",        "Police Primaire")
 ZO_CreateStringId("FTC_Menu_FFont1Desc",    "Changer la police primaire utilisée dans les cadres unitaires de FTC.[Défaut: "..FTC.UI:TranslateFont(FTC.Defaults.FrameFont1).."]")
 

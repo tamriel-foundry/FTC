@@ -42,7 +42,7 @@ ZO_CreateStringId("FTC_Menu_StatsDesc",    "Enable tracking and reporting of dam
 
 local default = ( FTC.Defaults.EnableHotbar ) and "Enabled" or "Disabled"
 ZO_CreateStringId("FTC_Menu_Hotbar",        "Enable Advanced Hotbar")
-ZO_CreateStringId("FTC_Menu_HotbarDesc",    "Enable advanced tooltips displayed over the default hotbar? [Default: "..default.."]")
+ZO_CreateStringId("FTC_Menu_HotbarDesc",    "Add ultimate and potion information to the default action bar? [Default: "..default.."]")
 
 ZO_CreateStringId("FTC_Menu_Move",          "Unlock Positions")
 ZO_CreateStringId("FTC_Menu_MoveDesc",      "Modify the position of FTC interface elements.")
@@ -73,6 +73,10 @@ ZO_CreateStringId("FTC_Menu_FOpacInDesc",   "Adjust the in-combat opacity of FTC
 
 ZO_CreateStringId("FTC_Menu_FOpacOut",      "Non-Combat Opacity")
 ZO_CreateStringId("FTC_Menu_FOpacOutDesc",  "Adjust the out-of-combat opacity of FTC unit frames. Lower settings are more transparent. [Default: "..FTC.Defaults.FrameOpacityOut.."]")
+
+local default = ( FTC.Defaults.FrameShowMax ) and "Enabled" or "Disabled"
+ZO_CreateStringId("FTC_Menu_FShowMax",      "Show Maximum Health")
+ZO_CreateStringId("FTC_Menu_FShowMaxDesc",  "Display maximum health values in player, target, and group frames? [Default: "..default.."]")
 
 ZO_CreateStringId("FTC_Menu_FFont1",        "Primary Font")
 ZO_CreateStringId("FTC_Menu_FFont1Desc",    "Change the primary font used in FTC unit frames. [Default: "..FTC.UI:TranslateFont(FTC.Defaults.FrameFont1).."]")

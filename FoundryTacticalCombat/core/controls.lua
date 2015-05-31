@@ -23,6 +23,7 @@
 		welcome:ClearAnchors()
 		welcome:SetAnchor(TOP,ZO_CompassFrame,BOTTOM,0,20)
 		welcome:SetMouseEnabled(false)
+		welcome:SetHidden(true)
 
 		-- Create close button
 		welcome.close = FTC.UI:Button( "FTC_WelcomeClose", welcome, {48,48}, {TOPRIGHT,TOPRIGHT,0,6}, BSTATE_NORMAL, nil, nil, nil, nil, nil, false )
@@ -36,8 +37,18 @@
 		welcome.buffer:SetMaxHistoryLines(1000)
 		FTC_WelcomeLabel:SetFont(FTC.UI:Font("esobold",28,true))
 		FTC_WelcomeSlider:SetHidden(false)
+	end
+
+	--[[ 
+	 * Add Welcome Message
+	 * --------------------------------
+	 * Called by FTC.UI:Controls()
+	 * --------------------------------
+	 ]]--
+	function FTC.UI:Welcome()
 
 		-- Add welcome messages
+		local welcome = _G["FTC_Welcome"]
 		welcome:AddText(GetString(FTC_Welcome1))
 		welcome:AddText("|c|r")
 		welcome:AddText(GetString(FTC_Welcome2))
@@ -110,5 +121,4 @@
 		-- Add closing messages
 		welcome:AddText("|c|r")	
 		welcome:AddText("If you have any feedback, bug reports, or other questions about Foundry Tactical Combat please contact |cCC6600@Atropos|r on the North American PC megaserver or send an email to |cCC6600atropos@tamrielfoundry.com|r. Thank you for using the FTC addon and for your support!")
-
 	end

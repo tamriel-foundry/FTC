@@ -6,12 +6,12 @@ DONE		Options 		sizing, color, font, etc...
 DONE		Shielding		better representation of shielded health
 DONE		Visualizations	regen/DoT/execute/etc..
 
-		Advanced Hotbar
-			Show global cooldown
-			Move ultimate tracking to advanced hotbar
-			Ultimate gain buff?
-			Show quickslots
-			Move potion tracking to advanced hotbar
+DONE	Advanced Hotbar
+NOPE		Show global cooldown
+DONE		Move ultimate tracking to advanced hotbar
+DONE		Ultimate gain buff
+SKIP		Show quickslots
+DONE		Potion cooldown
 
 DONE	Buffs/Debuffs
 DONE		Options			icon and/or text
@@ -19,17 +19,15 @@ DONE		Options			sizing, color, fonts, etc..
 DONE		Localization	make sure buff tracking works with all languages
 DONE		Options			add ascending/descending list-right
 
-
 DONE	Damage Tracking
 DONE		Log				Process all damage events into log
 DONE		Options			Add opacity option for combat log background
-
 
 DONE	Scrolling Combat Text
 DONE		Options			icon and/or text
 DONE		Options			font size, color, etc...
 DONE		Options			show rounded or complete numbers
-			Frames			Show large Mag/Stam +/- next to frames
+SKIP		Frames			Show large Mag/Stam +/- next to frames
 		
 DONE	Alerts
 DONE		Expansion		more useful alerts, different positioning
@@ -45,14 +43,13 @@ NOPE		Sorting			sort frames by role
 
 DONE	Raid Frames
 
-
-		Global
+DONE	Global
 DONE		Burning
 DONE		Poisoned
 NOPE		Bow roll dodge 
 DONE		Empower Wrecking Blow
 DONE		Might of the Guild
-			AvA Combat Medic / Reach
+SKIP		AvA Combat Medic / Reach
 DONE		Cleanse alert?
 
 DONE	Sorcerer
@@ -66,7 +63,6 @@ DONE	Templar
 DONE		Illuminate
 DONE		Dark Flare
 
-
 		Nightblade
 			Shadow Barrier
 			Nightblade Grim Focus proc
@@ -77,8 +73,6 @@ DONE	Dragonknight
 DONE		Mountain's Blessing
 DONE		Purge petrify on damage
 DONE		Warmth
-
-		Atrollpos?
 
 
 

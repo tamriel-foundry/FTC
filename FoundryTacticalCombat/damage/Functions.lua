@@ -50,7 +50,7 @@
         local isHeal    = result == ACTION_RESULT_HEAL or result == ACTION_RESULT_CRITICAL_HEAL or result == ACTION_RESULT_HOT_TICK or result == ACTION_RESULT_HOT_TICK_CRITICAL
 
         -- Get the icon
-        local icon = FTC.UI.Textures[abilityName] or '/esoui/art/icons/icon_missing.dds'
+        local icon = FTC.UI.Textures[abilityName] or '/esoui/art/icons/death_recap_ranged_basic.dds'
         if ( abilityName == "" and ( not damageOut ) and isHeal ) then icon = '/esoui/art/icons/ability_healer_017.dds'
         elseif ( abilityName == "" and not damageOut ) then icon = '/esoui/art/icons/death_recap_ranged_heavy.dds' end
 
@@ -93,6 +93,9 @@
 
             -- Statistics
             if ( FTC.init.Stats and damageOut ) then FTC.Stats:RegisterDamage(damage) end
+
+            -- Trigger Ulti Buff
+            if ( FTC.init.Hotbar ) then FTC.Hotbar:UltimateBuff(damage) end
 
         -- Falling damage
         elseif ( result == ACTION_RESULT_FALL_DAMAGE ) then

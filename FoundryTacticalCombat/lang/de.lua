@@ -71,10 +71,14 @@ ZO_CreateStringId("FTC_Menu_FOpacInDesc",   "Ändert die Deckkraft der Einheiten
  
 ZO_CreateStringId("FTC_Menu_FOpacOut",      "Deckkraft außerhalb eines Kampfes")
 ZO_CreateStringId("FTC_Menu_FOpacOutDesc",  "Ändert die Deckkraft der Einheitenfenster außerhalb eines Kampfes. Je niedriger desto durchsichtiger. [Standard: "..FTC.Defaults.FrameOpacityOut.."]")
- 
+
+--local default = ( FTC.Defaults.FrameShowMax ) and "Enabled" or "Disabled"
+--ZO_CreateStringId("FTC_Menu_FShowMax",      "Show Maximum Health")
+--ZO_CreateStringId("FTC_Menu_FShowMaxDesc",  "Display maximum health values in player, target, and group frames? [Default: "..default.."]")
+
 ZO_CreateStringId("FTC_Menu_FFont1",        "Primäre Schriftart")
 ZO_CreateStringId("FTC_Menu_FFont1Desc",    "Ändert die primäre Schriftart der Einheitenfenster. [Standard: "..FTC.UI:TranslateFont(FTC.Defaults.FrameFont1).."]")
- 
+
 ZO_CreateStringId("FTC_Menu_FFont2",        "Sekundäre Schriftart")
 ZO_CreateStringId("FTC_Menu_FFont2Desc",    "Ändert die sekundäre Schriftart der Einheitenfenster. [Standard: "..FTC.UI:TranslateFont(FTC.Defaults.FrameFont2).."]")
  

@@ -23,11 +23,12 @@
         ["FrameMagickaColor"]       = {064/255,064/255,128/255},
         ["FrameStaminaColor"]       = {038/255,077/255,033/255},
         ["FrameShieldColor"]        = {255/255,100/255,000/255},
+        ["FrameShowMax"]            = false,
 
         -- Group Frame
         ["EnableGroupFrames"]       = true,
         ["FTC_GroupFrame"]          = {TOPLEFT,TOPLEFT,6,50},
-        ["GroupWidth"]              = 200,
+        ["GroupWidth"]              = 250,
         ["GroupHeight"]             = 350,  
         ["GroupHidePlayer"]         = false,
         ["GroupFontSize"]           = 18,
@@ -362,6 +363,7 @@
         local data  = nil
         local frame = nil
         local round = false
+        local max   = FTC.Vars.FrameShowMax
 
         -- Player Frame
         if ( unitTag == 'player' ) then
@@ -386,6 +388,7 @@
             elseif ( FTC.Vars.EnableRaidFrames ) then 
                 frame = _G["FTC_RaidFrame" .. i]  
                 round = true
+                max   = false
             end
 
             -- Run fade animation
@@ -421,6 +424,12 @@
             if ( powerType == POWERTYPE_HEALTH ) then
                 local slabel = ( round ) and FTC.DisplayNumber(data.shield.current/1000,1).."k" or FTC.DisplayNumber(data.shield.current)
                 label = ( data.shield.current ~= nil and data.shield.current > 0 ) and label .. " [" .. slabel .. "]" or label
+            end
+
+            -- Maybe add maximum
+            if ( max ) then 
+                local maxHealth = ( round ) and FTC.DisplayNumber(powerMax/1000,1).."k" or FTC.DisplayNumber(powerMax)
+                label = label .. "  /  " .. maxHealth
             end
 
             -- Override for dead things
@@ -502,30 +511,21 @@
         
         -- Get the unit's maximum health
         local shieldPct = zo_roundToNearest(value/data["health"]["max"],0.01)
-
-        -- Strip any existing tooltip
-        local tooltip = string.gsub( frame.health.current:GetText() , " %[(.*)%]" , "")
         
         -- Display shield
         if ( value > 0 ) then
             frame.shield:SetWidth( math.min(shieldPct,1) * frame.health:GetWidth())
             frame.shield.bar:SetWidth(frame.shield:GetWidth()-4)
-
-            -- Update the health text
-            local displayText = round and tooltip.." ["..FTC.DisplayNumber(value/1000,1).."k]" or tooltip.." ["..FTC.DisplayNumber(value).."]"
-            frame.health.current:SetText(displayText)
-
-            -- Ensure visibility
             frame.shield:SetHidden(false)   
 
         -- Hide shield
-        else
-            frame.health.current:SetText(tooltip)
-            frame.shield:SetHidden(true)
-        end
+        else frame.shield:SetHidden(true) end
         
         -- Update the database object
         data.shield = { ["current"] = value , ["max"] = maxValue , ["pct"] = shieldPct }
+
+        -- Update health text
+        FTC.Frames:UpdateAttribute( unitTag , POWERTYPE_HEALTH, nil )
     end
 
 
