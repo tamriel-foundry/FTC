@@ -113,14 +113,14 @@
 		end
 
 		-- Check if Assassin's Will is available
-		if ( FTC.Nightblade.focusSlot ~= nil and GetSlotName(FTC.Nightblade.focusSlot) == GetAbilityName(61932) and FTC.Nightblade.canProc) then
+		if ( FTC.Nightblade.focusSlot ~= nil and GetSlotBoundId(FTC.Nightblade.focusSlot) == 61932 or GetSlotBoundId(FTC.Nightblade.focusSlot) == 61907 and FTC.Nightblade.canProc) then
 
 			-- Trigger an alert
 			if ( FTC.init.SCT ) then
 				local newAlert = {
 					["name"]	= 'grimFocus',
 					["label"]	= GetAbilityName(61907),
-					["color"]	= {0.6,0,0},
+					["color"]	= {0.5,0.4,0.8},
 					["size"]	= FTC.Vars.SCTFontSize + 8,
 					["buffer"]	= 10000,
 				}

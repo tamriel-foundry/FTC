@@ -203,6 +203,8 @@ FTC.UI.Textures     = {
             [2383]  = '/esoui/art/icons/ability_nightblade_001.dds',                -- Gloom Bolt
             [33219] = '/esoui/art/icons/ability_nightblade_001.dds',                -- Corrode
             [33326] = '/esoui/art/icons/ability_nightblade_006.dds',                -- Cripple
+            [61907] = '/esoui/art/icons/ability_rogue_058.dds',                     -- Assassin's Will
+            [61932] = '/esoui/art/icons/ability_rogue_058.dds',                     -- Assassin's Will
 
             -- Templar
             [22138] = '/esoui/art/icons/ability_templar_radial_sweep.dds',          -- Radial Sweep
