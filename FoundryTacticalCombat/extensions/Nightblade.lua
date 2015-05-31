@@ -113,7 +113,7 @@
 		end
 
 		-- Check if Assassin's Will is available
-		if ( FTC.Nightblade.focusSlot ~= nil and GetSlotBoundId(FTC.Nightblade.focusSlot) == 61907 and FTC.Nightblade.canProc) then
+		if ( FTC.Nightblade.focusSlot ~= nil and GetSlotName(FTC.Nightblade.focusSlot) == GetAbilityName(61932) and FTC.Nightblade.canProc) then
 
 			-- Trigger an alert
 			if ( FTC.init.SCT ) then
