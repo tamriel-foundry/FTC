@@ -195,13 +195,13 @@
 			FTC.Stats.TargetPool:ReleaseAllObjects()
 			FTC.Stats.AbilityPool:ReleaseAllObjects()
 			FTC.Stats:SetupReport("Damage") 
-			FTC.Stats:SetupReport("Healing") 
+			FTC.Stats:SetupReport("Healing")
+			SetGameCameraUIMode(true)
 		end
 
 		-- Toggle visibility
 		FTC_UI:SetHidden(hide)
 		FTC_Report:SetHidden(not hide)
-		SetGameCameraUIMode(hide)
 	end
 
     --[[ 

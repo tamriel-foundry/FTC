@@ -94,7 +94,7 @@
 
 		-- Trigger Hemorrhage on critical hits
 		local hemorrhage = GetSkillAbilityUpgradeInfo(SKILL_TYPE_CLASS,1,10) or 0
-		if ( FTC.init.Buffs and hemorrhage > 0 and damage.out and damage.result == ACTION_RESULT_CRITICAL_DAMAGE or damage.result == ACTION_RESULT_DOT_TICK_CRITICAL ) then
+		if ( FTC.init.Buffs and hemorrhage > 0 and damage.out and ( damage.result == ACTION_RESULT_CRITICAL_DAMAGE or damage.result == ACTION_RESULT_DOT_TICK_CRITICAL ) ) then
 
 			-- Fire a buff
             local ability  = {
@@ -113,7 +113,7 @@
 		end
 
 		-- Check if Assassin's Will is available
-		if ( FTC.Nightblade.focusSlot ~= nil and GetSlotBoundId(FTC.Nightblade.focusSlot) == 61932 or GetSlotBoundId(FTC.Nightblade.focusSlot) == 61907 and FTC.Nightblade.canProc) then
+		if ( FTC.Nightblade.focusSlot ~= nil and FTC.Nightblade.canProc and ( GetSlotBoundId(FTC.Nightblade.focusSlot) == 61932 or GetSlotBoundId(FTC.Nightblade.focusSlot) == 61907 ) ) then
 
 			-- Trigger an alert
 			if ( FTC.init.SCT ) then

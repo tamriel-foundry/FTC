@@ -599,11 +599,34 @@
 
         -- Player is above level 50
         elseif ( FTC.Player.level >= 50 ) then
+            
+            -- Setup placeholders
+            local icon = nil
+            local color = nil
+
+            -- Get champion rank
+            local rank = GetPlayerChampionPointsEarned()
+
+            -- The Warrior
+            if ( rank % 3 == 0 ) then 
+                icon = "/esoui/art/champion/champion_points_health_icon-hud-32.dds"
+                color = {0.6,0.2,0}
+
+            -- The Mage
+            elseif ( rank % 2 == 0 ) then
+                icon = "/esoui/art/champion/champion_points_magicka_icon-hud-32.dds"
+                color = {0,0.6,1}
+            
+            -- The Thief
+            else
+                icon = "/esoui/art/champion/champion_points_stamina_icon-hud-32.dds"
+                color = {0.3,0.6,0.1}
+            end
 
             -- Change the icon and color
-            parent.icon:SetTexture("/esoui/art/champion/champion_points_magicka_icon-hud-32.dds")
-            parent.bg:SetCenterColor(0,0.1,0.2,1)
-            parent.bar:SetColor(0,0.6,1,1)  
+            parent.icon:SetTexture(icon)
+            parent.bg:SetCenterColor(color[1]/6,color[2]/6,color[3]/6,1)
+            parent.bar:SetColor(unpack(color))  
             
             -- Fetch the current experience level
             maxExp = 400000
