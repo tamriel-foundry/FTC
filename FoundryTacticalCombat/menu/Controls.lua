@@ -29,7 +29,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_Frames),
             tooltip     = GetString(FTC_Menu_FramesDesc),
             getFunc     = function() return FTC.Vars.EnableFrames end, 
-            setFunc     = function() FTC.Menu:Toggle( 'EnableFrames' , true ) end, 
+            setFunc     = function(value) FTC.Menu:Update( 'EnableFrames' , value , true ) end, 
             default     = FTC.Defaults.EnableFrames, 
             warning     = GetString(FTC_Menu_Reload),
         },
@@ -39,7 +39,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_Buffs),
             tooltip     = GetString(FTC_Menu_BuffsDesc),
             getFunc     = function() return FTC.Vars.EnableBuffs end,
-            setFunc     = function() FTC.Menu:Toggle( 'EnableBuffs' , true ) end,
+            setFunc     = function(value) FTC.Menu:Update( 'EnableBuffs' , value , true ) end,
             default     = FTC.Defaults.EnableBuffs, 
             warning     = GetString(FTC_Menu_Reload),
         },
@@ -49,7 +49,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_Log),
             tooltip     = GetString(FTC_Menu_LogDesc),
             getFunc     = function() return FTC.Vars.EnableLog end,
-            setFunc     = function() FTC.Menu:Toggle( 'EnableLog' , true ) end,
+            setFunc     = function(value) FTC.Menu:Update( 'EnableLog' , value , true ) end, 
             default     = FTC.Defaults.EnableLog, 
             warning     = GetString(FTC_Menu_Reload),
         },
@@ -59,7 +59,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_SCT),
             tooltip     = GetString(FTC_Menu_SCTDesc),
             getFunc     = function() return FTC.Vars.EnableSCT end, 
-            setFunc     = function() FTC.Menu:Toggle( 'EnableSCT' , true ) end, 
+            setFunc     = function(value) FTC.Menu:Update( 'EnableSCT' , value , true ) end, 
             default     = FTC.Defaults.EnableSCT, 
             warning     = GetString(FTC_Menu_Reload),
         },
@@ -69,7 +69,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_Stats),
             tooltip     = GetString(FTC_Menu_StatsDesc),
             getFunc     = function() return FTC.Vars.EnableStats end, 
-            setFunc     = function() FTC.Menu:Toggle( 'EnableStats' , true ) end, 
+            setFunc     = function(value) FTC.Menu:Update( 'EnableStats' , value , true ) end, 
             default     = FTC.Defaults.EnableStats, 
             warning     = GetString(FTC_Menu_Reload),
         },
@@ -79,7 +79,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_Hotbar),
             tooltip     = GetString(FTC_Menu_HotbarDesc),
             getFunc     = function() return FTC.Vars.EnableHotbar end, 
-            setFunc     = function() FTC.Menu:Toggle( 'EnableHotbar' , true ) end, 
+            setFunc     = function(value) FTC.Menu:Update( 'EnableHotbar' , value , true ) end, 
             default     = FTC.Defaults.EnableHotbar, 
             warning     = GetString(FTC_Menu_Reload),
         },
@@ -92,6 +92,13 @@ function FTC.Menu:Controls()
             func        = function() FTC.Menu:MoveFrames(true) end,
         }, 
 
+        -- Reset Unit Frames
+        { 
+            type        = "button", 
+            name        = GetString(FTC_Menu_Reset),
+            tooltip     = GetString(FTC_Menu_ResetDesc),
+            func        = function() FTC.Menu:Reset() end,
+        }, 
     }
 
     --[[----------------------------------------------------------
@@ -158,7 +165,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_FShowMax),
             tooltip     = GetString(FTC_Menu_FShowMaxDesc),
             getFunc     = function() return FTC.Vars.FrameShowMax end, 
-            setFunc     = function() FTC.Menu:Toggle( 'FrameShowMax' ) end,
+            setFunc     = function(value) FTC.Menu:Update( 'FrameShowMax' , value , true ) end, 
             default     = FTC.Defaults.FrameShowMax
         },
 
@@ -211,7 +218,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_FShowDef),
             tooltip     = GetString(FTC_Menu_FShowDefDesc),
             getFunc     = function() return FTC.Vars.DefaultTargetFrame end, 
-            setFunc     = function() FTC.Menu:Toggle( 'DefaultTargetFrame' ) end,
+            setFunc     = function(value) FTC.Menu:Update( 'DefaultTargetFrame' , value , true ) end, 
             default     = FTC.Defaults.DefaultTargetFrame
         },
 
@@ -220,7 +227,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_FShowName),
             tooltip     = GetString(FTC_Menu_FShowNameDesc),
             getFunc     = function() return FTC.Vars.EnableNameplate end, 
-            setFunc     = function() FTC.Menu:Toggle( 'EnableNameplate' ) end,
+            setFunc     = function(value) FTC.Menu:Update( 'EnableNameplate' , value , true ) end, 
             default     = FTC.Defaults.EnableNameplate
         },
 
@@ -229,7 +236,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_FShowXP),
             tooltip     = GetString(FTC_Menu_FShowXPDesc),
             getFunc     = function() return FTC.Vars.EnableXPBar end, 
-            setFunc     = function() FTC.Menu:Toggle( 'EnableXPBar' ) end,
+            setFunc     = function(value) FTC.Menu:Update( 'EnableXPBar' , value , true ) end, 
             default     = FTC.Defaults.EnableXPBar
         },
 
@@ -610,7 +617,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_SIcons),
             tooltip     = GetString(FTC_Menu_SIconsDesc),
             getFunc     = function() return FTC.Vars.SCTIcons end, 
-            setFunc     = function() FTC.Menu:Toggle( 'SCTIcons' ) end, 
+            setFunc     = function(value) FTC.Menu:Update( 'SCTIcons' , value , true ) end, 
             default     = FTC.Defaults.SCTIcons,
         },
       
@@ -620,7 +627,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_SNames),
             tooltip     = GetString(FTC_Menu_SNamesDesc),
             getFunc     = function() return FTC.Vars.SCTNames end, 
-            setFunc     = function() FTC.Menu:Toggle( 'SCTNames' ) end, 
+            setFunc     = function(value) FTC.Menu:Update( 'SCTNames' , value , true ) end, 
             default     = FTC.Defaults.SCTNames,
         },
 
@@ -630,7 +637,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_SRound),
             tooltip     = GetString(FTC_Menu_SRoundDesc),
             getFunc     = function() return FTC.Vars.SCTRound end, 
-            setFunc     = function() FTC.Menu:Toggle( 'SCTRound' ) end, 
+            setFunc     = function(value) FTC.Menu:Update( 'SCTRound' , value , true ) end, 
             default     = FTC.Defaults.SCTRound,
         },
 
@@ -745,7 +752,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_TRHeal),
             tooltip     = GetString(FTC_Menu_TRHealDesc),
             getFunc     = function() return FTC.Vars.StatTriggerHeals end, 
-            setFunc     = function() FTC.Menu:Toggle( 'StatTriggerHeals' ) end, 
+            setFunc     = function(value) FTC.Menu:Update( 'StatTriggerHeals' , value , true ) end, 
             default     = FTC.Defaults.StatTriggerHeals,
         },
 
@@ -760,6 +767,4 @@ function FTC.Menu:Controls()
     if FTC.Vars.EnableStats then
         for i = 1 , #Stats do table.insert( FTC.Menu.options , Stats[i] ) end
     end
-
-
 end

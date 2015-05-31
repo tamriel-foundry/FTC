@@ -47,6 +47,9 @@ ZO_CreateStringId("FTC_Menu_HotbarDesc",    "Erweiterte Tooltips über der Stand
 ZO_CreateStringId("FTC_Menu_Move",          "UI Elemente bewegen")
 ZO_CreateStringId("FTC_Menu_MoveDesc",      "Die Positionen der einzelnen FTC UI Elemente lassen sich verschieben.")
 
+ZO_CreateStringId("FTC_Menu_Reset",        "Addon Zurücksetzen")
+--ZO_CreateStringId("FTC_Menu_ResetDesc",    "Reset the entire FTC addon to its original settings.")
+
 --[[----------------------------------------------------------
     UNIT FRAMES
   ]]----------------------------------------------------------
@@ -54,16 +57,18 @@ ZO_CreateStringId("FTC_Menu_MoveDesc",      "Die Positionen der einzelnen FTC UI
 -- Unit Frames UI
 ZO_CreateStringId("FTC_PF_Label",           "Spielerfenster")
 ZO_CreateStringId("FTC_TF_Label",           "Zielfenster")
-ZO_CreateStringId("FTC_GF_Label",           "Gruppen     fenster")
-ZO_CreateStringId("FTC_RF_Label",           "Schlachtzugs      fenster")
+ZO_CreateStringId("FTC_GF_Label",           "Gruppen fenster")
+ZO_CreateStringId("FTC_RF_Label",           "Schlachtzugs fenster")
 ZO_CreateStringId("FTC_Dead",               "Dead")
 ZO_CreateStringId("FTC_Offline",            "Offline")
 
 -- Unit Frames Menu
 ZO_CreateStringId("FTC_Menu_FHeader",       "Einheitenfenster Einstellungen")
-ZO_CreateStringId("FTC_Menu_FWidth",       "Spieler- und Zielfenster Breite")
+
+ZO_CreateStringId("FTC_Menu_FWidth",        "Spieler- und Zielfenster Breite")
 ZO_CreateStringId("FTC_Menu_FWidthDesc",    "Ändert die Breite des Spieler- und Zielfensters. [Standard: "..FTC.Defaults.FrameWidth.."]")
-ZO_CreateStringId("FTC_Menu_FHeight",      "Spieler- und Zielfenster Höhe")
+
+ZO_CreateStringId("FTC_Menu_FHeight",       "Spieler- und Zielfenster Höhe")
 ZO_CreateStringId("FTC_Menu_FHeightDesc",   "Ändert die Höhe des Spieler- und Zielfensters. [Standard: "..FTC.Defaults.FrameHeight.."]")
  
 ZO_CreateStringId("FTC_Menu_FOpacIn",       "Deckkraft im Kampf")
@@ -244,9 +249,7 @@ ZO_CreateStringId("FTC_Menu_LResetDesc",    "Setzt die FTC Kampflog Einstellunge
 
 --[[----------------------------------------------------------
     SCROLLING COMBAT TEXT
-  
-
-]]----------------------------------------------------------
+  ]]----------------------------------------------------------
 
 -- Combat Text UI
 ZO_CreateStringId("FTC_OD_Label",           "ausgehender Schaden")
@@ -268,8 +271,8 @@ ZO_CreateStringId("FTC_Rooted",             "Verwurzelt")
 ZO_CreateStringId("FTC_BreakFree",          "Entfesseln")
 ZO_CreateStringId("FTC_Potion",             "Trank verfügbar")
 ZO_CreateStringId("FTC_Ultimate",           "Ultimate verfügbar")
-ZO_CreateStringId("FTC_CombatIn",           "Im Kampf")
 ZO_CreateStringId("FTC_CleanseNow",         "Jetzt Reinigen")
+ZO_CreateStringId("FTC_CombatIn",           "Im Kampf")
 ZO_CreateStringId("FTC_CombatOut",          "Kampfende")
 ZO_CreateStringId("FTC_Falling",            "Fallschaden")
 ZO_CreateStringId("FTC_FakeDamage",         "Test Schaden")

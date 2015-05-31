@@ -49,15 +49,15 @@
 
 		-- Add welcome messages
 		local welcome = _G["FTC_Welcome"]
-		welcome:AddText(GetString(FTC_Welcome1))
+		welcome:AddText("Hello ESO friends, thank you for downloading the newest version of Foundry Tactical Combat, a combat enhancement addon designed to give players access to relevant combat data in an easy to process framework which allows them to respond quickly and effectively to evolving combat situations. It has been a while since there was a major update to this addon, and a number of things have changed.\n\n")
 		welcome:AddText("|c|r")
-		welcome:AddText(GetString(FTC_Welcome2))
+		welcome:AddText("To get straight into the action you can access the addon's configuration options by navigating to |cCC6600Settings -> Addon Settings -> FTC|r or by typing |cCC6600/ftc|r in chat. From this menu you can enable or disable FTC components, customize appearance and other component settings, and reposition UI elements added by the FTC addon.")
 		welcome:AddText("|c|r")
-		welcome:AddText(GetString(FTC_Welcome3))
-		welcome:AddText("|c|r")
+		welcome:AddText("Additionaly, FTC adds several optional hotkeys which you may bind to make using certain addon features more convenient. These hotkeys can be mapped by navigating to |cCC6600Controls -> Foundry Tactical Combat|r. The next section briefly details the changes included in this version of the addon.")
+		welcome:AddText("|c|r")       
 
 		-- Add changelog
-		welcome:AddText(GetString(FTC_ChangesHeader))
+		welcome:AddText("|cCC6600Version " .. FTC.version .. " Updates|r")
 
 		-- Register changes
 		local Changes = {

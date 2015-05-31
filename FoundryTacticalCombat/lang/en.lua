@@ -47,6 +47,9 @@ ZO_CreateStringId("FTC_Menu_HotbarDesc",    "Add ultimate and potion information
 ZO_CreateStringId("FTC_Menu_Move",          "Unlock Positions")
 ZO_CreateStringId("FTC_Menu_MoveDesc",      "Modify the position of FTC interface elements.")
 
+ZO_CreateStringId("FTC_Menu_Reset",        "Reset FTC Addon")
+ZO_CreateStringId("FTC_Menu_ResetDesc",    "Reset the entire FTC addon to its original settings.")
+
 --[[----------------------------------------------------------
     UNIT FRAMES
   ]]----------------------------------------------------------
@@ -342,12 +345,3 @@ ZO_CreateStringId("FTC_Menu_TRHealDesc",    "Allow outgoing healing to trigger t
 
 ZO_CreateStringId("FTC_Menu_TReset",        "Reset Stats")
 ZO_CreateStringId("FTC_Menu_TResetDesc",    "Reset original settings for FTC damage statistics component.")
-
-
-
-
-ZO_CreateStringId("FTC_Welcome1",           "Hello ESO friends, thank you for downloading the newest version of Foundry Tactical Combat, a combat enhancement addon designed to give players access to relevant combat data in an easy to process framework which allows them to respond quickly and effectively to evolving combat situations. It has been a while since there was a major update to this addon, and a number of things have changed.\n\n")
-ZO_CreateStringId("FTC_Welcome2",           "To get straight into the action you can access the addon's configuration options by navigating to |cCC6600Settings -> Addon Settings -> FTC|r or by typing |cCC6600/ftc|r in chat. From this menu you can enable or disable FTC components, customize appearance and other component settings, and reposition UI elements added by the FTC addon.")
-ZO_CreateStringId("FTC_Welcome3",           "Additionaly, FTC adds several optional hotkeys which you may bind to make using certain addon features more convenient. These hotkeys can be mapped by navigating to |cCC6600Controls -> Foundry Tactical Combat|r. The next section briefly details the changes included in this version of the addon.")
-
-ZO_CreateStringId("FTC_ChangesHeader", "|cCC6600Version " .. FTC.version .. " Updates|r")

@@ -47,6 +47,9 @@ ZO_CreateStringId("FTC_Menu_HotbarDesc",    "Activer info-bulles avancées affic
 ZO_CreateStringId("FTC_Menu_Move",          "Débloquer Positionnement")
 ZO_CreateStringId("FTC_Menu_MoveDesc",      "Modifier la position des éléments d'interface de FTC.")
 
+ZO_CreateStringId("FTC_Menu_Reset",        "Rénitialiser l'extension")
+--ZO_CreateStringId("FTC_Menu_ResetDesc",    "Reset the entire FTC addon to its original settings.")
+
 --[[----------------------------------------------------------
     UNIT FRAMES
   ]]----------------------------------------------------------

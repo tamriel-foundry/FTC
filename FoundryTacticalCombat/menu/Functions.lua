@@ -20,8 +20,8 @@
             displayName         = GetString(FTC_ShortInfo),
             author              = "Atropos", 
             version             = FTC.version, 
-            registerForRefresh  = true,
-            registerForDefaults = true,
+            registerForRefresh  = false,
+            registerForDefaults = false,
         }
 
         -- Setup the initial panel
@@ -150,31 +150,18 @@
     end
 
     --[[ 
-     * Toggle Binary Variable
-     * --------------------------------
-     * Called by FTC.Menu:Controls()
-     * --------------------------------
-     ]]--
-    function FTC.Menu:Toggle( setting , reload )
-        
-        -- Update the database
-        FTC.Vars[setting] = not FTC.Vars[setting]
-        
-        -- Re-configure some things
-        if ( FTC.init.Frames ) then FTC.Frames:SetupPlayer() end
-        
-        -- Maybe reload
-        if reload then ReloadUI() end
-    end
-
-    --[[ 
      * Update Saved Variable
      * --------------------------------
      * Called by FTC.Menu:Controls()
      * --------------------------------
      ]]--
     function FTC.Menu:Update( setting , value , reload )
-        FTC.Vars[setting] = value
+        
+        -- Update the database
+        FTC.Vars[setting] = not FTC.Vars[setting]
+
+        -- Re-configure some things
+        if ( FTC.init.Frames ) then FTC.Frames:SetupPlayer() end
         
         -- Maybe reload
         if reload then ReloadUI() end
