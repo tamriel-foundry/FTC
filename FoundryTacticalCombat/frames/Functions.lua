@@ -443,7 +443,7 @@
             attr.pct:SetText(pctLabel)
 
             -- Maybe prompt for execute
-            if ( unitTag == 'reticleover' ) then 
+            if ( unitTag == 'reticleover' ) then
                 frame.execute:SetHidden( not ( pct < FTC.Vars.ExecuteThreshold/100 ) )
                 if ( ( not IsUnitDead(unitTag) ) and ( pct < FTC.Vars.ExecuteThreshold/100 ) and ( FTC.Target.health.pct > FTC.Vars.ExecuteThreshold/100 ) ) then FTC.Frames:Execute() end
             end

@@ -158,7 +158,7 @@
     function FTC.Menu:Update( setting , value , reload )
         
         -- Update the database
-        FTC.Vars[setting] = not FTC.Vars[setting]
+        FTC.Vars[setting] = value
 
         -- Re-configure some things
         if ( FTC.init.Frames ) then FTC.Frames:SetupPlayer() end
