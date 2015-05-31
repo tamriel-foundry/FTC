@@ -1,13 +1,13 @@
 ## Title: Foundry Tactical Combat
 ## Description: A combat enhancement addon designed to give players access to relevant combat data in an easy to process framework which allows them to respond quickly and effectively to evolving combat situations.
-## Version: 0.39
+## Version: 0.60
 ## APIVersion: 100011
 ## SavedVariables: FTC_VARS
 ## OptionalDependsOn: LibAddonMenu-2.0
 
 ; The MIT License (MIT)
 ;
-; Copyright (c) 2015, @SpellBuilder at ESOUI.COM
+; Copyright (c) 2015, Atropos at http://tamrielfoundry.com
 ;
 ; Permission is hereby granted, free of charge, to any person obtaining a copy
 ; of this software and associated documentation files (the "Software"), to deal

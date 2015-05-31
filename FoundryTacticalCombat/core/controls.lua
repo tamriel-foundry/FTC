@@ -49,7 +49,9 @@
 
 		-- Add welcome messages
 		local welcome = _G["FTC_Welcome"]
-		welcome:AddText("Hello ESO friends, thank you for downloading the newest version of Foundry Tactical Combat, a combat enhancement addon designed to give players access to relevant combat data in an easy to process framework which allows them to respond quickly and effectively to evolving combat situations. It has been a while since there was a major update to this addon, and a number of things have changed.\n\n")
+		welcome:AddText("Hello ESO friends, thank you for downloading the newest version of Foundry Tactical Combat, a combat enhancement addon designed to give players access to relevant combat data in an easy to process framework which allows them to respond quickly and effectively to evolving combat situations.")
+		welcome:AddText("|c|r")
+		welcome:AddText("It has been a while since there was a major update to this addon, and a number of things have changed. Please take a few minutes to read over the list of major changes. This message will not be displayed again once you close it unless you completely reset FTC settings in the options menu.")
 		welcome:AddText("|c|r")
 		welcome:AddText("To get straight into the action you can access the addon's configuration options by navigating to |cCC6600Settings -> Addon Settings -> FTC|r or by typing |cCC6600/ftc|r in chat. From this menu you can enable or disable FTC components, customize appearance and other component settings, and reposition UI elements added by the FTC addon.")
 		welcome:AddText("|c|r")
@@ -66,9 +68,9 @@
 				"General Changes",
 				"Thorough aesthetic overhaul of the entire addon.",
 				"Complete performance sweep of every FTC component to ensure efficient memory usage.",
-				"Complete French and German localization of FTC components thanks to the excellent work of Einherjar, Mooneh, and TehMagnus.",
-				"Improved customization of FTC components with a far more useful addon settings menu.",
-				"Switch to use account-wide saved variables, your FTC configurations will now apply to all the characters on your ESO account automatically.",
+				"Complete French and German localization of FTC components thanks to the excellent work of Einherjar, Mooneh, TehMagnus, and Rial.",
+				"Significantly improved customization of FTC components with a far more flexible addon settings menu.",
+				"Switched to use account-wide saved variables; your FTC configurations will now apply to all the characters on your ESO account automatically.",
 			},
 
 			[2] = {
@@ -76,27 +78,31 @@
 				"Added extensive aesthetic options for modifying the size, color, font, and style of unit frames.",
 				"Added visualizations for healing and damage-over-time effects.",
 				"Added configurable indicator on the target frame denoting execute range.",
-				"Introduce optional small group frame.",
-				"Introduce optional raid frame.",
+				"Improved detection rules for damage shielding to provide as accurate as possible an assessment of your character's defenses. Certain fundamental bugs in the ESO API will still cause shielding to be incorrectly reported.",
+				"Introduce optional small group frame for groups of four or fewer members.",
+				"Introduce optional raid frame for large groups, this raid frame can also be used for small groups by disabling the small group frame but keeping raid frames enabled.",
 			},
 
 			[3] = {
 				"Buff Tracking",
 				"Added multiple buff format options for each buffs container allowing fine-tuning of buff tracking display.",
-				"Added aesthetic options for customizing the apperance of tracked buffs.",
+				"Added options for rendering buffs in list format, displaying buff names in addition to tiled icons.",
+				"New customization options for modifying the apperance of tracked buffs.",
 				"Include many new buffs and debuffs which were not previously tracked by the addon.",
 			},
 
 			[4] = {
 				"Combat Log",
 				"Introduce new FTC Combat Log component. This customizable window will retain a printed record of damage, healing, and other significant combat events.",
+				"Allow FTC Combat Log to alternate with ESO chat or be detached independently.",
+				"Add optional keybinding for quickly toggling display of the FTC Combat Log.",
 			},
 
 			[5] = {
 				"Scrolling Combat Text",
 				"Significantly improve the aesthetics and efficiency of the scrolling combat text (SCT) component.",
 				"Add optional icons for most of the recognized sources of damage in the game.",
-				"Add many aesthetic options for configuring the appearance of scrolling combat text.",
+				"Add many customization options for configuring the appearance of scrolling combat text.",
 				"Added a number of new SCT alerts for important combat conditions like crowd control effects and DoT cleansing.",
 			},
 			
@@ -105,6 +111,12 @@
 				"Introduce separate combat statistics component which tracks and details your character's performance in combat.",
 				"Vastly improve the information content in the FTC Damage Report, breaking down combat events by target and providing insight into key abilities.",
 				"Enable linking to chat for specific targets instead of the entire encounter.",
+			},
+
+			[7] = {
+				"Advanced Hotbar",
+				"Improve accuracy of current consumable (potion) cooldown timer.",
+				"Add a visual glow behind your Ultimate ability indicating when you are currently gaining Ultimate through combat.",
 			},
 		}
 

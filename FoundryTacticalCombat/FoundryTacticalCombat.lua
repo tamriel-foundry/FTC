@@ -17,8 +17,8 @@
 
     Author:   Atropos
     Email:    atropos@tamrielfoundry.com
-    Version:  0.39
-    Updated:  5-10-2015
+    Version:  0.60
+    Updated:  5-31-2015
   ]]--
 
 --[[----------------------------------------------------------
@@ -29,8 +29,8 @@
 FTC                     = {}
 FTC.name                = "FoundryTacticalCombat"
 FTC.tag                 = "FTC"
-FTC.version             = 0.51
-FTC.settings            = 0.51
+FTC.version             = 0.60
+FTC.settings            = 0.60
 FTC.language            = GetCVar("language.2")
 FTC.UI                  = WINDOW_MANAGER:CreateTopLevelWindow( "FTC_UI" )
 
@@ -50,6 +50,7 @@ FTC.init                = {}
 
 -- Track custom display conditions
 FTC.inMenu              = false
+FTC.inWelcome           = false
 FTC.move                = false
 
 --[[ 

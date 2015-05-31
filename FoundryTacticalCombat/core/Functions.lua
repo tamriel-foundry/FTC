@@ -59,14 +59,15 @@
         if ( FTC.Vars.welcomed ~= FTC.version ) then
 
 			-- Add welcome message content
+			FTC.inWelcome = true
 			FTC.UI:Welcome()
 
             local buffer  = FTC_Welcome:GetNamedChild("Buffer")
             local slider  = FTC_Welcome:GetNamedChild("Slider")
 
             -- Set the welcome position
-            buffer:SetScrollPosition(14)
-            slider:SetValue(buffer:GetNumHistoryLines() - 14)
+            buffer:SetScrollPosition(26)
+            slider:SetValue(buffer:GetNumHistoryLines() - 26)
             slider:SetHidden(false)
             welcome:SetHidden(false)
             FTC_UI:SetAlpha(0)
@@ -89,14 +90,17 @@
 	 ]]--  
 	function FTC:ToggleVisibility( activeLayerIndex )
 
-		-- We only need to act if it's in move mode
-		if not FTC.move then return end
+		-- We only need to act if it's in move or welcome
+		if not ( FTC.move or FTC.inWelcome ) then return end
 
 		-- Maybe get action layer
 		activeLayerIndex = activeLayerIndex or GetNumActiveActionLayers()
 
 		-- Maybe disable move mode
-		if ( activeLayerIndex > 2 ) then FTC.Menu:MoveFrames( false ) end
+		if ( FTC.move and activeLayerIndex > 2 ) then FTC.Menu:MoveFrames( false ) end
+
+		-- Maybe disable welcome message
+		if ( FTC.inWelcome and activeLayerIndex > 2 ) then FTC.Welcome() end
 	end
 	
 	 --[[ 
