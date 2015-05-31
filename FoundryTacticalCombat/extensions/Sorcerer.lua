@@ -185,7 +185,7 @@
 				if ( FTC.init.SCT ) then
 					local newAlert = {
 						["name"]	= 'crystalFragments',
-						["label"]	= effectName,
+						["label"]	= zo_strformat("<<!aC:1>>",effectName),
 						["color"]	= {0,0.5,1},
 						["size"]	= FTC.Vars.SCTFontSize + 8,
 						["buffer"]	= 0,

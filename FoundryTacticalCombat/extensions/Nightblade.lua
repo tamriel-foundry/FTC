@@ -119,7 +119,7 @@
 			if ( FTC.init.SCT ) then
 				local newAlert = {
 					["name"]	= 'grimFocus',
-					["label"]	= GetAbilityName(61907),
+					["label"]	= zo_strformat("<<!aC:1>>",GetAbilityName(61907)),
 					["color"]	= {0.5,0.4,0.8},
 					["size"]	= FTC.Vars.SCTFontSize + 8,
 					["buffer"]	= 10000,
