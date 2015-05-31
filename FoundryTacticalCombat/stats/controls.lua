@@ -42,11 +42,6 @@ function FTC.Stats:Controls()
 	FM.close:SetNormalTexture('/esoui/art/buttons/closebutton_up.dds')
 	FM.close:SetMouseOverTexture('/esoui/art/buttons/closebutton_mouseover.dds')
 	FM.close:SetHandler("OnClicked", FTC.Stats.Toggle )
-	FM.post			= FTC.UI:Button(   	"FTC_Report_Post" ,    				FM,    		{48,48}, 				{TOPRIGHT,TOPRIGHT,-75,10},		BSTATE_NORMAL, nil, nil, nil, nil, nil, false )
-	FM.post:SetNormalTexture('/esoui/art/chatwindow/chat_notification_up.dds')
-	FM.post:SetMouseOverTexture('/esoui/art/chatwindow/chat_notification_over.dds')
-	FM.post:SetDisabledTexture('/esoui/art/chatwindow/chat_notification_disabled.dds')
-	FM.post:SetHandler("OnClicked", FTC.Stats.Post )
 	FM:SetMouseEnabled( true )
 
 	-- Abilities Detail
@@ -94,6 +89,8 @@ end
 	    control.name   	= FTC.UI:Label(    "FTC_Report_Target"..counter.."_Name",   	control,  	{350,50},  					{LEFT,LEFT,25,0,control.backdrop}, 		FTC.UI:Font("esobold",20,true), {1,1,1,1}, {0,1}, "Target Name", false )
 	    control.total 	= FTC.UI:Label(    "FTC_Report_Target"..counter.."_Total",  	control,  	{400,50},  					{LEFT,RIGHT,0,0,control.name},  		FTC.UI:Font("esobold",20,true), {1,1,1,1}, {0,1}, "Total Damage", false )
 	    control.dps 	= FTC.UI:Label(    "FTC_Report_Target"..counter.."_DPS",  		control,  	{200,50},  					{RIGHT,RIGHT,-25,0,control.backdrop},  	FTC.UI:Font("esobold",20,true), {1,1,1,1}, {0,1}, "DPS", false )
+
+	    -- Expand button
 		control.expand	= FTC.UI:Button(   "FTC_Report_Target"..counter.."_Expand" ,    control,    {32,32}, 					{RIGHT,RIGHT,-25,0,control.backdrop},	BSTATE_NORMAL, nil, nil, nil, nil, nil, false )
 		control.expand:SetNormalTexture('/esoui/art/buttons/pointsplus_up.dds')
 		control.expand:SetMouseOverTexture('/esoui/art/buttons/pointsplus_over.dds')
@@ -102,6 +99,13 @@ end
 		control.expand:SetDisabledTexture('/esoui/art/buttons/pointsplus_disabled.dds')
 		control.expand:SetDisabledPressedTexture('/esoui/art/buttons/pointsminus_disabled.dds')
 		control.expand:SetHandler("OnClicked", FTC.Stats.ExpandTarget )
+
+		-- Post button
+		control.post	= FTC.UI:Button(   	"FTC_Report_Target"..counter.."_Post" ,   	control,    {48,48}, 					{RIGHT,LEFT,-5,0,control.expand},		BSTATE_NORMAL, nil, nil, nil, nil, nil, false )
+		control.post:SetNormalTexture('/esoui/art/chatwindow/chat_notification_up.dds')
+		control.post:SetMouseOverTexture('/esoui/art/chatwindow/chat_notification_over.dds')
+		control.post:SetDisabledTexture('/esoui/art/chatwindow/chat_notification_disabled.dds')
+		control.post:SetHandler("OnClicked", FTC.Stats.Post )
 
 		-- Store some data
 		control.state	= "collapsed"

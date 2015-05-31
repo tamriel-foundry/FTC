@@ -63,9 +63,9 @@ DONE	Templar
 DONE		Illuminate
 DONE		Dark Flare
 
-		Nightblade
+DONE	Nightblade
 DONE		Shadow Barrier
-			Nightblade Grim Focus proc
+DONE		Nightblade Grim Focus proc
 SKIP		executioner
 DONE		hemorrhage
 

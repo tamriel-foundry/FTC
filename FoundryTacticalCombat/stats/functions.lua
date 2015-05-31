@@ -283,6 +283,9 @@
 			control.expand:SetState( nodamage and BSTATE_DISABLED or BSTATE_NORMAL )
 			control.state = "collapsed"
 
+			-- Post Button
+			control.post:SetState( target.damage == 0 and BSTATE_DISABLED or BSTATE_NORMAL)
+
 			-- Set Anchors
 			control:SetHeight(50)
 			control:ClearAnchors()
@@ -302,10 +305,6 @@
 			FTC_Report_HealingTitle:ClearAnchors()
 			FTC_Report_HealingTitle:SetAnchor(TOP,anchor,BOTTOM,0,25)
 		end
-
-		-- Maybe change the post to chat button state
-		local postState = ( FTC.Stats.damage + FTC.Stats.healing == 0 ) and BSTATE_DISABLED or BSTATE_NORMAL
-		FTC_Report_Post:SetState(postState)
 	end
 
 
@@ -457,7 +456,7 @@
      * Called by SI_BINDING_NAME_POST_DAMAGE_RESULTS
      * --------------------------------
      ]]--
-	function FTC.Stats:Post()
+	function FTC.Stats:Post( button )
 
 		-- Flag if there is no damage to display
 		if ( FTC.Stats.damage + FTC.Stats.healing == 0 ) then
@@ -465,39 +464,65 @@
 			return
 		end 
 
+		-- Setup placeholders
+		local tarName 	= nil
+		local damage 	= 0
+		local time		= math.max(( FTC.Stats.endTime - FTC.Stats.startTime ) / 1000 , 1)
+		local context	= "Damage"
+
+		-- Was a specific target requested?
+		if ( button ~= nil ) then
+
+			-- Get data
+			local parent 	= self:GetParent()
+			context			= parent.context
+			local Targets	= FTC.Stats[context.."Targets"]
+			for i = 1 , #Targets do
+				if ( Targets[i].name == parent.target ) then 
+					damage = Targets[i].damage 
+					break
+				end
+			end
+			tarName 		= ( parent.target ~= "Total" ) and parent.target or nil
+
+		-- Otherwise assume total
+		else damage	= FTC.Stats.damage end
+
+		-- Maybe compute the most damaged target
+		if ( tarName == nil ) then 
+			local targets = {}
+			for target , abilities in pairs(FTC.Stats.Current.Damage) do
+				
+				-- Calculate total damage dealt to target
+				local damage = 0
+				for ability , stats in pairs(abilities) do
+					damage = damage + stats.total
+				end
+
+				-- Setup some data
+				local data = {
+					["name"]	= target,
+					["damage"] 	= damage,
+				}
+
+				-- Add the target to an index table
+				table.insert(targets,data)
+			end	
+
+			-- Sort targets based on total damage
+			table.sort( targets , FTC.Stats.SortDamage )
+			tarName = targets[2].name
+		end
+
 		-- Minimize the report if it is shown
 		if ( not FTC_Report:IsHidden() ) then FTC.Stats:Toggle() end
 
-		-- Compute most damaged target
-		local targets = {}
-		for target , abilities in pairs(FTC.Stats.Current.Damage) do
-			
-			-- Calculate total damage dealt to target
-			local damage = 0
-			for ability , stats in pairs(abilities) do
-				damage = damage + stats.total
-			end
-
-			-- Setup some data
-			local data = {
-				["name"]	= target,
-				["damage"] 	= damage,
-			}
-
-			-- Add the target to an index table
-			table.insert(targets,data)
-		end
-
-		-- Sort targets based on total damage
-		table.sort( targets , FTC.Stats.SortDamage )
-
-		-- Compute data
-		local time = math.max(( FTC.Stats.endTime - FTC.Stats.startTime ) / 1000 , 1)
+		local totalLabel = ( context == "Damage" ) and GetString(FTC_Damage) or GetString(FTC_Healing)
+		local dpsLabel   = ( context == "Damage" ) and GetString(FTC_DPS) or GetString(FTC_HPS)
 
 		-- Generate output
-		local output 	= "[FTC] " .. zo_strformat("<<!aC:1>>",targets[2].name) .. " (" .. ZO_FormatTime( time , SI_TIME_FORMAT_TIMESTAMP) .. ") || "
-		output		 	= output .. FTC.DisplayNumber(FTC.Stats.damage) .. " " .. GetString(FTC_Damage) .. " (" .. FTC.DisplayNumber(FTC.Stats.damage/time,2) .. " " .. GetString(FTC_DPS) .. ") || "
-		output		 	= output .. FTC.DisplayNumber(FTC.Stats.healing) .. " " .. GetString(FTC_Healing) .. " (" .. FTC.DisplayNumber(FTC.Stats.healing/time,2) .. " " .. GetString(FTC_HPS) .. ")."
+		local output 	= "[FTC] " .. zo_strformat("<<!aC:1>>", tarName ) .. " (" .. ZO_FormatTime( time , SI_TIME_FORMAT_TIMESTAMP) .. ") - "
+		output		 	= output .. FTC.DisplayNumber(damage) .. " " .. totalLabel .. " (" .. FTC.DisplayNumber(damage/time,2) .. " " .. dpsLabel .. ")"
 		
 		-- Determine appropriate channel
 		local channel = IsUnitGrouped('player') and "/p " or "/say "
@@ -506,4 +531,5 @@
 		CHAT_SYSTEM.textEntry:SetText( channel .. output )
 		CHAT_SYSTEM:Maximize()
 		CHAT_SYSTEM.textEntry:Open()
+		CHAT_SYSTEM.textEntry:FadeIn()
 	end
