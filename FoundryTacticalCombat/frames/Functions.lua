@@ -278,13 +278,6 @@
                 -- Populate health bar
                 FTC.Frames:UpdateAttribute( unitTag , POWERTYPE_HEALTH , nil )
 
-                -- Override for offline members
-                if ( not IsUnitOnline(unitTag) ) then 
-                    frame.health.current:SetText(GetString(FTC_Offline))
-                    frame.health.pct:SetText("")
-                    frame.health.bar:SetWidth(0)
-                end
-
                 -- Change the bar color
                 FTC.Frames:GroupRange( 'group'..i , nil )
 
@@ -436,6 +429,13 @@
             if ( powerType == POWERTYPE_HEALTH and ( IsUnitDead(unitTag) or powerValue == 0 ) ) then 
                 label = GetString(FTC_Dead)
                 pctLabel = ""
+            end
+
+            -- Override for offline members
+            if ( not IsUnitOnline(unitTag) ) then 
+                label = GetString(FTC_Offline)
+                pctLabel = ""
+                attr.bar:SetWidth(0)
             end
 
             -- Set the label

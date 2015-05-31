@@ -515,7 +515,8 @@
      * --------------------------------
      ]]--
     function FTC:OnGroupChanged()
-        if ( FTC.init.Frames ) then FTC.Frames:SetupGroup() end    end
+        if ( FTC.init.Frames ) then FTC.Frames:SetupGroup() end    
+    end
 
     function FTC:OnUnitCreated( unitTag )
         if ( string.find(unitTag,"group") > 0 and FTC.init.Frames ) then FTC.Frames:SetupGroup() end
