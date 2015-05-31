@@ -165,7 +165,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_FShowMax),
             tooltip     = GetString(FTC_Menu_FShowMaxDesc),
             getFunc     = function() return FTC.Vars.FrameShowMax end, 
-            setFunc     = function(value) FTC.Menu:Update( 'FrameShowMax' , value , true ) end, 
+            setFunc     = function(value) FTC.Menu:Update( 'FrameShowMax' , value ) end, 
             default     = FTC.Defaults.FrameShowMax
         },
 
@@ -218,7 +218,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_FShowDef),
             tooltip     = GetString(FTC_Menu_FShowDefDesc),
             getFunc     = function() return FTC.Vars.DefaultTargetFrame end, 
-            setFunc     = function(value) FTC.Menu:Update( 'DefaultTargetFrame' , value , true ) end, 
+            setFunc     = function(value) FTC.Menu:Update( 'DefaultTargetFrame' , value ) end, 
             default     = FTC.Defaults.DefaultTargetFrame
         },
 
@@ -227,7 +227,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_FShowName),
             tooltip     = GetString(FTC_Menu_FShowNameDesc),
             getFunc     = function() return FTC.Vars.EnableNameplate end, 
-            setFunc     = function(value) FTC.Menu:Update( 'EnableNameplate' , value , true ) end, 
+            setFunc     = function(value) FTC.Menu:Update( 'EnableNameplate' , value ) end, 
             default     = FTC.Defaults.EnableNameplate
         },
 
@@ -236,7 +236,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_FShowXP),
             tooltip     = GetString(FTC_Menu_FShowXPDesc),
             getFunc     = function() return FTC.Vars.EnableXPBar end, 
-            setFunc     = function(value) FTC.Menu:Update( 'EnableXPBar' , value , true ) end, 
+            setFunc     = function(value) FTC.Menu:Update( 'EnableXPBar' , value ) end, 
             default     = FTC.Defaults.EnableXPBar
         },
 
@@ -752,7 +752,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_TRHeal),
             tooltip     = GetString(FTC_Menu_TRHealDesc),
             getFunc     = function() return FTC.Vars.StatTriggerHeals end, 
-            setFunc     = function(value) FTC.Menu:Update( 'StatTriggerHeals' , value , true ) end, 
+            setFunc     = function(value) FTC.Menu:Update( 'StatTriggerHeals' , value ) end, 
             default     = FTC.Defaults.StatTriggerHeals,
         },
 
