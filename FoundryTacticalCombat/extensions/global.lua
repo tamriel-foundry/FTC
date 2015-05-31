@@ -29,7 +29,7 @@
 	function FTC.Extensions.SpellCast( ability )
 
 		-- Might of the Guild
-		local motg = GetSkillAbilityUpgradeInfo(SKILL_TYPE_GUILD,2,10)
+		local motg = GetSkillAbilityUpgradeInfo(SKILL_TYPE_GUILD,2,10) or 0
 		if ( FTC.init.Buffs and motg > 0 ) then
 
 			-- Determine whether the ability used was a Mages' Guild ability

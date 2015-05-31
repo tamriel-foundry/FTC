@@ -29,7 +29,7 @@
 	function FTC.Templar.SpellCast( ability )
 
 		-- Trigger Illuminate Minor Sorcery
-		local illuminate = GetSkillAbilityUpgradeInfo(SKILL_TYPE_CLASS,2,9)
+		local illuminate = GetSkillAbilityUpgradeInfo(SKILL_TYPE_CLASS,2,9) or 0
 		if ( FTC.init.Buffs and illuminate > 0 ) then
 
 			-- Determine whether the ability used was a Dawn's Wrath ability

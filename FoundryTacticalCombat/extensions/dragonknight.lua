@@ -30,7 +30,7 @@
 	function FTC.Dragonknight.SpellCast( ability )
 
 		-- Trigger Mountain's Blessing Minor Brutality
-		local mblessing = GetSkillAbilityUpgradeInfo(SKILL_TYPE_CLASS,3,9)
+		local mblessing = GetSkillAbilityUpgradeInfo(SKILL_TYPE_CLASS,3,9) or 0
 		if ( FTC.init.Buffs and mblessing > 0 ) then
 
 			-- Determine whether the ability used was an Earthen Heart ability
@@ -69,7 +69,7 @@
 	function FTC.Dragonknight.NewDamage( damage )
 
 		-- Trigger Warmth on Damage
-		local warmth = GetSkillAbilityUpgradeInfo(SKILL_TYPE_CLASS,1,8)
+		local warmth = GetSkillAbilityUpgradeInfo(SKILL_TYPE_CLASS,1,8) or 0
 		if ( FTC.init.Buffs and damage.out and warmth > 0 and ( damage.result == ACTION_RESULT_DAMAGE or damage.result == ACTION_RESULT_CRITICAL_DAMAGE or damage.result == ACTION_RESULT_BLOCKED_DAMAGE or damage.result == ACTION_RESULT_DOT_TICK or damage.result == ACTION_RESULT_DOT_TICK_CRITICAL ) ) then
 
 			-- Determine whether the ability used was an Earthen Heart ability

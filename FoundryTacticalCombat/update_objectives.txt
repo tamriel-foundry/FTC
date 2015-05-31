@@ -64,10 +64,10 @@ DONE		Illuminate
 DONE		Dark Flare
 
 		Nightblade
-			Shadow Barrier
+DONE		Shadow Barrier
 			Nightblade Grim Focus proc
-			executioner
-			hemorrhage
+SKIP		executioner
+DONE		hemorrhage
 
 DONE	Dragonknight
 DONE		Mountain's Blessing

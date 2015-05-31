@@ -18,8 +18,8 @@
 
 		-- Check if there is an existing alert
 		local Alerts = FTC.SCT.Alerts
-		for i = 1 , #FTC.SCT.Alerts do
-			if ( Alerts[i].name == newAlert.name and ( ms - Alerts[i].ms ) < newAlert.buffer ) then return end 
+		for i = 1 , #Alerts do
+			if ( Alerts[i].name == newAlert.name and ( ms - Alerts[i].ms < newAlert.buffer ) ) then return end
 		end
 
         -- Assign SCT to control from pool

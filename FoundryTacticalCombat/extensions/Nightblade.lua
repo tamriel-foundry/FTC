@@ -1,78 +1,131 @@
 
--- This file has been DEPRECATED as of ESO Update 1.5, it is not currently used by the addon.
+--[[----------------------------------------------------------
+    FTC NIGHTBLADE EXTENSION
+  ]]----------------------------------------------------------
 
--- Watch for FTC initialization
-CALLBACK_MANAGER:RegisterCallback( "FTC_Ready" , function() InitializeNightblade()  end )
+	FTC.Nightblade = {}
+	CALLBACK_MANAGER:RegisterCallback( "FTC_Ready" , function() FTC.Nightblade:Initialize()  end )
 
--- Register the callback to fire whenever a spell is cast
-function InitializeNightblade()
-	if ( FTC.Player.class == "Nightblade" ) then
-	
-		-- Shadow Barrier
-		FTC.Nightblade = { ["stealth"]		= GetUnitStealthState('player') }
-		EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_STEALTH_STATE_CHANGED , FTC.NightbladeStealth )
-		
-		-- Refreshing Shadows
-		CALLBACK_MANAGER:RegisterCallback("FTC_SpellCast" , function( ability ) FTC.NightbladeRefreshing( ability ) end )
-	end
-end
+    --[[ 
+     * Initialize Sorcerer Extension
+     * --------------------------------
+     * Called by FTC_Ready
+     * --------------------------------
+     ]]--
+	function FTC.Nightblade:Initialize()
+		if ( GetUnitClassId( 'player' ) == 3 ) then
 
---[[ 
- * Runs on the EVENT_STEALTH_STATE_CHANGED listener.
- * Watches for changes in a Nightblade's stealth state to trigger Shadow Barrier
- ]]--
-function FTC.NightbladeStealth( eventCode , unitTag , stealthState )
-
-	-- Are we coming out of stealth?
-	if ( ( FTC.Nightblade.stealth == STEALTH_STATE_HIDDEN or FTC.Nightblade.stealth == STEALTH_STATE_STEALTH or FTC.Nightblade.stealth == STEALTH_STATE_HIDDEN_ALMOST_DETECTED or FTC.Nightblade.stealth == STEALTH_STATE_STEALTH_ALMOST_DETECTED ) and ( stealthState == STEALTH_STATE_DETECTED or stealthState == STEALTH_STATE_NONE ) ) then
-		
-		-- Trigger a buff
-		if ( FTC.init.Buffs ) then
-			local ms = GetGameTimeMilliseconds()
-			local newBuff = {
-				["name"]	= "Shadow Barrier",
-				["begin"]	= ms / 1000,
-				["ends"]	= ( ms / 1000 ) + 4.6,
-				["debuff"]	= false,
-				["stacks"]	= 0,
-				["tag"]		= 'player',
-				["icon"]	= '/esoui/art/icons/ability_rogue_052.dds',
-			}
-			FTC.Buffs.Player["Shadow Barrier"] = newBuff
+			-- Setup data
+			FTC.Nightblade.focusSlot = nil
+			FTC.Nightblade.canProc	 = false
+			
+			-- Register callback
+			CALLBACK_MANAGER:RegisterCallback( "FTC_SpellCast", 	function( ability ) FTC.Nightblade.SpellCast( ability ) end )
+			CALLBACK_MANAGER:RegisterCallback( "FTC_NewDamage", 	function( damage )  FTC.Nightblade.NewDamage( damage ) end )
 		end
 	end
-	
-	
-	-- Save the previous stealthed state
-	FTC.Nightblade.stealth = stealthState
-end
 
+    --[[ 
+     * Handle Custom Nightblade Casts
+     * --------------------------------
+     * Called by FTC_SpellCast
+     * --------------------------------
+     ]]--
+	function FTC.Nightblade.SpellCast( ability )
 
---[[ 
- * Runs on FTC_SpellCast callback
- * Triggers the Refreshing Shadows passive when a nightblade uses a Shadow ability
- ]]--
-function FTC.NightbladeRefreshing( ability )
+		-- Check if Grim Focus is available?
+		FTC.Nightblade.focusSlot = nil
+		for i = 3 , 7 do
+			if ( FTC.Player.Abilities[i].name == GetAbilityName(61902) or FTC.Player.Abilities[i].name == GetAbilityName(61927) or FTC.Player.Abilities[i].name == GetAbilityName(61919) ) then
+			
+				-- Get the button
+				local button = _G["ActionButton"..i.."Button"]
+				FTC.Nightblade.focusSlot = i
+				FTC.Nightblade.canProc	 = true
+				
+				-- Bail out of the loop
+				break
+			end
+		end
 
-	-- Bail if no ability is passed
-	if ( ability == nil ) then return end
-	
-	-- Is it a 
-	local shadows = { "Shadow Cloak", "Shadowy Disguise", "Dark Cloak", "Veiled Strike", "Surprise Attack", "Concealed Weapon", "Path of Darkness", "Twisting Path", "Refreshing Path", "Aspect of Terror", "Mass Hysteria", "Manifestation of Terror", "Summon Shade", "Dark Shades", "Shadow Image", "Consuming Darkness", "Bolstering Darkness", "Veil of Blades" }
-	for i = 1 , #shadows do
-		if ( shadows[i] == ability.name ) then
-			local ms = GetGameTimeMilliseconds()
-			local newBuff = {
-				["name"]	= "Refreshing Shadows",
-				["begin"]	= ms / 1000,
-				["ends"]	= ( ms / 1000 ) + 6,
-				["debuff"]	= false,
-				["stacks"]	= 0,
-				["tag"]		= 'player',
-				["icon"]	= '/esoui/art/icons/ability_rogue_050.dds',
-			}
-			FTC.Buffs.Player["Refreshing Shadows"] = newBuff
-			break
+		-- Trigger Exploitation Minor Prophecy
+		local sbarrier = GetSkillAbilityUpgradeInfo(SKILL_TYPE_CLASS,2,8) or 0
+		if ( FTC.init.Buffs and sbarrier >= 0 ) then
+
+			-- Determine whether the ability used was a Shadow ability
+			for i = 1 , 6 do
+				if ( ability.id == GetSkillAbilityId(SKILL_TYPE_CLASS,2,i,false) ) then 
+
+					-- Determine how many pieces of heavy armor are worn
+					local nHeavy = 0
+					for i = 0 , 11 do
+						nHeavy = ( GetItemArmorType(BAG_WORN,i) == ARMORTYPE_HEAVY ) and nHeavy + 1 or nHeavy
+					end
+
+					-- Fire a buff
+		            local ability  = {
+		                ["owner"]  = FTC.Player.name,
+		                ["id"]     = 18866,
+		                ["name"]   = GetAbilityName(18866),
+		                ["cast"]   = 0,
+		                ["dur"]    = (2000 * sbarrier ) * ( 1 + (nHeavy * 0.25)),
+		                ["tex"]    = FTC.UI.Textures[GetAbilityName(18866)],
+		                ["ground"] = false,
+		                ["area"]   = false,
+		                ["debuff"] = false,
+		                ["toggle"] = nil,
+		            }
+		            FTC.Buffs:NewEffect( ability )
+
+					-- Break out of the loop
+					break
+				end
+			end
 		end
 	end
-end
+
+    --[[ 
+     * Handle Custom Nightblade Damage
+     * --------------------------------
+     * Called by FTC_NewDamage
+     * --------------------------------
+     ]]--
+	function FTC.Nightblade.NewDamage( damage )
+
+		-- Trigger Hemorrhage on critical hits
+		local hemorrhage = GetSkillAbilityUpgradeInfo(SKILL_TYPE_CLASS,1,10) or 0
+		if ( FTC.init.Buffs and hemorrhage > 0 and damage.out and damage.result == ACTION_RESULT_CRITICAL_DAMAGE or damage.result == ACTION_RESULT_DOT_TICK_CRITICAL ) then
+
+			-- Fire a buff
+            local ability  = {
+                ["owner"]  = FTC.Player.name,
+                ["id"]     = 26038,
+                ["name"]   = GetAbilityName(26038),
+                ["cast"]   = 0,
+                ["dur"]    = (10000 * hemorrhage),
+                ["tex"]    = FTC.UI.Textures[GetAbilityName(26038)],
+                ["ground"] = false,
+                ["area"]   = false,
+                ["debuff"] = false,
+                ["toggle"] = nil,
+            }
+            FTC.Buffs:NewEffect( ability )
+		end
+
+		-- Check if Assassin's Will is available
+		if ( FTC.Nightblade.focusSlot ~= nil and GetSlotBoundId(FTC.Nightblade.focusSlot) == 61907 and FTC.Nightblade.canProc) then
+
+			-- Trigger an alert
+			if ( FTC.init.SCT ) then
+				local newAlert = {
+					["name"]	= 'grimFocus',
+					["label"]	= GetAbilityName(61907),
+					["color"]	= {0.6,0,0},
+					["size"]	= FTC.Vars.SCTFontSize + 8,
+					["buffer"]	= 10000,
+				}
+				FTC.SCT:NewAlert( newAlert )
+			end
+			FTC.Nightblade.canProc	 = false
+		end
+	end

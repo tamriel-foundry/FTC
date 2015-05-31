@@ -91,6 +91,7 @@ extensions/global.lua
 extensions/dragonknight.lua
 extensions/sorcerer.lua
 extensions/templar.lua
+extensions/nightblade.lua
 
 lang/en.lua
 lang/$(language).lua

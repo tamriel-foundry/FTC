@@ -42,7 +42,7 @@
 		end
 
 		-- Check if Crystal Fragments is available?
-		for i = 3 , #FTC.Player.Abilities do
+		for i = 3 , 7 do
 			if ( FTC.Player.Abilities[i].name == fragments ) then
 			
 				-- Get the button
@@ -72,7 +72,7 @@
 		end
 
 		-- Trigger Exploitation Minor Prophecy
-		local exploitation = GetSkillAbilityUpgradeInfo(SKILL_TYPE_CLASS,1,10)
+		local exploitation = GetSkillAbilityUpgradeInfo(SKILL_TYPE_CLASS,1,10) or 0
 		if ( FTC.init.Buffs and exploitation > 0 ) then
 
 			-- Determine whether the ability used was a Dark Magic ability
@@ -184,7 +184,7 @@
 				-- Trigger an alert
 				if ( FTC.init.SCT ) then
 					local newAlert = {
-						["type"]	= 'crystalFragments',
+						["name"]	= 'crystalFragments',
 						["label"]	= effectName,
 						["color"]	= {0,0.5,1},
 						["size"]	= FTC.Vars.SCTFontSize + 8,
