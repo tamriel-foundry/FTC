@@ -165,7 +165,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_FShowMax),
             tooltip     = GetString(FTC_Menu_FShowMaxDesc),
             getFunc     = function() return FTC.Vars.FrameShowMax end, 
-            setFunc     = function(value) FTC.Menu:Update( 'FrameShowMax' , value ) end, 
+            setFunc     = function(value) FTC.Menu:UpdateFrames( 'FrameShowMax' , value ) end, 
             default     = FTC.Defaults.FrameShowMax
         },
 
