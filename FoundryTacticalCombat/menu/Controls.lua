@@ -617,7 +617,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_SIcons),
             tooltip     = GetString(FTC_Menu_SIconsDesc),
             getFunc     = function() return FTC.Vars.SCTIcons end, 
-            setFunc     = function(value) FTC.Menu:Update( 'SCTIcons' , value , true ) end, 
+            setFunc     = function(value) FTC.Menu:Update( 'SCTIcons' , value ) end, 
             default     = FTC.Defaults.SCTIcons,
         },
       
@@ -627,7 +627,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_SNames),
             tooltip     = GetString(FTC_Menu_SNamesDesc),
             getFunc     = function() return FTC.Vars.SCTNames end, 
-            setFunc     = function(value) FTC.Menu:Update( 'SCTNames' , value , true ) end, 
+            setFunc     = function(value) FTC.Menu:Update( 'SCTNames' , value ) end, 
             default     = FTC.Defaults.SCTNames,
         },
 
@@ -637,7 +637,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_SRound),
             tooltip     = GetString(FTC_Menu_SRoundDesc),
             getFunc     = function() return FTC.Vars.SCTRound end, 
-            setFunc     = function(value) FTC.Menu:Update( 'SCTRound' , value , true ) end, 
+            setFunc     = function(value) FTC.Menu:Update( 'SCTRound' , value ) end, 
             default     = FTC.Defaults.SCTRound,
         },
 

@@ -15,7 +15,7 @@
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_LAYER_POPPED           , FTC.OnLayerChange )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_LAYER_PUSHED           , FTC.OnLayerChange )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_SCREEN_RESIZED                , FTC.OnScreenResize )
-        EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ABILITY_LIST_CHANGED          , FTC.OnAbilitiesChanged )
+        EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_SKILL_POINTS_CHANGED          , FTC.OnAbilitiesChanged )
 
         -- Target Events
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_RETICLE_TARGET_CHANGED        , FTC.OnTargetChanged )
