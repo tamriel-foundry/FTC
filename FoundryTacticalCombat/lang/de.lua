@@ -47,8 +47,8 @@ ZO_CreateStringId("FTC_Menu_HotbarDesc",    "Erweiterte Tooltips über der Stand
 ZO_CreateStringId("FTC_Menu_Move",          "UI Elemente bewegen")
 ZO_CreateStringId("FTC_Menu_MoveDesc",      "Die Positionen der einzelnen FTC UI Elemente lassen sich verschieben.")
 
-ZO_CreateStringId("FTC_Menu_Reset",        "Addon Zurücksetzen")
---ZO_CreateStringId("FTC_Menu_ResetDesc",    "Reset the entire FTC addon to its original settings.")
+ZO_CreateStringId("FTC_Menu_Reset",        "Addon zurücksetzen")
+ZO_CreateStringId("FTC_Menu_ResetDesc",    "Das komplette Addon wird auf die Standarteinstellungen zurückgesetzt.")
 
 --[[----------------------------------------------------------
     UNIT FRAMES
@@ -77,9 +77,9 @@ ZO_CreateStringId("FTC_Menu_FOpacInDesc",   "Ändert die Deckkraft der Einheiten
 ZO_CreateStringId("FTC_Menu_FOpacOut",      "Deckkraft außerhalb eines Kampfes")
 ZO_CreateStringId("FTC_Menu_FOpacOutDesc",  "Ändert die Deckkraft der Einheitenfenster außerhalb eines Kampfes. Je niedriger desto durchsichtiger. [Standard: "..FTC.Defaults.FrameOpacityOut.."]")
 
---local default = ( FTC.Defaults.FrameShowMax ) and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_FShowMax",      "Show Maximum Health")
---ZO_CreateStringId("FTC_Menu_FShowMaxDesc",  "Display maximum health values in player, target, and group frames? [Default: "..default.."]")
+local default = ( FTC.Defaults.FrameShowMax ) and "Ein" or "Aus"
+ZO_CreateStringId("FTC_Menu_FShowMax",      "Maximales Leben anzeigen")
+ZO_CreateStringId("FTC_Menu_FShowMaxDesc",  "Zeigt das maximale Leben zusätzlich in den Lebensleisten der Spielerfenster, Zielfenster und Gruppenfenster an. [Standart: "..default.."]")
 
 ZO_CreateStringId("FTC_Menu_FFont1",        "Primäre Schriftart")
 ZO_CreateStringId("FTC_Menu_FFont1Desc",    "Ändert die primäre Schriftart der Einheitenfenster. [Standard: "..FTC.UI:TranslateFont(FTC.Defaults.FrameFont1).."]")
@@ -289,7 +289,7 @@ local default = FTC.Defaults.SCTNames and "Ein" or "Aus"
 ZO_CreateStringId("FTC_Menu_SNames",        "Anzeige der Fähigkeitsnamen")
 ZO_CreateStringId("FTC_Menu_SNamesDesc",    "Zeigt die Namen der Fähigkeiten neben den Schadenswerten an. [Standart: "..default.."]")
 
-local default = FTC.Defaults.SCTRound and "Enabled" or "Disabled"
+local default = FTC.Defaults.SCTRound and "Ein" or "Aus"
 ZO_CreateStringId("FTC_Menu_SRound",        "Schadenswerte verkürzen")
 ZO_CreateStringId("FTC_Menu_SRoundDesc",    "Die Schadenswerte werden aufgerundet, als Beispiel aus 9.543 Schaden wird 9,5k Schaden. [Standart: "..default.."]")
 
@@ -311,7 +311,7 @@ ZO_CreateStringId("FTC_Menu_SFontSDesc",    "Ändert die Schriftgröße im schwe
 ZO_CreateStringId("FTC_Menu_SIconS",        "Symbolgröße")
 ZO_CreateStringId("FTC_Menu_SIconSDesc",    "Ändert die Symbolgröße im schwebenden Kampftext. [Standart: "..FTC.Defaults.SCTIconSize.."]")
 
-ZO_CreateStringId("FTC_Menu_SCTReset",      "SCT zurücksetzen")
+ZO_CreateStringId("FTC_Menu_SCTReset",      "Zurücksetzen")
 ZO_CreateStringId("FTC_Menu_SCTResetDesc",  "Setzt die Einstellungen des schwebenden Kampftextes zurück auf die Standartwerte.")
 
 --[[----------------------------------------------------------
@@ -320,7 +320,7 @@ ZO_CreateStringId("FTC_Menu_SCTResetDesc",  "Setzt die Einstellungen des schwebe
 
 -- Damage Report UI
 ZO_CreateStringId("FTC_DReport",            "FTC Schadensreport")
-ZO_CreateStringId("FTC_HReport",            "FTC Heilungseport")
+ZO_CreateStringId("FTC_HReport",            "FTC Heilungsreport")
 ZO_CreateStringId("FTC_NoDamage",           "Kein Schaden ausgeteilt!")
 ZO_CreateStringId("FTC_NoHealing",          "Keine Heilung gewirkt!")
 ZO_CreateStringId("FTC_AllTargets",         "Alle Ziele")
