@@ -1,0 +1,42 @@
+
+	FTC 0.62 Feedack
+
+		WELCOME MESSAGE
+			Anchor to top, not compass
+
+		FRAMES
+			Only hide XP bar
+			Allow group/raid frames without player/target frame
+			Make sure disabled group/raid frame does not automatically show the default frame
+
+
+
+
+		BUFFS
+			Progress Bar?
+			Summon Shades wrong duration
+			Liquid Lightning possibly not working debuff
+			Flame Reach not tracking
+			Fix menu display of Player Buff / Player Debuff
+			Consuming potion while in inventory triggers an error
+
+		SCT
+			Maybe filter out Mutagen Dummy and Rapid Regeneration Dummy
+FIXED		Changing menu options for SCT makes frames
+			Verify font size changes numbers font size
+			Add option to disable alerts
+
+
+		STATS
+			Shields counted in Damage
+			Make report window movable / Anchor to top, not compass
+
+
+		EXTENSIONS
+
+
+
+
+
+
+

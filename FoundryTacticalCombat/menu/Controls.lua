@@ -227,7 +227,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_FShowName),
             tooltip     = GetString(FTC_Menu_FShowNameDesc),
             getFunc     = function() return FTC.Vars.EnableNameplate end, 
-            setFunc     = function(value) FTC.Menu:Update( 'EnableNameplate' , value ) end, 
+            setFunc     = function(value) FTC.Menu:UpdateFrames( 'EnableNameplate' , value ) end, 
             default     = FTC.Defaults.EnableNameplate
         },
 
@@ -236,7 +236,7 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_FShowXP),
             tooltip     = GetString(FTC_Menu_FShowXPDesc),
             getFunc     = function() return FTC.Vars.EnableXPBar end, 
-            setFunc     = function(value) FTC.Menu:Update( 'EnableXPBar' , value ) end, 
+            setFunc     = function(value) FTC.Menu:UpdateFrames( 'EnableXPBar' , value ) end, 
             default     = FTC.Defaults.EnableXPBar
         },
 
@@ -671,7 +671,7 @@ function FTC.Menu:Controls()
             tooltip     = GetString(FTC_Menu_SFont1Desc),
             choices     = { "Metamorphous", "ESO Standard" , "ESO Bold" , "Prose Antique" , "Handwritten" , "Trajan Pro" , "Futura Standard" , "Futura Bold" }, 
             getFunc     = function() return FTC.UI:TranslateFont(FTC.Vars.SCTFont1) end, 
-            setFunc     = function( value ) FTC.Menu:UpdateFrames( "SCTFont1" , FTC.UI:TranslateFont(value) ) end,
+            setFunc     = function( value ) FTC.Menu:Update( "SCTFont1" , FTC.UI:TranslateFont(value) ) end,
             default     = FTC.Defaults.SCTFont1, 
         },
 
@@ -681,7 +681,7 @@ function FTC.Menu:Controls()
             tooltip     = GetString(FTC_Menu_SFont2Desc),
             choices     = { "Metamorphous", "ESO Standard" , "ESO Bold" , "Prose Antique" , "Handwritten" , "Trajan Pro" , "Futura Standard" , "Futura Bold" }, 
             getFunc     = function() return FTC.UI:TranslateFont(FTC.Vars.SCTFont2) end, 
-            setFunc     = function( value ) FTC.Menu:UpdateFrames( "SCTFont2" , FTC.UI:TranslateFont(value) ) end,
+            setFunc     = function( value ) FTC.Menu:Update( "SCTFont2" , FTC.UI:TranslateFont(value) ) end,
             default     = FTC.Defaults.SCTFont2, 
         },
 
@@ -693,7 +693,7 @@ function FTC.Menu:Controls()
             max         = 36, 
             step        = 1, 
             getFunc     = function() return FTC.Vars.SCTFontSize end, 
-            setFunc     = function( value ) FTC.Menu:UpdateFrames( "SCTFontSize" , value ) end, 
+            setFunc     = function( value ) FTC.Menu:Update( "SCTFontSize" , value ) end, 
             default     = FTC.Defaults.SCTFontSize
         },
 

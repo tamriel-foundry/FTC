@@ -640,7 +640,7 @@
         else
 
             -- Change the icon and color
-            parent.icon:SetTexture("/esoui/art/inventory/journal_tabicon_quest_down.dds")
+            parent.icon:SetTexture("/esoui/art/compass/quest_icon_assisted.dds")
             parent.bg:SetCenterColor(0,0.1,0.1,1)
             parent.bar:SetColor(0,1,1,1)
 

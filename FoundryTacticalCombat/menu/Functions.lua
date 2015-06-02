@@ -20,7 +20,7 @@
             displayName         = GetString(FTC_ShortInfo),
             author              = "Atropos", 
             version             = FTC.version, 
-            registerForRefresh  = false,
+            registerForRefresh  = true,
             registerForDefaults = false,
         }
 
@@ -84,6 +84,7 @@
 
             -- Combat Text Display
             if ( FTC.init.SCT ) then
+                FTC_SCTIn:ClearAnchors()
                 FTC_SCTIn:SetAnchor(RIGHT,FTC_UI,RIGHT,-50,-50)
                 EVENT_MANAGER:RegisterForUpdate( "FTC_MenuSCT" , 1000 , function() FTC.Menu:FakeSCT() end )
             end
@@ -159,9 +160,6 @@
         
         -- Update the database
         FTC.Vars[setting] = value
-
-        -- Re-configure some things
-        if ( FTC.init.Frames ) then FTC.Frames:SetupPlayer() end
         
         -- Maybe reload
         if reload then ReloadUI() end

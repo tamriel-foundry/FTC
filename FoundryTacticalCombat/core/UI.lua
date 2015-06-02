@@ -129,8 +129,11 @@ FTC.UI.Textures     = {
             [21925] = '/esoui/art/icons/death_recap_disease_aoe.dds',               -- Diseased
             [21928] = '/esoui/art/icons/death_recap_disease_aoe.dds',               -- Pestilence
             [58856] = '/esoui/art/icons/death_recap_disease_aoe.dds',               -- Infection
-            [5139]  = '/esoui/art/icons/death_recap_environmental.dds',             -- Lava
-          --[]  = ,                                                                 -- Intense Cold
+
+            -- Environmental
+            [11338] = '/esoui/art/icons/death_recap_environmental.dds',             -- Lava
+            [5139]  = '/esoui/art/icons/death_recap_environmental.dds',             -- In Lava
+            [21132] = '/esoui/art/icons/death_recap_environmental.dds',             -- Intense Cold
             
             -- Defenses
             [2890]  = '/esoui/art/icons/ability_warrior_030.dds',                   -- Block
