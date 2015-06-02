@@ -223,7 +223,7 @@
         -- Using default frames
         else
             FTC_GroupFrame:SetHidden(true) 
-            FTC_RaidFrame:SetHidden(true) 
+            FTC_RaidFrame:SetHidden(true)
             ZO_UnitFramesGroups:SetHidden(false)
             return 
         end
@@ -546,14 +546,12 @@
 
         -- Retrieve the bar
         local parent = _G["FTC_PlayerFrame_Alt"]
-
-        -- Bail if the bar is disabled
-        if ( not FTC.Vars.EnableXPBar ) then 
-            parent:SetHidden(true)  
-        return end
         
         -- Player is mounted
-        if ( IsMounted() and parent.context ~= "mount" ) then 
+        if ( IsMounted() and parent.context ~= "mount" ) then
+
+            -- Set the context
+            parent.context = "mount" 
 
             -- Change the icon and color
             parent.icon:SetTexture("/esoui/art/icons/mapkey/mapkey_stables.dds")
@@ -564,11 +562,11 @@
             local current, maximum, effectiveMax = GetUnitPower( 'player' , POWERTYPE_MOUNT_STAMINA )
             parent.bar:SetWidth( math.min(current/effectiveMax,1) * (parent.bg:GetWidth()-6) )
 
-            -- Set the context
-            parent.context = "mount"
-
         -- Player is transformed into a werewolf
         elseif ( IsWerewolf() and parent.context ~= "werewolf" ) then
+
+            -- Set the context
+            parent.context = "werewolf"
 
             -- Change the icon and color
             parent.icon:SetTexture("/esoui/art/icons/mapkey/mapkey_undaunted.dds")
@@ -579,11 +577,11 @@
             local current, maximum, effectiveMax = GetUnitPower( 'player' , POWERTYPE_WEREWOLF )
             parent.bar:SetWidth( math.min(current/maximum,1) * (parent.bg:GetWidth()-6) )
 
-            -- Set the context
-            parent.context = "werewolf"
-
         -- Player is controlling a siege weapon
         elseif ( ( IsPlayerControllingSiegeWeapon() or IsPlayerEscortingRam() ) and parent.context ~= "siege" ) then
+
+            -- Set the context
+            parent.context = "siege"
 
             -- Change the icon and color
             parent.icon:SetTexture("/esoui/art/icons/mapkey/mapkey_borderkeep.dds")
@@ -594,11 +592,17 @@
             local current, maximum, effectiveMax = GetUnitPower( 'controlledsiege' , POWERTYPE_HEALTH )
             parent.bar:SetWidth( math.min(current/maximum,1) * (parent.bg:GetWidth()-6) )
 
-            -- Set the context
-            parent.context = "siege"
-
         -- Player is above level 50
         elseif ( FTC.Player.level >= 50 ) then
+
+            -- Set the context
+            parent.context = "exp"
+
+            -- Bail if the bar is disabled
+            if ( not FTC.Vars.EnableXPBar ) then 
+                parent:SetHidden(true)  
+                return 
+            end
             
             -- Setup placeholders
             local icon = nil
@@ -633,11 +637,17 @@
             currExp = GetPlayerChampionXP()
             parent.bar:SetWidth( math.min(currExp/maxExp,1) * (parent.bg:GetWidth()-6) )
 
+        -- Player is below level 50
+        else
+            
             -- Set the context
             parent.context = "exp"
 
-        -- Player is below level 50
-        else
+            -- Bail if the bar is disabled
+            if ( not FTC.Vars.EnableXPBar ) then 
+                parent:SetHidden(true)  
+                return 
+            end
 
             -- Change the icon and color
             parent.icon:SetTexture("/esoui/art/compass/quest_icon_assisted.dds")
@@ -648,9 +658,6 @@
             maxExp = GetUnitXPMax('player')
             currExp = FTC.Player.exp
             parent.bar:SetWidth( math.min(currExp/maxExp,1) * (parent.bg:GetWidth()-6) )
-
-            -- Set the context
-            parent.context = "exp"
         end
 
         -- Ensure bar visibility

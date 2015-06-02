@@ -2,37 +2,37 @@
 	FTC 0.62 Feedack
 
 		WELCOME MESSAGE
-			Anchor to top, not compass
+FIXED		Anchor to top, not compass
 
 		FRAMES
-			Only hide XP bar
-			Allow group/raid frames without player/target frame
-			Make sure disabled group/raid frame does not automatically show the default frame
-
-
+FIXED		Only hide XP bar
+NEXTVER		Allow group/raid frames without player/target frame
+WONTFIX		Make sure disabled group/raid frame does not automatically show the default frame
+NEXTVER		Tool to manually change the group role of others
 
 
 		BUFFS
-			Progress Bar?
-			Summon Shades wrong duration
-			Liquid Lightning possibly not working debuff
-			Flame Reach not tracking
-			Fix menu display of Player Buff / Player Debuff
-			Consuming potion while in inventory triggers an error
+NEXTVER		Progress Bar?
+FIXED		Summon Shades wrong duration
+FIXED		Liquid Lightning possibly not working debuf
+FIXED		Flame Reach not tracking
+FIXED		Fix menu display of Player Buff / Player Debuff
+FIXED		Consuming potion while in inventory triggers an error
+UNCONFIRMED	Vampire Stage
+
 
 		SCT
-			Maybe filter out Mutagen Dummy and Rapid Regeneration Dummy
+FIXED		Maybe filter out Mutagen Dummy and Rapid Regeneration Dummy
 FIXED		Changing menu options for SCT makes frames
-			Verify font size changes numbers font size
-			Add option to disable alerts
+NOTBUG		Verify font size changes numbers font size
+ADDED		Add option to disable alerts
+FIXED		Swap colors on low Stamina/Magicka alert
 
 
-		STATS
-			Shields counted in Damage
-			Make report window movable / Anchor to top, not compass
+DONE	STATS
+UNCONFIRMED	Shields counted in Damage
+FIXED		Make report window movable / Anchor to top, not compass
 
-
-		EXTENSIONS
 
 
 

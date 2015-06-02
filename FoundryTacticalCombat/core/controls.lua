@@ -21,7 +21,7 @@
 		welcome = LMW:CreateMsgWindow("FTC_Welcome", GetString(FTC_ShortInfo) , nil , nil )
 		welcome:SetDimensions(1000,math.min(1000,GuiRoot:GetHeight()*0.8))
 		welcome:ClearAnchors()
-		welcome:SetAnchor(TOP,ZO_CompassFrame,BOTTOM,0,20)
+		welcome:SetAnchor(TOP,GuiRoot,TOP,0,100)
 		welcome:SetMouseEnabled(false)
 		welcome:SetHidden(true)
 

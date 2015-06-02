@@ -34,7 +34,7 @@ function FTC.Stats:Controls()
 	--[[----------------------------------------------------------
 		EXPANDED ANALYTICS
 	  ]]----------------------------------------------------------
-	local FM 		= FTC.UI:TopLevelWindow( "FTC_Report", 					GuiRoot, 	{1000,math.min(1000,GuiRoot:GetHeight()*0.8)}, 			{TOP,BOTTOM,0,20,ZO_CompassFrame}, true )
+	local FM 		= FTC.UI:TopLevelWindow( "FTC_Report", 					GuiRoot, 	{1000,math.min(1000,GuiRoot:GetHeight()*0.8)}, 			{TOP,TOP,0,100}, true )
 	FM.backdrop 	= FTC.UI:Backdrop( 	"FTC_Report_Backdrop", 				FM, 		"inherit", 				{CENTER,CENTER,0,0}, 			{0,0,0,0.6}, {0,0,0,0.9}, nil, false )
 	FM.dtitle 		= FTC.UI:Label( 	"FTC_Report_DamageTitle", 			FM, 		{950,50}, 				{TOPLEFT,TOPLEFT,25,25}, 		"ZoFontWindowTitle", {1,1,1,1}, {0,1}, GetString(FTC_DReport), false )
 	FM.htitle		= FTC.UI:Label( 	"FTC_Report_HealingTitle", 			FM, 		{950,50}, 				{BOTTOMLEFT,BOTTOMLEFT,25,25}, 	"ZoFontWindowTitle", {1,1,1,1}, {0,1}, GetString(FTC_HReport), false )
@@ -43,6 +43,7 @@ function FTC.Stats:Controls()
 	FM.close:SetMouseOverTexture('/esoui/art/buttons/closebutton_mouseover.dds')
 	FM.close:SetHandler("OnClicked", FTC.Stats.Toggle )
 	FM:SetMouseEnabled( true )
+	FM:SetMovable( true )
 
 	-- Abilities Detail
 	local abilities	= FTC.UI:Control(  "FTC_Report_Ability",   				FM,			{FM:GetWidth()-50,200}, {TOP,TOP,0,0}, 					true )

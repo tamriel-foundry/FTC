@@ -76,13 +76,19 @@ function FTC.Buffs:RegisterEffects()
         [29173] = { 0,    18,   0,    false },      -- Weakness to Elements
         [39089] = { 0,    18,   0,    false },      -- Elemental Susceptibility
         [39095] = { 0,    18,   0,    false },      -- Elemental Drain
-        [29091] = { 0,    5,    0,    true },       -- Destructive Touch
         [29089] = { 0,    5,    0,    true },       -- Shock Touch
         [29078] = { 0,    5,    0,    true },       -- Frost Touch
         [62648] = { 0,    5,    0,    true },       -- Fire Touch
+        [38944] = { 0,    5,    0,    true },       -- Fire Reach
+        [38970] = { 0,    5,    0,    true },       -- Frost Reach
+        [38978] = { 0,    5,    0,    true },       -- Shock Reach
+        [38985] = { 0,    8,    0,    true },       -- Flame Clench
+        [38989] = { 0,    8,    0,    true },       -- Frost Clench
+        [38993] = { 0,    8,    0,    true },       -- Shock Clench
         [46340] = { 0,    5,    0,    true },       -- Force Shock
         [46348] = { 0,    5,    0,    true },       -- Crushing Shock
         [46356] = { 0,    5,    0,    true },       -- Force Pulse
+
         [39161] = { 0,    10,   0,    true },       -- Pulsar
         [39162] = { 0 ,   10 ,  0,    true },       -- Flame Pulsar
         [39167] = { 0 ,   10 ,  0,    true },       -- Storm Pulsar
@@ -191,6 +197,9 @@ function FTC.Buffs:RegisterEffects()
         [14350] = { 0,    4.5,  0,    false },      -- Aspect of Terror
         [37470] = { 0,    4.5,  0,    false },      -- Mass Hysteria
         [37475] = { 0,    4.5,  0,    false },      -- Manifestation of Terror
+        [33211] = { 0,    20.7,  0,    false },     -- Summon Shades
+        [44247] = { 0,    20.7,  0,    false },     -- Dark Shades
+        [35411] = { 0,    20.7,  0,    false },     -- Shadow Image
         
         -- Siphoning
         [33291] = { 10,   10,   0,    true },       -- Strife
@@ -584,6 +593,10 @@ end
             63601,          -- ESO Plus Member
             23673,          -- Major Brutality
             40479,          -- Major Prophecy
+            --35771,          -- Stage 1 Vampirism
+            --35773,          -- Stage 2 Vampirism
+            --35780,          -- Stage 3 Vampirism
+            --35786,          -- Stage 4 Vampirism
         }
         for i = 1 , #Ignored do 
             if ( name == GetAbilityName(Ignored[i]) ) then 

@@ -293,6 +293,10 @@ local default = FTC.Defaults.SCTRound and "Activé" or "Désactivé"
 ZO_CreateStringId("FTC_Menu_SRound",        "Arrondir Nombres")
 ZO_CreateStringId("FTC_Menu_SRoundDesc",    "Arrondir les chiffres des dégats à la centaine proche; par exemple 9,543 deviens 9.5k. [Défaut: "..default.."]")
 
+--local default = FTC.Defaults.SCTAlerts      and "Enabled" or "Disabled"
+--ZO_CreateStringId("FTC_Menu_SAlerts",       "Display Alerts")
+--ZO_CreateStringId("FTC_Menu_SAlertsDesc",   "Display alerts for significant combat events?  [Default: "..default.."]")
+
 ZO_CreateStringId("FTC_Menu_SSpeed",        "Vitesse de défilement du TCD")
 ZO_CreateStringId("FTC_Menu_SSpeedDesc",    "Changer la vitesse du texte de combat déroulant, la valeur haute est plus rapide. [Défaut: "..FTC.Defaults.SCTSpeed.."]")
 

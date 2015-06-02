@@ -293,6 +293,10 @@ local default = FTC.Defaults.SCTRound and "Ein" or "Aus"
 ZO_CreateStringId("FTC_Menu_SRound",        "Schadenswerte verkürzen")
 ZO_CreateStringId("FTC_Menu_SRoundDesc",    "Die Schadenswerte werden aufgerundet, als Beispiel aus 9.543 Schaden wird 9,5k Schaden. [Standart: "..default.."]")
 
+--local default = FTC.Defaults.SCTAlerts      and "Enabled" or "Disabled"
+--ZO_CreateStringId("FTC_Menu_SAlerts",       "Display Alerts")
+--ZO_CreateStringId("FTC_Menu_SAlertsDesc",   "Display alerts for significant combat events?  [Default: "..default.."]")
+
 ZO_CreateStringId("FTC_Menu_SSpeed",        "Geschwindigkeit des Kampftextes")
 ZO_CreateStringId("FTC_Menu_SSpeedDesc",    "Ändert die Geschwindigkeit des schwebenden Kampftextes, je höher der Wert, umso schneller die Animation. [Standart: "..FTC.Defaults.SCTSpeed.."]")
 

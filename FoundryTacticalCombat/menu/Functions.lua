@@ -85,7 +85,7 @@
             -- Combat Text Display
             if ( FTC.init.SCT ) then
                 FTC_SCTIn:ClearAnchors()
-                FTC_SCTIn:SetAnchor(RIGHT,FTC_UI,RIGHT,-50,-50)
+                FTC_SCTIn:SetAnchor(RIGHT,FTC_UI,RIGHT,-100,-50)
                 EVENT_MANAGER:RegisterForUpdate( "FTC_MenuSCT" , 1000 , function() FTC.Menu:FakeSCT() end )
             end
 

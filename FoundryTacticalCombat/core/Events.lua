@@ -459,7 +459,7 @@
 
         -- Process potion consumption
         if( itemSoundCategory == ITEM_SOUND_CATEGORY_POTION ) then 
-            if ( FTC.init.Buffs ) then 
+            if ( FTC.init.Buffs and FTC.Player.Quickslot.name ~= nil ) then 
                 FTC.Buffs:NewEffect( FTC.Player.Quickslot ) 
                 FTC.Player.canPotion = false
             end

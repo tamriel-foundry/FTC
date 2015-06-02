@@ -11,6 +11,9 @@
      * --------------------------------
      ]]--
 	function FTC.SCT:NewAlert( newAlert )
+
+		-- Bail if alerts are disabled
+		if ( not FTC.Vars.SCTAlerts ) then return end
 		
 		-- Get the existing statuses
 		local name   = newAlert.name	
@@ -87,12 +90,12 @@
 			[POWERTYPE_MAGICKA] = {
 				["attr"]	 	= "magicka",
 				["label"]		= GetString(FTC_LowMagicka),
-				["color"]	 	= ( FTC.init.Frames ) and FTC.Vars.FrameMagickaColor or {038/255,077/255,033/255},
+				["color"]	 	= ( FTC.init.Frames ) and FTC.Vars.FrameMagickaColor or {064/255,064/255,128/255},
 			},
 			[POWERTYPE_STAMINA] = {
 				["attr"]	 	= "stamina",
 				["label"]		= GetString(FTC_LowStamina),
-				["color"] 		= ( FTC.init.Frames ) and FTC.Vars.FrameStaminaColor or {064/255,064/255,128/255},
+				["color"] 		= ( FTC.init.Frames ) and FTC.Vars.FrameStaminaColor or {038/255,077/255,033/255},
 			},
 		}
 

@@ -211,6 +211,9 @@
         local abilities = {
             31221,          -- Skyshard Collect
             36010,          -- Mount Up
+            41467,          -- Regeneration Dummy
+            57466,          -- Rapid Regeneration Dummy
+            57468,          -- Mutagen Dummy
         }
         for i = 1 , #abilities do
             if ( abilityName == GetAbilityName(abilities[i]) ) then return true end

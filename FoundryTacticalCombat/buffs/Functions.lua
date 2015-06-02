@@ -127,8 +127,8 @@
             -- Get the time
             local time = GetGameTimeMilliseconds()
 
-            -- Avoid skill failure and spamming
-            if ( FTC.Buffs:HasFailure(slot) or ( time < ( FTC.Buffs.lastCast or 0 ) + 500 ) ) then return retval end
+            -- Avoid skill failure and spamming (allow ground targets)
+            if ( FTC.Buffs:HasFailure(slot) or ( time < ( FTC.Buffs.lastCast or 0 ) + 500 and not ability.ground ) ) then return retval end
 
             -- Send debuffs which require damage confirmation to the pending queue
             if ( ability.effects ~= nil and ability.effects[4] == true ) then 

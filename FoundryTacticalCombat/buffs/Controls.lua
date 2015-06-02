@@ -119,6 +119,9 @@ end
 function FTC.Buffs:ReleaseBuff(object)
     object:SetParent(FTC_UI)
     object:SetHidden(true)
+    object.cooldown:SetHidden(true)
+    object.label:SetText()
+    object.name:SetText()
 end
 
 --[[ 

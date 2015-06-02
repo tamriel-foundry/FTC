@@ -641,6 +641,16 @@ function FTC.Menu:Controls()
             default     = FTC.Defaults.SCTRound,
         },
 
+        -- Display Alerts?
+        { 
+            type        = "checkbox", 
+            name        = GetString(FTC_Menu_SAlerts),
+            tooltip     = GetString(FTC_Menu_SAlertsDesc),
+            getFunc     = function() return FTC.Vars.SCTAlerts end, 
+            setFunc     = function(value) FTC.Menu:Update( 'SCTAlerts' , value ) end, 
+            default     = FTC.Defaults.SCTAlerts,
+        },
+
         -- SCT Scroll Speed
         {   type        = "slider", 
             name        = GetString(FTC_Menu_SSpeed),

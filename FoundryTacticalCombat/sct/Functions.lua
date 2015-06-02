@@ -9,6 +9,7 @@
         -- Display Options
         ["SCTIcons"]                = true,
         ["SCTNames"]                = true,
+        ["SCTAlerts"]               = true,
         ["SCTSpeed"]                = 6,
         ["SCTArc"]                  = 6,
 

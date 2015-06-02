@@ -159,7 +159,6 @@ FTC.UI.Textures     = {
 
             [28385] = '/esoui/art/icons/ability_restorationstaff_004.dds',          -- Grand Healing
             [8205]  = '/esoui/art/icons/ability_restorationstaff_002.dds',          -- Regeneration
-            [57466] = '/esoui/art/icons/ability_restorationstaff_002.dds',          -- Rapid Regeneration Dummy
 
             [29078] = '/esoui/art/icons/ability_destructionstaff_005.dds',          -- Frost Touch
             [29089] = '/esoui/art/icons/ability_destructionstaff_006.dds',          -- Shock Touch
