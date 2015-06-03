@@ -65,21 +65,21 @@ ZO_CreateStringId("FTC_Offline",            "Offline")
 -- Unit Frames Menu
 ZO_CreateStringId("FTC_Menu_FHeader",       "Einheitenfenster Einstellungen")
 
---local default = ( FTC.Defaults.PlayerFrame ) and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_FPlayerF",      "Player Frame")
---ZO_CreateStringId("FTC_Menu_FPlayerFDesc",  "Use the custom FTC player frame? [Default: "..default.."]")
+local default = ( FTC.Defaults.PlayerFrame ) and "Ein" or "Aus"
+ZO_CreateStringId("FTC_Menu_FPlayerF",      "Spielerfenster anzeigen")
+ZO_CreateStringId("FTC_Menu_FPlayerFDesc",  "Zeigt das FTC Spielerfenster an. [Standart: "..default.."]")
 
---local default = ( FTC.Defaults.TargetFrame ) and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_FTargetF",      "Target Frame")
---ZO_CreateStringId("FTC_Menu_FTargetFDesc",  "Use the custom FTC target frame? [Default: "..default.."]")
+local default = ( FTC.Defaults.TargetFrame ) and "Ein" or "Aus"
+ZO_CreateStringId("FTC_Menu_FTargetF",      "Zielfenster anzeigen")
+ZO_CreateStringId("FTC_Menu_FTargetFDesc",  "Zeigt das FTC Zielfenster an. [Standart: "..default.."]")
 
 local default = ( FTC.Defaults.DefaultTargetFrame ) and "Ein" or "Aus"
-ZO_CreateStringId("FTC_Menu_FShowDef",      "Standard Zielfenster anzeigen")
+ZO_CreateStringId("FTC_Menu_FShowDef",      "Standard ESO Zielfenster anzeigen")
 ZO_CreateStringId("FTC_Menu_FShowDefDesc",  "Zeigt das Standard ESO Zielfenster weiterhin an. [Standard: "..default.."]")
 
---local default = ( FTC.Defaults.LabelFrames ) and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_FLabelDef",     "Label Default Frames")
---ZO_CreateStringId("FTC_Menu_FLabelDefDesc", "Add numeric overlays to default ESO player and target frames? [Default: "..default.."]")
+local default = ( FTC.Defaults.LabelFrames ) and "Ein" or "Aus"
+ZO_CreateStringId("FTC_Menu_FLabelDef",     "Beschriftung der ESO Einheitenfenster")
+ZO_CreateStringId("FTC_Menu_FLabelDefDesc", "Überschreibt die Werte im Standart ESO Spieler- und Zielfenster. [Standart: "..default.."]")
 
 local default = ( FTC.Defaults.FrameShowMax ) and "Ein" or "Aus"
 ZO_CreateStringId("FTC_Menu_FShowMax",      "Maximales Leben anzeigen")
@@ -305,9 +305,9 @@ local default = FTC.Defaults.SCTRound and "Ein" or "Aus"
 ZO_CreateStringId("FTC_Menu_SRound",        "Schadenswerte verkürzen")
 ZO_CreateStringId("FTC_Menu_SRoundDesc",    "Die Schadenswerte werden aufgerundet, als Beispiel aus 9.543 Schaden wird 9,5k Schaden. [Standart: "..default.."]")
 
---local default = FTC.Defaults.SCTAlerts      and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_SAlerts",       "Display Alerts")
---ZO_CreateStringId("FTC_Menu_SAlertsDesc",   "Display alerts for significant combat events?  [Default: "..default.."]")
+local default = FTC.Defaults.SCTAlerts      and "Ein" or "Aus"
+ZO_CreateStringId("FTC_Menu_SAlerts",       "Kampfmeldungen anzeigen")
+ZO_CreateStringId("FTC_Menu_SAlertsDesc",   "Zeigt für die wichtigsten Kampfereignisse, die entsprechende Kampfmeldung an.  [Standart: "..default.."]")
 
 ZO_CreateStringId("FTC_Menu_SSpeed",        "Geschwindigkeit des Kampftextes")
 ZO_CreateStringId("FTC_Menu_SSpeedDesc",    "Ändert die Geschwindigkeit des schwebenden Kampftextes, je höher der Wert, umso schneller die Animation. [Standart: "..FTC.Defaults.SCTSpeed.."]")
