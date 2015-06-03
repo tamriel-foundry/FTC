@@ -417,7 +417,7 @@
         end
 
         -- Override for dead things
-        if ( attribute == "health" and ( IsUnitDead(unitTag) or value == 0 ) ) then 
+        if ( attribute == "health" and ( IsUnitDead(unitTag) or powerValue == 0 ) ) then 
             label = GetString(FTC_Dead)
             pct = 0
             pctLabel = ""
@@ -596,15 +596,15 @@
             local color = nil
 
             -- Get champion rank
-            local rank = GetPlayerChampionPointsEarned()
+            local rank = GetChampionPointAttributeForRank(GetPlayerChampionPointsEarned()+1)
 
             -- The Warrior
-            if ( rank % 3 == 0 ) then 
+            if ( rank == 1 ) then 
                 icon = "/esoui/art/champion/champion_points_health_icon-hud-32.dds"
                 color = {0.6,0.2,0}
 
             -- The Mage
-            elseif ( rank % 2 == 0 ) then
+            elseif ( rank == 2 ) then
                 icon = "/esoui/art/champion/champion_points_magicka_icon-hud-32.dds"
                 color = {0,0.6,1}
             
