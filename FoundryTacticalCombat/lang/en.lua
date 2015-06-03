@@ -65,6 +65,26 @@ ZO_CreateStringId("FTC_Offline",            "Offline")
 -- Unit Frames Menu
 ZO_CreateStringId("FTC_Menu_FHeader",       "Configure Unit Frames Settings")
 
+local default = ( FTC.Defaults.PlayerFrame ) and "Enabled" or "Disabled"
+ZO_CreateStringId("FTC_Menu_FPlayerF",      "Player Frame")
+ZO_CreateStringId("FTC_Menu_FPlayerFDesc",  "Use the custom FTC player frame? [Default: "..default.."]")
+
+local default = ( FTC.Defaults.TargetFrame ) and "Enabled" or "Disabled"
+ZO_CreateStringId("FTC_Menu_FTargetF",      "Target Frame")
+ZO_CreateStringId("FTC_Menu_FTargetFDesc",  "Use the custom FTC target frame? [Default: "..default.."]")
+
+local default = ( FTC.Defaults.DefaultTargetFrame ) and "Enabled" or "Disabled"
+ZO_CreateStringId("FTC_Menu_FShowDef",      "Default Target Frame")
+ZO_CreateStringId("FTC_Menu_FShowDefDesc",  "Continue displaying the default ESO target frame? [Default: "..default.."]")
+
+local default = ( FTC.Defaults.LabelFrames ) and "Enabled" or "Disabled"
+ZO_CreateStringId("FTC_Menu_FLabelDef",     "Label Default Frames")
+ZO_CreateStringId("FTC_Menu_FLabelDefDesc", "Add numeric overlays to default ESO player and target frames? [Default: "..default.."]")
+
+local default = ( FTC.Defaults.FrameShowMax ) and "Enabled" or "Disabled"
+ZO_CreateStringId("FTC_Menu_FShowMax",      "Show Maximum Health")
+ZO_CreateStringId("FTC_Menu_FShowMaxDesc",  "Display maximum health values in player, target, and group frames? [Default: "..default.."]")
+
 ZO_CreateStringId("FTC_Menu_FWidth",        "Unit Frames Width")
 ZO_CreateStringId("FTC_Menu_FWidthDesc",    "Set the width of FTC unit frames. [Default: "..FTC.Defaults.FrameWidth.."]")
 
@@ -77,10 +97,6 @@ ZO_CreateStringId("FTC_Menu_FOpacInDesc",   "Adjust the in-combat opacity of FTC
 ZO_CreateStringId("FTC_Menu_FOpacOut",      "Non-Combat Opacity")
 ZO_CreateStringId("FTC_Menu_FOpacOutDesc",  "Adjust the out-of-combat opacity of FTC unit frames. Lower settings are more transparent. [Default: "..FTC.Defaults.FrameOpacityOut.."]")
 
-local default = ( FTC.Defaults.FrameShowMax ) and "Enabled" or "Disabled"
-ZO_CreateStringId("FTC_Menu_FShowMax",      "Show Maximum Health")
-ZO_CreateStringId("FTC_Menu_FShowMaxDesc",  "Display maximum health values in player, target, and group frames? [Default: "..default.."]")
-
 ZO_CreateStringId("FTC_Menu_FFont1",        "Primary Font")
 ZO_CreateStringId("FTC_Menu_FFont1Desc",    "Change the primary font used in FTC unit frames. [Default: "..FTC.UI:TranslateFont(FTC.Defaults.FrameFont1).."]")
 
@@ -92,10 +108,6 @@ ZO_CreateStringId("FTC_Menu_FFontSDesc",    "Change the base scale of the fonts 
 
 ZO_CreateStringId("FTC_Menu_Exceute",       "Execute Threshold")
 ZO_CreateStringId("FTC_Menu_ExecuteDesc",   "Set your desired excute threshold health percentage for frames and text alerts. Setting to zero will disable alerts. [Default: "..FTC.Defaults.ExecuteThreshold.."]")
-
-local default = ( FTC.Defaults.DefaultTargetFrame ) and "Enabled" or "Disabled"
-ZO_CreateStringId("FTC_Menu_FShowDef",      "Default Target Frame")
-ZO_CreateStringId("FTC_Menu_FShowDefDesc",  "Continue displaying the default ESO target frame? [Default: "..default.."]")
 
 local default = ( FTC.Defaults.EnableNameplate ) and "Enabled" or "Disabled"
 ZO_CreateStringId("FTC_Menu_FShowName",     "Show Player Nameplate")

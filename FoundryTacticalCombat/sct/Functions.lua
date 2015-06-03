@@ -130,7 +130,8 @@
 
             -- Determine labels
             local value = ( FTC.Vars.SCTRound ) and ( ( damage.value >= 1000 ) and FTC.DisplayNumber( damage.value / 1000 , 1 ) .. "k" or damage.value ) or FTC.DisplayNumber(damage.value)
-            local size  = ( damage.crit ) and FTC.Vars.SCTFontSize + 4 or FTC.Vars.SCTFontSize
+            local fSize = FTC.Vars.SCTFontSize
+            local iSize = FTC.Vars.SCTIconSize
             local name  = zo_strformat("<<!aC:1>>",damage.ability)
 
             -- Determine color
@@ -159,26 +160,32 @@
                 damage.icon = FTC.UI.Textures[GetAbilityName(30934)]
             end
 
+            -- Augment crits
+            if ( damage.crit ) then 
+                fSize   = fSize * 1.25
+                iSize   = iSize * 1.25
+                color   = {math.min(color[1]*1.5,1),math.min(color[2]*1.5,1),math.min(color[3]*1.5,1)}
+            end
+
             -- Assign data to the control
             control.value:SetText(value)
-            control.value:SetFont(FTC.UI:Font(FTC.Vars.SCTFont1,size+8,true))
+            control.value:SetFont(FTC.UI:Font(FTC.Vars.SCTFont1,fSize+8,true))
             control.value:SetColor(unpack(color))
 
             -- Maybe display names
             if ( FTC.Vars.SCTNames ) then 
                 control.name:SetText(name)
-                control.name:SetFont(FTC.UI:Font(FTC.Vars.SCTFont2,size,true))
+                control.name:SetFont(FTC.UI:Font(FTC.Vars.SCTFont2,fSize,true))
                 control.name:SetColor(unpack(color))
             else control.name:SetText("") end
 
             -- Maybe display icons
             if ( FTC.Vars.SCTIcons ) then 
-                local size = ( damage.crit ) and FTC.Vars.SCTIconSize + 8 or FTC.Vars.SCTIconSize
-                control.bg:SetDimensions(size,size)
-                control.frame:SetDimensions(size-4,size-4)
+                control.bg:SetDimensions(iSize,iSize)
+                control.frame:SetDimensions(iSize-4,iSize-4)
                 control.icon:SetTexture(damage.icon)
-                control.icon:SetDimensions(size-8,size-8)
-                local anchor = damage.out and {LEFT,control,LEFT,size*1.2,0} or {RIGHT,control,RIGHT,-1*(size*1.2),0}
+                control.icon:SetDimensions(iSize-8,iSize-8)
+                local anchor = damage.out and {LEFT,control,LEFT,iSize*1.2,0} or {RIGHT,control,RIGHT,-1*(iSize*1.2),0}
                 control.value:SetAnchor(unpack(anchor))
             end
             control.bg:SetHidden(not FTC.Vars.SCTIcons)

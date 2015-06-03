@@ -547,6 +547,21 @@ end
             end
         end
 
+        -- Vampirism
+        local Vamp = {
+            35771,          -- Stage 1 Vampirism
+            35773,          -- Stage 2 Vampirism
+            35780,          -- Stage 3 Vampirism
+            35786,          -- Stage 4 Vampirism
+        }
+        for i = 1 , #Vamp do
+            if ( name == GetAbilityName(Vamp[i] ) ) then 
+                isValid = ( unitTag == 'player' )
+                isType  = "S"..i
+                return isValid, name, isType , iconName
+            end
+        end
+
         -- AvA Bonuses
         local AvA = {
             15058,          -- Offensive Scroll Bonus I
@@ -593,10 +608,6 @@ end
             63601,          -- ESO Plus Member
             23673,          -- Major Brutality
             40479,          -- Major Prophecy
-            --35771,          -- Stage 1 Vampirism
-            --35773,          -- Stage 2 Vampirism
-            --35780,          -- Stage 3 Vampirism
-            --35786,          -- Stage 4 Vampirism
         }
         for i = 1 , #Ignored do 
             if ( name == GetAbilityName(Ignored[i]) ) then 

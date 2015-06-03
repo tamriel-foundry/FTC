@@ -511,7 +511,7 @@
 
 			-- Sort targets based on total damage
 			table.sort( targets , FTC.Stats.SortDamage )
-			tarName = targets[2].name
+			tarName = ( #targets > 2 ) and targets[2].name .. " (+" .. (#targets-2) .. ")" or targets[2].name
 		end
 
 		-- Minimize the report if it is shown
@@ -521,7 +521,7 @@
 		local dpsLabel   = ( context == "Damage" ) and GetString(FTC_DPS) or GetString(FTC_HPS)
 
 		-- Generate output
-		local output 	= "[FTC] " .. zo_strformat("<<!aC:1>>", tarName ) .. " (" .. ZO_FormatTime( time , SI_TIME_FORMAT_TIMESTAMP) .. ") - "
+		local output 	= "[FTC] " .. zo_strformat("<<!aC:1>>", tarName ) .. " - " .. ZO_FormatTime( time , SI_TIME_FORMAT_TIMESTAMP) .. " - "
 		output		 	= output .. FTC.DisplayNumber(damage) .. " " .. totalLabel .. " (" .. FTC.DisplayNumber(damage/time,2) .. " " .. dpsLabel .. ")"
 		
 		-- Determine appropriate channel

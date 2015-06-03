@@ -103,15 +103,16 @@ function FTC.Target:Update()
         FTC.Target.level    = GetUnitLevel('reticleover')
         FTC.Target.vlevel   = GetUnitVeteranRank('reticleover') 
 
+        -- Update target buffs
+        if ( FTC.init.Buffs ) then FTC.Buffs:GetBuffs( 'reticleover' ) end
+
         -- Update target frame
         if ( FTC.init.Frames ) then FTC.Frames:SetupTarget() end
 
-        -- Update target buffs
-        if ( FTC.init.Buffs ) then FTC.Buffs:GetBuffs( 'reticleover' ) end
+    -- Otherwise ensure target frame stays hidden
+    else 
+        if ( FTC.init.Frames ) then FTC_TargetFrame:SetHidden(true) end
     end
-
-    -- Hide invalid targets
-    if ( FTC.init.Frames ) then FTC_TargetFrame:SetHidden( ignore ) end
 end
 
 --[[----------------------------------------------------------
@@ -129,9 +130,130 @@ function FTC.Group:Initialize()
     end
 end
 
+
+--[[----------------------------------------------------------
+    EVENT HANDLERS
+  ]]----------------------------------------------------------
+
+    --[[ 
+     * Process Updates to Attributes
+     * --------------------------------
+     * Called by FTC.OnPowerUpdate()
+     * Called by FTC.Frames:SetupPlayer()
+     * Called by FTC.Frames:SetupTarget()
+     * --------------------------------
+     ]]--
+     function FTC.Player:UpdateAttribute( unitTag , powerType ,  powerValue , powerMax , powerEffectiveMax )
+
+        -- Player
+        local data = nil
+        if ( unitTag == 'player' ) then
+            data    = FTC.Player
+        
+        -- Target
+        elseif ( unitTag == 'reticleover' ) then
+            data    = FTC.Target
+
+        -- Group
+        elseif ( string.find(unitTag,"group") > 0 ) then
+            local i = GetGroupIndexByUnitTag(unitTag)
+            data    = FTC.Group[i]
+
+        -- Otherwise bail out
+        else return end
+        
+        -- Translate the attribute
+        local attrs = { [POWERTYPE_HEALTH] = "health", [POWERTYPE_MAGICKA] = "magicka", [POWERTYPE_STAMINA] = "stamina" }
+        local power = attrs[powerType]
+
+        -- If no value was passed, get new data
+        if ( powerValue == nil ) then
+            powerValue, powerMax, powerEffectiveMax = GetUnitPower( unitTag , powerType )
+        end
+        
+        -- Get the percentage
+        local pct = math.max(zo_roundToNearest((powerValue or 0)/powerMax,0.01),0)
+        
+        -- Update frames
+        if ( FTC.init.Frames ) then FTC.Frames:Attribute( unitTag , power , powerValue , powerMax , pct , data.shield.current ) end
+        
+        -- Update the database object
+        data[power] = { ["current"] = powerValue , ["max"] = powerMax , ["pct"] = pct }
+     end
+
+     --[[ 
+     * Update Shielding Attribute
+     * --------------------------------
+     * Called by FTC.OnVisualAdded()
+     * Called by FTC.OnVisualUpdate()
+     * Called by FTC.OnVisualRemoved()
+     * Called by FTC.Frames:SetupPlayer()
+     * Called by FTC.Frames:SetupTarget()
+     * --------------------------------
+     ]]--
+    function FTC.Player:UpdateShield( unitTag , value , maxValue )
+
+        -- Player
+        local data  = nil
+        if ( unitTag == 'player' ) then
+            data    = FTC.Player
+        
+        -- Target
+        elseif ( unitTag == 'reticleover' ) then
+            data    = FTC.Target
+
+        -- Group
+        elseif ( string.find(unitTag,"group") > 0 and ( FTC.Vars.GroupFrames or FTC.Vars.RaidFrames ) ) then
+
+            -- Get the group member
+            local i = GetGroupIndexByUnitTag(unitTag)
+            data    = FTC.Group[i]
+
+        -- Otherwise bail out
+        else return end
+
+        -- If no value was passed, get new data
+        if ( value == nil ) then 
+            value = GetUnitAttributeVisualizerEffectInfo(unitTag,ATTRIBUTE_VISUAL_POWER_SHIELDING,STAT_MITIGATION,ATTRIBUTE_HEALTH,POWERTYPE_HEALTH) or 0
+        end
+        
+        -- Get the unit's maximum health
+        local pct = zo_roundToNearest(value/data["health"]["max"],0.01)
+        
+        -- Update frames
+        if ( FTC.init.Frames ) then FTC.Frames:Shield( unitTag , value , pct , data.health.current , data.health.max , data.health.pct ) end
+        
+        -- Update the database object
+        data.shield = { ["current"] = value , ["max"] = maxValue , ["pct"] = pct }
+    end
+  
+     --[[ 
+     * Update Player Ultimate
+     * --------------------------------
+     * Called by FTC.OnPowerUpdate()
+     * --------------------------------
+     ]]--
+    function FTC.Player:UpdateUltimate( powerValue , powerMax , powerEffectiveMax )
+            
+        -- Get the currently slotted ultimate cost
+        cost, mechType = GetSlotAbilityCost(8)
+        
+        -- Calculate the percentage to activation
+        local pct = ( cost > 0 ) and zo_roundToNearest((powerValue/cost),0.01) or 0
+        
+        -- Maybe fire an alert
+        if ( FTC.init.SCT and pct >= 1 and FTC.Player.ultimate.pct < 1 ) then FTC.SCT:Ultimate() end
+
+        -- Update the hotbar label
+        if ( FTC.init.Hotbar ) then FTC.Hotbar:UpdateUltimate( powerValue , cost , pct ) end
+        
+        -- Update the database object
+        FTC.Player.ultimate = { ["current"] = powerValue , ["max"] = powerEffectiveMax , ["pct"] = pct }
+    end
+
 --[[----------------------------------------------------------
     HELPER FUNCTIONS
-  ]]-----------------------------------------------------------
+  ]]----------------------------------------------------------
 
     --[[ 
      * Filters Targets for "Critters"
@@ -272,32 +394,6 @@ end
         -- Otherwise empty the object
         else FTC.Player.Quickslot = {} end 
     end
-
-     --[[ 
-     * Update Ultimate Data
-     * --------------------------------
-     * Called by FTC.OnPowerUpdate()
-     * --------------------------------
-     ]]--
-    function FTC.Player:UpdateUltimate( powerValue , powerMax , powerEffectiveMax )
-            
-        -- Get the currently slotted ultimate cost
-        cost, mechType = GetSlotAbilityCost(8)
-        
-        -- Calculate the percentage to activation
-        local pct = ( cost > 0 ) and zo_roundToNearest((powerValue/cost),0.01) or 0
-        
-        -- Maybe fire an alert
-        if ( FTC.init.SCT and pct >= 1 and FTC.Player.ultimate.pct < 1 ) then FTC.SCT:Ultimate() end
-
-        -- Update the hotbar label
-        if ( FTC.init.Hotbar ) then FTC.Hotbar:UpdateUltimate( powerValue , cost , pct ) end
-        
-        -- Update the database object
-        FTC.Player.ultimate = { ["current"] = powerValue , ["max"] = powerEffectiveMax , ["pct"] = pct }
-    end
-
-
 
 --[[ 
  * Get abilityID from abilityName

@@ -87,7 +87,7 @@ function FTC.Initialize( eventCode, addOnName )
 
     -- Unit Frames Component
     if ( FTC.Vars.EnableFrames )    then FTC.Frames:Initialize() end
-
+    
     -- Active Buffs Component
     if ( FTC.Vars.EnableBuffs )     then FTC.Buffs:Initialize() end
 

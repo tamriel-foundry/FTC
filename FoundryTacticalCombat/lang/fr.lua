@@ -65,6 +65,26 @@ ZO_CreateStringId("FTC_Offline",            "Hors-Ligne")
 -- Unit Frames Menu
 ZO_CreateStringId("FTC_Menu_FHeader",       "Configurer Paramètres Cadres Unitaires")
 
+--local default = ( FTC.Defaults.PlayerFrame ) and "Enabled" or "Disabled"
+--ZO_CreateStringId("FTC_Menu_FPlayerF",      "Player Frame")
+--ZO_CreateStringId("FTC_Menu_FPlayerFDesc",  "Use the custom FTC player frame? [Default: "..default.."]")
+
+--local default = ( FTC.Defaults.TargetFrame ) and "Enabled" or "Disabled"
+--ZO_CreateStringId("FTC_Menu_FTargetF",      "Target Frame")
+--ZO_CreateStringId("FTC_Menu_FTargetFDesc",  "Use the custom FTC target frame? [Default: "..default.."]")
+
+local default = ( FTC.Defaults.DefaultTargetFrame ) and "Activé" or "Désactivé"
+ZO_CreateStringId("FTC_Menu_FShowDef",      "Cadre de Cible par Défaut")
+ZO_CreateStringId("FTC_Menu_FShowDefDesc",  "Continuer à afficher le cadre de Cible par défaut de ESO? [Défaut: "..default.."]")
+
+--local default = ( FTC.Defaults.LabelFrames ) and "Enabled" or "Disabled"
+--ZO_CreateStringId("FTC_Menu_FLabelDef",     "Label Default Frames")
+--ZO_CreateStringId("FTC_Menu_FLabelDefDesc", "Add numeric overlays to default ESO player and target frames? [Default: "..default.."]")
+
+--local default = ( FTC.Defaults.FrameShowMax ) and "Enabled" or "Disabled"
+--ZO_CreateStringId("FTC_Menu_FShowMax",      "Show Maximum Health")
+--ZO_CreateStringId("FTC_Menu_FShowMaxDesc",  "Display maximum health values in player, target, and group frames? [Default: "..default.."]")
+
 ZO_CreateStringId("FTC_Menu_FWidth",        "Largeur des Cadres")
 ZO_CreateStringId("FTC_Menu_FWidthDesc",    "Régler la larger des cadres unitaires de FTC. [Défaut: "..FTC.Defaults.FrameWidth.."]")
 
@@ -77,10 +97,6 @@ ZO_CreateStringId("FTC_Menu_FOpacInDesc",   "Ajuster l'opacité des cadres unita
 ZO_CreateStringId("FTC_Menu_FOpacOut",      "Opacacité Hors-Combat")
 ZO_CreateStringId("FTC_Menu_FOpacOutDesc",  "Ajuster l'opacité Hord-Combat des cadres unitaires de FTC. Les valeurs faibles sont plus transparents. [Défaut: "..FTC.Defaults.FrameOpacityOut.."]")
 
---local default = ( FTC.Defaults.FrameShowMax ) and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_FShowMax",      "Show Maximum Health")
---ZO_CreateStringId("FTC_Menu_FShowMaxDesc",  "Display maximum health values in player, target, and group frames? [Default: "..default.."]")
-
 ZO_CreateStringId("FTC_Menu_FFont1",        "Police Primaire")
 ZO_CreateStringId("FTC_Menu_FFont1Desc",    "Changer la police primaire utilisée dans les cadres unitaires de FTC.[Défaut: "..FTC.UI:TranslateFont(FTC.Defaults.FrameFont1).."]")
 
@@ -92,10 +108,6 @@ ZO_CreateStringId("FTC_Menu_FFontSDesc",    "Changer l'échelle de base de la po
 
 ZO_CreateStringId("FTC_Menu_Exceute",       "Seuil d'Exécution")
 ZO_CreateStringId("FTC_Menu_ExecuteDesc",   "Déterminez le pourcentage de santé correspondant au seuil d'exécution pour les cadres et les textes d'alerte. [Défaut: "..FTC.Defaults.ExecuteThreshold.."]")
-
-local default = ( FTC.Defaults.DefaultTargetFrame ) and "Activé" or "Désactivé"
-ZO_CreateStringId("FTC_Menu_FShowDef",      "Cadre de Cible par Défaut")
-ZO_CreateStringId("FTC_Menu_FShowDefDesc",  "Continuer à afficher le cadre de Cible par défaut de ESO? [Défaut: "..default.."]")
 
 local default = ( FTC.Defaults.EnableNameplate ) and "Activé" or "Désactivé"
 ZO_CreateStringId("FTC_Menu_FShowName",     "Montrer Plaque du Joueur")

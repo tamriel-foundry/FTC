@@ -65,6 +65,26 @@ ZO_CreateStringId("FTC_Offline",            "Offline")
 -- Unit Frames Menu
 ZO_CreateStringId("FTC_Menu_FHeader",       "Einheitenfenster Einstellungen")
 
+--local default = ( FTC.Defaults.PlayerFrame ) and "Enabled" or "Disabled"
+--ZO_CreateStringId("FTC_Menu_FPlayerF",      "Player Frame")
+--ZO_CreateStringId("FTC_Menu_FPlayerFDesc",  "Use the custom FTC player frame? [Default: "..default.."]")
+
+--local default = ( FTC.Defaults.TargetFrame ) and "Enabled" or "Disabled"
+--ZO_CreateStringId("FTC_Menu_FTargetF",      "Target Frame")
+--ZO_CreateStringId("FTC_Menu_FTargetFDesc",  "Use the custom FTC target frame? [Default: "..default.."]")
+
+local default = ( FTC.Defaults.DefaultTargetFrame ) and "Ein" or "Aus"
+ZO_CreateStringId("FTC_Menu_FShowDef",      "Standard Zielfenster anzeigen")
+ZO_CreateStringId("FTC_Menu_FShowDefDesc",  "Zeigt das Standard ESO Zielfenster weiterhin an. [Standard: "..default.."]")
+
+--local default = ( FTC.Defaults.LabelFrames ) and "Enabled" or "Disabled"
+--ZO_CreateStringId("FTC_Menu_FLabelDef",     "Label Default Frames")
+--ZO_CreateStringId("FTC_Menu_FLabelDefDesc", "Add numeric overlays to default ESO player and target frames? [Default: "..default.."]")
+
+local default = ( FTC.Defaults.FrameShowMax ) and "Ein" or "Aus"
+ZO_CreateStringId("FTC_Menu_FShowMax",      "Maximales Leben anzeigen")
+ZO_CreateStringId("FTC_Menu_FShowMaxDesc",  "Zeigt das maximale Leben zusätzlich in den Lebensleisten der Spielerfenster, Zielfenster und Gruppenfenster an. [Standart: "..default.."]")
+
 ZO_CreateStringId("FTC_Menu_FWidth",        "Spieler- und Zielfenster Breite")
 ZO_CreateStringId("FTC_Menu_FWidthDesc",    "Ändert die Breite des Spieler- und Zielfensters. [Standard: "..FTC.Defaults.FrameWidth.."]")
 
@@ -77,10 +97,6 @@ ZO_CreateStringId("FTC_Menu_FOpacInDesc",   "Ändert die Deckkraft der Einheiten
 ZO_CreateStringId("FTC_Menu_FOpacOut",      "Deckkraft außerhalb eines Kampfes")
 ZO_CreateStringId("FTC_Menu_FOpacOutDesc",  "Ändert die Deckkraft der Einheitenfenster außerhalb eines Kampfes. Je niedriger desto durchsichtiger. [Standard: "..FTC.Defaults.FrameOpacityOut.."]")
 
-local default = ( FTC.Defaults.FrameShowMax ) and "Ein" or "Aus"
-ZO_CreateStringId("FTC_Menu_FShowMax",      "Maximales Leben anzeigen")
-ZO_CreateStringId("FTC_Menu_FShowMaxDesc",  "Zeigt das maximale Leben zusätzlich in den Lebensleisten der Spielerfenster, Zielfenster und Gruppenfenster an. [Standart: "..default.."]")
-
 ZO_CreateStringId("FTC_Menu_FFont1",        "Primäre Schriftart")
 ZO_CreateStringId("FTC_Menu_FFont1Desc",    "Ändert die primäre Schriftart der Einheitenfenster. [Standard: "..FTC.UI:TranslateFont(FTC.Defaults.FrameFont1).."]")
 
@@ -92,10 +108,6 @@ ZO_CreateStringId("FTC_Menu_FFontSDesc",    "Ändert die Schriftgröße der Einh
  
 ZO_CreateStringId("FTC_Menu_Exceute",       "Hinrichten Schwelle")
 ZO_CreateStringId("FTC_Menu_ExecuteDesc",   "Ändert den Wert der erreicht werden muss damit ein Alarm angezeigt wird. [Standard: "..FTC.Defaults.ExecuteThreshold.."]")
-
-local default = ( FTC.Defaults.DefaultTargetFrame ) and "Ein" or "Aus"
-ZO_CreateStringId("FTC_Menu_FShowDef",      "Standard Zielfenster anzeigen")
-ZO_CreateStringId("FTC_Menu_FShowDefDesc",  "Zeigt das Standard ESO Zielfenster weiterhin an. [Standard: "..default.."]")
  
 local default = ( FTC.Defaults.EnableNameplate ) and "Ein" or "Aus"
 ZO_CreateStringId("FTC_Menu_FShowName",     "Spieler Namen anzeigen")

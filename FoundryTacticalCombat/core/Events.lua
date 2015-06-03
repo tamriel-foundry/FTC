@@ -92,10 +92,7 @@
         if ( FTC.init.Log ) then
             CHAT_SYSTEM:Minimize()
             FTC.Log:Print( GetString(FTC_LongInfo) , {1,0.8,0} )
-
-        -- Otherwie Print to Chat
-        else d("[FTC] " .. GetString(FTC_LongInfo)) end
-
+        end
 
         -- Show welcome message
         FTC.Welcome()
@@ -156,7 +153,7 @@
             -- Health, Magicka, and Stamina
             if ( powerType == POWERTYPE_HEALTH or powerType == POWERTYPE_MAGICKA or powerType == POWERTYPE_STAMINA ) then
                 if ( FTC.init.SCT ) then FTC.SCT:ResourceAlert( unitTag , powerType , powerValue , powerMax ) end
-                FTC.Frames:UpdateAttribute( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
+                FTC.Player:UpdateAttribute( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
                 
             -- Ultimate
             elseif ( powerType == POWERTYPE_ULTIMATE ) then
@@ -176,7 +173,7 @@
         
             -- Health
             if ( powerType == POWERTYPE_HEALTH ) then
-                FTC.Frames:UpdateAttribute( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
+                FTC.Player:UpdateAttribute( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
             end
         
         -- Siege Updates
@@ -193,7 +190,7 @@
             -- Health
             if ( powerType == POWERTYPE_HEALTH ) then
                 if ( FTC.init.Frames ) then 
-                    FTC.Frames:UpdateAttribute( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
+                    FTC.Player:UpdateAttribute( unitTag , powerType , powerValue , powerMax , powerEffectiveMax )
                 end
             end
         end
@@ -217,7 +214,7 @@
         
         -- Damage Shields 
         elseif ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH and value > 0) then
-            if ( FTC.init.Frames ) then FTC.Frames:UpdateShield( unitTag , value , maxValue ) end
+            if ( FTC.init.Frames ) then FTC.Player:UpdateShield( unitTag , value , maxValue ) end
         end
     end
 
@@ -238,7 +235,7 @@
 
         -- Damage Shields
         elseif ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH ) then
-            if ( FTC.init.Frames ) then FTC.Frames:UpdateShield( unitTag , newValue , newMaxValue ) end
+            if ( FTC.init.Frames ) then FTC.Player:UpdateShield( unitTag , newValue , newMaxValue ) end
         end
     end
 
@@ -262,7 +259,7 @@
         elseif ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH ) then
 
             -- Remove from Unit Frame
-            if ( FTC.init.Frames ) then FTC.Frames:UpdateShield( unitTag , 0 , maxValue ) end
+            if ( FTC.init.Frames ) then FTC.Player:UpdateShield( unitTag , 0 , maxValue ) end
 
             -- Verify the shield was removed due to simultaneous damage
             if ( FTC.Damage.lastIn >= GetGameTimeMilliseconds() - 5 ) then
@@ -285,7 +282,10 @@
     function FTC.OnCombatState( eventCode, inCombat )
 
         -- Control frame visibility
-        if ( FTC.init.Frames ) then FTC.Frames:Fade('player',FTC_PlayerFrame) end
+        if ( FTC.init.Frames ) then 
+            if ( FTC.Vars.PlayerFrame ) then FTC.Frames:Fade('player',FTC_PlayerFrame) end
+            if ( FTC.Vars.TargetFrame ) then FTC.Frames:Fade('reticleover',FTC_TargetFrame) end
+        end
 
         -- Trigger an alert
         if ( FTC.init.SCT ) then FTC.SCT:Combat(inCombat) end

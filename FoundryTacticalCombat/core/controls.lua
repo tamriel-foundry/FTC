@@ -59,7 +59,7 @@
 		welcome:AddText("|c|r")       
 
 		-- Add changelog
-		welcome:AddText("|cCC6600Version " .. FTC.version .. " Updates|r")
+		welcome:AddText("|cCC6600Version 0.62 Updates|r")
 
 		-- Register changes
 		local Changes = {

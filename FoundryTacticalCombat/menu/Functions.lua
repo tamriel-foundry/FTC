@@ -56,7 +56,7 @@
         if ( not panel:IsHidden() ) then
 
             -- Unit Frames Display
-            if ( FTC.init.Frames ) then 
+            if ( FTC.init.Frames and FTC.Vars.PlayerFrame ) then 
 
                 -- Show the player frame
                 FTC_PlayerFrame:ClearAnchors()
@@ -64,7 +64,7 @@
                 FTC_PlayerFrame:SetHidden(false)
 
                 -- Spoof a shield on the player frame
-                FTC.Frames:UpdateShield( 'player', math.floor(FTC.Player.health.max*.75) ,  FTC.Player.health.max )
+                FTC.Player:UpdateShield( 'player', math.floor(FTC.Player.health.max*.75) ,  FTC.Player.health.max )
             end
 
             -- Buff Tracking Display
@@ -102,7 +102,7 @@
         else
 
             -- Unit Frames Display
-            if ( FTC.init.Frames ) then 
+            if ( FTC.init.Frames and FTC.Vars.PlayerFrame ) then 
 
                 -- Reset the player frame
                 FTC_PlayerFrame:ClearAnchors()
@@ -111,7 +111,7 @@
 
                 -- Restore the correct shield
                 local value, maxValue = GetUnitAttributeVisualizerEffectInfo('player',ATTRIBUTE_VISUAL_POWER_SHIELDING,STAT_MITIGATION,ATTRIBUTE_HEALTH,POWERTYPE_HEALTH)
-                FTC.Frames:UpdateShield( 'player', value or 0 , maxValue or 0)
+                FTC.Player:UpdateShield( 'player', value or 0 , maxValue or 0)
             end
 
             -- Buff Tracking Display
@@ -543,8 +543,11 @@
             end
 
             -- If we are done moving, make sure frame visibility is correct
-            if ( not move ) then FTC.Frames:SetupTarget() end
-            if ( not move ) then FTC.Frames:SetupGroup() end
+            if ( not move ) then 
+                FTC.Frames:SetupPlayer()
+                FTC.Frames:SetupTarget()
+                FTC.Frames:SetupGroup()
+            end
         end
         
         -- Buff Tracking
@@ -570,6 +573,9 @@
                 if ( frame.label ~= nil ) then frame.label:SetHidden(not move) end
             end            
         end
+
+        -- Unlock the mouse
+        SetGameCameraUIMode(true)
 
         -- Toggle the move status
         FTC.move = move

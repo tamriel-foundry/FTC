@@ -112,6 +112,52 @@ function FTC.Menu:Controls()
             width       = "full" 
         },
 
+        -- Use Player Frame?
+        {   type        = "checkbox", 
+            name        = GetString(FTC_Menu_FPlayerF),
+            tooltip     = GetString(FTC_Menu_FPlayerFDesc),
+            getFunc     = function() return FTC.Vars.PlayerFrame end, 
+            setFunc     = function(value) FTC.Menu:Update( 'PlayerFrame' , value , true ) end, 
+            default     = FTC.Defaults.PlayerFrame,
+            warning     = GetString(FTC_Menu_Reload),
+        },
+
+        -- Use Target Frame?
+        {   type        = "checkbox", 
+            name        = GetString(FTC_Menu_FTargetF),
+            tooltip     = GetString(FTC_Menu_FTargetFDesc),
+            getFunc     = function() return FTC.Vars.TargetFrame end, 
+            setFunc     = function(value) FTC.Menu:Update( 'TargetFrame' , value ) end, 
+            default     = FTC.Defaults.TargetFrame
+        },
+
+        -- Keep Default Target Frame?
+        {   type        = "checkbox", 
+            name        = GetString(FTC_Menu_FShowDef),
+            tooltip     = GetString(FTC_Menu_FShowDefDesc),
+            getFunc     = function() return FTC.Vars.DefaultTargetFrame end, 
+            setFunc     = function(value) FTC.Menu:Update( 'DefaultTargetFrame' , value ) end, 
+            default     = FTC.Defaults.DefaultTargetFrame
+        },
+
+        -- Label Default Frames?
+        {   type        = "checkbox", 
+            name        = GetString(FTC_Menu_FLabelDef),
+            tooltip     = GetString(FTC_Menu_FLabelDefDesc),
+            getFunc     = function() return FTC.Vars.LabelFrames end, 
+            setFunc     = function(value) FTC.Menu:UpdateFrames( 'LabelFrames' , value ) end, 
+            default     = FTC.Defaults.LabelFrames
+        },
+
+        -- Show Maximum Health?
+        {   type        = "checkbox", 
+            name        = GetString(FTC_Menu_FShowMax),
+            tooltip     = GetString(FTC_Menu_FShowMaxDesc),
+            getFunc     = function() return FTC.Vars.FrameShowMax end, 
+            setFunc     = function(value) FTC.Menu:UpdateFrames( 'FrameShowMax' , value ) end, 
+            default     = FTC.Defaults.FrameShowMax
+        },
+
         -- Unit Frame Width
         {   type        = "slider", 
             name        = GetString(FTC_Menu_FWidth),
@@ -160,15 +206,6 @@ function FTC.Menu:Controls()
             default     = FTC.Defaults.OpacityOut
         },
 
-        -- Show Maximum Health?
-        {   type        = "checkbox", 
-            name        = GetString(FTC_Menu_FShowMax),
-            tooltip     = GetString(FTC_Menu_FShowMaxDesc),
-            getFunc     = function() return FTC.Vars.FrameShowMax end, 
-            setFunc     = function(value) FTC.Menu:UpdateFrames( 'FrameShowMax' , value ) end, 
-            default     = FTC.Defaults.FrameShowMax
-        },
-
         -- Primary Frame Font
         {   type        = "dropdown", 
             name        = GetString(FTC_Menu_FFont1),
@@ -211,15 +248,6 @@ function FTC.Menu:Controls()
             getFunc     = function() return FTC.Vars.ExecuteThreshold end, 
             setFunc     = function( value ) FTC.Menu:Update( "ExecuteThreshold" , value ) end, 
             default     = FTC.Defaults.ExecuteThreshold
-        },
-        
-        -- Show Default Frames?
-        {   type        = "checkbox", 
-            name        = GetString(FTC_Menu_FShowDef),
-            tooltip     = GetString(FTC_Menu_FShowDefDesc),
-            getFunc     = function() return FTC.Vars.DefaultTargetFrame end, 
-            setFunc     = function(value) FTC.Menu:Update( 'DefaultTargetFrame' , value ) end, 
-            default     = FTC.Defaults.DefaultTargetFrame
         },
 
         -- Display Nameplate?
@@ -280,7 +308,7 @@ function FTC.Menu:Controls()
         {   type        = "checkbox", 
             name        = GetString(FTC_Menu_FGroup),
             tooltip     = GetString(FTC_Menu_FGroupDesc),
-            getFunc     = function() return FTC.Vars.EnableGroupFrames end, 
+            getFunc     = function() return FTC.Vars.GroupFrames end, 
             setFunc     = function(value) FTC.Menu:UpdateFrames( 'EnableGroupFrames' , value ) end,
             default     = FTC.Defaults.EnableGroupFrames
         },
@@ -366,12 +394,11 @@ function FTC.Menu:Controls()
             default     = FTC.Vars.FrameDamageColor,
         },
 
-
         -- Use Raid Frame?
         {   type        = "checkbox", 
             name        = GetString(FTC_Menu_FRaid),
             tooltip     = GetString(FTC_Menu_FRaidDesc),
-            getFunc     = function() return FTC.Vars.EnableRaidFrames end, 
+            getFunc     = function() return FTC.Vars.RaidFrames end, 
             setFunc     = function(value) FTC.Menu:UpdateFrames( 'EnableRaidFrames' , value ) end,
             default     = FTC.Defaults.EnableRaidFrames
         },
@@ -412,7 +439,6 @@ function FTC.Menu:Controls()
             setFunc     = function( value ) FTC.Menu:UpdateFrames( "RaidFontSize" , value ) end, 
             default     = FTC.Defaults.RaidFontSize
         },
-
 
         -- Reset Unit Frames
         { 
@@ -667,7 +693,7 @@ function FTC.Menu:Controls()
         {   type        = "slider", 
             name        = GetString(FTC_Menu_SArc),
             tooltip     = GetString(FTC_Menu_SArcDesc),
-            min         = 0,
+            min         = -10,
             max         = 10, 
             step        = 1, 
             getFunc     = function() return FTC.Vars.SCTArc end, 
