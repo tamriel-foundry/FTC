@@ -284,7 +284,7 @@
         -- Control frame visibility
         if ( FTC.init.Frames ) then 
             if ( FTC.Vars.PlayerFrame ) then FTC.Frames:Fade('player',FTC_PlayerFrame) end
-            if ( FTC.Vars.TargetFrame ) then FTC.Frames:Fade('reticleover',FTC_TargetFrame) end
+            if ( FTC.Vars.TargetFrame ) then FTC.Frames:Fade('player',FTC_TargetFrame) end
         end
 
         -- Trigger an alert

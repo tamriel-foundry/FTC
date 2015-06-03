@@ -199,9 +199,9 @@
             
             -- Populate rank icon
             frame.lplate.rank:SetTexture( rank )
-            frame.lplate.rank:SetHidden( rank == nil )
-        end
-        FTC_TargetFrame:SetHidden( not FTC.Vars.TargetFrame )
+            frame.lplate.rank:SetHidden( rank == nil )        
+        end 
+        FTC_TargetFrame:SetHidden(not FTC.Vars.TargetFrame)
 
         -- Repopulate health
         FTC.Player:UpdateAttribute( 'reticleover', POWERTYPE_HEALTH , nil )
