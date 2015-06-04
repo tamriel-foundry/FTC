@@ -17,7 +17,7 @@
 
     Author:   Atropos
     Email:    atropos@tamrielfoundry.com
-    Version:  0.62
+    Version:  0.64
     Updated:  5-31-2015
   ]]--
 
@@ -29,7 +29,7 @@
 FTC                     = {}
 FTC.name                = "FoundryTacticalCombat"
 FTC.tag                 = "FTC"
-FTC.version             = 0.62
+FTC.version             = 0.64
 FTC.settings            = 0.60
 FTC.language            = GetCVar("language.2")
 FTC.UI                  = WINDOW_MANAGER:CreateTopLevelWindow( "FTC_UI" )
