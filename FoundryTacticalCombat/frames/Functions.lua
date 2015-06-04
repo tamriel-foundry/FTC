@@ -151,8 +151,8 @@
         -- Ensure the default frame stays hidden
         if ( FTC.Vars.TargetFrame and FTC.Vars.DefaultTargetFrame == false ) then ZO_TargetUnitFramereticleover:SetHidden(true) end
 
-        -- Bail out if no target
-        if ( not DoesUnitExist('reticleover') ) then 
+        -- Bail out if no target unless we are moving
+        if ( not DoesUnitExist('reticleover') and not FTC.move ) then 
             FTC_TargetFrame:SetHidden(true)
             return
         end

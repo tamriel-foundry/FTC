@@ -545,7 +545,6 @@
             -- If we are done moving, make sure frame visibility is correct
             if ( not move ) then 
                 FTC.Frames:SetupPlayer()
-                FTC.Frames:SetupTarget()
                 FTC.Frames:SetupGroup()
             end
         end
