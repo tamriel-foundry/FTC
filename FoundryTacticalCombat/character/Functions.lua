@@ -155,7 +155,7 @@ end
             data    = FTC.Target
 
         -- Group
-        elseif ( string.find(unitTag,"group") > 0 ) then
+        elseif ( string.sub(unitTag, 0, 5) == "group" ) then
             local i = GetGroupIndexByUnitTag(unitTag)
             data    = FTC.Group[i]
 
@@ -203,7 +203,7 @@ end
             data    = FTC.Target
 
         -- Group
-        elseif ( string.find(unitTag,"group") > 0 and ( FTC.Vars.GroupFrames or FTC.Vars.RaidFrames ) ) then
+        elseif ( string.sub(unitTag, 0, 5) == "group" and ( FTC.Vars.GroupFrames or FTC.Vars.RaidFrames ) ) then
 
             -- Get the group member
             local i = GetGroupIndexByUnitTag(unitTag)
@@ -239,7 +239,7 @@ end
         cost, mechType = GetSlotAbilityCost(8)
         
         -- Calculate the percentage to activation
-        local pct = ( cost > 0 ) and zo_roundToNearest((powerValue/cost),0.01) or 0
+        local pct = ( cost > 0 ) and math.max(zo_roundToNearest((powerValue/cost),0.01),0) or 0
         
         -- Maybe fire an alert
         if ( FTC.init.SCT and pct >= 1 and FTC.Player.ultimate.pct < 1 ) then FTC.SCT:Ultimate() end

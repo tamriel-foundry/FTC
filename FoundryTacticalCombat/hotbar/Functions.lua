@@ -43,7 +43,6 @@
     end 
 
 
-
     function FTC.Hotbar:UltimateBuff( damage )
 
         -- Bail if it's not a correct trigger

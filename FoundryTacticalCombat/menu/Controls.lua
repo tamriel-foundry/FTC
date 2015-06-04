@@ -309,8 +309,8 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_FGroup),
             tooltip     = GetString(FTC_Menu_FGroupDesc),
             getFunc     = function() return FTC.Vars.GroupFrames end, 
-            setFunc     = function(value) FTC.Menu:UpdateFrames( 'EnableGroupFrames' , value ) end,
-            default     = FTC.Defaults.EnableGroupFrames
+            setFunc     = function(value) FTC.Menu:UpdateFrames( 'GroupFrames' , value ) end,
+            default     = FTC.Defaults.GroupFrames
         },
 
         -- Group Frame Width
@@ -399,8 +399,8 @@ function FTC.Menu:Controls()
             name        = GetString(FTC_Menu_FRaid),
             tooltip     = GetString(FTC_Menu_FRaidDesc),
             getFunc     = function() return FTC.Vars.RaidFrames end, 
-            setFunc     = function(value) FTC.Menu:UpdateFrames( 'EnableRaidFrames' , value ) end,
-            default     = FTC.Defaults.EnableRaidFrames
+            setFunc     = function(value) FTC.Menu:UpdateFrames( 'RaidFrames' , value ) end,
+            default     = FTC.Defaults.RaidFrames
         },
 
         -- Raid Frame Width

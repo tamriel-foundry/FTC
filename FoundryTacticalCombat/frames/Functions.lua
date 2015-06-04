@@ -216,6 +216,7 @@
      * Called by FTC.Frames:Initialize()
      * --------------------------------
      ]]--
+    FTC.Frames.groupUpdate = true
     function FTC.Frames:SetupGroup()
 
         -- Using group frame
@@ -306,6 +307,9 @@
 
         -- Display custom frames
         container:SetHidden(false)
+
+        -- Allow additional updates
+        FTC.Frames.groupUpdate = true
     end
 
      --[[ 
@@ -380,7 +384,7 @@
             enabled = FTC.Vars.TargetFrame
 
         -- Group Frames
-        elseif ( string.find(unitTag,"group") > 0 and ( FTC.Vars.GroupFrames or FTC.Vars.RaidFrames ) ) then
+        elseif ( string.sub(unitTag, 0, 5) == "group" and ( FTC.Vars.GroupFrames or FTC.Vars.RaidFrames ) ) then
 
             -- Get the group member
             enabled = true
@@ -480,7 +484,7 @@
             enabled = FTC.Vars.TargetFrame
 
         -- Group Frames
-        elseif ( string.find(unitTag,"group") > 0 and ( FTC.Vars.GroupFrames or FTC.Vars.RaidFrames ) ) then
+        elseif ( string.sub(unitTag, 0, 5) == "group" and ( FTC.Vars.GroupFrames or FTC.Vars.RaidFrames ) ) then
 
             -- Get the group member
             enabled = true

@@ -49,7 +49,7 @@
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_COMBAT_EVENT                  , FTC.OnCombatEvent )
 
         -- Group Events
-        EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_UNIT_CREATED                  , FTC.OnUnitCreated )
+        EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_GROUP_MEMBER_JOINED           , FTC.OnGroupChanged )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_GROUP_MEMBER_LEFT             , FTC.OnGroupChanged )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_LEADER_UPDATE                 , FTC.OnGroupChanged )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_GROUP_MEMBER_CONNECTED_STATUS , FTC.OnGroupChanged )
@@ -185,7 +185,7 @@
             end
 
         -- Group Updates
-        elseif ( IsUnitGrouped('player') and string.find(unitTag,"group") ) then
+        elseif ( IsUnitGrouped('player') and string.sub(unitTag, 0, 5) == "group" ) then
 
             -- Health
             if ( powerType == POWERTYPE_HEALTH ) then
@@ -514,12 +514,18 @@
      * Called by EVENT_GROUP_MEMBER_LEFT
      * --------------------------------
      ]]--
-    function FTC:OnGroupChanged()
-        if ( FTC.init.Frames ) then FTC.Frames:SetupGroup() end    
-    end
+    function FTC.OnGroupChanged(eventCode)
+        if ( FTC.init.Frames ) then 
 
-    function FTC:OnUnitCreated( unitTag )
-        if ( string.find(unitTag,"group") > 0 and FTC.init.Frames ) then FTC.Frames:SetupGroup() end
+            -- Prevent this event from running multiple times per refresh
+            if ( not FTC.Frames.groupUpdate ) then return end
+
+            -- Plan to refresh the group on a 1 second delay
+            zo_callLater( function() FTC.Frames:SetupGroup() end , 1000 ) 
+
+            -- Prevent further refreshes
+            FTC.Frames.groupUpdate = false
+        end    
     end
 
     --[[ 
