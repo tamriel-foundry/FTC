@@ -127,6 +127,7 @@ function FTC.Group:Initialize()
             ["magicka"]         = { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
             ["stamina"]         = { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
             ["shield"]          = { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
+            ["updated"]         = 0,
         }
     end
 end
@@ -159,6 +160,10 @@ end
         elseif ( string.sub(unitTag, 0, 5) == "group" ) then
             local i = GetGroupIndexByUnitTag(unitTag)
             data    = FTC.Group[i]
+
+            -- Buffer health updating for groups
+            if ( data.updated >= GetGameTimeMilliseconds() - 250 ) then return end
+            data.updated = GetGameTimeMilliseconds()
 
         -- Otherwise bail out
         else return end
@@ -205,8 +210,6 @@ end
 
         -- Group
         elseif ( string.sub(unitTag, 0, 5) == "group" and ( FTC.Vars.GroupFrames or FTC.Vars.RaidFrames ) ) then
-
-            -- Get the group member
             local i = GetGroupIndexByUnitTag(unitTag)
             data    = FTC.Group[i]
 
