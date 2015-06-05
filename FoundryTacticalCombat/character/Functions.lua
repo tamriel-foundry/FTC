@@ -2,79 +2,80 @@
 --[[----------------------------------------------------------
     PLAYER DATA COMPONENT
   ]]----------------------------------------------------------
-FTC.Player = {} 
+    local FTC = FTC
+    FTC.Player = {} 
 
---[[ 
- * Initialize Player Data Table
- * --------------------------------
- * Called by FTC:Initialize()
- * --------------------------------
- ]]--  
-function FTC.Player:Initialize()
+    --[[ 
+     * Initialize Player Data Table
+     * --------------------------------
+     * Called by FTC:Initialize()
+     * --------------------------------
+     ]]--  
+    function FTC.Player:Initialize()
 
-    -- Setup initial character information
-    FTC.Player.name     = GetUnitName( 'player' )
-    FTC.Player.race     = GetUnitRace( 'player' )
-    FTC.Player.class    = FTC.Player:GetClass(GetUnitClassId( 'player' ))
-    FTC.Player:GetLevel()
-    
-    -- Load starting attributes
-    local stats = {
-        { ["name"] = "health"   , ["id"] = POWERTYPE_HEALTH },
-        { ["name"] = "magicka"  , ["id"] = POWERTYPE_MAGICKA },
-        { ["name"] = "stamina"  , ["id"] = POWERTYPE_STAMINA },
-        { ["name"] = "ultimate" , ["id"] = POWERTYPE_ULTIMATE }
-    }
-    for i = 1 , #stats , 1 do
-        local current, maximum, effMax = GetUnitPower( "player" , stats[i].id )
-        FTC.Player[stats[i].name] = { ["current"] = current , ["max"] = maximum , ["pct"] = zo_roundToNearest(current/maximum,0.01) }
+        -- Setup initial character information
+        FTC.Player.name     = GetUnitName( 'player' )
+        FTC.Player.race     = GetUnitRace( 'player' )
+        FTC.Player.class    = FTC.Player:GetClass(GetUnitClassId( 'player' ))
+        FTC.Player:GetLevel()
+        
+        -- Load starting attributes
+        local stats = {
+            { ["name"] = "health"   , ["id"] = POWERTYPE_HEALTH },
+            { ["name"] = "magicka"  , ["id"] = POWERTYPE_MAGICKA },
+            { ["name"] = "stamina"  , ["id"] = POWERTYPE_STAMINA },
+            { ["name"] = "ultimate" , ["id"] = POWERTYPE_ULTIMATE }
+        }
+        for i = 1 , #stats , 1 do
+            local current, maximum, effMax = GetUnitPower( "player" , stats[i].id )
+            FTC.Player[stats[i].name] = { ["current"] = current , ["max"] = maximum , ["pct"] = zo_roundToNearest(current/maximum,0.01) }
+        end
+
+        -- Load starting shield
+        local value, maxValue   = GetUnitAttributeVisualizerEffectInfo('player',ATTRIBUTE_VISUAL_POWER_SHIELDING,STAT_MITIGATION,ATTRIBUTE_HEALTH,POWERTYPE_HEALTH)
+        FTC.Player.shield       = { ["current"] = value or 0 , ["max"] = maxValue or 0 , ["pct"] = zo_roundToNearest((value or 0)/(maxValue or 0),0.01) }
+
+        -- Load action bar abilities
+        FTC.Player.Abilities    = {}
+        FTC.Player:GetActionBar()
+
+        -- Load quickslot ability
+        FTC.Player:GetQuickslot()
+        local _ , _ , canPotion = GetSlotCooldownInfo(GetCurrentQuickslot())
+        FTC.Player.canPotion    = canPotion
     end
-
-    -- Load starting shield
-    local value, maxValue   = GetUnitAttributeVisualizerEffectInfo('player',ATTRIBUTE_VISUAL_POWER_SHIELDING,STAT_MITIGATION,ATTRIBUTE_HEALTH,POWERTYPE_HEALTH)
-    FTC.Player.shield       = { ["current"] = value or 0 , ["max"] = maxValue or 0 , ["pct"] = zo_roundToNearest((value or 0)/(maxValue or 0),0.01) }
-
-    -- Load action bar abilities
-    FTC.Player.Abilities    = {}
-    FTC.Player:GetActionBar()
-
-    -- Load quickslot ability
-    FTC.Player:GetQuickslot()
-    local _ , _ , canPotion = GetSlotCooldownInfo(GetCurrentQuickslot())
-    FTC.Player.canPotion    = canPotion
-end
 
 --[[----------------------------------------------------------
     TARGET DATA COMPONENT
   ]]----------------------------------------------------------
-FTC.Target = {}
+    FTC.Target = {}
 
---[[ 
- * Initialize Target Data Table
- * --------------------------------
- * Called by FTC:Initialize()
- * --------------------------------
- ]]--  
-function FTC.Target:Initialize()
+    --[[ 
+     * Initialize Target Data Table
+     * --------------------------------
+     * Called by FTC:Initialize()
+     * --------------------------------
+     ]]--  
+    function FTC.Target:Initialize()
 
-    -- Setup initial target information
-    local target            = {
-        ["name"]            = "-999",
-        ["level"]           = 0,
-        ["class"]           = "",
-        ["vlevel"]          = 0,
-        ["health"]          = { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
-        ["magicka"]         = { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
-        ["stamina"]         = { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
-        ["shield"]          = { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
-    }   
-    
-    -- Populate the target object
-    for attr , value in pairs( target ) do FTC.Target[attr] = value end
-    
-    -- Get target data
-    FTC.Target:Update()
-end
+        -- Setup initial target information
+        local target            = {
+            ["name"]            = "-999",
+            ["level"]           = 0,
+            ["class"]           = "",
+            ["vlevel"]          = 0,
+            ["health"]          = { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
+            ["magicka"]         = { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
+            ["stamina"]         = { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
+            ["shield"]          = { ["current"] = 0 , ["max"] = 0 , ["pct"] = 100 },
+        }   
+        
+        -- Populate the target object
+        for attr , value in pairs( target ) do FTC.Target[attr] = value end
+        
+        -- Get target data
+        FTC.Target:Update()
+    end
 
 --[[ 
  * Update the Target Object

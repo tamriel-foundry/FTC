@@ -2,6 +2,9 @@
 --[[----------------------------------------------------------
     MENU OPTIONS COMPONENT
   ]]----------------------------------------------------------
+    local FTC = FTC
+    FTC.Menu = {}
+    LAM2     = LibStub("LibAddonMenu-2.0")      
 
     --[[ 
      * Initialize Menu Component
@@ -9,8 +12,7 @@
      * Called by FTC:Initialize()
      * --------------------------------
      ]]--
-    FTC.Menu = {}
-    LAM2     = LibStub("LibAddonMenu-2.0")      
+   
     function FTC.Menu:Initialize()
 
         -- Configure the master panel

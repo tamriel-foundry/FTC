@@ -2,7 +2,7 @@
 --[[----------------------------------------------------------
     COMBAT LOG COMPONENT
   ]]----------------------------------------------------------
-
+    local FTC = FTC
 	FTC.Log		= {}
 	FTC.Log.Defaults = {
 	    ["FTC_CombatLog"]         	= {BOTTOMLEFT,FTC_UI,BOTTOMLEFT,24,-6},

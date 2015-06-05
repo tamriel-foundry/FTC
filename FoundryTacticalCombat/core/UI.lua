@@ -1,27 +1,26 @@
 
-
 --[[----------------------------------------------------------
     INITIALIZE UI ASSETS
   ]]----------------------------------------------------------
 
--- Fonts
-FTC.UI.Fonts        = {
-    ["meta"]        = "FoundryTacticalCombat/lib/fonts/Metamorphous.otf",
-    ["standard"]    = "EsoUi/Common/Fonts/Univers57.otf",
-    ["esobold"]     = "EsoUi/Common/Fonts/Univers67.otf",
-    ["antique"]     = "EsoUI/Common/Fonts/ProseAntiquePSMT.otf",
-    ["handwritten"] = "EsoUI/Common/Fonts/Handwritten_Bold.otf",
-    ["trajan"]      = "EsoUI/Common/Fonts/TrajanPro-Regular.otf",
-    ["futura"]      = "EsoUI/Common/Fonts/FuturaStd-CondensedLight.otf",
-    ["futurabold"]  = "EsoUI/Common/Fonts/FuturaStd-Condensed.otf",
-}
+    -- Fonts
+    FTC.UI.Fonts        = {
+        ["meta"]        = "FoundryTacticalCombat/lib/fonts/Metamorphous.otf",
+        ["standard"]    = "EsoUi/Common/Fonts/Univers57.otf",
+        ["esobold"]     = "EsoUi/Common/Fonts/Univers67.otf",
+        ["antique"]     = "EsoUI/Common/Fonts/ProseAntiquePSMT.otf",
+        ["handwritten"] = "EsoUI/Common/Fonts/Handwritten_Bold.otf",
+        ["trajan"]      = "EsoUI/Common/Fonts/TrajanPro-Regular.otf",
+        ["futura"]      = "EsoUI/Common/Fonts/FuturaStd-CondensedLight.otf",
+        ["futurabold"]  = "EsoUI/Common/Fonts/FuturaStd-Condensed.otf",
+    }
 
--- Textures
-FTC.UI.Textures     = {
-    ["grainy"]      = 'FoundryTacticalCombat/lib/textures/grainy.dds',
-    ["regenLg"]     = 'FoundryTacticalCombat/lib/textures/regen_lg.dds',
-    ["regenSm"]     = 'FoundryTacticalCombat/lib/textures/regen_sm.dds',
-}
+    -- Textures
+    FTC.UI.Textures     = {
+        ["grainy"]      = 'FoundryTacticalCombat/lib/textures/grainy.dds',
+        ["regenLg"]     = 'FoundryTacticalCombat/lib/textures/regen_lg.dds',
+        ["regenSm"]     = 'FoundryTacticalCombat/lib/textures/regen_sm.dds',
+    }
 
     --[[ 
      * Initialize FTC UI Layer

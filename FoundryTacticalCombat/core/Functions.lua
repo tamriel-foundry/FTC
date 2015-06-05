@@ -1,10 +1,8 @@
+
 --[[----------------------------------------------------------
 	FTC CORE FUNCTIONS
-	----------------------------------------------------------
-	* A collection of handy functions that are used throughout the addon.
-	* These functions are often prerequisite to the working of other components.
-  ]]--
-  
+  ]]----------------------------------------------------------
+	local FTC = FTC 
   
 	 --[[ 
 	 * A handy chaining function for quickly setting up UI elements

@@ -2,6 +2,7 @@
 --[[----------------------------------------------------------
     DAMAGE STATISTICS COMPONENT
   ]]----------------------------------------------------------
+    local FTC = FTC
     FTC.Stats = {}
     FTC.Stats.Defaults = {
 		["FTC_MiniMeter"]           = {BOTTOM,BOTTOM,0,-80},
