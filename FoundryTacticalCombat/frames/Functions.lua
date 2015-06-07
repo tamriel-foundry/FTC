@@ -47,7 +47,7 @@
         ["FTC_RaidFrame"]           = {TOPLEFT,TOPLEFT,6,50},
         ["RaidWidth"]               = 120,
         ["RaidHeight"]              = 50,  
-        ["RaidColumnSize"]          = 12,
+        ["RaidColumnSize"]          = 6,
         ["RaidFontSize"]            = 14,
 
         -- Shared Settings

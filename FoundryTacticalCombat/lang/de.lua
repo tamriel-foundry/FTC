@@ -170,6 +170,9 @@ local default = ( FTC.Defaults.EnableRaidFrames ) and "Ein" or "Aus"
 ZO_CreateStringId("FTC_Menu_FRaid",         "Schlachtzugsfenster aktivieren")
 ZO_CreateStringId("FTC_Menu_FRaidDesc",     "Das Schlachtzugsfenster wird bei einer Gruppengröße größer als 4 angezeigt. [Standart: "..default.."]")
 
+--ZO_CreateStringId("FTC_Menu_FRaidS",        "Raid Frame Column Size")
+--ZO_CreateStringId("FTC_Menu_FRaidSDesc",    "Number of players to display per column in FTC raid frames. [Default: "..FTC.Defaults.RaidColumnSize.."]")
+
 ZO_CreateStringId("FTC_Menu_FRWidth",       "Schlachtzugsfenster Höhe")
 ZO_CreateStringId("FTC_Menu_FRWidthDesc",   "Ändert die Höhe des Schlachtzugsfensters. [Standart: "..FTC.Defaults.RaidWidth.."]")
 
@@ -363,7 +366,11 @@ ZO_CreateStringId("FTC_Menu_TTimeoutDesc",  "Ändert die Sekunden, die nach eine
 
 local default = FTC.Defaults.StatTriggerHeals and "Ein" or "Aus"
 ZO_CreateStringId("FTC_Menu_TRHeal",        "Aktiviere Heilungstrigger")
-ZO_CreateStringId("FTC_Menu_TRHealDesc",    "Bei ausgehender Heilung wird die Schadensstatistik sofort aktiviert.")
+ZO_CreateStringId("FTC_Menu_TRHealDesc",    "Bei ausgehender Heilung wird die Schadensstatistik sofort aktiviert.  [Standart: "..default.."]")
+
+--local default = FTC.Defaults.StatsShareDPS and "Enabled" or "Disabled"
+--ZO_CreateStringId("FTC_Menu_TShare",        "Allow DPS Sharing")
+--ZO_CreateStringId("FTC_Menu_TShareDesc",    "Allow your DPS information to be shared automatically with your group members who are also using FTC version 0.65+. [Default: "..default.."]")
 
 ZO_CreateStringId("FTC_Menu_TReset",        "Zurücksetzen")
 ZO_CreateStringId("FTC_Menu_TResetDesc",    "Setzt die Einstellungen der FTC Schadensstatistik zurück auf die Standartwerte.")

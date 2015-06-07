@@ -170,6 +170,9 @@ local default = ( FTC.Defaults.EnableRaidFrames ) and "Activé" or "Désactivé"
 ZO_CreateStringId("FTC_Menu_FRaid",         "Activer Cadres de Raid")
 ZO_CreateStringId("FTC_Menu_FRaidDesc",     "Utiliser les cadres unitaires customisés pour les groupes de quatre ou plus? [Défaut: "..default.."]")
 
+--ZO_CreateStringId("FTC_Menu_FRaidS",        "Raid Frame Column Size")
+--ZO_CreateStringId("FTC_Menu_FRaidSDesc",    "Number of players to display per column in FTC raid frames. [Default: "..FTC.Defaults.RaidColumnSize.."]")
+
 ZO_CreateStringId("FTC_Menu_FRWidth",       "Largeur Cadre de Raid")
 ZO_CreateStringId("FTC_Menu_FRWidthDesc",   "Régler la largeur des cadres de raid de FTC. [Défaut: "..FTC.Defaults.RaidWidth.."]")
 
@@ -363,7 +366,11 @@ ZO_CreateStringId("FTC_Menu_TTimeoutDesc",  "Déterminer le nombre de secondes q
 
 local default = FTC.Defaults.StatTriggerHeals and "Activé" or "Désactivé"
 ZO_CreateStringId("FTC_Menu_TRHeal",        "Autoriser Soins Déclencheurs")
-ZO_CreateStringId("FTC_Menu_TRHealDesc",    "Autoriser le déclenchement d'une nouvelle rencontre par un soin sortant.")
+ZO_CreateStringId("FTC_Menu_TRHealDesc",    "Autoriser le déclenchement d'une nouvelle rencontre par un soin sortant. [Défaut: "..default.."]")
+
+--local default = FTC.Defaults.StatsShareDPS and "Enabled" or "Disabled"
+--ZO_CreateStringId("FTC_Menu_TShare",        "Allow DPS Sharing")
+--ZO_CreateStringId("FTC_Menu_TShareDesc",    "Allow your DPS information to be shared automatically with your group members who are also using FTC version 0.65+. [Default: "..default.."]")
 
 ZO_CreateStringId("FTC_Menu_TReset",        "Rafraîchir Statistiques")
 ZO_CreateStringId("FTC_Menu_TResetDesc",    "Réinitialiser les paramètres originaux du composant de statistiques de dégats de FTC.")

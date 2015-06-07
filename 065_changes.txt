@@ -21,3 +21,10 @@ SCT
 LOG
 	FTC will no long minimize chat on UI reload unless the Alternate With Chat setting is enabled.
 	Prevent triggering an error from using the Toggle Combat Log button when the Combat Log is disabled.
+
+STATS
+	Correct a bug preventing the final hit of damage on a target to be counted in the damage report.
+	Add the ability for FTC users to share their DPS with other FTC users in their group after the conclusion of an encounter. This functionality requires members of the group to be using FTC version 0.65+ and can be disabled.
+
+	
+

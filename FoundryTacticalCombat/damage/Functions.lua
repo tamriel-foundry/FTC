@@ -171,7 +171,6 @@
             -- Log and SCT
             if ( FTC.init.Log ) then FTC.Log:CombatEvent(damage) end
 
-
         -- DEBUG NEW EVENTS
         elseif ( hitValue > 0 ) then
 

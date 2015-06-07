@@ -170,6 +170,9 @@ local default = ( FTC.Defaults.EnableRaidFrames ) and "Enabled" or "Disabled"
 ZO_CreateStringId("FTC_Menu_FRaid",         "Enable Raid Frames")
 ZO_CreateStringId("FTC_Menu_FRaidDesc",     "Use custom unit frames for groups of size 4 or more? [Default: "..default.."]")
 
+ZO_CreateStringId("FTC_Menu_FRaidS",        "Raid Frame Column Size")
+ZO_CreateStringId("FTC_Menu_FRaidSDesc",    "Number of players to display per column in FTC raid frames. [Default: "..FTC.Defaults.RaidColumnSize.."]")
+
 ZO_CreateStringId("FTC_Menu_FRWidth",       "Raid Frames Width")
 ZO_CreateStringId("FTC_Menu_FRWidthDesc",   "Set the width of FTC raid frames. [Default: "..FTC.Defaults.RaidWidth.."]")
 
@@ -307,7 +310,7 @@ ZO_CreateStringId("FTC_Menu_SRoundDesc",    "Round damage numbers to the nearest
 
 local default = FTC.Defaults.SCTAlerts      and "Enabled" or "Disabled"
 ZO_CreateStringId("FTC_Menu_SAlerts",       "Display Alerts")
-ZO_CreateStringId("FTC_Menu_SAlertsDesc",   "Display alerts for significant combat events?  [Default: "..default.."]")
+ZO_CreateStringId("FTC_Menu_SAlertsDesc",   "Display alerts for significant combat events? [Default: "..default.."]")
 
 ZO_CreateStringId("FTC_Menu_SSpeed",        "SCT Scroll Speed")
 ZO_CreateStringId("FTC_Menu_SSpeedDesc",    "Change speed of combat text scrolling, higher is faster. [Default: "..FTC.Defaults.SCTSpeed.."]")
@@ -363,7 +366,11 @@ ZO_CreateStringId("FTC_Menu_TTimeoutDesc",  "Set the number of seconds that must
 
 local default = FTC.Defaults.StatTriggerHeals and "Enabled" or "Disabled"
 ZO_CreateStringId("FTC_Menu_TRHeal",        "Allow Healing Trigger")
-ZO_CreateStringId("FTC_Menu_TRHealDesc",    "Allow outgoing healing to trigger the start of a new encounter.")
+ZO_CreateStringId("FTC_Menu_TRHealDesc",    "Allow outgoing healing to trigger the start of a new encounter. [Default: "..default.."]")
+
+local default = FTC.Defaults.StatsShareDPS and "Enabled" or "Disabled"
+ZO_CreateStringId("FTC_Menu_TShare",        "Allow DPS Sharing")
+ZO_CreateStringId("FTC_Menu_TShareDesc",    "Allow your DPS information to be shared automatically with your group members who are also using FTC version 0.65+. [Default: "..default.."]")
 
 ZO_CreateStringId("FTC_Menu_TReset",        "Reset Stats")
 ZO_CreateStringId("FTC_Menu_TResetDesc",    "Reset original settings for FTC damage statistics component.")

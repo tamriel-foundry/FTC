@@ -9,6 +9,7 @@
 		["FTC_GroupDPS"]            = {BOTTOMRIGHT,BOTTOMRIGHT,-60,-6},
 		["DamageTimeout"]           = 5,
 		["StatTriggerHeals"]        = false,
+		["StatsShareDPS"]			= true,
 	}
     FTC:JoinTables(FTC.Defaults,FTC.Stats.Defaults)
 
@@ -77,7 +78,7 @@
 	function FTC.Stats:RegisterDamage(damage)
 
 		-- Don't register anything if the player is out of combat
-		if ( not IsUnitInCombat('player') ) then return end
+		if ( damage.heal and not IsUnitInCombat('player') ) then return end
 
 		-- If we are past the timeout threshold, reset the tables
 		if( ( ( damage.ms - FTC.Stats.endTime ) / 1000 ) >= FTC.Vars.DamageTimeout ) then
@@ -451,7 +452,6 @@
         elseif ( y.name == "Total" ) then return false 
         else return x.damage > y.damage end
     end
-	
 
     --[[ 
      * Print Encounter Report to Chat
@@ -538,9 +538,16 @@
 	end
 
 
-
-
+    --[[ 
+     * Send DPS information to group
+     * --------------------------------
+     * Called by FTC.OnCombatState()
+     * --------------------------------
+     ]]--
 	function FTC.Stats:SendPing()
+
+		-- Bail out if this feature is disabled
+		if ( not FTC.Vars.StatsShareDPS ) then return end
 
 		-- Compute player statistics
 		local time  = ( FTC.Stats.endTime - FTC.Stats.startTime ) / 1000
@@ -554,8 +561,16 @@
 		PingMap( MAP_PIN_TYPE_PING , MAP_TYPE_LOCATION_CENTERED , damageCoord , dpsCoord )
 	end
 
-
+    --[[ 
+     * Process recieved DPS information
+     * --------------------------------
+     * Called by FTC.OnPing()
+     * --------------------------------
+     ]]--
 	function FTC.Stats:AddPing( offsetX, offsetY , pingTag , isOwner )
+
+		-- Bail out if this feature is disabled
+		if ( not FTC.Vars.StatsShareDPS ) then return end
 
 		-- Ignore ping terminations
 		if ( offsetX == 0 and offsetY == 0 ) then return end
@@ -581,7 +596,12 @@
 		FTC.Stats:DisplayGroupDPS()
 	end
 
-
+    --[[ 
+     * Render group DPS list
+     * --------------------------------
+     * Called by FTC.Stats:AddPing()
+     * --------------------------------
+     ]]--
 	function FTC.Stats:DisplayGroupDPS()
 
 		-- Get data
@@ -628,4 +648,6 @@
 		parent.backdrop:SetHeight( height )
 		parent:SetHidden(false)
 
+		-- Fade animation
+		FTC.Stats:DPSFade()
 	end

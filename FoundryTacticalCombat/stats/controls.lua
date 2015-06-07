@@ -47,7 +47,7 @@ function FTC.Stats:Controls()
 	GDPS.dpsH		= FTC.UI:Label( 	"FTC_GroupDPS_DPSHeader", 			GDPS, 		{75,25}, 				{LEFT,RIGHT,0,0,GDPS.damageH}, 	FTC.UI:Font("standard",16,true), {1,1,1,1}, {0,1}, "DPS"	, false )
 
 	-- Divider
-	GDPS.divider 	= FTC.UI:Texture( 	"FTC_GroupDPS_NamesIcon",  			GDPS,   	{360,8},    			{TOPLEFT,TOPLEFT,20,30}, 		'EsoUI/Art/Miscellaneous/horizontalDivider.dds', false )
+	GDPS.divider 	= FTC.UI:Texture( 	"FTC_GroupDPS_NamesIcon",  			GDPS,   	{360,8},    			{TOPLEFT,TOPLEFT,20,32}, 		'EsoUI/Art/Miscellaneous/horizontalDivider.dds', false )
 	GDPS.divider:SetTextureCoords(0.181640625, 0.818359375, 0, 1)
 	GDPS:SetDrawLayer(DL_OVERLAY)
 
@@ -183,3 +183,48 @@ end
 	end
 
 
+	--[[ 
+	 * Group DPS Fading
+	 * --------------------------------
+	 * Called by FTC.Stats:DisplayGroupDPS()
+	 * --------------------------------
+	 ]]--
+	function FTC.Stats:DPSFade()
+
+		-- Get data
+		local control = FTC_GroupDPS
+
+		-- Fade in
+		if ( control.fadeIn == nil ) then
+
+			local animation, timeline = CreateSimpleAnimation(ANIMATION_ALPHA,control,0)
+		    animation:SetAlphaValues(0,1)
+		    animation:SetEasingFunction(ZO_EaseInQuadratic)  
+		    animation:SetDuration(500)
+
+		    -- Add to icon
+		    timeline:SetPlaybackType(ANIMATION_PLAYBACK_ONE_SHOT,1)
+		    icon.fadeIn = timeline
+		end
+
+		-- Fade Out 
+		if ( control.fadeOut == nil ) then
+		    local animation, timeline = CreateSimpleAnimation(ANIMATION_ALPHA,icon,15000)
+		    animation:SetAlphaValues(1,0)
+		    animation:SetEasingFunction(ZO_EaseInQuadratic)
+		    animation:SetDuration(1000)
+		    
+		    -- Add to icon
+		    timeline:SetPlaybackType(ANIMATION_PLAYBACK_ONE_SHOT,1)
+		    icon.fadeOut = timeline
+		end
+
+		-- Stop fading out
+		control.fadeOut:Stop()
+
+		-- If the control is currently hidden
+		if ( control:GetAlpha() < 1 ) then control.fadeIn:PlayFromStart() end
+
+		-- Schedule fade out
+		control.fadeOut:PlayFromStart() 
+	end

@@ -403,6 +403,16 @@ function FTC.Menu:Controls()
             default     = FTC.Defaults.RaidFrames
         },
 
+        -- Raid Column Size
+        {   type        = "dropdown", 
+            name        = GetString(FTC_Menu_FRaidS),
+            tooltip     = GetString(FTC_Menu_FRaidSDesc),
+            choices     = { 4 , 6 , 8 , 12 }, 
+            getFunc     = function() return FTC.Vars.RaidColumnSize end, 
+            setFunc     = function( value ) FTC.Menu:UpdateFrames( "RaidColumnSize" , value ) end,
+            default     = FTC.Defaults.RaidColumnSize,
+        },
+
         -- Raid Frame Width
         {   type        = "slider", 
             name        = GetString(FTC_Menu_FRWidth),
@@ -426,7 +436,6 @@ function FTC.Menu:Controls()
             setFunc     = function( value ) FTC.Menu:UpdateFrames( "RaidHeight" , value ) end, 
             default     = FTC.Defaults.RaidHeight,
         },
-
 
         -- Raid Frame Font Size
         {   type        = "slider", 
@@ -810,6 +819,16 @@ function FTC.Menu:Controls()
             getFunc     = function() return FTC.Vars.StatTriggerHeals end, 
             setFunc     = function(value) FTC.Menu:Update( 'StatTriggerHeals' , value ) end, 
             default     = FTC.Defaults.StatTriggerHeals,
+        },
+
+        -- Share DPS with Group?
+        { 
+            type        = "checkbox", 
+            name        = GetString(FTC_Menu_TShare),
+            tooltip     = GetString(FTC_Menu_TShareDesc),
+            getFunc     = function() return FTC.Vars.StatsShareDPS end, 
+            setFunc     = function(value) FTC.Menu:Update( 'StatsShareDPS' , value ) end, 
+            default     = FTC.Defaults.StatsShareDPS,
         },
 
         -- Reset Stats
