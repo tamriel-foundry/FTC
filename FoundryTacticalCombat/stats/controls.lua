@@ -10,7 +10,7 @@ function FTC.Stats:Controls()
 	  ]]----------------------------------------------------------
 
 	local DM 		= FTC.UI:Control(   "FTC_MiniMeter", 					FTC_UI, 	{240,32}, 				FTC.Vars.FTC_MiniMeter, 		false )
-    DM.backdrop     = FTC.UI:Backdrop(  "FTC_MiniMeter_BG",               	DM,         "inherit",      		{CENTER,CENTER,0,0},            {0,0,0,0.25}, {0,0,0,0.5}, nil, false )
+    DM.backdrop     = FTC.UI:Backdrop(  "FTC_MiniMeter_BG",               	DM,         "inherit",      		{CENTER,CENTER,0,0},            {0,0,0,0.4}, {0,0,0,0.5}, nil, false )
 	DM:SetMouseEnabled( true )
 	DM:SetMovable( true )
 	DM:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end )
@@ -30,7 +30,33 @@ function FTC.Stats:Controls()
 	time.label		= FTC.UI:Label( 	"FTC_MiniMeter_TimeLabel", 			time, 		{48,32}, 				{RIGHT,RIGHT,0,0}, 				FTC.UI:Font("standard",16,true), {1,1,1,1}, {0,1}, "0:00" , false )
 	time.icon    	= FTC.UI:Texture(   "FTC_MiniMeter_TimeIcon",       	time,    	{28,28},  				{LEFT,LEFT,2,0},  				'/esoui/art/mounts/timer_icon.dds', false )
 	DM.time  		= time
-	
+
+	--[[----------------------------------------------------------
+		GROUP DPS REPORT
+	  ]]----------------------------------------------------------
+	local GDPS 		= FTC.UI:Control(   "FTC_GroupDPS", 					FTC_UI, 	{400,200}, 				FTC.Vars.FTC_GroupDPS, 			true )
+    GDPS.backdrop   = FTC.UI:Backdrop(  "FTC_GroupDPS_BG",               	GDPS,       "inherit",      		{CENTER,CENTER,0,0},            {0,0,0,0.25}, {0,0,0,0}, nil, false )
+	GDPS:SetMouseEnabled( true )
+	GDPS:SetMovable( true )
+	GDPS:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end )
+
+	-- Headers
+	GDPS.namesH		= FTC.UI:Label( 	"FTC_GroupDPS_NamesHeader", 		GDPS, 		{140,25}, 				{TOPLEFT,TOPLEFT,10,5}, 		FTC.UI:Font("standard",16,true), {1,1,1,1}, {0,1}, "Player"	, false )
+	GDPS.timeH		= FTC.UI:Label( 	"FTC_GroupDPS_TimeHeader", 			GDPS, 		{75,25}, 				{LEFT,RIGHT,0,0,GDPS.namesH}, 	FTC.UI:Font("standard",16,true), {1,1,1,1}, {0,1}, "Time"	, false )
+	GDPS.damageH	= FTC.UI:Label( 	"FTC_GroupDPS_DamageHeader", 		GDPS, 		{100,25}, 				{LEFT,RIGHT,0,0,GDPS.timeH}, 	FTC.UI:Font("standard",16,true), {1,1,1,1}, {0,1}, "Damage"	, false )
+	GDPS.dpsH		= FTC.UI:Label( 	"FTC_GroupDPS_DPSHeader", 			GDPS, 		{75,25}, 				{LEFT,RIGHT,0,0,GDPS.damageH}, 	FTC.UI:Font("standard",16,true), {1,1,1,1}, {0,1}, "DPS"	, false )
+
+	-- Divider
+	GDPS.divider 	= FTC.UI:Texture( 	"FTC_GroupDPS_NamesIcon",  			GDPS,   	{360,8},    			{TOPLEFT,TOPLEFT,20,30}, 		'EsoUI/Art/Miscellaneous/horizontalDivider.dds', false )
+	GDPS.divider:SetTextureCoords(0.181640625, 0.818359375, 0, 1)
+	GDPS:SetDrawLayer(DL_OVERLAY)
+
+	-- List
+	GDPS.names		= FTC.UI:Label( 	"FTC_GroupDPS_Names", 				GDPS, 		{140,600}, 				{TOPLEFT,TOPLEFT,10,40}, 		FTC.UI:Font("standard",16,true), {1,1,1,1}, {0,0}, "names"	, false )
+	GDPS.time		= FTC.UI:Label( 	"FTC_GroupDPS_Time", 				GDPS, 		{75,600}, 				{LEFT,RIGHT,0,0,GDPS.names}, 	FTC.UI:Font("standard",16,true), {1,1,1,1}, {0,0}, "time"	, false )
+	GDPS.damage		= FTC.UI:Label( 	"FTC_GroupDPS_Damage", 				GDPS, 		{100,600}, 				{LEFT,RIGHT,0,0,GDPS.time}, 	FTC.UI:Font("standard",16,true), {1,1,1,1}, {0,0}, "damage"	, false )
+	GDPS.dps		= FTC.UI:Label( 	"FTC_GroupDPS_DPS", 				GDPS, 		{75,600}, 				{LEFT,RIGHT,0,0,GDPS.damage}, 	FTC.UI:Font("standard",16,true), {1,1,1,1}, {0,0}, "dps"	, false )
+
 	--[[----------------------------------------------------------
 		EXPANDED ANALYTICS
 	  ]]----------------------------------------------------------

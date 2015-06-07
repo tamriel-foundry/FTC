@@ -701,6 +701,26 @@ function FTC.Menu:Controls()
             default     = FTC.Defaults.SCTArc
         },
 
+        -- Outgoing SCT Direction
+        {   type        = "dropdown", 
+            name        = GetString(FTC_Menu_SScrollOut),
+            tooltip     = GetString(FTC_Menu_SScrollOutDesc),
+            choices     = { "Up" , "Down" }, 
+            getFunc     = function() return FTC.Vars.SCTOutScroll end, 
+            setFunc     = function( value ) FTC.Menu:Update( "SCTOutScroll" , value ) end,
+            default     = FTC.Defaults.SCTOutScroll, 
+        },
+
+        -- Incoming SCT Direction
+        {   type        = "dropdown", 
+            name        = GetString(FTC_Menu_SScrollIn),
+            tooltip     = GetString(FTC_Menu_SScrollInDesc),
+            choices     = { "Up" , "Down" }, 
+            getFunc     = function() return FTC.Vars.SCTInScroll end, 
+            setFunc     = function( value ) FTC.Menu:Update( "SCTInScroll" , value ) end,
+            default     = FTC.Defaults.SCTInScroll, 
+        },
+
         -- Primary SCT Font
         {   type        = "dropdown", 
             name        = GetString(FTC_Menu_SFont1),

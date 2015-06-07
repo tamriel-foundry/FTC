@@ -79,6 +79,9 @@
 	 ]]--
 	function FTC.Log:Toggle()
 
+		-- Bail if the log is disabled
+		if ( not FTC.Vars.EnableLog ) then return end
+
 		-- Toggle alternating with chat
 		if ( FTC.Vars.AlternateChat ) then 
 			if ( CHAT_SYSTEM:IsMinimized() ) then CHAT_SYSTEM:Maximize()

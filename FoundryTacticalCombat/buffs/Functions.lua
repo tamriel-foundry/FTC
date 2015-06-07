@@ -324,21 +324,6 @@
                 FTC.Buffs.Player[ability.name] = newBuff
             end
 
-        -- API timed effects
-        elseif ( ability.dur > 0 ) then
-
-            -- Add buff data
-            newBuff.ends = ( ms + ability.cast + ability.dur ) / 1000
-
-            -- Assign buff to pooled control
-            local control, objectKey = FTC.Buffs.Pool:AcquireObject()
-            control.id = objectKey
-            control.icon:SetTexture(newBuff.icon)
-            newBuff.control = control
-
-            -- Add buff to timed table
-            FTC.Buffs[context][ability.name] = newBuff
-
         -- API tracked toggles
         elseif ( ability.toggle ~= nil ) then
 
@@ -349,6 +334,21 @@
             local control, objectKey = FTC.Buffs.Pool:AcquireObject()
             control.id = objectKey
             control.icon:SetTexture(newBuff.icon) 
+            newBuff.control = control
+
+            -- Add buff to timed table
+            FTC.Buffs[context][ability.name] = newBuff
+
+        -- API timed effects
+        elseif ( ability.dur > 0 ) then
+
+            -- Add buff data
+            newBuff.ends = ( ms + ability.cast + ability.dur ) / 1000
+
+            -- Assign buff to pooled control
+            local control, objectKey = FTC.Buffs.Pool:AcquireObject()
+            control.id = objectKey
+            control.icon:SetTexture(newBuff.icon)
             newBuff.control = control
 
             -- Add buff to timed table
@@ -461,8 +461,8 @@
             elseif ( buffs[i].owner ~= GetUnitName(unitTag) and not buffs[i].area ) then
                 render = false
             
-                -- Purge non-timed abilities
-                if ( buffs[i].toggle ~= nil ) then
+                -- Purge long duration buffs
+                if ( buffs[i].toggle ~= nil or ( duration >= 60 ) ) then
                     FTC.Buffs[context][name] = nil 
                     FTC.Buffs.Pool:ReleaseObject(control.id)
                

@@ -198,7 +198,7 @@ function FTC.Buffs:RegisterEffects()
         [37470] = { 0,    4.5,  0,    false },      -- Mass Hysteria
         [37475] = { 0,    4.5,  0,    false },      -- Manifestation of Terror
         [33211] = { 0,    20.7,  0,    false },     -- Summon Shades
-        [44247] = { 0,    20.7,  0,    false },     -- Dark Shades
+        [35434] = { 0,    20.7,  0,    false },     -- Dark Shades
         [35411] = { 0,    20.7,  0,    false },     -- Shadow Image
         
         -- Siphoning
@@ -342,9 +342,9 @@ function FTC.Buffs:RegisterEffects()
         [18390] = { 0,    30,   1,    false },      -- Caltrops
         [40255] = { 0,    30,   1,    false },      -- Anti-Cavalry Caltrops
         [40242] = { 0,    30,   1,    false },      -- Razor Caltrops
-        [61487] = { 0,    4,    0,    false },      -- Magicka Detonation
-        [61491] = { 0,    4,    0,    false },      -- Inevitable Detonation
-        [61500] = { 0,    4,    0,    false },      -- Proximity Detonation
+        [61487] = { 0,    4,    1.8,    false },    -- Magicka Detonation
+        [61491] = { 0,    4,    1.8,    false },    -- Inevitable Detonation
+        [61500] = { 0,    4,    1.8,    false },    -- Proximity Detonation
         
         -- Support
         [38571] = { 6,    0,    0,    false },      -- Purge
@@ -425,7 +425,6 @@ end
             29071,      -- Obsidian Shield
             29224,      -- Igneous Shield
             32673,      -- Fragmented Shield
-            20328,      -- Hardened Armor
 
             -- Sorcerer
             28418,      -- Conjured Ward
@@ -505,6 +504,26 @@ end
     end
 
     --[[ 
+     * Identify Taunt Abilities
+     * --------------------------------
+     * Called by FTC.Player:GetActionBar()
+     * --------------------------------
+     ]]--
+    function FTC.Buffs:IsTaunt( name )
+        local Taunts = {
+            3493,     -- Puncture
+            38256,    -- Ransack
+            38250,    -- Pierce Armor
+            39475,    -- Inner Fire
+            42056,    -- Inner Rage
+            42060,    -- Inner Beast
+        }
+        for i = 1 , #Taunts do
+            if ( name == GetAbilityName(Taunts[i]) ) then return true end
+        end
+    end
+
+    --[[ 
      * Filter Valid Buff Effects
      * --------------------------------
      * Called by FTC.Buffs:GetBuffs()
@@ -556,10 +575,17 @@ end
         }
         for i = 1 , #Vamp do
             if ( name == GetAbilityName(Vamp[i] ) ) then 
-                isValid = ( unitTag == 'player' )
-                isType  = "S"..i
+                isValid = true
+                isType  = "V"..i
                 return isValid, name, isType , iconName
             end
+        end
+
+        -- Lycanthropy
+        if ( name == GetAbilityName( 35658 ) ) then
+            isValid = true
+            isType = "W"
+            return isValid, name, isType , iconName
         end
 
         -- AvA Bonuses
@@ -580,8 +606,6 @@ end
 
         -- Valid Passives
         local Passives = {
-            35658,          -- Lycanthropy
-            39472,          -- Vampirism
             61662,          -- Minor Brutality
             --23673,          -- Major Brutality
             64509,          -- Majory Savagery
@@ -603,6 +627,7 @@ end
         local Ignored = {
             29667,          -- Concentration
             40359,          -- Fed on ally
+            39472,          -- Vampirism
             45569,          -- Medicinal Use
             62760,          -- Spell Shield
             63601,          -- ESO Plus Member

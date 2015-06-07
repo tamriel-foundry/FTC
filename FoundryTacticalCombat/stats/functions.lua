@@ -6,6 +6,7 @@
     FTC.Stats = {}
     FTC.Stats.Defaults = {
 		["FTC_MiniMeter"]           = {BOTTOM,BOTTOM,0,-80},
+		["FTC_GroupDPS"]            = {BOTTOMRIGHT,BOTTOMRIGHT,-60,-6},
 		["DamageTimeout"]           = 5,
 		["StatTriggerHeals"]        = false,
 	}
@@ -29,6 +30,7 @@
         -- Setup tables
         FTC.Stats:Reset()
 		FTC.Stats.endTime = 0
+		FTC.Stats.groupDPS = {}
 
 	    -- Register init status
 	    FTC.init.Stats = true
@@ -533,4 +535,97 @@
 		CHAT_SYSTEM:Maximize()
 		CHAT_SYSTEM.textEntry:Open()
 		CHAT_SYSTEM.textEntry:FadeIn()
+	end
+
+
+
+
+	function FTC.Stats:SendPing()
+
+		-- Compute player statistics
+		local time  = ( FTC.Stats.endTime - FTC.Stats.startTime ) / 1000
+		local dps 	= FTC.Stats.damage  / math.max(time,1)
+
+		-- Compute map ping offsets
+		local damageCoord 	= math.min(FTC.Stats.damage / 1000000000,1)
+		local dpsCoord		= math.min(dps / 1000000,1)
+
+		-- Send the ping
+		PingMap( MAP_PIN_TYPE_PING , MAP_TYPE_LOCATION_CENTERED , damageCoord , dpsCoord )
+	end
+
+
+	function FTC.Stats:AddPing( offsetX, offsetY , pingTag , isOwner )
+
+		-- Ignore ping terminations
+		if ( offsetX == 0 and offsetY == 0 ) then return end
+
+		-- Get data
+		local name		= GetUnitName( pingTag )
+		local damage 	= offsetX * 1000000000
+		local dps 		= offsetY * 1000000
+
+		-- Construct object
+		local data = {
+			["name"]	= name,
+			["damage"] 	= damage,
+			["dps"]		= dps,
+			["time"]	= damage / dps,
+			["ms"]		= GetGameTimeMilliseconds(),
+		}
+
+		-- Populate data
+		FTC.Stats.groupDPS[name] = data
+
+		-- Update display
+		FTC.Stats:DisplayGroupDPS()
+	end
+
+
+	function FTC.Stats:DisplayGroupDPS()
+
+		-- Get data
+		local data = {}
+		local parent = FTC_GroupDPS
+
+		-- Sort in descending order
+		for player , damage in pairs(FTC.Stats.groupDPS) do
+
+			-- Throw out any entries from previous fights
+			if ( damage.ms < FTC.Stats.startTime ) then FTC.Stats.groupDPS[player] = nil end
+
+			-- Otherwise insert
+			table.insert(data,damage)		
+		end	
+		table.sort( data , FTC.Stats.SortDamage )
+
+		-- Maybe hide the window
+		if ( #data == 0 ) then parent:SetHidden(true) end
+
+		-- Setup labels
+		local names 	= ""
+		local time 		= ""
+		local damage 	= ""
+		local dps 		= ""
+
+		-- Print to the group dps window
+		for i = 1 , #data do
+			names 	= names .. zo_strformat("<<!aC:1>>",data[i].name) .. "\n"
+			time 	= time .. ZO_FormatTime(data[i].time,SI_TIME_FORMAT_TIMESTAMP) .. "\n"
+			damage 	= damage .. FTC.DisplayNumber( data[i].damage ) .. "\n"
+			dps		= dps .. FTC.DisplayNumber( data[i].dps , 2 ) .. "\n"
+		end
+
+		-- Apply labels
+		parent.names:SetText(names)
+		parent.time:SetText(time)
+		parent.damage:SetText(damage)
+		parent.dps:SetText(dps)
+
+		-- Update height
+		local height = 50 + ( #data * 20 )
+		parent:SetHeight( height )
+		parent.backdrop:SetHeight( height )
+		parent:SetHidden(false)
+
 	end

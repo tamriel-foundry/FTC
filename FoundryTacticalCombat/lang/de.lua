@@ -315,6 +315,12 @@ ZO_CreateStringId("FTC_Menu_SSpeedDesc",    "Ändert die Geschwindigkeit des sch
 ZO_CreateStringId("FTC_Menu_SArc",          "Intensität des Bogens")
 ZO_CreateStringId("FTC_Menu_SArcDesc",      "Ändert die Krümmung der Animation im schwebenden Kampftext, höhere Werte generieren eine größere Biegung. [Standart: "..FTC.Defaults.SCTArc.."]")
 
+--ZO_CreateStringId("FTC_Menu_SScrollOut",    "Outgoing Scroll Direction")
+--ZO_CreateStringId("FTC_Menu_SScrollOutDesc","Change the scrolling direction of outgoing damage events in scrolling combat text. [Default: "..FTC.Defaults.SCTOutScroll.."]")
+
+--ZO_CreateStringId("FTC_Menu_SScrollIn",     "Incoming Scroll Direction")
+--ZO_CreateStringId("FTC_Menu_SScrollOutDesc","Change the scrolling direction of incoming damage events in scrolling combat text. [Default: "..FTC.Defaults.SCTInScroll.."]")
+
 ZO_CreateStringId("FTC_Menu_SFont1",        "Primäre Schriftart")
 ZO_CreateStringId("FTC_Menu_SFont1Desc",    "Ändert die primäre Schriftart der Schadenswerte im schwebenden Kampftext. [Standart: "..FTC.UI:TranslateFont(FTC.Defaults.SCTFont1).."]")
 

@@ -315,6 +315,12 @@ ZO_CreateStringId("FTC_Menu_SSpeedDesc",    "Change speed of combat text scrolli
 ZO_CreateStringId("FTC_Menu_SArc",          "SCT Arc Intensity")
 ZO_CreateStringId("FTC_Menu_SArcDesc",      "Change the curviture of scrolling combat text, higher values generate more arcing. [Default: "..FTC.Defaults.SCTArc.."]")
 
+ZO_CreateStringId("FTC_Menu_SScrollOut",    "Outgoing Scroll Direction")
+ZO_CreateStringId("FTC_Menu_SScrollOutDesc","Change the scrolling direction of outgoing damage events in scrolling combat text. [Default: "..FTC.Defaults.SCTOutScroll.."]")
+
+ZO_CreateStringId("FTC_Menu_SScrollIn",     "Incoming Scroll Direction")
+ZO_CreateStringId("FTC_Menu_SScrollOutDesc","Change the scrolling direction of incoming damage events in scrolling combat text. [Default: "..FTC.Defaults.SCTInScroll.."]")
+
 ZO_CreateStringId("FTC_Menu_SFont1",        "Primary Font")
 ZO_CreateStringId("FTC_Menu_SFont1Desc",    "Change the primary font used for damage values in scrolling combat text. [Default: "..FTC.UI:TranslateFont(FTC.Defaults.SCTFont1).."]")
 

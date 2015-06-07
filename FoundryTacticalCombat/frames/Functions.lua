@@ -195,7 +195,7 @@
             frame.plate.name:SetText( name .. " (" .. level .. ")" )
             frame.plate.class:SetTexture( icon )
             frame.plate.class:SetHidden( icon == nil )
-            frame.lplate.title:SetText(title)
+            frame.lplate.title:SetText(zo_strformat("<<!aC:1>>",title))
             
             -- Populate rank icon
             frame.lplate.rank:SetTexture( rank )
@@ -539,7 +539,7 @@
         local parent = _G["FTC_PlayerFrame_Alt"]
         
         -- Player is mounted
-        if ( IsMounted() and parent.context ~= "mount" ) then
+        if ( IsMounted() ) then
 
             -- Set the context
             parent.context = "mount" 
@@ -554,7 +554,7 @@
             parent.bar:SetWidth( math.min(current/effectiveMax,1) * (parent.bg:GetWidth()-6) )
 
         -- Player is transformed into a werewolf
-        elseif ( IsWerewolf() and parent.context ~= "werewolf" ) then
+        elseif ( IsWerewolf() ) then
 
             -- Set the context
             parent.context = "werewolf"
@@ -569,7 +569,7 @@
             parent.bar:SetWidth( math.min(current/maximum,1) * (parent.bg:GetWidth()-6) )
 
         -- Player is controlling a siege weapon
-        elseif ( ( IsPlayerControllingSiegeWeapon() or IsPlayerEscortingRam() ) and parent.context ~= "siege" ) then
+        elseif ( ( IsPlayerControllingSiegeWeapon() or IsPlayerEscortingRam() ) ) then
 
             -- Set the context
             parent.context = "siege"
@@ -706,7 +706,7 @@
         if ( parent.context ~= "werewolf" ) then return end
         
         -- Change the bar width
-        parent.bar:SetWidth( ( powerValue / powerEffectiveMax ) * ( parent:GetWidth() - 2 ) )
+        parent.bar:SetWidth( math.min(powerValue/powerEffectiveMax,1) * ( parent:GetWidth()-6 ) )
     end
 
 

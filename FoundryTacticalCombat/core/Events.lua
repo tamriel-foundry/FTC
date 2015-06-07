@@ -63,6 +63,9 @@
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ALLIANCE_POINT_UPDATE         , FTC.OnAPUpdate )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_LEVEL_UPDATE                  , FTC.OnLevel )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_VETERAN_RANK_UPDATE           , FTC.OnLevel )
+
+        -- Stats Events
+        EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_MAP_PING                      , FTC.OnPing )
     end
 
 
@@ -92,7 +95,7 @@
 
         -- Setup Combat Log
         if ( FTC.init.Log ) then
-            CHAT_SYSTEM:Minimize()
+            if ( FTC.Vars.AlternateChat ) then CHAT_SYSTEM:Minimize() end
             FTC.Log:Print( GetString(FTC_LongInfo) , {1,0.8,0} )
         end
 
@@ -291,6 +294,9 @@
 
         -- Trigger an alert
         if ( FTC.init.SCT ) then FTC.SCT:Combat(inCombat) end
+
+        -- Maybe report DPS
+        if ( FTC.init.Stats and ( not inCombat ) ) then FTC.Stats:SendPing() end
     end
 
     --[[ 
@@ -338,16 +344,13 @@
      * Called by EVENT_UNIT_DEATH_STATE_CHANGED
      * --------------------------------
      ]]--
-    function FTC:OnDeath( ... )
+    function FTC.OnDeath( ... )
 
         -- Get the unitTag
         local unitTag = select( 2 , ... )
 
         -- Wipe player buffs
         if ( FTC.init.Buffs and unitTag == 'player' ) then FTC.Buffs:WipeBuffs(FTC.Player.name) end
-
-        -- Reset the group frames
-        if ( FTC.init.Frames ) then FTC.Frames:SetupGroup() end
         
         -- Display killspam alerts
        --if ( FTC.init.SCT ) then FTC.SCT:Deathspam( ... ) end
@@ -381,7 +384,7 @@
      * --------------------------------
      ]]--
     function FTC.OnWerewolf()
-        if ( FTC.init.Frames ) then FTC.Frames:SetupAltBar() end
+        if ( FTC.init.Frames ) then zo_callLater( function() FTC.Frames:SetupAltBar() end , 1000 ) end
     end
 
 
@@ -591,6 +594,25 @@
         if ( FTC.init.Frames ) then 
             FTC.Frames:SetupPlayer() 
             FTC.Frames:SetupGroup()
+        end
+    end
+
+--[[----------------------------------------------------------
+    STATS EVENTS
+  ]]----------------------------------------------------------
+
+    --[[ 
+     * Handle Map Pings
+     * --------------------------------
+     * Called by EVENT_LEVEL_UPDATE
+     * Called by EVENT_VETERAN_RANK_UPDATE
+     * --------------------------------
+     ]]--
+    function FTC.OnPing( eventCode, pingEventType, pingType, pingTag, offsetX, offsetY , isOwner )
+
+        -- Register DPS posts
+        if ( FTC.init.Stats and pingType == MAP_PIN_TYPE_PING ) then
+            FTC.Stats:AddPing( offsetX, offsetY , pingTag , isOwner )
         end
     end
 

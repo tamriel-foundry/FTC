@@ -315,6 +315,12 @@ ZO_CreateStringId("FTC_Menu_SSpeedDesc",    "Changer la vitesse du texte de comb
 ZO_CreateStringId("FTC_Menu_SArc",          "Intensité de l'Arc du TCD")
 ZO_CreateStringId("FTC_Menu_SArcDesc",      "Changer la courbature du texte de combat déroulant, plus la valeur est élevée, plus l'arc est prononcé. [Défaut: "..FTC.Defaults.SCTArc.."]")
 
+--ZO_CreateStringId("FTC_Menu_SScrollOut",    "Outgoing Scroll Direction")
+--ZO_CreateStringId("FTC_Menu_SScrollOutDesc","Change the scrolling direction of outgoing damage events in scrolling combat text. [Default: "..FTC.Defaults.SCTOutScroll.."]")
+
+--ZO_CreateStringId("FTC_Menu_SScrollIn",     "Incoming Scroll Direction")
+--ZO_CreateStringId("FTC_Menu_SScrollOutDesc","Change the scrolling direction of incoming damage events in scrolling combat text. [Default: "..FTC.Defaults.SCTInScroll.."]")
+
 ZO_CreateStringId("FTC_Menu_SFont1",        "Police Primaire")
 ZO_CreateStringId("FTC_Menu_SFont1Desc",    "Changer la police de base utilisée pour les valeurs des dégats dans le texte de combat déroulant. [Défaut: "..FTC.UI:TranslateFont(FTC.Defaults.SCTFont1).."]")
 

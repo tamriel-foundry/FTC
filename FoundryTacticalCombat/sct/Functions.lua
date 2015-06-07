@@ -12,6 +12,8 @@
         ["SCTAlerts"]               = true,
         ["SCTSpeed"]                = 6,
         ["SCTArc"]                  = 6,
+        ["SCTInScroll"]             = 'Up',
+        ["SCTOutScroll"]            = 'Up',
 
         -- Fonts
         ["SCTFont1"]                = 'esobold',
@@ -238,6 +240,7 @@
             local lifespan  = ( ms - damage.ms ) / 1000
             local speed     = ( ( 11 - FTC.Vars.SCTSpeed ) / 2 ) + 1
             local remaining = ( lifespan + (speed * 0.2 )) / speed
+            remaining = ( FTC.Vars["SCT"..context.."Scroll"] == "Up" ) and remaining or ( 1 - remaining ) 
 
             -- Purge expired damages
             if ( lifespan > speed * 0.8 ) then
@@ -252,7 +255,7 @@
                 local height    = parent:GetHeight()
                 local width     = parent:GetWidth()
                 local offsetX   = control.offsetX           
-                local offsetY   = control.offsetY + ( -1 * height ) * remaining
+                local offsetY   = control.offsetY + ( -1 * height * remaining )
 
                 -- Horizontal arcing ( arc = 10 -> 500  arc = 0 -> 0 )
                 if ( true ) then
