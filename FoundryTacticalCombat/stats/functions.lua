@@ -544,10 +544,14 @@
      * Called by FTC.OnCombatState()
      * --------------------------------
      ]]--
+    FTC.Stats.lastPost = 0
 	function FTC.Stats:SendPing()
 
 		-- Bail out if this feature is disabled
 		if ( not FTC.Vars.StatsShareDPS ) then return end
+
+		-- Don't re-post
+		if ( math.abs(FTC.Stats.lastPost - FTC.Stats.endTime ) < 100 ) then return end
 
 		-- Compute player statistics
 		local time  = ( FTC.Stats.endTime - FTC.Stats.startTime ) / 1000
@@ -559,6 +563,7 @@
 
 		-- Send the ping
 		PingMap( MAP_PIN_TYPE_PING , MAP_TYPE_LOCATION_CENTERED , damageCoord , dpsCoord )
+		FTC.Stats.lastPost = FTC.Stats.endTime
 	end
 
     --[[ 

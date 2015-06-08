@@ -204,19 +204,19 @@ end
 
 		    -- Add to icon
 		    timeline:SetPlaybackType(ANIMATION_PLAYBACK_ONE_SHOT,1)
-		    icon.fadeIn = timeline
+		    control.fadeIn = timeline
 		end
 
 		-- Fade Out 
 		if ( control.fadeOut == nil ) then
-		    local animation, timeline = CreateSimpleAnimation(ANIMATION_ALPHA,icon,15000)
+		    local animation, timeline = CreateSimpleAnimation(ANIMATION_ALPHA,icon,10000)
 		    animation:SetAlphaValues(1,0)
 		    animation:SetEasingFunction(ZO_EaseInQuadratic)
 		    animation:SetDuration(1000)
 		    
 		    -- Add to icon
 		    timeline:SetPlaybackType(ANIMATION_PLAYBACK_ONE_SHOT,1)
-		    icon.fadeOut = timeline
+		    control.fadeOut = timeline
 		end
 
 		-- Stop fading out

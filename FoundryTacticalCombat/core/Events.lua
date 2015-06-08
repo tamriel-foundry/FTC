@@ -296,7 +296,7 @@
         if ( FTC.init.SCT ) then FTC.SCT:Combat(inCombat) end
 
         -- Maybe report DPS
-        if ( FTC.init.Stats and ( not inCombat ) ) then FTC.Stats:SendPing() end
+        if ( FTC.init.Stats and not inCombat ) then zo_callLater( function() FTC.Stats:SendPing() end , 250 ) end
     end
 
     --[[ 
