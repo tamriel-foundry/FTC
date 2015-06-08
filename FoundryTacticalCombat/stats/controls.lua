@@ -34,8 +34,9 @@ function FTC.Stats:Controls()
 	--[[----------------------------------------------------------
 		GROUP DPS REPORT
 	  ]]----------------------------------------------------------
-	local GDPS 		= FTC.UI:Control(   "FTC_GroupDPS", 					FTC_UI, 	{400,200}, 				FTC.Vars.FTC_GroupDPS, 			true )
+	local GDPS 		= FTC.UI:Control(   "FTC_GroupDPS", 					FTC_UI, 	{400,200}, 				FTC.Vars.FTC_GroupDPS, 			false )
     GDPS.backdrop   = FTC.UI:Backdrop(  "FTC_GroupDPS_BG",               	GDPS,       "inherit",      		{CENTER,CENTER,0,0},            {0,0,0,0.25}, {0,0,0,0}, nil, false )
+    GDPS:SetAlpha(0)
 	GDPS:SetMouseEnabled( true )
 	GDPS:SetMovable( true )
 	GDPS:SetHandler( "OnMouseUp", function( self ) FTC.Menu:SaveAnchor( self ) end )
@@ -209,7 +210,7 @@ end
 
 		-- Fade Out 
 		if ( control.fadeOut == nil ) then
-		    local animation, timeline = CreateSimpleAnimation(ANIMATION_ALPHA,icon,10000)
+		    local animation, timeline = CreateSimpleAnimation(ANIMATION_ALPHA,control,15000)
 		    animation:SetAlphaValues(1,0)
 		    animation:SetEasingFunction(ZO_EaseInQuadratic)
 		    animation:SetDuration(1000)

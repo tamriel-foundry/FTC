@@ -558,11 +558,11 @@
 		local dps 	= FTC.Stats.damage  / math.max(time,1)
 
 		-- Compute map ping offsets
-		local damageCoord 	= math.min(FTC.Stats.damage / 1000000000,1)
-		local dpsCoord		= math.min(dps / 1000000,1)
+		local timeCoord 	= time/10000
+		local dpsCoord		= dps/200000
 
 		-- Send the ping
-		PingMap( MAP_PIN_TYPE_PING , MAP_TYPE_LOCATION_CENTERED , damageCoord , dpsCoord )
+		PingMap( MAP_PIN_TYPE_PING , MAP_TYPE_LOCATION_CENTERED , timeCoord , dpsCoord )
 		FTC.Stats.lastPost = FTC.Stats.endTime
 	end
 
@@ -582,15 +582,19 @@
 
 		-- Get data
 		local name		= GetUnitName( pingTag )
-		local damage 	= offsetX * 1000000000
-		local dps 		= offsetY * 1000000
+		local time 		= offsetX * 10000
+		local dps 		= offsetY * 200000
+		local damage	= dps * time
+
+		-- Only accept pings within a reasonable range
+		if ( dps > 100000 or ( time > 1200 ) ) then return end
 
 		-- Construct object
 		local data = {
 			["name"]	= name,
 			["damage"] 	= damage,
 			["dps"]		= dps,
-			["time"]	= damage / dps,
+			["time"]	= time,
 			["ms"]		= GetGameTimeMilliseconds(),
 		}
 
