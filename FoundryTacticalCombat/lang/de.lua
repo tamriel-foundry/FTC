@@ -170,8 +170,8 @@ local default = ( FTC.Defaults.EnableRaidFrames ) and "Ein" or "Aus"
 ZO_CreateStringId("FTC_Menu_FRaid",         "Schlachtzugsfenster aktivieren")
 ZO_CreateStringId("FTC_Menu_FRaidDesc",     "Das Schlachtzugsfenster wird bei einer Gruppengröße größer als 4 angezeigt. [Standart: "..default.."]")
 
---ZO_CreateStringId("FTC_Menu_FRaidS",        "Raid Frame Column Size")
---ZO_CreateStringId("FTC_Menu_FRaidSDesc",    "Number of players to display per column in FTC raid frames. [Default: "..FTC.Defaults.RaidColumnSize.."]")
+ZO_CreateStringId("FTC_Menu_FRaidS",        "Schlachtzugsfenster Spaltengröße")
+ZO_CreateStringId("FTC_Menu_FRaidSDesc",    "Zeigt die Anzahl der Spieler pro Spalte im FTC Schlachtzugsfenster an. [Standart: "..FTC.Defaults.RaidColumnSize.."]")
 
 ZO_CreateStringId("FTC_Menu_FRWidth",       "Schlachtzugsfenster Höhe")
 ZO_CreateStringId("FTC_Menu_FRWidthDesc",   "Ändert die Höhe des Schlachtzugsfensters. [Standart: "..FTC.Defaults.RaidWidth.."]")
@@ -318,11 +318,11 @@ ZO_CreateStringId("FTC_Menu_SSpeedDesc",    "Ändert die Geschwindigkeit des sch
 ZO_CreateStringId("FTC_Menu_SArc",          "Intensität des Bogens")
 ZO_CreateStringId("FTC_Menu_SArcDesc",      "Ändert die Krümmung der Animation im schwebenden Kampftext, höhere Werte generieren eine größere Biegung. [Standart: "..FTC.Defaults.SCTArc.."]")
 
---ZO_CreateStringId("FTC_Menu_SScrollOut",    "Outgoing Scroll Direction")
---ZO_CreateStringId("FTC_Menu_SScrollOutDesc","Change the scrolling direction of outgoing damage events in scrolling combat text. [Default: "..FTC.Defaults.SCTOutScroll.."]")
+ZO_CreateStringId("FTC_Menu_SScrollOut",    "Richtung des ausgehenden Schadens")
+ZO_CreateStringId("FTC_Menu_SScrollOutDesc","Ändert die Richtung des schwebenden Kampftextes im Fenster des ausgehenden Schadens. [Standar: "..FTC.Defaults.SCTOutScroll.."]")
 
---ZO_CreateStringId("FTC_Menu_SScrollIn",     "Incoming Scroll Direction")
---ZO_CreateStringId("FTC_Menu_SScrollOutDesc","Change the scrolling direction of incoming damage events in scrolling combat text. [Default: "..FTC.Defaults.SCTInScroll.."]")
+ZO_CreateStringId("FTC_Menu_SScrollIn",     "Richtung des eingehenden Schadens")
+ZO_CreateStringId("FTC_Menu_SScrollInDesc","Ändert die Richtung des schwebenden Kampftextes im Fenster des eingehenden Schadens. [Standart: "..FTC.Defaults.SCTInScroll.."]")
 
 ZO_CreateStringId("FTC_Menu_SFont1",        "Primäre Schriftart")
 ZO_CreateStringId("FTC_Menu_SFont1Desc",    "Ändert die primäre Schriftart der Schadenswerte im schwebenden Kampftext. [Standart: "..FTC.UI:TranslateFont(FTC.Defaults.SCTFont1).."]")
@@ -368,9 +368,9 @@ local default = FTC.Defaults.StatTriggerHeals and "Ein" or "Aus"
 ZO_CreateStringId("FTC_Menu_TRHeal",        "Aktiviere Heilungstrigger")
 ZO_CreateStringId("FTC_Menu_TRHealDesc",    "Bei ausgehender Heilung wird die Schadensstatistik sofort aktiviert.  [Standart: "..default.."]")
 
---local default = FTC.Defaults.StatsShareDPS and "Enabled" or "Disabled"
---ZO_CreateStringId("FTC_Menu_TShare",        "[BETA] Allow DPS Sharing")
---ZO_CreateStringId("FTC_Menu_TShareDesc",    "Allow your DPS information to be shared automatically with your group members who are also using FTC version 0.65+. [Default: "..default.."]")
+local default = FTC.Defaults.StatsShareDPS and "Ein" or "Aus"
+ZO_CreateStringId("FTC_Menu_TShare",        "[BETA] Schadensstatistik teilen")
+ZO_CreateStringId("FTC_Menu_TShareDesc",    "Erlaubt euren Gruppenmitglieder die Werte der Schadensstatistik automatisch untereinander zu teilen, sofern sie ebenfalls die FTC Version 0.65+ nutzen und diese Option aktiviert haben. [Standart: "..default.."]")
 
 ZO_CreateStringId("FTC_Menu_TReset",        "Zurücksetzen")
 ZO_CreateStringId("FTC_Menu_TResetDesc",    "Setzt die Einstellungen der FTC Schadensstatistik zurück auf die Standartwerte.")
