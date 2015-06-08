@@ -6,7 +6,7 @@
     FTC.Stats = {}
     FTC.Stats.Defaults = {
 		["FTC_MiniMeter"]           = {BOTTOM,BOTTOM,0,-80},
-		["FTC_GroupDPS"]            = {BOTTOMRIGHT,BOTTOMRIGHT,-60,-6},
+		["FTC_GroupDPS"]            = {TOPLEFT,TOPLEFT,300,10},
 		["DamageTimeout"]           = 5,
 		["StatTriggerHeals"]        = false,
 		["StatsShareDPS"]			= true,
@@ -31,6 +31,7 @@
         -- Setup tables
         FTC.Stats:Reset()
 		FTC.Stats.endTime = 0
+   		FTC.Stats.lastPing = 0
 		FTC.Stats.groupDPS = {}
 
 	    -- Register init status
@@ -63,6 +64,7 @@
 		FTC.Stats.healing	= 0
 		FTC.Stats.startTime = GetGameTimeMilliseconds()
 		FTC.Stats.endTime 	= GetGameTimeMilliseconds()
+   		FTC.Stats.lastPing  = 0
 	end
 
 --[[----------------------------------------------------------
@@ -544,18 +546,20 @@
      * Called by FTC.OnCombatState()
      * --------------------------------
      ]]--
-    FTC.Stats.lastPost = 0
 	function FTC.Stats:SendPing()
 
 		-- Bail out if this feature is disabled
 		if ( not FTC.Vars.StatsShareDPS ) then return end
 
-		-- Don't re-post
-		if ( math.abs(FTC.Stats.lastPost - FTC.Stats.endTime ) < 100 ) then return end
+		-- Don't ping without damage
+		if ( FTC.Stats.damage == 0 ) then return end
+
+		-- Don't spam ping
+		if ( math.abs(FTC.Stats.lastPing - FTC.Stats.endTime ) < 250 ) then return end
 
 		-- Compute player statistics
-		local time  = ( FTC.Stats.endTime - FTC.Stats.startTime ) / 1000
-		local dps 	= FTC.Stats.damage  / math.max(time,1)
+		local time  = math.max( ( FTC.Stats.endTime - FTC.Stats.startTime ) / 1000 , 1 ) 
+		local dps 	= FTC.Stats.damage  / time
 
 		-- Compute map ping offsets
 		local timeCoord 	= time/10000
@@ -563,7 +567,7 @@
 
 		-- Send the ping
 		PingMap( MAP_PIN_TYPE_PING , MAP_TYPE_LOCATION_CENTERED , timeCoord , dpsCoord )
-		FTC.Stats.lastPost = FTC.Stats.endTime
+		FTC.Stats.lastPing = FTC.Stats.endTime
 	end
 
     --[[ 
@@ -601,7 +605,7 @@
 		-- Populate data
 		FTC.Stats.groupDPS[name] = data
 
-		-- Update display
+		-- Display control
 		FTC.Stats:DisplayGroupDPS()
 	end
 
@@ -622,8 +626,6 @@
 
 			-- Throw out any entries from previous fights
 			if ( damage.ms < FTC.Stats.startTime ) then FTC.Stats.groupDPS[player] = nil end
-
-			-- Otherwise insert
 			table.insert(data,damage)		
 		end	
 		table.sort( data , FTC.Stats.SortDamage )

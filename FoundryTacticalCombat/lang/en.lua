@@ -369,7 +369,7 @@ ZO_CreateStringId("FTC_Menu_TRHeal",        "Allow Healing Trigger")
 ZO_CreateStringId("FTC_Menu_TRHealDesc",    "Allow outgoing healing to trigger the start of a new encounter. [Default: "..default.."]")
 
 local default = FTC.Defaults.StatsShareDPS and "Enabled" or "Disabled"
-ZO_CreateStringId("FTC_Menu_TShare",        "Allow DPS Sharing")
+ZO_CreateStringId("FTC_Menu_TShare",        "[BETA] Allow DPS Sharing")
 ZO_CreateStringId("FTC_Menu_TShareDesc",    "Allow your DPS information to be shared automatically with your group members who are also using FTC version 0.65+. [Default: "..default.."]")
 
 ZO_CreateStringId("FTC_Menu_TReset",        "Reset Stats")

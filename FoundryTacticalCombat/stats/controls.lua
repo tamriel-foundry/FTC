@@ -183,7 +183,6 @@ end
 	    object:SetHidden(true)
 	end
 
-
 	--[[ 
 	 * Group DPS Fading
 	 * --------------------------------
