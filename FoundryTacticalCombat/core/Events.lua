@@ -209,16 +209,23 @@
      ]]--
     function FTC.OnVisualAdded( eventCode , unitTag, unitAttributeVisual, statType, attributeType, powerType, value, maxValue )
 
-        -- Track Player, Target, and Group
+        -- Only track health
+        if ( powerType ~= POWERTYPE_HEALTH ) then return end
+
+        -- Only track Player, Target, and Group
         if ( unitTag ~= "player" and unitTag ~= "reticleover" and string.match(unitTag,"group") == nil ) then return end
 
         -- Health Regeneration
-        if ( ( unitAttributeVisual == ATTRIBUTE_VISUAL_INCREASED_REGEN_POWER or unitAttributeVisual == ATTRIBUTE_VISUAL_DECREASED_REGEN_POWER ) and powerType == POWERTYPE_HEALTH ) then
-            if ( FTC.init.Frames ) then FTC.Frames:Regen(unitTag,unitAttributeVisual,powerType,2000) end
-            if ( FTC.init.SCT and unitAttributeVisual == ATTRIBUTE_VISUAL_DECREASED_REGEN_POWER and unitTag == "player" ) then FTC.SCT:Cleanse() end
+        if ( unitAttributeVisual == ATTRIBUTE_VISUAL_INCREASED_REGEN_POWER or unitAttributeVisual == ATTRIBUTE_VISUAL_DECREASED_REGEN_POWER ) then
+            
+            -- Display regen indicator
+            if ( FTC.init.Frames and ( unitTag == "player" or unitTag == "reticleover" ) ) then FTC.Frames:Regen(unitTag,unitAttributeVisual,powerType,2000) end
+            
+            -- Display cleanse alert
+            if ( FTC.init.SCT and unitTag == "player" and unitAttributeVisual == ATTRIBUTE_VISUAL_DECREASED_REGEN_POWER ) then FTC.SCT:Cleanse() end
         
         -- Damage Shields 
-        elseif ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH and value > 0) then
+        elseif ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and value > 0) then
             if ( FTC.init.Frames ) then FTC.Player:UpdateShield( unitTag , value , maxValue ) end
         end
     end
@@ -231,19 +238,23 @@
      ]]--             
     function FTC.OnVisualUpdate( eventCode , unitTag, unitAttributeVisual, statType, attributeType, powerType, oldValue, newValue, oldMaxValue, newMaxValue )
 
-        -- Track Player, Target, and Group
+        -- Only track health
+        if ( powerType ~= POWERTYPE_HEALTH ) then return end
+
+        -- Only track Player, Target, and Group
         if ( unitTag ~= "player" and unitTag ~= "reticleover" and string.match(unitTag,"group") == nil ) then return end
 
-        -- Attribute Regeneration
+        -- Health Regeneration
         if ( unitAttributeVisual == ATTRIBUTE_VISUAL_INCREASED_REGEN_POWER or unitAttributeVisual == ATTRIBUTE_VISUAL_DECREASED_REGEN_POWER ) then
-            if ( FTC.init.Frames )  then FTC.Frames:Regen(unitTag,unitAttributeVisual,powerType,2000) end   
+            
+            -- Display regen indicator
+            if ( FTC.init.Frames and ( unitTag == "player" or unitTag == "reticleover" ) ) then FTC.Frames:Regen(unitTag,unitAttributeVisual,powerType,2000) end
 
         -- Damage Shields
-        elseif ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH ) then
+        elseif ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING ) then
             if ( FTC.init.Frames ) then FTC.Player:UpdateShield( unitTag , newValue , newMaxValue ) end
         end
     end
-
 
     --[[ 
      * Handles Removed Visualizers
@@ -253,12 +264,17 @@
      ]]--  
     function FTC.OnVisualRemoved( eventCode , unitTag, unitAttributeVisual, statType, attributeType, powerType, value, maxValue )
 
-        -- Track Player, Target, and Group
+        -- Only track health
+        if ( powerType ~= POWERTYPE_HEALTH ) then return end
+
+        -- Only track Player, Target, and Group
         if ( unitTag ~= "player" and unitTag ~= "reticleover" and string.match(unitTag,"group") == nil ) then return end
         
-        -- Attribute Regeneration
+        -- Health Regeneration
         if ( unitAttributeVisual == ATTRIBUTE_VISUAL_INCREASED_REGEN_POWER or unitAttributeVisual == ATTRIBUTE_VISUAL_DECREASED_REGEN_POWER ) then
-            if ( FTC.init.Frames )  then FTC.Frames:Regen(unitTag,unitAttributeVisual,powerType,0) end  
+            
+            -- Remove regen indicator
+            if ( FTC.init.Frames and ( unitTag == "player" or unitTag == "reticleover" ) ) then FTC.Frames:Regen(unitTag,unitAttributeVisual,powerType,0) end
 
         -- Damage Shields
         elseif ( unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING and powerType == POWERTYPE_HEALTH ) then
@@ -267,9 +283,7 @@
             if ( FTC.init.Frames ) then FTC.Player:UpdateShield( unitTag , 0 , maxValue ) end
 
             -- Verify the shield was removed due to simultaneous damage
-            if ( FTC.Damage.lastIn >= GetGameTimeMilliseconds() - 5 ) then
-                if ( FTC.init.Buffs and unitTag == "player" ) then FTC.Buffs:ClearShields() end
-            end
+            if ( FTC.init.Buffs and unitTag == "player" and FTC.Damage.lastIn >= GetGameTimeMilliseconds() - 5 ) then FTC.Buffs:ClearShields() end
         end
     end 
 

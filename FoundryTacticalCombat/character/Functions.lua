@@ -45,6 +45,7 @@
         FTC.Player.canPotion    = canPotion
     end
 
+
 --[[----------------------------------------------------------
     TARGET DATA COMPONENT
   ]]----------------------------------------------------------
@@ -116,6 +117,7 @@ function FTC.Target:Update()
     end
 end
 
+
 --[[----------------------------------------------------------
     GROUP DATA COMPONENT
   ]]----------------------------------------------------------
@@ -162,7 +164,7 @@ end
             data    = FTC.Group[i]
 
             -- Buffer health updating for groups
-            if ( data.updated >= GetGameTimeMilliseconds() - 250 ) then return end
+            if ( ( data.updated >= GetGameTimeMilliseconds() - 250 ) and ( powerValue ~= 0 )  ) then return end
             data.updated = GetGameTimeMilliseconds()
 
         -- Otherwise bail out
@@ -209,7 +211,7 @@ end
             data    = FTC.Target
 
         -- Group
-        elseif ( string.sub(unitTag, 0, 5) == "group" and ( FTC.Vars.GroupFrames or FTC.Vars.RaidFrames ) ) then
+        elseif ( string.sub(unitTag, 0, 5) == "group" and ( ( GetGroupSize() <= 4 and FTC.Vars.GroupFrames ) or FTC.Vars.RaidFrames ) ) then
             local i = GetGroupIndexByUnitTag(unitTag)
             data    = FTC.Group[i]
 
@@ -254,6 +256,7 @@ end
         -- Update the database object
         FTC.Player.ultimate = { ["current"] = powerValue , ["max"] = powerEffectiveMax , ["pct"] = pct }
     end
+
 
 --[[----------------------------------------------------------
     HELPER FUNCTIONS

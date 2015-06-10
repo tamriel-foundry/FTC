@@ -384,78 +384,84 @@
             enabled = FTC.Vars.TargetFrame
 
         -- Group Frames
-        elseif ( string.sub(unitTag, 0, 5) == "group" and ( FTC.Vars.GroupFrames or FTC.Vars.RaidFrames ) ) then
+        elseif ( string.sub(unitTag, 0, 5) == "group" ) then
 
             -- Get the group member
-            enabled = true
             local i = GetGroupIndexByUnitTag(unitTag)
 
-            -- Get the frame
+            -- Small group
             if ( GetGroupSize() <= 4 and FTC.Vars.GroupFrames ) then 
-                frame = _G["FTC_GroupFrame" .. i]
+                enabled = true
+                frame   = _G["FTC_GroupFrame" .. i]
+
+            -- Raid group
             elseif ( FTC.Vars.RaidFrames ) then 
-                frame = _G["FTC_RaidFrame" .. i]  
-                round = true
-                max   = false
-            end
-
-            -- Run fade animation
-            FTC.Frames:Fade(unitTag,frame) 
-        end
-
-        -- Update bar labels
-        local label = ( powerValue > 100000 or round ) and FTC.DisplayNumber( powerValue/1000 , 1 ) .. "k" or FTC.DisplayNumber( powerValue )
-        local pctLabel = (pct*100) .. "%"
+                enabled = true
+                frame   = _G["FTC_RaidFrame" .. i]  
+                round   = true
+                max     = false
             
-        -- Maybe add shielding
-        if ( attribute == "health" ) then
-            local shield = shieldValue or 0
-            local slabel = ( round ) and FTC.DisplayNumber(shield/1000,1).."k" or FTC.DisplayNumber(shield)
-            label = ( shield > 0 ) and label .. " [" .. slabel .. "]" or label
+            -- Otherwise bail
+            else return end
         end
 
-        -- Maybe add maximum
-        if ( max ) then 
-            local maxHealth = ( round ) and FTC.DisplayNumber(powerMax/1000,1).."k" or FTC.DisplayNumber(powerMax)
-            label = label .. "  /  " .. maxHealth
-        end
+        -- Compute data
+        if ( enabled or ( FTC.Vars.LabelFrames and default ~= nil ) ) then
 
-        -- Override for dead things
-        if ( attribute == "health" and ( IsUnitDead(unitTag) or powerValue == 0 ) ) then 
-            label = GetString(FTC_Dead)
-            pct = 0
-            pctLabel = ""
-        end
-
-        -- Override for offline members
-        if ( not IsUnitOnline(unitTag) ) then 
-            label = GetString(FTC_Offline)
-            pct = 0
-            pctLabel = ""
-        end
-
-        -- Update custom frames
-        if ( enabled ) then
-
-            -- Update bar width
-            local control = frame[attribute]
-            control.bar:SetWidth( pct * (control:GetWidth()-4) )
-
-            -- Set the label
-            control.current:SetText(label)
-            control.pct:SetText(pctLabel)
-
-            -- Maybe prompt for execute
-            if ( unitTag == 'reticleover' ) then
-                frame.execute:SetHidden( not ( pct < FTC.Vars.ExecuteThreshold/100 ) )
-                if ( ( not IsUnitDead(unitTag) ) and ( pct < FTC.Vars.ExecuteThreshold/100 ) and ( FTC.Target.health.pct > FTC.Vars.ExecuteThreshold/100 ) ) then FTC.Frames:Execute() end
+            -- Update bar labels
+            local label = ( powerValue > 100000 or round ) and FTC.DisplayNumber( powerValue/1000 , 1 ) .. "k" or FTC.DisplayNumber( powerValue )
+            local pctLabel = (pct*100) .. "%"
+                
+            -- Maybe add shielding
+            if ( attribute == "health" ) then
+                local shield = shieldValue or 0
+                local slabel = ( round ) and FTC.DisplayNumber(shield/1000,1).."k" or FTC.DisplayNumber(shield)
+                label = ( shield > 0 ) and label .. " [" .. slabel .. "]" or label
             end
-        end
 
-        -- Update default frames
-        if ( FTC.Vars.LabelFrames and default ~= nil ) then
-            local defLabel = ( pctLabel ~= "" ) and label .. "  (" .. pctLabel .. ")" or label
-            default:SetText(defLabel)
+            -- Maybe add maximum
+            if ( max ) then 
+                local maxHealth = ( round ) and FTC.DisplayNumber(powerMax/1000,1).."k" or FTC.DisplayNumber(powerMax)
+                label = label .. "  /  " .. maxHealth
+            end
+
+            -- Override for dead things
+            if ( attribute == "health" and ( IsUnitDead(unitTag) or powerValue == 0 ) ) then 
+                label = GetString(FTC_Dead)
+                pct = 0
+                pctLabel = ""
+            end
+
+            -- Override for offline members
+            if ( not IsUnitOnline(unitTag) ) then 
+                label = GetString(FTC_Offline)
+                pct = 0
+                pctLabel = ""
+            end
+
+            -- Update custom frames
+            if ( enabled ) then
+
+                -- Update bar width
+                local control = frame[attribute]
+                control.bar:SetWidth( pct * (control:GetWidth()-4) )
+
+                -- Set the label
+                control.current:SetText(label)
+                control.pct:SetText(pctLabel)
+
+                -- Maybe prompt for execute
+                if ( unitTag == 'reticleover' ) then
+                    frame.execute:SetHidden( not ( pct < FTC.Vars.ExecuteThreshold/100 ) )
+                    if ( ( not IsUnitDead(unitTag) ) and ( pct < FTC.Vars.ExecuteThreshold/100 ) and ( FTC.Target.health.pct > FTC.Vars.ExecuteThreshold/100 ) ) then FTC.Frames:Execute() end
+                end
+            end
+
+            -- Update default frames
+            if ( FTC.Vars.LabelFrames and default ~= nil ) then
+                local defLabel = ( pctLabel ~= "" ) and label .. "  (" .. pctLabel .. ")" or label
+                default:SetText(defLabel)
+            end
         end
     end
 
@@ -487,29 +493,28 @@
         elseif ( string.sub(unitTag, 0, 5) == "group" and ( FTC.Vars.GroupFrames or FTC.Vars.RaidFrames ) ) then
 
             -- Get the group member
-            enabled = true
             local i = GetGroupIndexByUnitTag(unitTag)
 
-            -- Get the frame
-            if ( GetGroupSize() <= 4 and FTC.Vars.GroupFrames ) then frame = _G["FTC_GroupFrame" .. i]
+            -- Small group
+            if ( GetGroupSize() <= 4 and FTC.Vars.GroupFrames ) then 
+                enabled = true
+                frame   = _G["FTC_GroupFrame" .. i]
+
+            -- Raid group
             elseif ( FTC.Vars.RaidFrames ) then 
-                frame = _G["FTC_RaidFrame" .. i]
-                round = true  
-            end
+                enabled = true
+                frame   = _G["FTC_RaidFrame" .. i]
+                round   = true  
 
-            -- Run fade animation
-            FTC.Frames:Fade(unitTag,frame) 
-
-        -- Otherwise bail out
-        else return end
+            -- Otherwise bail out
+            else return end
+        end
         
         -- Update custom frames
         if ( enabled ) then 
-            if ( shieldValue > 0 ) then
-                frame.shield:SetWidth( math.min(shieldPct,1) * frame.health:GetWidth())
-                frame.shield.bar:SetWidth(frame.shield:GetWidth()-4)
-                frame.shield:SetHidden(false)   
-            else frame.shield:SetHidden(true) end
+            frame.shield:SetWidth( math.min(shieldPct,1) * frame.health:GetWidth())
+            frame.shield.bar:SetWidth(frame.shield:GetWidth()-4)
+            frame.shield:SetHidden( shieldValue <= 0 )   
         end
 
         -- Refresh health display

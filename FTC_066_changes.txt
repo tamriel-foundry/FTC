@@ -1,0 +1,11 @@
+
+FTC 0.66 Changes
+
+
+UNIT FRAMES
+	Fix UI error with group member shields if small group frames were enabled, large group frames were disabled, and the player was in a group larger than 4 members.
+	Continue improving efficiency of unit frame updating to hopefully resolve some performance issues.
+
+
+DAMAGE STATS
+	Change the default setting for sharing group DPS to disabled.
