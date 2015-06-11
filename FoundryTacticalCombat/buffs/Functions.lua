@@ -83,13 +83,10 @@
      ]]--
     function FTC.Buffs:SetupActionBar()
 
-        -- Store the original action button SetState function
-        FTC.Buffs.SetStateOrig = ActionButton3Button.SetState
-
         -- Replace the SetState method for each action button with my custom function
         for i = 3 , 8 do
             local button    = _G["ActionButton"..i.."Button"]
-            button.SetState = FTC.Buffs.SetStateCustom
+            ZO_PreHook( button , "SetState", function( self ) FTC.Buffs:SetStateHook( self ) end)
         end
     end
 
@@ -99,13 +96,11 @@
      * Called by FTC.Buffs:SetupActionBar()
      * --------------------------------
      ]]--
-    function FTC.Buffs.SetStateCustom( self , state , locked )
-
-        -- Get the original function return
-        local retval = FTC.Buffs.SetStateOrig( self , state , locked )
+    function FTC.Buffs:SetStateHook( button )
 
         -- Get the pressed slot
-        local slot = self.slotNum
+        local slot = button.slotNum
+        local state = button:GetState()
 
         -- Bail if the slot is unused
         if ( not IsSlotUsed(slot) ) then return retval end
@@ -116,14 +111,11 @@
         -- Bail if the ability is unrecognized
         if ( ability == nil ) then return retval end
 
-        -- The button is being depressed
-        if ( state == BSTATE_PRESSED ) then
-
-            -- Clear any pending ground target
-            if ( FTC.Buffs.pendingGT ~= nil and FTC.Buffs.pendingGT.name == ability.name ) then FTC.Buffs.pendingGT = nil end
+        -- Bail if there are no effects, and no duration
+        if ( ability.effects == nil and ability.dur == nil ) then return end
 
         -- The button is being released
-        elseif ( state == BSTATE_NORMAL ) then
+        if ( state == BSTATE_PRESSED ) then
 
             -- Get the time
             local time = GetGameTimeMilliseconds()

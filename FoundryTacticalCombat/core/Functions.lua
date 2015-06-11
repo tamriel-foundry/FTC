@@ -50,29 +50,33 @@
 	 ]]--  
 	function FTC.Welcome() 
 
-		-- Only show welcome message for English clients
-		if ( FTC.language ~= "en" ) then return end
-
         -- Show welcome message
         if ( FTC.Vars.welcomed ~= FTC.version ) then
 
-			-- Add welcome message content
-			FTC.inWelcome = true
-			FTC.UI:Welcome()
+			-- Only show welcome message for English clients
+			if ( FTC.language == "en" ) then
 
-            local buffer  = FTC_Welcome:GetNamedChild("Buffer")
-            local slider  = FTC_Welcome:GetNamedChild("Slider")
+				-- Add welcome message content
+				FTC.inWelcome = true
+				FTC.UI:Welcome()
 
-            -- Set the welcome position
-            buffer:SetScrollPosition(26)
-            slider:SetValue(buffer:GetNumHistoryLines() - 26)
-            slider:SetHidden(false)
-            welcome:SetHidden(false)
-            FTC_UI:SetAlpha(0)
+	            local buffer  = FTC_Welcome:GetNamedChild("Buffer")
+	            local slider  = FTC_Welcome:GetNamedChild("Slider")
+
+	            -- Set the welcome position
+	            buffer:SetScrollPosition(26)
+	            slider:SetValue(buffer:GetNumHistoryLines() - 26)
+	            slider:SetHidden(false)
+	            welcome:SetHidden(false)
+	            FTC_UI:SetAlpha(0)
+	        end
+
+	        -- Maybe reset certain saved variables
+	        FTC.Menu:Reset("Stats")
 
             -- Register that the user has been welcomed
             FTC.Vars.welcomed = FTC.version
-        
+    
         -- Do not show
         else
         	welcome:SetHidden(true)

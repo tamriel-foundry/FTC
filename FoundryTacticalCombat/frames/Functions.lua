@@ -25,6 +25,7 @@
         ["FTC_TargetFrame"]         = {TOPLEFT,CENTER,250,180},
         ["ExecuteThreshold"]        = 25,
 
+        -- Shared Settings
         ["FrameFontSize"]           = 18,
         ["FrameHealthColor"]        = {133/255,018/255,013/255},
         ["FrameMagickaColor"]       = {064/255,064/255,128/255},
@@ -236,7 +237,6 @@
         else
             FTC_GroupFrame:SetHidden(true) 
             FTC_RaidFrame:SetHidden(true)
-            ZO_UnitFramesGroups:SetHidden(false)
             return 
         end
 
@@ -258,6 +258,7 @@
                 -- Configure the nameplate
                 local name      = zo_strformat("<<!aC:1>>",GetUnitName(unitTag))
                 local level     = GetUnitVeteranRank(unitTag) > 0 and "v" .. GetUnitVeteranRank(unitTag) or GetUnitLevel(unitTag)
+                local classIcon = GetClassIcon(GetUnitClassId(unitTag)) or nil
 
                 -- Get player roles
                 local isDps , isHealer , isTank = GetGroupMemberRoles(unitTag)
@@ -277,12 +278,13 @@
                 local label = ( context == "Group" ) and name .. " (" .. level .. ")" or name
                 frame.plate.name:SetText(label)
 
-                -- Populate leader icon
-                frame.plate.icon:SetWidth(IsUnitGroupLeader(unitTag) and 24 or 0)
+                -- Populate raid icon
+                if ( context == "Raid" ) then 
+                    frame.plate.icon:SetTexture(IsUnitGroupLeader(unitTag) and "/esoui/art/lfg/lfg_leader_icon.dds" or classIcon )
 
-                -- Maybe populate class icon
-                if ( context == "Group" ) then
-                    local classIcon = GetClassIcon(GetUnitClassId(unitTag)) or nil
+                -- Populate group icons
+                elseif ( context == "Group" ) then
+                    frame.plate.icon:SetWidth(IsUnitGroupLeader(unitTag) and 24 or 0)
                     frame.plate.class:SetTexture(classIcon)
                     frame.plate.class:SetHidden(classIcon==nil)
                 end
@@ -752,7 +754,6 @@
             -- Update attributes out of combat
             for i = 1 , GetGroupSize() do
                 if ( not IsUnitInCombat('player') ) then FTC.Player:UpdateAttribute( GetGroupUnitTagByIndex(i),POWERTYPE_HEALTH,nil,nil,nil  ) end
-                FTC.Frames:Fade('group'..i,_G["FTC_"..context.."Frame"..i])
                 FTC.Frames:GroupRange( 'group'..i , nil )
             end
         end

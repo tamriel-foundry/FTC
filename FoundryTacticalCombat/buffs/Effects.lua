@@ -280,8 +280,8 @@ function FTC.Buffs:RegisterEffects()
         [40158] = { 0,    4,    0,    true },       -- Dawnbreaker of Smiting
         
         -- Mages Guild
-        [8108]  = { 0,    15.6, 0,    true },       -- Entropy
-        [40457] = { 0,    15.6, 0,    true },       -- Degeneration
+        [8108]  = { 14.4, 14.4, 0,    true },       -- Entropy
+        [40457] = { 14.4, 14.4, 0,    true },       -- Degeneration
         [40452] = { 14.4, 14.4, 0,    true },       -- Structured Entropy
         [31632] = { 0,    30,   0,    false },      -- Fire Rune
         [40470] = { 0,    30,   0,    false },      -- Volcanic Rune

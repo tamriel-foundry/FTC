@@ -329,7 +329,7 @@
 		local newAlert = {
 			["name"]	= "combat" .. ( inCombat and "In" or "Out" ),
 			["label"]	= ( inCombat ) and GetString(FTC_CombatIn) or GetString(FTC_CombatOut),
-			["color"]	= {0.6,0.4,0},
+			["color"]	= {0.8,0.6,0},
 			["size"]	= FTC.Vars.SCTFontSize,
 			["buffer"]	= 1000,
 		}

@@ -128,7 +128,26 @@ function FTC.Menu:Controls()
             tooltip     = GetString(FTC_Menu_FTargetFDesc),
             getFunc     = function() return FTC.Vars.TargetFrame end, 
             setFunc     = function(value) FTC.Menu:Update( 'TargetFrame' , value ) end, 
-            default     = FTC.Defaults.TargetFrame
+            default     = FTC.Defaults.TargetFrame,
+        },
+
+        -- Use Small Group Frame?
+        {   type        = "checkbox", 
+            name        = GetString(FTC_Menu_FGroup),
+            tooltip     = GetString(FTC_Menu_FGroupDesc),
+            getFunc     = function() return FTC.Vars.GroupFrames end, 
+            setFunc     = function(value) FTC.Menu:Update( 'GroupFrames' , value , true ) end,
+            default     = FTC.Defaults.GroupFrames,
+            warning     = GetString(FTC_Menu_Reload),
+        },
+        -- Use Raid Frame?
+        {   type        = "checkbox", 
+            name        = GetString(FTC_Menu_FRaid),
+            tooltip     = GetString(FTC_Menu_FRaidDesc),
+            getFunc     = function() return FTC.Vars.RaidFrames end, 
+            setFunc     = function(value) FTC.Menu:Update( 'RaidFrames' , value , true ) end,
+            default     = FTC.Defaults.RaidFrames,
+            warning     = GetString(FTC_Menu_Reload),
         },
 
         -- Keep Default Target Frame?
@@ -304,15 +323,6 @@ function FTC.Menu:Controls()
             default     = FTC.Vars.FrameShieldColor,
         },
 
-        -- Use Small Group Frame?
-        {   type        = "checkbox", 
-            name        = GetString(FTC_Menu_FGroup),
-            tooltip     = GetString(FTC_Menu_FGroupDesc),
-            getFunc     = function() return FTC.Vars.GroupFrames end, 
-            setFunc     = function(value) FTC.Menu:UpdateFrames( 'GroupFrames' , value ) end,
-            default     = FTC.Defaults.GroupFrames
-        },
-
         -- Group Frame Width
         {   type        = "slider", 
             name        = GetString(FTC_Menu_FGWidth),
@@ -394,15 +404,6 @@ function FTC.Menu:Controls()
             default     = FTC.Vars.FrameDamageColor,
         },
 
-        -- Use Raid Frame?
-        {   type        = "checkbox", 
-            name        = GetString(FTC_Menu_FRaid),
-            tooltip     = GetString(FTC_Menu_FRaidDesc),
-            getFunc     = function() return FTC.Vars.RaidFrames end, 
-            setFunc     = function(value) FTC.Menu:UpdateFrames( 'RaidFrames' , value ) end,
-            default     = FTC.Defaults.RaidFrames
-        },
-
         -- Raid Column Size
         {   type        = "dropdown", 
             name        = GetString(FTC_Menu_FRaidS),
@@ -429,7 +430,7 @@ function FTC.Menu:Controls()
         {   type        = "slider", 
             name        = GetString(FTC_Menu_FRHeight),
             tooltip     = GetString(FTC_Menu_FRHeightDesc),
-            min         = 30, 
+            min         = 40, 
             max         = 60, 
             step        = 10, 
             getFunc     = function() return FTC.Vars.RaidHeight end, 

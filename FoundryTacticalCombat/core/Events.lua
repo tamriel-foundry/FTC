@@ -304,6 +304,10 @@
         if ( FTC.init.Frames ) then 
             if ( FTC.Vars.PlayerFrame ) then FTC.Frames:Fade('player',FTC_PlayerFrame) end
             if ( FTC.Vars.TargetFrame ) then FTC.Frames:Fade('player',FTC_TargetFrame) end
+            if ( IsUnitGrouped('player') ) then 
+                if ( FTC.Vars.GroupFrames and GetGroupSize() <= 4 ) then FTC.Frames:Fade('player',FTC_GroupFrame)
+                elseif ( FTC.Vars.RaidFrames ) then FTC.Frames:Fade('player',FTC_RaidFrame) end
+            end
         end
 
         -- Trigger an alert

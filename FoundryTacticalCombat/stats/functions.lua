@@ -561,8 +561,8 @@
 		local time  = math.max( ( FTC.Stats.endTime - FTC.Stats.startTime ) / 1000 , 1 ) 
 		local dps 	= FTC.Stats.damage  / time
 
-		-- Don't ping fights less than 15 seconds
-		if ( time < 15 ) then return end
+		-- Don't ping fights less than 10 seconds
+		if ( time < 10 ) then return end
 
 		-- Compute map ping offsets
 		local timeCoord 	= time/10000
@@ -594,7 +594,7 @@
 		local damage	= dps * time
 
 		-- Only accept pings within a reasonable range
-		if ( dps > 100000 or ( time < 15 ) or ( time > 1200 ) ) then return end
+		if ( ( dps < 0 or dps > 100000 ) or ( time < 10 or time > 1200 ) ) then return end
 
 		-- Construct object
 		local data = {
