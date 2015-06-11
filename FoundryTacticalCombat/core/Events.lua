@@ -99,6 +99,13 @@
             FTC.Log:Print( GetString(FTC_LongInfo) , {1,0.8,0} )
         end
 
+        -- Reset Frames
+        if ( FTC.init.Frames ) then 
+            FTC.Frames:SetupPlayer()
+            FTC.Frames:SetupTarget()
+            FTC.Frames:SetupGroup() 
+        end
+
         -- Show welcome message
         FTC.Welcome()
     end
