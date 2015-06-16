@@ -220,6 +220,9 @@
     FTC.Frames.groupUpdate = true
     function FTC.Frames:SetupGroup()
 
+        -- Update data
+        FTC.Group.members = GetGroupSize()
+
         -- Using group frame
         local context   = nil
         if ( IsUnitGrouped('player') and GetGroupSize() <= 4 and FTC.Vars.GroupFrames ) then 
@@ -281,6 +284,7 @@
                 -- Populate raid icon
                 if ( context == "Raid" ) then 
                     frame.plate.icon:SetTexture(IsUnitGroupLeader(unitTag) and "/esoui/art/lfg/lfg_leader_icon.dds" or classIcon )
+                    frame.plate.icon:SetHidden(classIcon==nil)
 
                 -- Populate group icons
                 elseif ( context == "Group" ) then
@@ -349,7 +353,7 @@
         local color = ( FTC.Vars.ColorRoles and role ~= nil ) and FTC.Vars["Frame"..role.."Color"] or FTC.Vars.FrameHealthColor
 
         -- Darken the color of the bar
-        local newColor  = inRange and color or { color[1]/2 , color[2]/2 , color[3]/2 }
+        local newColor  = inRange and color or { color[1]/3 , color[2]/3 , color[3]/3 }
         frame.health.bar:SetColor(unpack(newColor))
     end
 
@@ -753,7 +757,7 @@
 
             -- Update attributes out of combat
             for i = 1 , GetGroupSize() do
-                if ( not IsUnitInCombat('player') ) then FTC.Player:UpdateAttribute( GetGroupUnitTagByIndex(i),POWERTYPE_HEALTH,nil,nil,nil  ) end
+                if ( not IsUnitInCombat('player') ) then FTC.Player:UpdateAttribute( GetGroupUnitTagByIndex(i),POWERTYPE_HEALTH,nil,nil,nil ) end
                 FTC.Frames:GroupRange( 'group'..i , nil )
             end
         end

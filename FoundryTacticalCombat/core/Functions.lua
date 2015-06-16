@@ -64,8 +64,8 @@
 	            local slider  = FTC_Welcome:GetNamedChild("Slider")
 
 	            -- Set the welcome position
-	            buffer:SetScrollPosition(26)
-	            slider:SetValue(buffer:GetNumHistoryLines() - 26)
+	            buffer:SetScrollPosition(3)
+	            slider:SetValue(buffer:GetNumHistoryLines() - 3)
 	            slider:SetHidden(false)
 	            welcome:SetHidden(false)
 	            FTC_UI:SetAlpha(0)

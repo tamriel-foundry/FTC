@@ -23,7 +23,7 @@
 		welcome:ClearAnchors()
 		welcome:SetAnchor(TOP,GuiRoot,TOP,0,100)
 		welcome:SetMouseEnabled(false)
-		welcome:SetHidden(true)
+		welcome:SetHidden(false)
 
 		-- Create close button
 		welcome.close = FTC.UI:Button( "FTC_WelcomeClose", welcome, {48,48}, {TOPRIGHT,TOPRIGHT,0,6}, BSTATE_NORMAL, nil, nil, nil, nil, nil, false )
@@ -51,7 +51,7 @@
 		local welcome = _G["FTC_Welcome"]
 		welcome:AddText("Hello ESO friends, thank you for downloading the newest version of Foundry Tactical Combat, a combat enhancement addon designed to give players access to relevant combat data in an easy to process framework which allows them to respond quickly and effectively to evolving combat situations.")
 		welcome:AddText("|c|r")
-		welcome:AddText("It has been a while since there was a major update to this addon, and a number of things have changed. Please take a few minutes to read over the list of major changes. This message will not be displayed again once you close it unless you completely reset FTC settings in the options menu.")
+		welcome:AddText("You have just installed |cCC6600version " .. FTC.version .. "|r. Please take a few minutes to read over the list of addon changes. This message will not be displayed again once you close it unless you completely reset FTC settings in the options menu.")
 		welcome:AddText("|c|r")
 		welcome:AddText("To get straight into the action you can access the addon's configuration options by navigating to |cCC6600Settings -> Addon Settings -> FTC|r or by typing |cCC6600/ftc|r in chat. From this menu you can enable or disable FTC components, customize appearance and other component settings, and reposition UI elements added by the FTC addon.")
 		welcome:AddText("|c|r")
@@ -59,64 +59,37 @@
 		welcome:AddText("|c|r")       
 
 		-- Add changelog
-		welcome:AddText("|cCC6600Version 0.62 Updates|r")
+		welcome:AddText("|cCC6600Version " .. FTC.version .. " Updates|r")
 
 		-- Register changes
 		local Changes = {
 			
 			[1] = {
-				"General Changes",
-				"Thorough aesthetic overhaul of the entire addon.",
-				"Complete performance sweep of every FTC component to ensure efficient memory usage.",
-				"Complete French and German localization of FTC components thanks to the excellent work of Einherjar, Mooneh, TehMagnus, and Rial.",
-				"Significantly improved customization of FTC components with a far more flexible addon settings menu.",
-				"Switched to use account-wide saved variables; your FTC configurations will now apply to all the characters on your ESO account automatically.",
+				"Unit Frames",
+				"Remove buffer that was added in 0.65 on group frame updating to ensure data accuracy. Approach improving efficiency of unit frame updating from a different angle to continue addressing potential performance issues.",
+				"Remove raid frame individual member combat fading to improve raid frame performance.",
+				"Force a /reloadui when group or raid frames are enabled or disabled to avoid collisions with other unit frames addons.",			
+				"Fix UI error with group member shields if small group frames were enabled, large group frames were disabled, and the player was in a group larger than 4 members.",
+				"Add player class icons to raid frames. Group leaders are still displayed as crowns, rather than as a specific class.",
+				"Group and raid frames will now correctly process group changes that occur while the player is in a load screen.",
+				"Made the color difference between in-range and not in-range group members more significant.",
 			},
 
 			[2] = {
-				"Unit Frames",
-				"Added extensive aesthetic options for modifying the size, color, font, and style of unit frames.",
-				"Added visualizations for healing and damage-over-time effects.",
-				"Added configurable indicator on the target frame denoting execute range.",
-				"Improved detection rules for damage shielding to provide as accurate as possible an assessment of your character's defenses. Certain fundamental bugs in the ESO API will still cause shielding to be incorrectly reported.",
-				"Introduce optional small group frame for groups of four or fewer members.",
-				"Introduce optional raid frame for large groups, this raid frame can also be used for small groups by disabling the small group frame but keeping raid frames enabled.",
+				"Buff Tracking",
+				"Add Major Sorcery buff tracking to Entropy and Degeneration as intended.",
+				"Change ability bar keypress tracking to use zo_prehook method.",
 			},
 
 			[3] = {
-				"Buff Tracking",
-				"Added multiple buff format options for each buffs container allowing fine-tuning of buff tracking display.",
-				"Added options for rendering buffs in list format, displaying buff names in addition to tiled icons.",
-				"New customization options for modifying the apperance of tracked buffs.",
-				"Include many new buffs and debuffs which were not previously tracked by the addon.",
+				"Scrolling Combat Text",
+				"Brightened font color for entered combat and left combat alerts.",
 			},
 
 			[4] = {
-				"Combat Log",
-				"Introduce new FTC Combat Log component. This customizable window will retain a printed record of damage, healing, and other significant combat events.",
-				"Allow FTC Combat Log to alternate with ESO chat or be detached independently.",
-				"Add optional keybinding for quickly toggling display of the FTC Combat Log.",
-			},
-
-			[5] = {
-				"Scrolling Combat Text",
-				"Significantly improve the aesthetics and efficiency of the scrolling combat text (SCT) component.",
-				"Add optional icons for most of the recognized sources of damage in the game.",
-				"Add many customization options for configuring the appearance of scrolling combat text.",
-				"Added a number of new SCT alerts for important combat conditions like crowd control effects and DoT cleansing.",
-			},
-			
-			[6] = {
-				"Combat Stats",
-				"Introduce separate combat statistics component which tracks and details your character's performance in combat.",
-				"Vastly improve the information content in the FTC Damage Report, breaking down combat events by target and providing insight into key abilities.",
-				"Enable linking to chat for specific targets instead of the entire encounter.",
-			},
-
-			[7] = {
-				"Advanced Hotbar",
-				"Improve accuracy of current consumable (potion) cooldown timer.",
-				"Add a visual glow behind your Ultimate ability indicating when you are currently gaining Ultimate through combat.",
+				"Damage Stats",
+				"Change the default setting for sharing group DPS to disabled. Your saved variable setting for this will be forced to 'off' when you update. If you want to use this feature you must go back into settings and re-enable it.",
+				"Add additional checks to DPS sharing to filter out bad data. Damage will no longer be shared for fights shorter than 10 seconds.",
 			},
 		}
 

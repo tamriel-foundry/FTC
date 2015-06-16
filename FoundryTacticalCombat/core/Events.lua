@@ -91,7 +91,6 @@
      * --------------------------------
      ]]--
     function FTC:OnLoad()
-        EVENT_MANAGER:UnregisterForEvent( "FTC" , EVENT_PLAYER_ACTIVATED )
 
         -- Setup Combat Log
         if ( FTC.init.Log ) then
@@ -99,15 +98,20 @@
             FTC.Log:Print( GetString(FTC_LongInfo) , {1,0.8,0} )
         end
 
-        -- Reset Frames
+        -- Show welcome message
+        FTC.Welcome()
+
+        -- Switch to recurring event
+        EVENT_MANAGER:UnregisterForEvent( "FTC" , EVENT_PLAYER_ACTIVATED )
+        EVENT_MANAGER:RegisterForEvent(   "FTC" , EVENT_PLAYER_ACTIVATED , FTC.OnActivated )
+    end
+    
+    function FTC.OnActivated()
         if ( FTC.init.Frames ) then 
             FTC.Frames:SetupPlayer()
             FTC.Frames:SetupTarget()
             FTC.Frames:SetupGroup() 
         end
-
-        -- Show welcome message
-        FTC.Welcome()
     end
 
     --[[ 

@@ -215,7 +215,7 @@ function FTC.Frames:Controls()
     health.pct      = FTC.UI:Label(     "FTC_RaidFrame"..i.."_HealthPct",  health,      {health:GetWidth()*1/3,member:GetHeight()/2},           {RIGHT,RIGHT,-8,10},            FTC.UI:Font(FTC.Vars.FrameFont2,FTC.Vars.RaidFontSize,true), nil, {2,1}, 'Pct%', false )
     member.health   = health
 
-    local shield    = FTC.UI:Backdrop(  "FTC_RaidFrame"..i.."_Shield",     health,      {member:GetWidth()/2,6},                                {BOTTOMLEFT,BOTTOMLEFT,0,0},    {FTC.Vars.FrameShieldColor[1]/5,FTC.Vars.FrameShieldColor[2]/5,FTC.Vars.FrameShieldColor[3]/5,1}, {0,0,0,1}, FTC.UI.Textures.grainy, true )   
+    local shield    = FTC.UI:Backdrop(  "FTC_RaidFrame"..i.."_Shield",     health,      {member:GetWidth()/2,8},                                {BOTTOMLEFT,BOTTOMLEFT,0,0},    {FTC.Vars.FrameShieldColor[1]/5,FTC.Vars.FrameShieldColor[2]/5,FTC.Vars.FrameShieldColor[3]/5,1}, {0,0,0,1}, FTC.UI.Textures.grainy, true )   
     shield.bar      = FTC.UI:Statusbar( "FTC_RaidFrame"..i.."_ShieldBar",  shield,      {shield:GetWidth()-4,shield:GetHeight()-1},             {TOPLEFT,TOPLEFT,2,1},          {FTC.Vars.FrameShieldColor[1],FTC.Vars.FrameShieldColor[2],FTC.Vars.FrameShieldColor[3],1}, FTC.UI.Textures.grainy, false )
     member.shield   = shield
     shield:SetDrawLayer(1)
