@@ -240,6 +240,7 @@
         else
             FTC_GroupFrame:SetHidden(true) 
             FTC_RaidFrame:SetHidden(true)
+            FTC.Frames.groupUpdate = true
             return 
         end
 

@@ -12,7 +12,6 @@
      * Called by FTC:Initialize()
      * --------------------------------
      ]]--
-   
     function FTC.Menu:Initialize()
 
         -- Configure the master panel
@@ -35,121 +34,128 @@
         -- Setup the menus
         LAM2:RegisterOptionControls( "FTC_Menu", FTC.Menu.options )
 
-        -- Register callback to detect when the menu is open
-        CALLBACK_MANAGER:RegisterCallback("LAM-RefreshPanel" , function(panel) FTC.Menu:Reposition(panel) end )
+        -- Menu Displayed
+        FTC_Menu:SetHandler( "OnEffectivelyShown", FTC.Menu.Reposition )
 
-        -- Register a callback to detect when the menu closes
-        FTC_Menu:SetHandler( "OnHide", function(panel) FTC.Menu:Reposition(panel) end)
+        -- Menu Hidden
+        FTC_Menu:SetHandler( "OnEffectivelyHidden", FTC.Menu.Restore )
+
+    end
+
+    function FTC.Menu:Test()
+        d("menu shown")
+
     end
 
     --[[ 
      * Reposition Elements During Menu
      * --------------------------------
      * Called by callback LAM-RefreshPanel
+     * --------------------------------
+     ]]--
+    function FTC.Menu:Reposition()
+        
+        -- Unit Frames Display
+        if ( FTC.init.Frames and FTC.Vars.PlayerFrame ) then 
+
+            -- Show the player frame
+            FTC_PlayerFrame:ClearAnchors()
+            FTC_PlayerFrame:SetAnchor(LEFT,FTC_Menu,RIGHT,50,0)
+            FTC_PlayerFrame:SetHidden(false)
+
+            -- Spoof a shield on the player frame
+            FTC.Player:UpdateShield( 'player', math.floor(FTC.Player.health.max*.75) ,  FTC.Player.health.max )
+        end
+
+        -- Buff Tracking Display
+        if ( FTC.init.Buffs ) then 
+
+            -- Move buffs
+            local offsetY = ( FTC.Vars.FrameHeight ~= nil ) and ( FTC.Vars.FrameHeight / 2 ) + 6 or 106
+            FTC_PlayerBuffs:ClearAnchors()
+            FTC_PlayerBuffs:SetAnchor(TOPLEFT,FTC_Menu,RIGHT,50,offsetY)
+            FTC_PlayerDebuffs:ClearAnchors()
+            FTC_PlayerDebuffs:SetAnchor(BOTTOMLEFT,FTC_Menu,RIGHT,50,-1 * offsetY)
+
+            -- Spoof player buffs
+            FTC.Menu.buffCounter = 1
+            EVENT_MANAGER:RegisterForUpdate( "FTC_MenuBuffs" , 100 , function() FTC.Menu:FakeBuffs() end )
+        end
+
+        -- Combat Text Display
+        if ( FTC.init.SCT ) then
+            FTC_SCTIn:ClearAnchors()
+            FTC_SCTIn:SetAnchor(RIGHT,FTC_UI,RIGHT,-100,-50)
+            EVENT_MANAGER:RegisterForUpdate( "FTC_MenuSCT" , 1000 , function() FTC.Menu:FakeSCT() end )
+        end
+
+        -- Combat Log Display
+        if ( FTC.init.Log ) then 
+            FTC_CombatLog:SetHidden(true) 
+        end
+
+        -- Show the UI layer
+        FTC.UI:SetHidden(false)
+        FTC.inMenu = true
+    end
+            
+
+    --[[ 
+     * Restore Elements Outside of Menu
+     * --------------------------------
+     * Called by callback LAM-RefreshPanel
      * Called by handler FTC_Menu:OnHide()
      * --------------------------------
      ]]--
-    function FTC.Menu:Reposition(panel)
-        
-        -- Bail if it's some other panel
-        if ( panel ~= FTC_Menu ) then return end
+    function FTC.Menu:Restore()
 
-        -- If the menu is shown, move some objects to the right side of the screen
-        if ( not panel:IsHidden() ) then
+        -- Unit Frames Display
+        if ( FTC.init.Frames and FTC.Vars.PlayerFrame ) then 
 
-            -- Unit Frames Display
-            if ( FTC.init.Frames and FTC.Vars.PlayerFrame ) then 
+            -- Reset the player frame
+            FTC_PlayerFrame:ClearAnchors()
+            local anchor = FTC.Vars.FTC_PlayerFrame
+            FTC_PlayerFrame:SetAnchor(anchor[1],FTC_UI,anchor[2],anchor[3],anchor[4])
 
-                -- Show the player frame
-                FTC_PlayerFrame:ClearAnchors()
-                FTC_PlayerFrame:SetAnchor(LEFT,FTC_Menu,RIGHT,50,0)
-                FTC_PlayerFrame:SetHidden(false)
-
-                -- Spoof a shield on the player frame
-                FTC.Player:UpdateShield( 'player', math.floor(FTC.Player.health.max*.75) ,  FTC.Player.health.max )
-            end
-
-            -- Buff Tracking Display
-            if ( FTC.init.Buffs ) then 
-
-                -- Move buffs
-                local offsetY = ( FTC.Vars.FrameHeight ~= nil ) and ( FTC.Vars.FrameHeight / 2 ) + 6 or 106
-                FTC_PlayerBuffs:ClearAnchors()
-                FTC_PlayerBuffs:SetAnchor(TOPLEFT,FTC_Menu,RIGHT,50,offsetY)
-                FTC_PlayerDebuffs:ClearAnchors()
-                FTC_PlayerDebuffs:SetAnchor(BOTTOMLEFT,FTC_Menu,RIGHT,50,-1 * offsetY)
-
-                -- Spoof player buffs
-                FTC.Menu.buffCounter = 1
-                EVENT_MANAGER:RegisterForUpdate( "FTC_MenuBuffs" , 100 , function() FTC.Menu:FakeBuffs() end )
-            end
-
-            -- Combat Text Display
-            if ( FTC.init.SCT ) then
-                FTC_SCTIn:ClearAnchors()
-                FTC_SCTIn:SetAnchor(RIGHT,FTC_UI,RIGHT,-100,-50)
-                EVENT_MANAGER:RegisterForUpdate( "FTC_MenuSCT" , 1000 , function() FTC.Menu:FakeSCT() end )
-            end
-
-            -- Combat Log Display
-            if ( FTC.init.Log ) then 
-                FTC_CombatLog:SetHidden(true) 
-            end
-
-            -- Show the UI layer
-            FTC.inMenu = true
-            FTC_UI:SetHidden(false)
-            
-        -- Otherwise, restore their positions
-        else
-
-            -- Unit Frames Display
-            if ( FTC.init.Frames and FTC.Vars.PlayerFrame ) then 
-
-                -- Reset the player frame
-                FTC_PlayerFrame:ClearAnchors()
-                local anchor = FTC.Vars.FTC_PlayerFrame
-                FTC_PlayerFrame:SetAnchor(anchor[1],FTC_UI,anchor[2],anchor[3],anchor[4])
-
-                -- Restore the correct shield
-                local value, maxValue = GetUnitAttributeVisualizerEffectInfo('player',ATTRIBUTE_VISUAL_POWER_SHIELDING,STAT_MITIGATION,ATTRIBUTE_HEALTH,POWERTYPE_HEALTH)
-                FTC.Player:UpdateShield( 'player', value or 0 , maxValue or 0)
-            end
-
-            -- Buff Tracking Display
-            if ( FTC.init.Buffs ) then 
-
-                -- Move buffs
-                FTC_PlayerBuffs:ClearAnchors()
-                local anchor = FTC.Vars.FTC_PlayerBuffs
-                FTC_PlayerBuffs:SetAnchor(anchor[1],FTC_UI,anchor[2],anchor[3],anchor[4])
-                FTC_PlayerDebuffs:ClearAnchors()
-                local anchor = FTC.Vars.FTC_PlayerDebuffs
-                FTC_PlayerDebuffs:SetAnchor(anchor[1],FTC_UI,anchor[2],anchor[3],anchor[4])
-
-                -- Empty Buffs
-                EVENT_MANAGER:UnregisterForUpdate( "FTC_MenuBuffs" )
-                FTC.Buffs.Player = {}
-                FTC.Buffs.Target = {}
-                FTC.Buffs:ReleaseUnusedBuffs()
-                FTC.Buffs:GetBuffs('player')
-            end
-
-            -- Combat Text Display
-            if ( FTC.init.SCT ) then
-                local anchor    = FTC.Vars.FTC_SCTIn
-                FTC_SCTIn:ClearAnchors()
-                FTC_SCTIn:SetAnchor(anchor[1],FTC_UI,anchor[2],anchor[3],anchor[4])
-                EVENT_MANAGER:UnregisterForUpdate( "FTC_MenuSCT" )
-            end
-
-            -- Combat Log Display
-            if ( FTC.init.Log and not FTC.Vars.AlternateChat ) then FTC_CombatLog:SetHidden( false ) end
-
-            -- Toggle visibility
-            FTC.inMenu = false
-            FTC:ToggleVisibility()
+            -- Restore the correct shield
+            local value, maxValue = GetUnitAttributeVisualizerEffectInfo('player',ATTRIBUTE_VISUAL_POWER_SHIELDING,STAT_MITIGATION,ATTRIBUTE_HEALTH,POWERTYPE_HEALTH)
+            FTC.Player:UpdateShield( 'player', value or 0 , maxValue or 0)
         end
+
+        -- Buff Tracking Display
+        if ( FTC.init.Buffs ) then 
+
+            -- Move buffs
+            FTC_PlayerBuffs:ClearAnchors()
+            local anchor = FTC.Vars.FTC_PlayerBuffs
+            FTC_PlayerBuffs:SetAnchor(anchor[1],FTC_UI,anchor[2],anchor[3],anchor[4])
+            FTC_PlayerDebuffs:ClearAnchors()
+            local anchor = FTC.Vars.FTC_PlayerDebuffs
+            FTC_PlayerDebuffs:SetAnchor(anchor[1],FTC_UI,anchor[2],anchor[3],anchor[4])
+
+            -- Empty Buffs
+            EVENT_MANAGER:UnregisterForUpdate( "FTC_MenuBuffs" )
+            FTC.Buffs.Player = {}
+            FTC.Buffs.Target = {}
+            FTC.Buffs:ReleaseUnusedBuffs()
+            FTC.Buffs:GetBuffs('player')
+        end
+
+        -- Combat Text Display
+        if ( FTC.init.SCT ) then
+            local anchor    = FTC.Vars.FTC_SCTIn
+            FTC_SCTIn:ClearAnchors()
+            FTC_SCTIn:SetAnchor(anchor[1],FTC_UI,anchor[2],anchor[3],anchor[4])
+            EVENT_MANAGER:UnregisterForUpdate( "FTC_MenuSCT" )
+        end
+
+        -- Combat Log Display
+        if ( FTC.init.Log and not FTC.Vars.AlternateChat ) then FTC_CombatLog:SetHidden( false ) end
+
+        -- Toggle visibility
+        FTC.UI:SetHidden( not LAMAddonSettingsWindow:IsHidden() )
+        FTC:ToggleVisibility()
+        FTC.inMenu = false
     end
 
     --[[ 
@@ -531,7 +537,15 @@
     function FTC.Menu:MoveFrames( move )
 
         -- Start by returning to the normal UI
-        if ( SCENE_MANAGER:IsInUIMode() and not WINDOW_MANAGER:IsSecureRenderModeEnabled() ) then SCENE_MANAGER:SetInUIMode(false) end
+        if ( SCENE_MANAGER:IsInUIMode() and not WINDOW_MANAGER:IsSecureRenderModeEnabled() ) then 
+            SCENE_MANAGER:SetInUIMode(false) 
+        end
+
+        -- Move elements back to their normal positions
+        if ( move ) then
+            FTC.inMenu = false
+            FTC.Menu:Restore()
+        end
         
         -- Unit Frames
         if ( FTC.init.Frames ) then
@@ -547,6 +561,7 @@
             -- If we are done moving, make sure frame visibility is correct
             if ( not move ) then 
                 FTC.Frames:SetupPlayer()
+                FTC_TargetFrame:SetHidden(true)
                 FTC.Frames:SetupGroup()
             end
         end
@@ -575,8 +590,13 @@
             end            
         end
 
+        -- Statistics
+        if ( FTC.init.Stats ) then
+            FTC_MiniMeter:SetMouseEnabled( move )
+        end
+
         -- Unlock the mouse
-        SetGameCameraUIMode(true)
+        SetGameCameraUIMode(move)
 
         -- Toggle the move status
         FTC.move = move

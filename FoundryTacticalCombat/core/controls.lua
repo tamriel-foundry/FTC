@@ -66,30 +66,19 @@
 			
 			[1] = {
 				"Unit Frames",
-				"Remove buffer that was added in 0.65 on group frame updating to ensure data accuracy. Approach improving efficiency of unit frame updating from a different angle to continue addressing potential performance issues.",
-				"Remove raid frame individual member combat fading to improve raid frame performance.",
-				"Force a /reloadui when group or raid frames are enabled or disabled to avoid collisions with other unit frames addons.",			
-				"Fix UI error with group member shields if small group frames were enabled, large group frames were disabled, and the player was in a group larger than 4 members.",
-				"Add player class icons to raid frames. Group leaders are still displayed as crowns, rather than as a specific class.",
-				"Group and raid frames will now correctly process group changes that occur while the player is in a load screen.",
-				"Made the color difference between in-range and not in-range group members more significant.",
+				"Fix bug when reforming groups that prevented FTC group and raid frames from being properly displayed.",
 			},
 
 			[2] = {
-				"Buff Tracking",
-				"Add Major Sorcery buff tracking to Entropy and Degeneration as intended.",
-				"Change ability bar keypress tracking to use zo_prehook method.",
+				"Damage Stats",
+				"Require FTC elements to be unlocked to reposition the mini DPS meter.",
 			},
 
 			[3] = {
-				"Scrolling Combat Text",
-				"Brightened font color for entered combat and left combat alerts.",
-			},
-
-			[4] = {
-				"Damage Stats",
-				"Change the default setting for sharing group DPS to disabled. Your saved variable setting for this will be forced to 'off' when you update. If you want to use this feature you must go back into settings and re-enable it.",
-				"Add additional checks to DPS sharing to filter out bad data. Damage will no longer be shared for fights shorter than 10 seconds.",
+				"Settings Menu",
+				"Updated to newest version of LibAddonMenu.",
+				"Fix bug with LibAddonMenu that caused certain menu-only elements to continue being displayed outside of the settings menu.",
+				"Improve the behavior of the interface for repositioning FTC elements.",
 			},
 		}
 

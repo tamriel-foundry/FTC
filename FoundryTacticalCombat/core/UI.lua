@@ -34,12 +34,12 @@
         FTC.UI:Controls()
 
         -- Reference the FTC_UI layer as a scene fragment
-        local fragment = ZO_HUDFadeSceneFragment:New(FTC_UI)
+        FTC.UI.fragment = ZO_HUDFadeSceneFragment:New(FTC_UI)
 
         -- Add the fragment to select scenes
-        SCENE_MANAGER:GetScene("hud"):AddFragment( fragment )
-        SCENE_MANAGER:GetScene("hudui"):AddFragment( fragment )
-        SCENE_MANAGER:GetScene("siegeBar"):AddFragment( fragment )
+        SCENE_MANAGER:GetScene("hud"):AddFragment( FTC.UI.fragment )
+        SCENE_MANAGER:GetScene("hudui"):AddFragment( FTC.UI.fragment )
+        SCENE_MANAGER:GetScene("siegeBar"):AddFragment( FTC.UI.fragment )
 
         -- Preload ability icons
         FTC:GetAbilityIcons()

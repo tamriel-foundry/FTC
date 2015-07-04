@@ -1,6 +1,6 @@
 ## Title: Foundry Tactical Combat
 ## Description: A combat enhancement addon designed to give players access to relevant combat data in an easy to process framework which allows them to respond quickly and effectively to evolving combat situations.
-## Version: 0.66
+## Version: 0.67
 ## APIVersion: 100011
 ## SavedVariables: FTC_VARS
 ## OptionalDependsOn: LibAddonMenu-2.0
@@ -41,6 +41,7 @@ FoundryTacticalCombat.lua
 bindings.xml
 
 lib/LibStub.lua
+
 lib/LAM/LibAddonMenu-2.0.lua
 lib/LAM/controls/panel.lua
 lib/LAM/controls/submenu.lua
@@ -49,11 +50,13 @@ lib/LAM/controls/checkbox.lua
 lib/LAM/controls/colorpicker.lua
 lib/LAM/controls/custom.lua
 lib/LAM/controls/description.lua
-lib/LAM/controls/dropdown.lua 
+lib/LAM/controls/dropdown.lua
 lib/LAM/controls/editbox.lua
 lib/LAM/controls/header.lua
 lib/LAM/controls/slider.lua
 lib/LAM/controls/texture.lua
+lib/LAM/controls/iconpicker.lua
+
 lib/LMW/LibMsgWin-1.0.lua
 
 core/functions.lua
