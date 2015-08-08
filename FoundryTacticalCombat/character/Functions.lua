@@ -35,10 +35,6 @@
         local value, maxValue   = GetUnitAttributeVisualizerEffectInfo('player',ATTRIBUTE_VISUAL_POWER_SHIELDING,STAT_MITIGATION,ATTRIBUTE_HEALTH,POWERTYPE_HEALTH)
         FTC.Player.shield       = { ["current"] = value or 0 , ["max"] = maxValue or 0 , ["pct"] = zo_roundToNearest((value or 0)/(maxValue or 0),0.01) }
 
-        -- Load action bar abilities
-        FTC.Player.Abilities    = {}
-        FTC.Player:GetActionBar()
-
         -- Load quickslot ability
         FTC.Player:GetQuickslot()
         local _ , _ , canPotion = GetSlotCooldownInfo(GetCurrentQuickslot())
@@ -298,57 +294,6 @@ end
         elseif ( classId == 2 ) then return "Sorcerer"
         elseif ( classId == 3 ) then return "Nightblade"
         elseif ( classId == 6 ) then return "Templar" end
-    end
-
-    --[[ 
-     * Get Current Action Bar Loadout
-     * --------------------------------
-     * Called by FTC.Player:Initialize()
-     * Called by FTC:OnSwapWeapons()
-     * Called by FTC:OnSlotUpdate()
-     * --------------------------------
-     ]]-- 
-    function FTC.Player:GetActionBar()
-
-        -- Get the current loadout
-        for i = 3, 8 do
-
-            -- Is the slot in use?
-            local slot = {}
-            if ( IsSlotUsed(i) ) then
-
-                -- Get the slotted ability ID
-                local ability_id    = GetSlotBoundId(i)
-
-                -- Get additional ability information
-                local name          = GetAbilityName(ability_id)
-                local cost, cType   = GetSlotAbilityCost(i)
-                local channeled, castTime, channelTime = GetAbilityCastInfo(ability_id)
-                local target        = GetAbilityTargetDescription(ability_id)
-
-                -- Populate the slot object
-                slot = {
-                    ["owner"]       = FTC.Player.name,
-                    ["slot"]        = i,
-                    ["id"]          = ability_id,
-                    ["name"]        = name,
-                    ["type"]        = cType,
-                    ["cost"]        = cost,
-                    ["cast"]        = castTime,
-                    ["chan"]        = channeled and channelTime or 0,
-                    ["dur"]         = GetAbilityDuration(ability_id),
-                    ["tex"]         = GetSlotTexture(i),
-                    ["ground"]      = target == GetAbilityTargetDescription(23182),
-                    ["area"]        = ( target == GetAbilityTargetDescription(23182) ) or ( target == GetAbilityTargetDescription(22784) ) or ( FTC.Buffs:IsTaunt(name) ) ,
-                    ["debuff"]      = ( ( target == GetAbilityTargetDescription(3493) ) or ( target == GetAbilityTargetDescription(20919) ) ),
-                    ["effects"]     = FTC.Buffs.Effects[name],
-                    ["pending"]     = ( FTC.Buffs.Effects[name] ~= nil ) and FTC.Buffs.Effects[name][4] or false
-                }
-            end
-
-            -- Save the slot
-            FTC.Player.Abilities[i] = slot
-        end
     end
 
     --[[ 

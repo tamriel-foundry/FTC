@@ -430,10 +430,10 @@
     function FTC.OnSlotUpdate( eventCode , slotNum )
 
         -- Fire callback
-        CALLBACK_MANAGER:FireCallbacks( "FTC_CostChanged" )
+        --CALLBACK_MANAGER:FireCallbacks( "FTC_CostChanged" )
         
         -- Update Action Bar if an ability was changed
-        if ( slotNum >= 3 and slotNum <= 8 ) then FTC.Player:GetActionBar() end
+        -- if ( slotNum >= 3 and slotNum <= 8 ) then FTC.Player:GetActionBar() end
     end
 
     --[[ 
@@ -443,7 +443,7 @@
      * --------------------------------
      ]]--
     function FTC:OnSwapWeapons( eventCode , isWeaponSwap )
-        FTC.Player:GetActionBar()
+        -- FTC.Player:GetActionBar()
     end
 
     --[[ 
@@ -511,10 +511,10 @@
      * Called by EVENT_EFFECT_CHANGED
      * --------------------------------
      ]]--
-    function FTC.OnEffectChanged( eventCode , changeType , effectSlot , effectName , unitTag , beginTime , endTime , stackCount , iconName , buffType , effectType , abilityType , statusEffectType )
-        
+    function FTC.OnEffectChanged( eventCode , changeType , effectSlot , effectName , unitTag , beginTime , endTime , stackCount , iconName , buffType , effectType , abilityType , statusEffectType , unitName , unitId , abilityId )
+                             
         -- Pass information to buffs component
-        if ( FTC.init.Buffs ) then FTC.Buffs:EffectChanged( changeType , unitTag , effectName , endTime , abilityType , iconName ) end
+        if ( FTC.init.Buffs ) then FTC.Buffs:EffectChanged( changeType , unitTag , unitName , unitId , effectType , effectName , abilityId , buffType , statusEffectType , beginTime , endTime , iconName ) end
     end
 
 --[[----------------------------------------------------------

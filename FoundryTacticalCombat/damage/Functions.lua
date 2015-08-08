@@ -88,9 +88,6 @@
             if ( FTC.init.Log ) then FTC.Log:CombatEvent(damage) end
             if ( FTC.init.SCT ) then FTC.SCT:Damage(damage) end
 
-            -- Modify Buffs on Damage
-            if ( FTC.init.Buffs and damageOut ) then FTC.Buffs:Damage(damage) end
-
             -- Statistics
             if ( FTC.init.Stats and damageOut ) then FTC.Stats:RegisterDamage(damage) end
 
@@ -112,9 +109,6 @@
             -- Log and SCT
             if ( FTC.init.Log ) then FTC.Log:CombatEvent(damage) end
             if ( FTC.init.SCT ) then FTC.SCT:Damage(damage) end
-
-            -- Modify Buffs on Damage
-            if ( FTC.init.Buffs and damageOut ) then FTC.Buffs:Damage(damage) end
 
             -- Statistics
             if ( FTC.init.Stats and damageOut ) then FTC.Stats:RegisterDamage(damage) end
@@ -155,9 +149,6 @@
             -- Log and SCT
             if ( FTC.init.Log ) then FTC.Log:CombatEvent(damage) end
             if ( FTC.init.SCT ) then FTC.SCT:Damage(damage) end
-
-            -- Modify Buffs on Damage
-            if ( FTC.init.Buffs and damageOut ) then FTC.Buffs:Damage(damage) end
 
             -- Statistics
             if ( FTC.init.Stats and sourceType == COMBAT_UNIT_TYPE_PLAYER ) then FTC.Stats:RegisterDamage(damage) end 

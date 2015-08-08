@@ -58,9 +58,6 @@
 
         -- Populate initial buffs
         FTC.Buffs:GetBuffs('player')
-
-        -- Setup action bar hooks
-        FTC.Buffs:SetupActionBar()
         
         -- Setup status flags
         FTC.Buffs.lastCast  = 0
@@ -72,81 +69,6 @@
         -- Activate updating
         EVENT_MANAGER:RegisterForUpdate( "FTC_PlayerBuffs"   , 100 , function() FTC.Buffs:Update('player') end )
         EVENT_MANAGER:RegisterForUpdate( "FTC_TargetDebuffs" , 100 , function() FTC.Buffs:Update('reticleover') end )
-    end
-
-    --[[ 
-     * Setup Action Bar to Report Casts
-     * --------------------------------
-     * Called by FTC.Buffs:Initialize()
-     * Credit goes to Spellbuilder for the clever idea!
-     * --------------------------------
-     ]]--
-    function FTC.Buffs:SetupActionBar()
-
-        -- Replace the SetState method for each action button with my custom function
-        for i = 3 , 8 do
-            local button    = _G["ActionButton"..i.."Button"]
-            ZO_PreHook( button , "SetState", function( self ) FTC.Buffs:SetStateHook( self ) end)
-        end
-    end
-
-    --[[ 
-     * Custom Action Button SetState Function
-     * --------------------------------
-     * Called by FTC.Buffs:SetupActionBar()
-     * --------------------------------
-     ]]--
-    function FTC.Buffs:SetStateHook( button )
-
-        -- Get the pressed slot
-        local slot = button.slotNum
-        local state = button:GetState()
-
-        -- Bail if the slot is unused
-        if ( not IsSlotUsed(slot) ) then return retval end
-
-        -- Get the used ability
-        local ability = FTC.Player.Abilities[slot]
-
-        -- Bail if the ability is unrecognized
-        if ( ability == nil ) then return retval end
-
-        -- Bail if there are no effects, and no duration
-        if ( ability.effects == nil and ability.dur == nil ) then return end
-
-        -- The button is being released
-        if ( state == BSTATE_PRESSED ) then
-
-            -- Get the time
-            local time = GetGameTimeMilliseconds()
-
-            -- Avoid skill failure and spamming (allow ground targets)
-            if ( FTC.Buffs:HasFailure(slot) or ( time < ( FTC.Buffs.lastCast or 0 ) + 500 and not ability.ground ) ) then return retval end
-
-            -- Send debuffs which require damage confirmation to the pending queue
-            if ( ability.effects ~= nil and ability.effects[4] == true ) then 
-                ability.owner       = GetUnitName('reticleover')
-                FTC.Buffs.pending   = ability
-
-            -- Put ground target abilities into the pending queue
-            elseif ( ability.ground ) then FTC.Buffs.pendingGT = ability
-
-            -- Register abilities with durations or custom effects
-            elseif ( ( ability.effects ~= nil ) or ( ability.dur > 0 ) ) then 
-                FTC.Buffs:NewEffect( ability ) 
-                FTC.Buffs.pending = nil
-                FTC.Buffs.pendingGT = nil
-            end
-            
-            -- Fire a callback to hook extensions
-            if ( not ability.ground ) then CALLBACK_MANAGER:FireCallbacks( "FTC_SpellCast" , ability ) end
-
-            -- Flag the last cast time  
-            FTC.Buffs.lastCast = time
-        end
-
-        -- Return the original function
-        return retval
     end
 
 --[[----------------------------------------------------------
@@ -180,9 +102,11 @@
         
             -- Get the buff information
             local buffName , timeStarted , timeEnding , buffSlot , stackCount , iconFilename , buffType , effectType , abilityType , statusEffectType , abilityId , canClickOff = GetUnitBuffInfo( unitTag , i )
-            
+
             -- Run the effect through a filter
             isValid, buffName, isType , iconFilename = FTC:FilterBuffInfo( unitTag , buffName , abilityType , iconFilename )
+            if ( timeEnding - timeStarted <= 2 ) then isValid = false end
+
             if ( isValid ) then 
 
                 -- Get the remaining duration
@@ -215,10 +139,16 @@
      * Called by FTC.OnEffectChanged()
      * --------------------------------
      ]]--
-    function FTC.Buffs:EffectChanged( changeType , unitTag , effectName , endTime , abilityType , iconName )
+    function FTC.Buffs:EffectChanged( changeType , unitTag , unitName , unitId , effectType , effectName , abilityId , buffType , statusEffectType , beginTime , endTime , iconName )
 
         -- Only take action for player and target
         if ( unitTag ~= "player" and unitTag ~= "reticleover" ) then return end
+
+        -- Filter out extremely short effects
+        if ( endTime - beginTime <= 2 ) then return end
+
+        -- Debugging
+        -- d( "[" .. abilityId .. "] " .. effectName .. " || [" .. unitTag .. "] " .. unitName .. " (" .. unitId .. ") || " .. ( endTime - beginTime ) .. "s || " .. buffType .. " - " .. effectType .. " - " .. statusEffectType  )
 
         -- Remove existing effects
         if ( changeType == 2 ) then
@@ -349,26 +279,6 @@
 
         -- Release any unused objects
         FTC.Buffs:ReleaseUnusedBuffs()
-    end
-
-    --[[ 
-     * Handle Buff Changes on Damage
-     * --------------------------------
-     * Called by FTC.Damage:New()
-     * --------------------------------
-     ]]--
-    function FTC.Buffs:Damage( damage ) 
-
-        -- Activate buffs and debuffs from the pending queue
-        local pending = FTC.Buffs.pending
-        if ( pending ~= nil and pending.name == damage.ability ) then 
-            FTC.Buffs:NewEffect( pending ) 
-            FTC.Buffs.pending = nil
-        end
-
-        -- Modify buffs that change on damage
-        FTC.Buffs:DamageEffect( damage.ability )
-
     end
 
      --[[ 

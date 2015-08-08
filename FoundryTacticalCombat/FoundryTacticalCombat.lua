@@ -17,7 +17,7 @@
 
     Author:   Atropos
     Email:    atropos@tamrielfoundry.com
-    Version:  0.67
+    Version:  0.68
     Updated:  6-4-2015
   ]]--
 
@@ -29,7 +29,7 @@
 FTC                     = {}
 FTC.name                = "FoundryTacticalCombat"
 FTC.tag                 = "FTC"
-FTC.version             = 0.67
+FTC.version             = 0.68
 FTC.settings            = 0.60
 FTC.language            = GetCVar("language.2")
 FTC.UI                  = WINDOW_MANAGER:CreateTopLevelWindow( "FTC_UI" )
@@ -73,9 +73,6 @@ function FTC.Initialize( eventCode, addOnName )
 
     -- Initialize UI Layer
     FTC.UI:Initialize()
-
-    -- Register custom effects
-    FTC.Buffs:RegisterEffects()
     
     -- Setup Character Management
     FTC.Player:Initialize()

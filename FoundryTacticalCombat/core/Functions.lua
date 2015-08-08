@@ -50,6 +50,9 @@
 	 ]]--  
 	function FTC.Welcome() 
 
+		-- Temporarily prevent this from displaying
+		FTC.Vars.welcomed = FTC.version
+
         -- Show welcome message
         if ( FTC.Vars.welcomed ~= FTC.version ) then
 
