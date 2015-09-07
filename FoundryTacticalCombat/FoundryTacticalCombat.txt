@@ -1,6 +1,6 @@
 ## Title: Foundry Tactical Combat
 ## Description: A combat enhancement addon designed to give players access to relevant combat data in an easy to process framework which allows them to respond quickly and effectively to evolving combat situations.
-## Version: 0.68
+## Version: 0.70
 ## APIVersion: 100012
 ## SavedVariables: FTC_VARS
 ## OptionalDependsOn: LibAddonMenu-2.0
@@ -89,12 +89,6 @@ hotbar/controls.lua
 
 menu/functions.lua
 menu/controls.lua
-
-extensions/global.lua
-extensions/dragonknight.lua
-extensions/sorcerer.lua
-extensions/templar.lua
-extensions/nightblade.lua
 
 lang/en.lua
 lang/$(language).lua

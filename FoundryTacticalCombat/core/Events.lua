@@ -38,11 +38,8 @@
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_MOUNTED_STATE_CHANGED         , FTC.OnMount )
         
         -- Action Bar Events
-        EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_SLOT_UPDATED           , FTC.OnSlotUpdate )
-        EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_SLOTS_FULL_UPDATE      , FTC.OnSwapWeapons )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTIVE_QUICKSLOT_CHANGED      , FTC.OnQuickslotChanged )
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_ACTION_UPDATE_COOLDOWNS       , FTC.OnUpdateCooldowns )
-        EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_INVENTORY_ITEM_USED           , FTC.OnItemUsed )
 
         -- Buff Events
         EVENT_MANAGER:RegisterForEvent( "FTC" , EVENT_EFFECT_CHANGED                , FTC.OnEffectChanged )
@@ -348,15 +345,14 @@
                     ["owner"]  = FTC.Player.name,
                     ["id"]     = 20309,
                     ["name"]   = hidden,
-                    ["cast"]   = 0,
                     ["dur"]    = 0,
-                    ["tex"]    = FTC.UI.Textures[hidden],
+                    ["icon"]   = FTC.UI.Textures[hidden],
                     ["ground"] = false,
                     ["area"]   = false,
                     ["debuff"] = false,
                     ["toggle"] = "T"
                 }
-                FTC.Buffs:NewEffect( ability )
+                FTC.Buffs:NewEffect( ability , "Player" )
 
             -- Remove stealth buff
             elseif ( FTC.Buffs.Player[hidden] ~= nil ) then
@@ -380,9 +376,6 @@
 
         -- Wipe player buffs
         if ( FTC.init.Buffs and unitTag == 'player' ) then FTC.Buffs:WipeBuffs(FTC.Player.name) end
-        
-        -- Display killspam alerts
-       --if ( FTC.init.SCT ) then FTC.SCT:Deathspam( ... ) end
     end
 
     --[[ 
@@ -422,31 +415,6 @@
   ]]----------------------------------------------------------
 
     --[[ 
-     * Handles Action Bar Changes
-     * --------------------------------
-     * Called by EVENT_ACTION_SLOT_UPDATED
-     * --------------------------------
-     ]]--
-    function FTC.OnSlotUpdate( eventCode , slotNum )
-
-        -- Fire callback
-        --CALLBACK_MANAGER:FireCallbacks( "FTC_CostChanged" )
-        
-        -- Update Action Bar if an ability was changed
-        -- if ( slotNum >= 3 and slotNum <= 8 ) then FTC.Player:GetActionBar() end
-    end
-
-    --[[ 
-     * Handles Action Bar Swap
-     * --------------------------------
-     * Called by EVENT_ACTION_SLOTS_FULL_UPDATE
-     * --------------------------------
-     ]]--
-    function FTC:OnSwapWeapons( eventCode , isWeaponSwap )
-        -- FTC.Player:GetActionBar()
-    end
-
-    --[[ 
      * Handles Changes to Active Quicslot
      * --------------------------------
      * Called by EVENT_ACTIVE_QUICKSLOT_CHANGED
@@ -463,43 +431,8 @@
      * --------------------------------
      ]]--
     function FTC.OnUpdateCooldowns( ... )
-        
-        -- Process pending ground targets
-        if ( FTC.init.Buffs ) then
-            if ( FTC.Buffs.pendingGT ~= nil ) then
-
-                -- Fire a callback to hook extensions
-                CALLBACK_MANAGER:FireCallbacks( "FTC_SpellCast" , FTC.Buffs.pendingGT )
-            
-                -- Process the queued ground target spell
-                FTC.Buffs:NewEffect( FTC.Buffs.pendingGT )
-                
-                -- Clear the queue
-                FTC.Buffs.pendingGT = nil
-            end
-        end
-
-        -- Maybe fire a potion alert
         if ( FTC.init.SCT ) then FTC.SCT:Potion() end
     end
-
-    --[[ 
-     * Handles Quickslot Item Usage
-     * --------------------------------
-     * Called by EVENT_INVENTORY_ITEM_USED
-     * --------------------------------
-     ]]--
-    function FTC.OnItemUsed( eventCode , itemSoundCategory )
-
-        -- Process potion consumption
-        if( itemSoundCategory == ITEM_SOUND_CATEGORY_POTION ) then 
-            if ( FTC.init.Buffs and FTC.Player.Quickslot.name ~= nil ) then 
-                FTC.Buffs:NewEffect( FTC.Player.Quickslot ) 
-                FTC.Player.canPotion = false
-            end
-        end
-    end
-
 
 --[[----------------------------------------------------------
     BUFF EVENTS
@@ -514,7 +447,7 @@
     function FTC.OnEffectChanged( eventCode , changeType , effectSlot , effectName , unitTag , beginTime , endTime , stackCount , iconName , buffType , effectType , abilityType , statusEffectType , unitName , unitId , abilityId )
                              
         -- Pass information to buffs component
-        if ( FTC.init.Buffs ) then FTC.Buffs:EffectChanged( changeType , unitTag , unitName , unitId , effectType , effectName , abilityId , buffType , statusEffectType , beginTime , endTime , iconName ) end
+        if ( FTC.init.Buffs ) then FTC.Buffs:EffectChanged( changeType , unitTag , unitName , unitId , effectType , effectName , abilityType , abilityId , buffType , statusEffectType , beginTime , endTime , iconName ) end
     end
 
 --[[----------------------------------------------------------

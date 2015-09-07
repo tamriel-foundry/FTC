@@ -210,13 +210,6 @@
             45569,          -- Medicinal Use
             62760,          -- Spell Shield
             63601,          -- ESO Plus Member
-            18868,          -- Major Ward
-            22236,          -- Major Resolve
-            23673,          -- Major Brutality
-            40479,          -- Major Prophecy
-            64509,          -- Majory Savagery
-            26795,          -- Major Savagery
-            45227,          -- Major Sorcery
         }
         for i = 1 , #Ignored do 
             if ( name == GetAbilityName(Ignored[i]) ) then 

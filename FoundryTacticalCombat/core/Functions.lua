@@ -50,9 +50,6 @@
 	 ]]--  
 	function FTC.Welcome() 
 
-		-- Temporarily prevent this from displaying
-		FTC.Vars.welcomed = FTC.version
-
         -- Show welcome message
         if ( FTC.Vars.welcomed ~= FTC.version ) then
 
@@ -67,15 +64,12 @@
 	            local slider  = FTC_Welcome:GetNamedChild("Slider")
 
 	            -- Set the welcome position
-	            buffer:SetScrollPosition(0)
-	            slider:SetValue(buffer:GetNumHistoryLines() - 0)
+	            buffer:SetScrollPosition(2)
+	            slider:SetValue(buffer:GetNumHistoryLines() - 2)
 	            slider:SetHidden(false)
 	            welcome:SetHidden(false)
 	            FTC_UI:SetAlpha(0)
 	        end
-
-	        -- Maybe reset certain saved variables
-	        FTC.Menu:Reset("Stats")
 
             -- Register that the user has been welcomed
             FTC.Vars.welcomed = FTC.version

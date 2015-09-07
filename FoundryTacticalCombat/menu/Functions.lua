@@ -358,12 +358,12 @@
                 local ability = {
                     ["owner"]   = FTC.Player.name,
                     ["name"]    = GetString(FTC_PlayerBuff) .. " 1",
-                    ["dur"]     = 8000, 
+                    ["dur"]     = 8, 
                     ["cast"]    = 0,
                     ["debuff"]  = false,
-                    ["tex"]     = '/esoui/art/icons/ability_rogue_006.dds',
+                    ["icon"]    = '/esoui/art/icons/ability_rogue_006.dds',
                 }
-                FTC.Buffs:NewEffect( ability )
+                FTC.Buffs:NewEffect( ability , "Player" )
             elseif ( FTC.Buffs.Player["Player Buff 1"]["ends"] <= time + 1 ) then FTC.Buffs.Player["Player Buff 1"]["ends"] = time + 8 end
 
         -- Fake Player Buff 2
@@ -372,12 +372,12 @@
                 local ability = {
                     ["owner"]   = FTC.Player.name,
                     ["name"]    = GetString(FTC_PlayerBuff) .. " 2",
-                    ["dur"]     = 12000, 
+                    ["dur"]     = 12, 
                     ["cast"]    = 0,
                     ["debuff"]  = false,
-                    ["tex"]     = '/esoui/art/icons/ability_rogue_048.dds',
+                    ["icon"]    = '/esoui/art/icons/ability_rogue_048.dds',
                 }
-                FTC.Buffs:NewEffect( ability )
+                FTC.Buffs:NewEffect( ability , "Player" )
             elseif ( FTC.Buffs.Player["Player Buff 2"]["ends"] <= time + 1 ) then FTC.Buffs.Player["Player Buff 2"]["ends"] = time + 12 end
 
         -- Fake Player Debuff 1
@@ -386,12 +386,12 @@
                 local ability = {
                     ["owner"]   = FTC.Player.name,
                     ["name"]    = GetString(FTC_PlayerDebuff) .. " 1",
-                    ["dur"]     = 7000, 
+                    ["dur"]     = 7, 
                     ["cast"]    = 0,
                     ["debuff"]  = true,
-                    ["tex"]     = '/esoui/art/icons/ability_rogue_007.dds',
+                    ["icon"]    = '/esoui/art/icons/ability_rogue_007.dds',
                 }
-                FTC.Buffs:NewEffect( ability )
+                FTC.Buffs:NewEffect( ability , "Player" )
             elseif ( FTC.Buffs.Player["Player Debuff 1"]["ends"] <= time + 1 ) then FTC.Buffs.Player["Player Debuff 1"]["ends"] = time + 7 end
 
         -- Fake Player Debuff 2
@@ -400,12 +400,12 @@
                 local ability = {
                     ["owner"]   = FTC.Player.name,
                     ["name"]    = GetString(FTC_PlayerDebuff) .. " 2",
-                    ["dur"]     = 6000, 
+                    ["dur"]     = 6, 
                     ["cast"]    = 0,
                     ["debuff"]  = true,
-                    ["tex"]     = '/esoui/art/icons/ability_rogue_018.dds',
+                    ["icon"]    = '/esoui/art/icons/ability_rogue_018.dds',
                 }
-                FTC.Buffs:NewEffect( ability )
+                FTC.Buffs:NewEffect( ability , "Player" )
             elseif ( FTC.Buffs.Player["Player Debuff 2"]["ends"] <= time + 1 ) then FTC.Buffs.Player["Player Debuff 2"]["ends"] = time + 6 end
         end
 

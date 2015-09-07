@@ -65,20 +65,23 @@
 		local Changes = {
 			
 			[1] = {
-				"Unit Frames",
-				"Fix bug when reforming groups that prevented FTC group and raid frames from being properly displayed.",
+				"General Changes",
+				"Update addon for ESO 2.1 API compatibility.",
+				"Deprecate usage of the EVENT_INVENTORY_ITEM_USED, EVENT_ACTION_SLOT_UPDATED, and EVENT_ACTION_SLOTS_FULL_UPDATE events which are no longer required under the new API.",
 			},
 
 			[2] = {
-				"Damage Stats",
-				"Require FTC elements to be unlocked to reposition the mini DPS meter.",
+				"Buff Tracking",
+				"Refactor buffs component to use additional information provided by the ESO API.",
+				"Develop an exception system for preventing the display of certain undesirable buffs.",
+				"Deprecate buff extensions files, which are no longer needed under the new API!",
+				"Add wider support for buffs that may be reported by the API but not previously recognized by FTC.",
+				"Correct a number of buff related bugs from 0.69 (PTS beta FTC).",
 			},
 
 			[3] = {
-				"Settings Menu",
-				"Updated to newest version of LibAddonMenu.",
-				"Fix bug with LibAddonMenu that caused certain menu-only elements to continue being displayed outside of the settings menu.",
-				"Improve the behavior of the interface for repositioning FTC elements.",
+				"Known Issues",
+				"The new version of FTC buff tracking doesn't currently work well with ground target AoEs. It does not report a duration for these effects because they are not reported by the API. I will need to develop a separate system for tracking GTAOE timers in a future version.",
 			},
 		}
 

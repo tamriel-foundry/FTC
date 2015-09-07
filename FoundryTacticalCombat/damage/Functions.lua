@@ -129,15 +129,14 @@
                     ["owner"]  = FTC.Player.name,
                     ["id"]     = 16565,
                     ["name"]   = GetString(FTC_BreakFree),
-                    ["cast"]   = 0,
                     ["dur"]    = 8000,
-                    ["tex"]    = FTC.UI.Textures[GetAbilityName(16565)],
+                    ["icon"]   = FTC.UI.Textures[GetAbilityName(16565)],
                     ["ground"] = false,
                     ["area"]   = false,
                     ["debuff"] = false,
                     ["toggle"] = nil,
                 }
-                FTC.Buffs:NewEffect( ability ) 
+                FTC.Buffs:NewEffect( ability , "Player" ) 
             end
 
             -- Fire SCT Alert
