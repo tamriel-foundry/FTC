@@ -36,8 +36,11 @@
         local player = zo_strformat("<<!aC:1>>",FTC.Player.name)
         local damageOut = false
         if ( sourceType == COMBAT_UNIT_TYPE_PLAYER or sourceType == COMBAT_UNIT_TYPE_PLAYER_PET ) then damageOut = true
-        elseif ( sourceType == COMBAT_UNIT_TYPE_NONE and ( target == player ) ) then damageOut = false
+        elseif ( target == player ) then damageOut = false
         else return end
+
+        -- Debugging
+       --d( result .. " || " .. sourceType .. " || " .. sourceName .. " || " .. targetName .. " || " .. abilityName .. " || " .. hitValue  )
 
         -- Reflag self-targetted as incoming
         if ( damageOut and ( target == player ) ) then damageOut = false end

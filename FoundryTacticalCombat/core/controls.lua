@@ -80,6 +80,17 @@
 			},
 
 			[3] = {
+				"Combat Log",
+				"Improve the wording of incoming healing and damage to better indicate the source of that damage or healing.",
+			},
+
+			[4] = {
+				"Scrolling Combat Text",
+				"Fix bug preventing incoming healing from being displayed in scrolling combat text.",
+				"Restore SCT alert for Sorcerer Crystal Fragments proc.",
+			},
+
+			[5] = {
 				"Known Issues",
 				"The new version of FTC buff tracking doesn't currently work well with ground target AoEs. It does not report a duration for these effects because they are not reported by the API. I will need to develop a separate system for tracking GTAOE timers in a future version.",
 			},

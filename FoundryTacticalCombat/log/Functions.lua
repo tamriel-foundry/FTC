@@ -145,20 +145,23 @@
 		-- Damage
 		elseif ( damage.value ~= 0 ) then
 
+			-- Determine the subject
+			local subject 	= ( damage.out ) and "You" or zo_strformat(" <<!aC:1>>",damage.source)
+			if ( zo_strformat("<<!aC:1>>",damage.source) == FTC.Player.name and not damage.out ) then subject = "You" end
+
 			-- Determine the action
-			local subject 	= "You "
-			local verb		= damage.heal and "healed" or "hit"
-			verb			= damage.crit and "critically " .. verb or verb
-			verb			= ( not damage.out ) and "were " .. verb or verb
+			local verb		= damage.heal and " healed " or " hit "
+			verb			= damage.crit and " critically" .. verb or verb
 
 			-- Determine the target
 			local target	= ( damage.out and damage.target ~= "" ) and zo_strformat(" <<!aC:1>>",damage.target) or ""
-			target 			= ( damage.out and ( target == FTC.Player.name ) ) and " yourself" or target
+			if ( not damage.out ) then target = "you" end
+			if ( zo_strformat("<<!aC:1>>",damage.source) == FTC.Player.name and not damage.out ) then target = "yourself" end
 
 			-- Determine the ability used
 			local ability	= ""
 			if ( damage.ability ~= "" ) then
-				ability = ( damage.out ) and zo_strformat(" with <<!aC:1>>",damage.ability) or zo_strformat(" by <<!aC:1>>",damage.ability)
+				ability = zo_strformat(" with <<!aC:1>>",damage.ability)
 			end
 
 			-- Determine the damage done

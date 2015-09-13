@@ -23,7 +23,6 @@
             24163,          -- Bound Aegis
             33319,          -- Siphoning Strikes
             36908,          -- Leeching Strikes
-            36935,          -- Siphoning Attacks
             30920,          -- Magelight
             40478,          -- Inner Light
             40483,          -- Radiant Magelight
@@ -128,7 +127,7 @@
      * Called by FTC.Buffs:EffectChanged()
      * --------------------------------
      ]]--
-    function FTC:FilterBuffInfo( unitTag , name ,  abilityType , iconName )
+    function FTC:FilterBuffInfo( unitTag , abilityId , name )
         
         -- Default to no isType
         local isType    = nil
@@ -137,7 +136,7 @@
         -- Toggles
         if ( FTC.Buffs:IsToggle(name) ) then 
             isType = "T" 
-            return isValid, name, isType , iconName
+            return isValid, name, isType
         end
 
         -- Boons
@@ -157,10 +156,10 @@
             13985,          -- Boon: The Tower
         }
         for i = 1 , #Boons do 
-            if ( name == GetAbilityName(Boons[i]) ) then 
+            if ( abilityId == Boons[i] ) then 
                 isValid = ( unitTag == 'player' )
                 isType  = "P"
-                return isValid, name, isType , iconName 
+                return isValid, name, isType
             end
         end
 
@@ -172,18 +171,18 @@
             35786,          -- Stage 4 Vampirism
         }
         for i = 1 , #Vamp do
-            if ( name == GetAbilityName(Vamp[i] ) ) then 
+            if ( abilityId == Vamp[i] ) then 
                 isValid = true
                 isType  = "V"..i
-                return isValid, name, isType , iconName
+                return isValid, name, isType
             end
         end
 
         -- Lycanthropy
-        if ( name == GetAbilityName( 35658 ) ) then
+        if ( abilityId == 35658 ) then
             isValid = true
             isType = "W"
-            return isValid, name, isType , iconName
+            return isValid, name, isType
         end
 
         -- AvA Bonuses
@@ -195,10 +194,10 @@
             39671,          -- Emperorship Alliance Bonus
         }    
         for i = 1 , #AvA do 
-            if ( name == GetAbilityName(AvA[i]) ) then 
+            if ( abilityId == AvA[i] ) then 
                 isValid = ( unitTag == 'player' )
                 isType  = "P"
-                return isValid, name, isType , iconName 
+                return isValid, name, isType 
             end
         end
 
@@ -210,14 +209,15 @@
             45569,          -- Medicinal Use
             62760,          -- Spell Shield
             63601,          -- ESO Plus Member
+            64160,          -- Crystal Fragments Passive (non-timed)
         }
         for i = 1 , #Ignored do 
-            if ( name == GetAbilityName(Ignored[i]) ) then 
+            if ( abilityId == Ignored[i] ) then 
                 isValid = false 
-                return isValid, name, isType , iconName
+                return isValid, name, isType
             end
         end
             
         -- Return other buffs
-        return isValid, name, isType , iconName 
+        return isValid, name, isType
     end

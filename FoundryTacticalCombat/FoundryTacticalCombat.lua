@@ -17,8 +17,8 @@
 
     Author:   Atropos
     Email:    atropos@tamrielfoundry.com
-    Version:  0.70
-    Updated:  9-7-2015
+    Version:  0.71
+    Updated:  9-13-2015
   ]]--
 
 --[[----------------------------------------------------------

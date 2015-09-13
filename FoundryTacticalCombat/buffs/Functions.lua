@@ -122,7 +122,7 @@
         local context = ( unitTag == 'player' ) and "Player" or "Target"
 
         -- Debugging
-        --d( "[" .. abilityId .. "] " .. effectName .. " || [" .. unitTag .. "] " .. unitName .. " (" .. unitId .. ") || " .. ( endTime - beginTime ) .. "s || " .. buffType .. " - " .. effectType .. " - " .. statusEffectType .. " - " .. iconName )
+        --d( changeType .. " [" .. abilityId .. "] " .. effectName .. " || [" .. unitTag .. "] " .. unitName .. " (" .. unitId .. ") || " .. ( endTime - beginTime ) .. "s || " .. iconName )
 
         -- Remove existing effects
         if ( changeType == 2 ) then
@@ -133,7 +133,7 @@
         else
 
             -- Run the effects through a global filter
-            isValid, effectName, isType , iconName = FTC:FilterBuffInfo( unitTag , effectName , abilityType , iconName )
+            isValid, effectName, isType = FTC:FilterBuffInfo( unitTag , abilityId , effectName )
 
             -- Consider effects that are exactly zero seconds as permanent
             if ( endTime - beginTime == 0 ) then isType = "P" end
@@ -143,7 +143,7 @@
 
             -- Suppress effects which already exist for the same icon with the same duration
             for k, v in pairs(FTC.Buffs[context]) do
-                if ( iconName == v.icon ) and ( math.abs(( endTime - beginTime ) - ( v.ends - v.begin )) <= 0.1 ) then isValid = false end
+                if ( iconName == v.icon ) and ( math.abs( endTime - v.ends ) <= 0.1 ) and ( math.abs( beginTime - v.begin ) <= 0.1 ) then isValid = false end
             end
 
             -- Process valid buffs
@@ -153,7 +153,7 @@
                 local target   = GetAbilityTargetDescription(ability_id)
                 local ability  = {
                     ["owner"]  = GetUnitName( unitTag ),
-                    ["id"]     = ability_id,
+                    ["id"]     = abilityId,
                     ["name"]   = effectName,
                     ["begin"]  = beginTime,
                     ["ends"]   = endTime,

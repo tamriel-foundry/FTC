@@ -460,7 +460,7 @@
      * Called by EVENT_COMBAT_EVENT
      * --------------------------------
      ]]--
-    function FTC.OnCombatEvent( eventCode , result , isError , abilityName , abilityGraphic , abilityActionSlotType , sourceName , sourceType , targetName , targetType , hitValue , powerType , damageType , log )
+    function FTC.OnCombatEvent( eventCode , result , isError , abilityName , abilityGraphic , abilityActionSlotType , sourceName , sourceType , targetName , targetType , hitValue , powerType , damageType , log , sourceUnitId , targetUnitId , abilityId )
 
         -- Ignore errors
         if ( isError ) then return end
