@@ -87,19 +87,9 @@
 
         -- Only take action for player and target
         if ( unitTag ~= "player" and unitTag ~= "reticleover" ) then return end
-        
-        -- Get the number of buffs currently affecting the target
-        local nbuffs = GetNumBuffs( unitTag )
-        
-        -- Bail if the target has no buffs
-        if ( nbuffs == 0 ) then return end
 
-        -- Otherwise empty the active buffs table for the unit
-        local context = ( unitTag == 'player' ) and "Player" or "Target"
-        FTC.Buffs[context] = {}
-        
         -- Iterate through buffs, translating them to into the correct format
-        for i = 1 , nbuffs do
+        for i = 1 , GetNumBuffs( unitTag ) do
         
             -- Get the buff information
             local buffName , timeStarted , timeEnding , buffSlot , stackCount , iconFilename , buffType , effectType , abilityType , statusEffectType , abilityId , canClickOff = GetUnitBuffInfo( unitTag , i )
@@ -302,8 +292,8 @@
                 FTC.Buffs.Pool:ReleaseObject(control.id)
                 render = false
 
-            -- Handle single-target buffs belonging to others
-            elseif ( buffs[i].owner ~= GetUnitName(unitTag) and not buffs[i].area ) then
+            -- Remove buffs belonging to old owners
+            elseif ( buffs[i].owner ~= GetUnitName(unitTag) ) then
                 render = false
             
                 -- Purge long duration buffs
