@@ -62,35 +62,25 @@
 		welcome:AddText("|cCC6600Version " .. FTC.version .. " Updates|r")
 
 		-- Register changes
-		local Changes = {
+    local Changes = {
 			
 			[1] = {
 				"General Changes",
-				"Update addon for ESO 2.1 API compatibility.",
-				"Deprecate usage of the EVENT_INVENTORY_ITEM_USED, EVENT_ACTION_SLOT_UPDATED, and EVENT_ACTION_SLOTS_FULL_UPDATE events which are no longer required under the new API.",
+				"Update addon for ESO v2.3 API compatibility.",
 			},
 
 			[2] = {
 				"Buff Tracking",
-				"Refactor buffs component to use additional information provided by the ESO API.",
-				"Develop an exception system for preventing the display of certain undesirable buffs.",
-				"Deprecate buff extensions files, which are no longer needed under the new API!",
-				"Add wider support for buffs that may be reported by the API but not previously recognized by FTC.",
-				"Correct a number of buff related bugs from 0.69 (PTS beta FTC).",
+				"Adjusted target buff tracking to avoid showing buff(s) from a previous target.",
 			},
 
-			[3] = {
-				"Combat Log",
-				"Improve the wording of incoming healing and damage to better indicate the source of that damage or healing.",
+      [3] = {
+				"Going Forward",
+				"We are currently evaluating the Combat Text system added by ZOS, and will be adjusting and enhancing FTC to meld well.  FTC and the standard Combat Text system are a bit redundant, but work together without any problems.  The standard Combat Text system can be managed in Settings/Interface/Combat Text.",
+        "Philgo (of Master Merchant fame) will be joining the FTC development efforts going forward.",
 			},
 
-			[4] = {
-				"Scrolling Combat Text",
-				"Fix bug preventing incoming healing from being displayed in scrolling combat text.",
-				"Restore SCT alert for Sorcerer Crystal Fragments proc.",
-			},
-
-			[5] = {
+      [4] = {
 				"Known Issues",
 				"The new version of FTC buff tracking doesn't currently work well with ground target AoEs. It does not report a duration for these effects because they are not reported by the API. I will need to develop a separate system for tracking GTAOE timers in a future version.",
 			},
@@ -108,5 +98,5 @@
 
 		-- Add closing messages
 		welcome:AddText("|c|r")	
-		welcome:AddText("If you have any feedback, bug reports, or other questions about Foundry Tactical Combat please contact |cCC6600@Atropos|r on the North American PC megaserver or send an email to |cCC6600atropos@tamrielfoundry.com|r. Thank you for using the FTC addon and for your support!")
+		welcome:AddText("If you have any feedback, bug reports, or other questions about Foundry Tactical Combat please contact |cCC6600@Atropos|r or |cCC6600@Philgo68|r on the North American PC megaserver or send an email to |cCC6600atropos@tamrielfoundry.com|r or |cCC6600philgo68@gmail.com|r. Thank you for using the FTC addon and for your support!")
 	end

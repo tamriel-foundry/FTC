@@ -15,10 +15,10 @@
     (6) Damage Statistics
     (7) Group Frames
 
-    Author:   Atropos
-    Email:    atropos@tamrielfoundry.com
-    Version:  0.71
-    Updated:  9-13-2015
+    Author:   Atropos / Philgo68
+    Email:    atropos@tamrielfoundry.com / philgo68@gmail.com
+    Version:  0.72
+    Updated:  06-MAR-2015
   ]]--
 
 --[[----------------------------------------------------------
@@ -29,7 +29,7 @@
 FTC                     = {}
 FTC.name                = "FoundryTacticalCombat"
 FTC.tag                 = "FTC"
-FTC.version             = 0.71
+FTC.version             = 0.72
 FTC.settings            = 0.60
 FTC.language            = GetCVar("language.2")
 FTC.UI                  = WINDOW_MANAGER:CreateTopLevelWindow( "FTC_UI" )

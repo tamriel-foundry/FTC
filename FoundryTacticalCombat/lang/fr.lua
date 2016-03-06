@@ -3,7 +3,7 @@
     French LANGUAGE LOCALIZATION
   ]]----------------------------------------------------------
 ZO_CreateStringId("FTC_Name",               "Foundry Tactical Combat")
-ZO_CreateStringId("FTC_ShortInfo",          "Foundry Tactical Combat par Atropos")
+ZO_CreateStringId("FTC_ShortInfo",          "Foundry Tactical Combat par Atropos / Philgo")
 ZO_CreateStringId("FTC_LongInfo",           "Vous utilisez la version " .. FTC.version .. " de Foundry Tactical Combat développée par Atropos de Tamriel Foundry.")
 
 --[[----------------------------------------------------------
